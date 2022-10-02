@@ -16,6 +16,7 @@
     "@strapi/plugin-users-permissions": "4.4.1",
     "@strapi/strapi": "4.4.1",
     "sqlite3": "^5.0.2",
+    "strapi-plugin-ezforms": "^0.1.2",
     "strapi-plugin-menus": "^1.0.2"
   },
   "author": {
