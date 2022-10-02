@@ -4,6 +4,7 @@ export interface CallProps {
   req: AxiosRequestConfig,
   onSuccess?: Function
   onError?: Function
+  onFinally?: Function
 }
 
 export const restCall = async (call: CallProps) => {
@@ -13,7 +14,7 @@ export const restCall = async (call: CallProps) => {
   call.req.url = (call.req.url) ? process.env.REACT_APP_HOST+call.req.url : undefined
 
   if(call.req.url === undefined){
-    console.log('Are you crazy?' )
+    console.log('Are you crazy?')
     return false
   }else{
     return await axios(call.req)

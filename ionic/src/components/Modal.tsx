@@ -21,9 +21,8 @@ const Modal: React.FC = () => {
     }
   }
 
-  let Modalito = () => {
-    return <IonModal ref={modal} trigger="open-modal" onWillDismiss={(ev: any) => onWillDismiss(ev)}>
-      <IonHeader>
+  return <IonModal ref={modal} trigger="open-modal" onWillDismiss={(ev: any) => onWillDismiss(ev)}>
+    <IonHeader>
       <IonToolbar>
         <IonButtons slot="start">
           <IonButton onClick={() => modal.current?.dismiss()}>Cancel</IonButton>
@@ -43,24 +42,6 @@ const Modal: React.FC = () => {
       </IonItem>
     </IonContent>
   </IonModal> 
-  }
-
-  return (
-    <IonPage>
-      <IonHeader>
-        <IonToolbar>
-          <IonTitle>Inline Modal</IonTitle>
-        </IonToolbar>
-      </IonHeader>
-      <IonContent className="ion-padding">
-        <IonButton id="open-modal" expand="block">
-          Open
-        </IonButton>
-        <p>{message}</p>
-        <Modalito/>
-      </IonContent>
-    </IonPage>
-  );
 
 }
 
