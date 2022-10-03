@@ -26,5 +26,6 @@ export function setUserReducer(
     */
     //
   }
+  return {...state}
 
 }

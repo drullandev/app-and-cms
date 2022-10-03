@@ -8,7 +8,7 @@ import {
 
 //import { setStorage } from '../app/storage'
 
-import { ActionType } from '../../util/types'
+//import { ActionType } from '../../util/types'
 import { UserState } from './user.state'
 
 export const loadUserData = () => async (dispatch: React.Dispatch<any>) => {
@@ -18,35 +18,30 @@ export const loadUserData = () => async (dispatch: React.Dispatch<any>) => {
   //dispatch(setLoading(false))
 }
 
-export const setData = (data: Partial<UserState>) => {
-  return { type: 'set-user-data', data } as const
-}
-
-/*
-export const setHasSeenTutorial = (hasSeenTutorial: boolean) => {
+/*export const setHasSeenTutorial = (hasSeenTutorial: boolean) => {
   setHasSeenTutorialData(hasSeenTutorial)
   return { type: 'set-has-seen-tutorial', hasSeenTutorial } as const
-}
+}*/
 
 export const logoutUser = () => async (dispatch: React.Dispatch<any>) => {
-  await setIsLoggedInData(false)
+  /*await setIsLoggedInData(false)
   dispatch(setIsLoggedIn(true))
   dispatch(setNickname())
   dispatch(setUserEmail())
   dispatch(setUserJwt())
-  dispatch(setUserId())
+  dispatch(setUserId())*/
 }
 
 
+/*
 export const setIsLoggedIn = (loggedIn: boolean) => async (
   dispatch: React.Dispatch<any>
 ) => {
   await setIsLoggedInData(loggedIn)
   return { type: 'set-is-loggedin', loggedIn } as const
 }
-*/
 
-/*
+
 
 export const setUserData = (userData: any) => async (
   dispatch: React.Dispatch<any>
@@ -129,12 +124,12 @@ export const setUserAvatar = (avatar: any) => {
 
 */
 
-export type UserActions =
-  | ActionType<typeof setData>
+export type UserActions = null
+  //| ActionType<typeof setData>
   /*| ActionType<typeof setIsLoggedIn>
   | ActionType<typeof setUserEmail>
   | ActionType<typeof setNickname>
-  | ActionType<typeof setHasSeenTutorial>
+  //| ActionType<typeof setHasSeenTutorial>
   | ActionType<typeof setLoading>
   | ActionType<typeof setDarkMode>
   | ActionType<typeof setUserJwt>
