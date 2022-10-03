@@ -1,13 +1,19 @@
 import { SessionsActions } from './sessions.actions'
 import { ConfState } from './conf.state'
 
-export const sessionsReducer = (state: ConfState, action: SessionsActions): ConfState => {
+export const sessionsReducer = (
+  state: ConfState,
+  action: SessionsActions
+) : ConfState => {
+
+  let ret: Object = {}
+  
   switch (action.type) {
+    case 'set-conf-data': {
+      ret = { ...state, ...action.data }
+    }/*
     case 'set-conf-loading': {
       return { ...state, loading: action.isLoading }
-    }
-    case 'set-conf-data': {
-      return { ...state, ...action.data }
     }
     case 'add-favorite': {
       return { ...state, favorites: [...(state.favorites), action.sessionId] }
@@ -35,6 +41,8 @@ export const sessionsReducer = (state: ConfState, action: SessionsActions): Conf
     }
     case 'set-menu-enabled': {
       return { ...state, menuEnabled: action.menuEnabled }
-    }
+    }*/
   }
+  return ret
+
 }

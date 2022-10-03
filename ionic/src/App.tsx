@@ -24,7 +24,7 @@ import './theme/variables.css'
 
 /* Data variables */
 import { connect } from './data/connect'
-import { AppContextProvider } from './data/AppContext'
+import { AppContextProvider } from './context/AppContext'
 import { loadConfData } from './data/sessions/sessions.actions'
 //import { setIsLoggedIn, setNickname, loadUserData, setDarkMode, setUserJwt } from './data/user/user.actions'
 
@@ -40,6 +40,8 @@ import { loadConfData } from './data/sessions/sessions.actions'
 /* Pages models */
 //import { Schedule } from './models/Schedule'
 
+import Tab1 from './pages/Tab1';
+
 const App: React.FC = () => {
   return (
     <AppContextProvider>
@@ -49,14 +51,14 @@ const App: React.FC = () => {
 }
 
 interface StateProps {
-  userDarkMode: boolean
+  //userDarkMode: boolean
   //schedule: Schedule
 }
 
 interface DispatchProps {
   //setIsLoggedIn: typeof setIsLoggedIn
   //setNickname: typeof setNickname
-  loadConfData: typeof loadConfData
+  //loadConfData: typeof loadConfData
   //loadUserData: typeof loadUserData
   //setDarkMode: typeof setDarkMode
   //setUserJwt: typeof setUserJwt
@@ -65,7 +67,7 @@ interface DispatchProps {
 interface IonicAppProps extends StateProps, DispatchProps { }
 
 const IonicApp: React.FC<IonicAppProps> = ({
-  userDarkMode,
+  //userDarkMode,
   //schedule,
   //setIsLoggedIn,
   //setNickname,
@@ -87,20 +89,26 @@ const IonicApp: React.FC<IonicAppProps> = ({
     //restGet('settings').then(res => { parseSettings(res) })
     //restGet('paths').then(res => { console.log(res.data); setPaths(res.data) })
     //setShowLoading(false)
-
     // eslint-disable-next-line
   }, [])
 
   return (
-    <IonApp className={userDarkMode ? 'dark-theme' : ''}>
+    <IonApp>
       <IonReactRouter>
         <IonSplitPane contentId='main'>
   
           {/*<Menu key='mainMenu' slug={'sidenav'} />*/}
   
           <IonRouterOutlet id='main'>
+          <Route exact path="/tab1">
+            <Tab1 />
+          </Route>
             {/* TODO: Revisistate this case :: We use IonRoute here to keep the tabs state intact, which makes transitions between tabs and non tab pages smooth */}
-            <Redirect path='/' to={'/home'} />
+            <Route exact path="/tab1">
+              <Tab1 />
+            </Route>
+            <Redirect path='/' to={'/tab1'} />
+            
             {/*<Route path='/list' render={() => <Main />} />*/}
             {/*<Route path='/tabs' render={() => <MainTabs />} />
             <Route path='/:slug' component={Page} />
@@ -123,22 +131,25 @@ const IonicApp: React.FC<IonicAppProps> = ({
 
 export default App
 
-const IonicAppConnected = connect<{}, StateProps, DispatchProps>({
+const IonicAppConnected = connect<
+  {}, 
+  //StateProps, 
+  DispatchProps>({
 
   mapStateToProps: (state) => ({
-    userDarkMode: state.user.userDarkMode,
-    schedule: state.data.schedule
+    //userDarkMode: state.user.userDarkMode,
+    //schedule: state.data.schedule
   }),
-
+/*
   mapDispatchToProps: {
-    loadConfData,
+    //loadConfData,
     //loadUserData,
     //setIsLoggedIn,
     //setDarkMode,
     //setNickname,
     //setUserJwt
   },
-
+*/
   component: IonicApp
   
 })

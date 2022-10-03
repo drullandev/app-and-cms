@@ -21,8 +21,9 @@ export function setUserReducer(
     case 'set-is-loggedin':       return { ...state, isLoggedIn:      action.loggedIn }
     case 'set-userJwt':           return { ...state, userJwt:         action.userJwt }
     case 'set-user-darkmode':     return { ...state, userDarkMode:    action.userDarkMode }    
-    case 'set-has-seen-tutorial': return { ...state, hasSeenTutorial: action.hasSeenTutorial }
+    //case 'set-has-seen-tutorial': return { ...state, hasSeenTutorial: action.hasSeenTutorial }
     //
   }
+  return {...state}
 
 }

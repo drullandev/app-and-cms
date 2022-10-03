@@ -11,12 +11,11 @@ export interface LoginProps {
 }
 
 const Tab1: React.FC = () => {
-
-  let data = { identifier: 'bunny@gmail.com', password: 'Qwer1234' }
-
+console.log('test')
   useEffect(() =>{ 
+    let data = { identifier: 'bunny@gmail.com', password: 'Qwer1234' }
     console.log(login(data))
-  },[data])
+  },[])
   
   return (
     <IonPage>

@@ -17,16 +17,16 @@ export const loadConfData = () => async (dispatch: React.Dispatch<any>) => {
 /*export const setSessAction = (type: string, value: any) => {
   if(testing) console.log('setSessAction::', type, value)
   return ({ type: type, value } as const)
-}*/
+}
 
 export const setLoading = (isLoading: boolean) => {
   return ({ type: 'set-conf-loading', isLoading } as const)
 }
-
+*/
 export const setData = (data: Partial<ConfState>) => {
   return ({ type: 'set-conf-data', data } as const)
 }
-
+/*
 export const setMenuEnabled = (menuEnabled: boolean) => {
   return ({ type: 'set-menu-enabled', menuEnabled } as const)
 }
@@ -47,7 +47,7 @@ export const setOrderField = (orderField?: string) => {
   return ({ type: 'set-order-field', orderField } as const)
 }
 
-/*export const setFilter = (filter: Filter[]) => {
+export const setFilter = (filter: Filter[]) => {
   return ({ type: 'set-filter', filter } as const)
 }
 
@@ -66,14 +66,14 @@ export const removeFavorite = (sessionId: number) => {
 }
 
 export type SessionsActions =
-  | ActionType<typeof setLoading>
+  //| ActionType<typeof setLoading>
   | ActionType<typeof setData>
-  | ActionType<typeof setMenuEnabled>  
-  | ActionType<typeof updateFilteredTracks>
-  | ActionType<typeof setSearchString>
-  | ActionType<typeof setSearchOrder>
-  | ActionType<typeof setOrderField>
+  //| ActionType<typeof setMenuEnabled>  
+  //| ActionType<typeof updateFilteredTracks>
+  //| ActionType<typeof setSearchString>
+  //| ActionType<typeof setSearchOrder>
+  //| ActionType<typeof setOrderField>
   //| ActionType<typeof setFilter>
   //| ActionType<typeof setFilterDate>  
-  | ActionType<typeof addFavorite>
-  | ActionType<typeof removeFavorite>
+  //| ActionType<typeof addFavorite>
+  //| ActionType<typeof removeFavorite>

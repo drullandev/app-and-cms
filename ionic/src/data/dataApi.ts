@@ -1,8 +1,8 @@
 import * as Stored from '../static/stored'
-
 import { Home, Session } from '../models/Schedule'
-import { Speaker } from '../models/Speaker'
-import { Location } from '../models/Location'
+
+//import { Speaker } from '../models/Speaker'
+//import { Location } from '../models/Location'
 
 import { getStorage, setStorage, removeStorage } from '../clases/storage'
 //import { restGet } from './utils/rest/rest.utils'
@@ -11,7 +11,8 @@ import { getStorage, setStorage, removeStorage } from '../clases/storage'
 
 export const getUserExtra = async () => {
 
-  //TODO: Featurize more, is so simple, but comes from API now! // TODO: Must come by user!!! ^^
+  // Featurize more, is so simple, but comes from API now! 
+  // Must come by user!!! ^^
   //const extra  = await restGet('extra').then(res=>{ return res.data })
 
   //const responseData  = extra.schedule  
@@ -30,7 +31,7 @@ export const getUserExtra = async () => {
     .filter((trackName, index, array) => array.indexOf(trackName) === index)
     .sort()
 */
-  return null /*{
+  return {} /*{
     schedule,
     sessions,
     locations,
@@ -42,9 +43,9 @@ export const getUserExtra = async () => {
 
 export const getApiValue = async (key:string) => {
   const response = await Promise.all([
-    //getStorage(key),
+    getStorage(key),
   ])
-  const value = null //response[0]
+  const value = response[0]
   return value
 }
 
@@ -84,13 +85,13 @@ export const getUserData = async () => {
 
 }
 
-function parseSessions(schedule: Home) {
+/*function parseSessions(schedule: Home) {
   const sessions: Session[] = []
   schedule.groups.forEach((g) => {
     g.sessions.forEach((s) => sessions.push(s))
   })
   return sessions
-}
+}*/
 
 
 export const setIsLoggedInData = async (isLoggedIn: boolean) => {
@@ -101,9 +102,9 @@ export const setLoading = async (loading: boolean) => {
   setStorage(Stored.IS_LOADING, loading)
 }
 
-export const setHasSeenTutorialData = async (hasSeenTutorial: boolean) => {
+/*export const setHasSeenTutorialData = async (hasSeenTutorial: boolean) => {
   setStorage(Stored.HAS_SEEN_TUTORIAL, hasSeenTutorial)
-}
+}*/
 
 export const setNicknameData = async (nickname?: string) => {
   setOrRemove(Stored.NICKNAME, nickname)

@@ -3,7 +3,7 @@ import {
   setIsLoggedInData,
   setNicknameData,
   setUserEmailData,
-  setHasSeenTutorialData
+  //setHasSeenTutorialData
 } from '../dataApi'
 
 //import { setStorage } from '../app/storage'
@@ -18,10 +18,10 @@ export const loadUserData = () => async (dispatch: React.Dispatch<any>) => {
   dispatch(setLoading(false))
 }
 
-export const setHasSeenTutorial = (hasSeenTutorial: boolean) => {
+/*export const setHasSeenTutorial = (hasSeenTutorial: boolean) => {
   setHasSeenTutorialData(hasSeenTutorial)
   return { type: 'set-has-seen-tutorial', hasSeenTutorial } as const
-}
+}*/
 
 export const logoutUser = () => async (dispatch: React.Dispatch<any>) => {
   await setIsLoggedInData(false)
@@ -122,7 +122,7 @@ export type UserActions =
   | ActionType<typeof setIsLoggedIn>
   | ActionType<typeof setUserEmail>
   | ActionType<typeof setNickname>
-  | ActionType<typeof setHasSeenTutorial>
+  //| ActionType<typeof setHasSeenTutorial>
   | ActionType<typeof setLoading>
   | ActionType<typeof setDarkMode>
   | ActionType<typeof setUserJwt>
