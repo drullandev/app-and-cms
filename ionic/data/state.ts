@@ -1,4 +1,4 @@
-import { combineReducers } from './combineReducers'
+import { combineReducers } from 'redux'
 import { sessionsReducer } from './sessions/sessions.reducer'
 import { setUserReducer } from './user/user.reducer'
 
@@ -16,9 +16,9 @@ export const initialState: AppState = {
     loading: false,
   },*/
   user: {
-    //id: 0,
-    useremail: '',
-    userDarkMode: false,
+    id: 0,
+    email: '',
+    : false,
     isLoggedIn: false,
     hasSeenTutorial: false,
     loading: false,    
@@ -28,7 +28,7 @@ export const initialState: AppState = {
 
 
 export const reducers = combineReducers({
-  data: sessionsReducer,
+  //data: sessionsReducer,
   user: setUserReducer
 })
 

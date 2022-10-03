@@ -42,37 +42,58 @@ export const getUserExtra = async () => {
 
 export const getApiValue = async (key:string) => {
   const response = await Promise.all([
-    //getStorage(key),
+    getStorage(key),
   ])
   const value = null //response[0]
   return value
 }
 
 export const getUserData = async () => {
+
+  /*{
+    "jwt": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjY0NTY4NjA1LCJleHAiOjE2NjcxNjA2MDV9.lAUwTwd7HlG1i5gF7fQbjRnqsz6vzggUCPrFjx-OqpI",
+    "user": {
+        "id": 1,
+        "username": "White Bunny",
+        "email": "bunny@gmail.com",
+        "provider": "local",
+        "confirmed": true,
+        "blocked": false,
+        "createdAt": "2022-09-30T20:02:59.863Z",
+        "updatedAt": "2022-09-30T20:02:59.863Z"
+    }
+  }*/
   
   const response = await Promise.all([
     //
-    //getStorage(Stored.NICKNAME),
-    //getStorage(Stored.USEREMAIL),
-    //getStorage(Stored.USERJWT),
-    //getStorage(Stored.USERID),
-    //
+    getStorage(Stored.USERNAME),
+    getStorage(Stored.EMAIL),
+    getStorage(Stored.PROVIDER),
+    getStorage(Stored.CONFIRMED),
+    getStorage(Stored.BLOCKED),
+    
     //getStorage(Stored.IS_LOGGED_IN),
     //getStorage(Stored.HAS_SEEN_TUTORIAL),
     //getStorage(Stored.USER_DARK_MODE),    
   ])
 
   //
-  //const nickname        = response[0] || undefined
-  //const useremail       = response[1] || undefined
-  //const userJwt         = response[2] || undefined
-  //const userId          = response[3] || undefined
+  const username        = response[0] || undefined
+  const email           = response[1] || undefined
+  const provider        = response[2] || undefined
+  const confirmed       = response[3] || undefined
+  const blocked         = response[4] || undefined
   //
   //const isLoggedIn      = response[4] === 'true'
   //const hasSeenTutorial = response[5] === 'true'
   //const userDarkMode    = response[6] === 'false'
 
-  return {}/* {
+  return {
+    username,
+    email,
+    provider,
+    confirmed
+  }/* {
     nickname,
     useremail,
     userJwt,
@@ -92,7 +113,15 @@ function parseSessions(schedule: Home) {
   return sessions
 }
 
+export const setUsername = async (username?: string) => {
+  setOrRemove(Stored.USERNAME, username)
+}
 
+export const setEmailData = async (email?: string) => {
+  setOrRemove(Stored.EMAIL, email)
+}
+
+/*
 export const setIsLoggedInData = async (isLoggedIn: boolean) => {
   setStorage(Stored.IS_LOGGED_IN, isLoggedIn)
 }
@@ -105,14 +134,6 @@ export const setHasSeenTutorialData = async (hasSeenTutorial: boolean) => {
   setStorage(Stored.HAS_SEEN_TUTORIAL, hasSeenTutorial)
 }
 
-export const setNicknameData = async (nickname?: string) => {
-  setOrRemove(Stored.NICKNAME, nickname)
-}
-
-export const setUserEmailData = async (useremail?: string) => {
-  setOrRemove(Stored.USEREMAIL, useremail)
-}
-
 export const setUserJwtData = async (userJwt?: string) => {
   setOrRemove(Stored.USERJWT, userJwt)
 }
@@ -120,11 +141,10 @@ export const setUserJwtData = async (userJwt?: string) => {
 export const setUserIdData = async (userId?: string) => {
   setOrRemove(Stored.USERID, userId)
 }
+*/
 
 export const setOrRemove = async (key: string, value: any = null)=>{
-  if(value){
-    setStorage(key, value)
-  }else{
-    removeStorage(key)
-  }
+  return (value)
+    ? setStorage(key, value)
+    : removeStorage(key)
 }

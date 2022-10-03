@@ -1,4 +1,4 @@
-import { restCall } from '../clases/axios';
+import { restCall } from './axios';
 
 export interface LoginProps {
   identifier: string

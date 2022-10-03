@@ -1,8 +1,11 @@
 import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
 import ExploreContainer from '../components/ExploreContainer';
 import './Tab1.css';
-import { login } from '../clases/login';
-import Modal from '../components/Modal'
+
+
+import { login } from '../calls/login';
+
+import Modal from '../components/Modal';
 import { useEffect } from 'react';
 
 export interface LoginProps {
@@ -20,11 +23,13 @@ const Tab1: React.FC = () => {
   
   return (
     <IonPage>
+
       <IonHeader>
         <IonToolbar>
           <IonTitle>Tab 1</IonTitle>
         </IonToolbar>
       </IonHeader>
+      
       <IonContent fullscreen>
         <IonHeader collapse="condense">
           <IonToolbar>
@@ -33,7 +38,9 @@ const Tab1: React.FC = () => {
         </IonHeader>
         <ExploreContainer name="Tab 1 page" />
       </IonContent>
+      
       <Modal/>
+    
     </IonPage>
   )
 

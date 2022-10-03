@@ -15,6 +15,7 @@ export function setUserReducer(
     //
     case 'set-user-data':         return { ...state, ...action.data }    
     //case 'set-user-loading':      return { ...state, loading:         action.isLoading }
+    /*
     case 'set-user-id':           return { ...state, userId:          action.userId }
     case 'set-nickname':          return { ...state, nickname:        action.nickname }
     case 'set-user-email':        return { ...state, useremail:       action.email }
@@ -22,6 +23,7 @@ export function setUserReducer(
     case 'set-userJwt':           return { ...state, userJwt:         action.userJwt }
     case 'set-user-darkmode':     return { ...state, userDarkMode:    action.userDarkMode }    
     case 'set-has-seen-tutorial': return { ...state, hasSeenTutorial: action.hasSeenTutorial }
+    */
     //
   }
 

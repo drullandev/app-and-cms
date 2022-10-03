@@ -1,9 +1,9 @@
 import {
   getUserData,
-  setIsLoggedInData,
-  setNicknameData,
-  setUserEmailData,
-  setHasSeenTutorialData
+  //setIsLoggedInData,
+  //setNicknameData,
+  //setUserEmailData,
+  //setHasSeenTutorialData
 } from '../dataApi'
 
 //import { setStorage } from '../app/storage'
@@ -12,12 +12,17 @@ import { ActionType } from '../../util/types'
 import { UserState } from './user.state'
 
 export const loadUserData = () => async (dispatch: React.Dispatch<any>) => {
-  dispatch(setLoading(true))
-  const data = await getUserData()
-  dispatch(setData(data))
-  dispatch(setLoading(false))
+  //dispatch(setLoading(true))
+  //const data = await getUserData()
+  //dispatch(setData(data))
+  //dispatch(setLoading(false))
 }
 
+export const setData = (data: Partial<UserState>) => {
+  return { type: 'set-user-data', data } as const
+}
+
+/*
 export const setHasSeenTutorial = (hasSeenTutorial: boolean) => {
   setHasSeenTutorialData(hasSeenTutorial)
   return { type: 'set-has-seen-tutorial', hasSeenTutorial } as const
@@ -32,9 +37,6 @@ export const logoutUser = () => async (dispatch: React.Dispatch<any>) => {
   dispatch(setUserId())
 }
 
-export const setData = (data: Partial<UserState>) => {
-  return { type: 'set-user-data', data } as const
-}
 
 export const setIsLoggedIn = (loggedIn: boolean) => async (
   dispatch: React.Dispatch<any>
@@ -42,17 +44,27 @@ export const setIsLoggedIn = (loggedIn: boolean) => async (
   await setIsLoggedInData(loggedIn)
   return { type: 'set-is-loggedin', loggedIn } as const
 }
+*/
+
+/*
 
 export const setUserData = (userData: any) => async (
   dispatch: React.Dispatch<any>
 ) => {
-  dispatch(setLoading(true))
 
-  dispatch(setNickname(userData.username))
-  dispatch(setUserEmail(userData.email))
+
+  //dispatch(setLoading(true))
+
+  //dispatch(setNickname(userData.username))
+  //dispatch(setUserEmail(userData.email))
 
   dispatch(setData(userData))
-  //setUserData()
+  //setUserData(userData)
+
+  //dispatch(setLoading(false))
+}
+
+*/
   /*
   {
     'jwt': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjEsImlhdCI6MTYzNTExMTM0MCwiZXhwIjoxNjM3NzAzMzQwfQ.Z9hoSs-EgQV4IXDn_KhppRaDIeKD4PFtAlX6TaUzP-M',
@@ -80,9 +92,7 @@ export const setUserData = (userData: any) => async (
     }
   }
   */
-  dispatch(setLoading(false))
-}
-
+/*
 export const setUserEmail = (email?: string) => async (
   dispatch: React.Dispatch<any>
 ) => {
@@ -117,9 +127,11 @@ export const setUserAvatar = (avatar: any) => {
   return { type: 'set-user-avatar', avatar } as const
 }
 
+*/
+
 export type UserActions =
   | ActionType<typeof setData>
-  | ActionType<typeof setIsLoggedIn>
+  /*| ActionType<typeof setIsLoggedIn>
   | ActionType<typeof setUserEmail>
   | ActionType<typeof setNickname>
   | ActionType<typeof setHasSeenTutorial>
@@ -127,4 +139,4 @@ export type UserActions =
   | ActionType<typeof setDarkMode>
   | ActionType<typeof setUserJwt>
   | ActionType<typeof setUserId>
-  | ActionType<typeof setUserAvatar>
+  | ActionType<typeof setUserAvatar>*/
