@@ -1,12 +1,12 @@
+import { useEffect } from 'react';
 import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
+
 import ExploreContainer from '../components/ExploreContainer';
+import Modal from '../components/Modal';
+
 import './Tab1.css';
 
-
-import { login } from '../calls/login';
-
-import Modal from '../components/Modal';
-import { useEffect } from 'react';
+import { restCall } from '../calls/axios';
 
 export interface LoginProps {
   identifier: string
@@ -14,10 +14,29 @@ export interface LoginProps {
 }
 
 const Tab1: React.FC = () => {
-console.log('test')
-  useEffect(() =>{ 
-    let data = { identifier: 'bunny@gmail.com', password: 'Qwer1234' }
-    console.log(login(data))
+
+  console.log('test')
+
+  useEffect(() =>{
+
+    console.log(restCall({
+      req: {
+        url: 'auth/local',
+        data: { 
+          identifier: 'bunny@gmail.com',
+          password: 'Qwer1234' 
+        },
+        method: 'post'
+      },
+      onSuccess: (ret: JSON)=>{
+        console.log('Estoy aquí', ret)
+      },
+      onError: (err: Error)=> {
+        console.log('estoy aquí', err)
+      }
+    
+    }))
+    
   },[])
   
   return (

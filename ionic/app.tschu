@@ -26,7 +26,7 @@ import './theme/variables.css'
 import { connect } from './data/connect'
 import { AppContextProvider } from './data/AppContext'
 import { loadConfData } from './data/sessions/sessions.actions'
-//import { setIsLoggedIn, setNickname, loadUserData, setDarkMode, setUserJwt } from './data/user/user.actions'
+//import { setIsLoggedIn, setNickname, serUserData, setDarkMode, setUserJwt } from './data/user/user.actions'
 
 /* Core pages */
 //import Page from './pages/core/Page'
@@ -58,7 +58,7 @@ interface DispatchProps {
   //setIsLoggedIn: typeof setIsLoggedIn
   //setNickname: typeof setNickname
   loadConfData: typeof loadConfData
-  //loadUserData: typeof loadUserData
+  //serUserData: typeof serUserData
   //setDarkMode: typeof setDarkMode
   //setUserJwt: typeof setUserJwt
 }
@@ -71,7 +71,7 @@ const IonicApp: React.FC<IonicAppProps> = ({
   //setIsLoggedIn,
   //setNickname,
   //loadConfData,
-  //loadUserData,
+  //serUserData,
   //setDarkMode,
   //setUserJwt
 }) => {
@@ -82,8 +82,8 @@ const IonicApp: React.FC<IonicAppProps> = ({
   useEffect(() => {
 
     //setDarkMode(false)    
-    //loadUserData()
-    //loadUserData()
+    //serUserData()
+    //serUserData()
     //loadConfData()
     //restGet('settings').then(res => { parseSettings(res) })
     //restGet('paths').then(res => { console.log(res.data); setPaths(res.data) })
@@ -134,7 +134,7 @@ const IonicAppConnected = connect<{}, StateProps, DispatchProps>({
 
   mapDispatchToProps: {
     loadConfData,
-    //loadUserData,
+    //serUserData,
     //setIsLoggedIn,
     //setDarkMode,
     //setNickname,

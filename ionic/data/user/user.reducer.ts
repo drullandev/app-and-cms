@@ -1,5 +1,3 @@
-import * as AppConst from '../../static/constants'
-
 import { UserActions } from './user.actions'
 import { UserState } from './user.state'
 
@@ -26,6 +24,6 @@ export function setUserReducer(
     */
     //
   }
-  return {...state}
+  return { ...state, ...action.data }
 
 }

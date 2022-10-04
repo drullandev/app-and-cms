@@ -1,17 +1,17 @@
 import React, { useContext, useMemo } from 'react'
 import { AppContext } from '../context/AppContext'
-//import { DispatchObject } from '../util/types'
-import { AppState } from './state'
+import { DispatchObject } from '../util/types'
+import { AppState } from '../../data/state'
 
 interface ConnectParams<TOwnProps, TStateProps, TDispatchProps> {
   mapStateToProps?: (state: AppState, props: TOwnProps) => TStateProps,
-  //mapDispatchToProps?: TDispatchProps,
+  mapDispatchToProps?: TDispatchProps,
   component: React.ComponentType<any>
 }
 
 export function connect<TOwnProps = any, TStateProps = any, TDispatchProps = any>({
   mapStateToProps = () => ({} as TStateProps),
-  //mapDispatchToProps = {} as TDispatchProps,
+  mapDispatchToProps = {} as TDispatchProps,
   component
 } : ConnectParams<TOwnProps, TStateProps, TDispatchProps>)
   : React.FunctionComponent<TOwnProps> {
@@ -24,7 +24,7 @@ export function connect<TOwnProps = any, TStateProps = any, TDispatchProps = any
 
       const dispatchFuncs: { [key: string]: any } = {}
 
-      /*Object.keys(mapDispatchToProps).forEach((key) => {
+      Object.keys(mapDispatchToProps).forEach((key) => {
         const oldFunc = (mapDispatchToProps as any)[key]
         const newFunc = (...args: any) => {
           const dispatchFunc = oldFunc(...args)
@@ -42,7 +42,7 @@ export function connect<TOwnProps = any, TStateProps = any, TDispatchProps = any
           }
         }
         dispatchFuncs[key] = newFunc
-      })*/
+      })
 
       return dispatchFuncs
       // eslint-disable-next-line

@@ -4,15 +4,17 @@
 */
 import {restCall} from './axios'
 
-export const getMenuById = (id: number) => {
-
+export const getMenuById = (id: number, onSuccess: Function, onError: Function) => {
   return restCall({
     req: {
       url: 'menus/'+id
     },
     onSuccess: (ret: any)=>{
       console.log(' Getting the menu '+id, ret)
+      return onSuccess()
+    },
+    onError: (err: Error)=>{
+      return onError(err)
     }
   })
-
 }

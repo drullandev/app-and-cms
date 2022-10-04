@@ -1,5 +1,5 @@
 import React, { createContext, useReducer } from 'react'
-import { initialState, AppState, reducers } from '../data/state'
+import { initialState, AppState, reducers } from '../../data/state'
 
 export interface AppContextState {
   state: AppState

@@ -22,10 +22,15 @@ export const removeStorage = async (key: string) => {
   await Preferences.remove({ key : key })
 }
 
-export const switchStorage = async (key: string, value: any) => {
-  if (value) {
-    await setStorage(key, value)
-  } else {
-    await removeStorage(key)
-  }  
+export const setOrRemove = async (key: string, value: any = null)=>{
+  return (value)
+    ? setStorage(key, value)
+    : removeStorage(key)
+}
+
+export const getApiValue = async (key:string) => {
+  const response = await Promise.all([
+    getStorage(key),
+  ])
+  return response[0]
 }

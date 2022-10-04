@@ -28,14 +28,14 @@ import Tab3 from './pages/Tab3';
 //import { connect } from './data/connect'
 //import { AppContextProvider } from './data/AppContext'
 //import { loadConfData } from './data/sessions/sessions.actions'
-//import { setIsLoggedIn, setNickname, loadUserData, setDarkMode, setUserJwt } from './data/user/user.actions'
+//import { setIsLoggedIn, setNickname, serUserData, setDarkMode, setUserJwt } from './data/user/user.actions'
 
 setupIonicReact();
 
 const App: React.FC = () => {
 
   useEffect(() =>{
-    console.log(getMenuById(1))
+    console.log(getMenuById(1, ()=>console.log('success menu'), ()=>console.log('ERror menu')))
   },[])
 
 

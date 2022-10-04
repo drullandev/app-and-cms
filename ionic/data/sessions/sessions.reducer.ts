@@ -10,7 +10,7 @@ export const sessionsReducer = (
   
   switch (action.type) {
     case 'set-conf-data': {
-      ret = { ...state, ...action.data }
+      return { ...state, ...action.data }
     }/*
     case 'set-conf-loading': {
       return { ...state, loading: action.isLoading }
@@ -43,6 +43,5 @@ export const sessionsReducer = (
       return { ...state, menuEnabled: action.menuEnabled }
     }*/
   }
-  return ret
 
 }

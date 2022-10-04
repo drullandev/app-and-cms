@@ -8,55 +8,44 @@ import {
 
 //import { setStorage } from '../app/storage'
 
-//import { ActionType } from '../../util/types'
+import { ActionType } from '../../src/util/types'
 import { UserState } from './user.state'
 
-export const loadUserData = () => async (dispatch: React.Dispatch<any>) => {
+
+
+export const serUserData = () => async (dispatch: React.Dispatch<any>) => {
   //dispatch(setLoading(true))
-  //const data = await getUserData()
-  //dispatch(setData(data))
+  const data = await getUserData()
+  dispatch(setData(data))
   //dispatch(setLoading(false))
 }
 
-/*export const setHasSeenTutorial = (hasSeenTutorial: boolean) => {
+export const setData = (user: any) => {
+  return { type: 'set-user-data', user } as const
+}
+
+/*
+export const setJwt = (jwt?: string) => {
+  return { type: 'set-jwt', jwt } as const
+}
+
+export const setHasSeenTutorial = (hasSeenTutorial: boolean) => {
   setHasSeenTutorialData(hasSeenTutorial)
   return { type: 'set-has-seen-tutorial', hasSeenTutorial } as const
-}*/
+}
 
 export const logoutUser = () => async (dispatch: React.Dispatch<any>) => {
-  /*await setIsLoggedInData(false)
+  await setIsLoggedInData(false)
   dispatch(setIsLoggedIn(true))
   dispatch(setNickname())
   dispatch(setUserEmail())
   dispatch(setUserJwt())
-  dispatch(setUserId())*/
+  dispatch(setUserId())
 }
 
-
-/*
-export const setIsLoggedIn = (loggedIn: boolean) => async (
-  dispatch: React.Dispatch<any>
-) => {
+export const setIsLoggedIn = (loggedIn: boolean) => async ( dispatch: React.Dispatch<any> ) => {
   await setIsLoggedInData(loggedIn)
   return { type: 'set-is-loggedin', loggedIn } as const
-}
-
-
-
-export const setUserData = (userData: any) => async (
-  dispatch: React.Dispatch<any>
-) => {
-
-
-  //dispatch(setLoading(true))
-
-  //dispatch(setNickname(userData.username))
-  //dispatch(setUserEmail(userData.email))
-
-  dispatch(setData(userData))
-  //setUserData(userData)
-
-  //dispatch(setLoading(false))
 }
 
 */
@@ -110,10 +99,6 @@ export const setDarkMode = (userDarkMode: boolean) => {
   return { type: 'set-user-darkmode', userDarkMode } as const
 }
 
-export const setUserJwt = (userJwt?: string) => {
-  return { type: 'set-userJwt', userJwt } as const
-}
-
 export const setUserId = (userId?: number) => {
   return { type: 'set-user-id', userId } as const
 }
@@ -125,7 +110,7 @@ export const setUserAvatar = (avatar: any) => {
 */
 
 export type UserActions = null
-  //| ActionType<typeof setData>
+  | ActionType<typeof serUserData>
   /*| ActionType<typeof setIsLoggedIn>
   | ActionType<typeof setUserEmail>
   | ActionType<typeof setNickname>

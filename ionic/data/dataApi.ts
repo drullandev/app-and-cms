@@ -1,10 +1,10 @@
-import * as Stored from '../static/stored'
-import { Home, Session } from '../models/Schedule'
+import * as Stored from '../src/static/stored'
+//import { Home, Session } from '../models/Schedule'
 
 //import { Speaker } from '../models/Speaker'
 //import { Location } from '../models/Location'
 
-import { getStorage, setStorage, removeStorage } from '../clases/storage'
+import { getStorage, setStorage, removeStorage, setOrRemove } from '../src/clases/storage'
 //import { restGet } from './utils/rest/rest.utils'
 
 //----------------------------------------------------------------
@@ -41,50 +41,29 @@ export const getUserExtra = async () => {
   }*/
 }
 
-export const getApiValue = async (key:string) => {
-  const response = await Promise.all([
-    getStorage(key),
-  ])
-  const value = response[0]
-  return value
-}
-
 export const getUserData = async () => {
 
-  /*{
-    "jwt": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjY0NTY4NjA1LCJleHAiOjE2NjcxNjA2MDV9.lAUwTwd7HlG1i5gF7fQbjRnqsz6vzggUCPrFjx-OqpI",
-    "user": {
-        "id": 1,
-        "username": "White Bunny",
-        "email": "bunny@gmail.com",
-        "provider": "local",
-        "confirmed": true,
-        "blocked": false,
-        "createdAt": "2022-09-30T20:02:59.863Z",
-        "updatedAt": "2022-09-30T20:02:59.863Z"
-    }
-  }*/
-  
   const response = await Promise.all([
-    //
+    // Main data
     getStorage(Stored.USERNAME),
     getStorage(Stored.EMAIL),
     getStorage(Stored.PROVIDER),
     getStorage(Stored.CONFIRMED),
     getStorage(Stored.BLOCKED),
-    
+    getStorage(Stored.CREATED_AT),
+    getStorage(Stored.UPDATED_AT),
     //getStorage(Stored.IS_LOGGED_IN),
     //getStorage(Stored.HAS_SEEN_TUTORIAL),
     //getStorage(Stored.USER_DARK_MODE),    
   ])
 
-  //
   const username        = response[0] || undefined
   const email           = response[1] || undefined
-  const provider        = response[2] || undefined
-  const confirmed       = response[3] || undefined
-  const blocked         = response[4] || undefined
-  //
+  const provider        = response[2] || 'local'
+  const confirmed       = response[3] || false
+  const blocked         = response[4] || true
+  const createdAt       = response[5] || ''
+  const updatedAt       = response[6] || ''
   //const isLoggedIn      = response[4] === 'true'
   //const hasSeenTutorial = response[5] === 'true'
   //const userDarkMode    = response[6] === 'false'
@@ -93,32 +72,24 @@ export const getUserData = async () => {
     username,
     email,
     provider,
-    confirmed
-  }/* {
-    nickname,
-    useremail,
-    userJwt,
-    userId,
+    confirmed,
+    blocked,
+    createdAt,
+    updatedAt
+  /*
     isLoggedIn,
     hasSeenTutorial,
     userDarkMode,
-  }*/
+  */
+  }
 
 }
-
-/*function parseSessions(schedule: Home) {
-  const sessions: Session[] = []
-  schedule.groups.forEach((g) => {
-    g.sessions.forEach((s) => sessions.push(s))
-  })
-  return sessions
-}*/
 
 export const setUsername = async (username?: string) => {
   setOrRemove(Stored.USERNAME, username)
 }
 
-export const setEmailData = async (email?: string) => {
+export const setEmail = async (email?: string) => {
   setOrRemove(Stored.EMAIL, email)
 }
 
@@ -131,9 +102,9 @@ export const setLoading = async (loading: boolean) => {
   setStorage(Stored.IS_LOADING, loading)
 }
 
-/*export const setHasSeenTutorialData = async (hasSeenTutorial: boolean) => {
+export const setHasSeenTutorialData = async (hasSeenTutorial: boolean) => {
   setStorage(Stored.HAS_SEEN_TUTORIAL, hasSeenTutorial)
-}*/
+}
 
 export const setUserJwtData = async (userJwt?: string) => {
   setOrRemove(Stored.USERJWT, userJwt)
@@ -143,9 +114,3 @@ export const setUserIdData = async (userId?: string) => {
   setOrRemove(Stored.USERID, userId)
 }
 */
-
-export const setOrRemove = async (key: string, value: any = null)=>{
-  return (value)
-    ? setStorage(key, value)
-    : removeStorage(key)
-}
