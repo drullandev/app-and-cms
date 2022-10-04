@@ -1,0 +1,57 @@
+/*
+ * App Global CSS
+ * ----------------------------------------------------------------------------
+ * Put style rules here that you want to apply globally. These styles are for
+ * the entire app and not just one component. Additionally, this file can be
+ * used as an entry point to import other CSS/Sass files to be included in the
+ * output CSS.
+ * For more information on global stylesheets, visit the documentation:
+ * https://ionicframework.com/docs/layout/global-stylesheets
+ */
+
+/* Core CSS required for Ionic components to work properly */
+@import "~@ionic/core/css/core.css";
+
+/* Basic CSS for apps built with Ionic */
+@import "~@ionic/core/css/normalize.css";
+@import "~@ionic/core/css/structure.css";
+@import "~@ionic/core/css/typography.css";
+
+/* Optional CSS utils that can be commented out */
+@import "~@ionic/core/css/padding.css";
+@import "~@ionic/core/css/float-elements.css";
+@import "~@ionic/core/css/text-alignment.css";
+@import "~@ionic/core/css/text-transformation.css";
+@import "~@ionic/core/css/flex-utils.css";
+
+
+/*
+ * Theme CSS
+ * ----------------------------------------------------------------------------
+ * Imports theme files that can be used to theme an application.
+ */
+
+@import "../themes/default.css";
+@import "../themes/dark.css";
+
+
+/*
+ * Global CSS
+ * ----------------------------------------------------------------------------
+ * CSS to apply throughout the application.
+ */
+
+.component-content {
+  --background: var(--ion-color-step-50, #f2f2f7);
+}
+
+/*
+ * When placed inside of an element with a background/border color
+ * the backdrop-filter is blurring it into the header in Safari
+ * https://bugs.webkit.org/show_bug.cgi?id=168418
+ */
+
+_::-webkit-full-page-media, _:future ion-header .header-background,
+:root .safari_only ion-header .header-background {
+  backdrop-filter: none !important;
+}

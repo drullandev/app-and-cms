@@ -1,0 +1,7 @@
+{
+  "name": "strapionic",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react"
+}
