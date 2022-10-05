@@ -21,7 +21,6 @@
     "strapi-google-auth": "^0.1.2",
     "strapi-plugin-custom-links": "^0.2.1",
     "strapi-plugin-ezforms": "^0.1.2",
-    "strapi-plugin-menus": "^1.0.2",
     "strapi-plugin-navigation": "^2.2.2",
     "yarn": "^1.22.19"
   },

@@ -1,0 +1,25 @@
+{
+  "kind": "collectionType",
+  "collectionName": "ionicons",
+  "info": {
+    "singularName": "ionicon",
+    "pluralName": "ionicons",
+    "displayName": "Ionicon",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "inner_tag": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "outter_tag": {
+      "type": "string"
+    }
+  }
+}
