@@ -1,0 +1,13 @@
+{
+  "collectionName": "components_row_type_sections",
+  "info": {
+    "displayName": "section",
+    "icon": "align-justify"
+  },
+  "options": {},
+  "attributes": {
+    "content": {
+      "type": "richtext"
+    }
+  }
+}

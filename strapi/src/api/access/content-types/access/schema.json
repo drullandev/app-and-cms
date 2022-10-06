@@ -1,0 +1,36 @@
+{
+  "kind": "collectionType",
+  "collectionName": "accesses",
+  "info": {
+    "singularName": "access",
+    "pluralName": "accesses",
+    "displayName": "Access",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "name"
+    },
+    "url": {
+      "type": "string",
+      "unique": true,
+      "required": true
+    },
+    "default_ionicon": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::ionicon.ionicon"
+    },
+    "label": {
+      "type": "string"
+    }
+  }
+}

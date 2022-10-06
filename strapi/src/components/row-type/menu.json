@@ -11,7 +11,7 @@
       "type": "string",
       "required": true
     },
-    "slug": {
+    "url": {
       "type": "string",
       "required": true
     },
@@ -31,6 +31,14 @@
       "type": "relation",
       "relation": "oneToMany",
       "target": "api::menu.menu"
+    },
+    "extra": {
+      "type": "json"
+    },
+    "slug": {
+      "type": "string",
+      "unique": true,
+      "required": true
     }
   }
 }

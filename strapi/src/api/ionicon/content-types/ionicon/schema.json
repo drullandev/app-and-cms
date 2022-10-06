@@ -12,14 +12,19 @@
   },
   "pluginOptions": {},
   "attributes": {
-    "inner_tag": {
-      "type": "string"
-    },
     "name": {
-      "type": "string"
+      "type": "string",
+      "required": true,
+      "unique": true
     },
-    "outter_tag": {
-      "type": "string"
+    "inner_key": {
+      "type": "string",
+      "unique": true,
+      "required": true
+    },
+    "outter_key": {
+      "type": "string",
+      "unique": true
     }
   }
 }

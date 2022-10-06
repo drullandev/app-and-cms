@@ -1,0 +1,31 @@
+{
+  "kind": "collectionType",
+  "collectionName": "modules",
+  "info": {
+    "singularName": "module",
+    "pluralName": "modules",
+    "displayName": "Module",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "unique": true,
+      "required": true
+    },
+    "tag": {
+      "type": "string"
+    },
+    "extra": {
+      "type": "json"
+    },
+    "description": {
+      "type": "richtext",
+      "private": true
+    }
+  }
+}

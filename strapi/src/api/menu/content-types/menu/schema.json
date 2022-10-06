@@ -22,7 +22,10 @@
         "i18n": {
           "localized": true
         }
-      }
+      },
+      "required": true,
+      "unique": true,
+      "private": true
     },
     "slug": {
       "type": "uid",
@@ -42,7 +45,8 @@
     "content": {
       "type": "dynamiczone",
       "components": [
-        "row-type.menu"
+        "row-type.menu",
+        "row-type.section"
       ],
       "pluginOptions": {
         "i18n": {
@@ -57,6 +61,19 @@
         }
       },
       "type": "string"
+    },
+    "extra": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "json"
+    },
+    "access": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::access.access"
     }
   }
 }
