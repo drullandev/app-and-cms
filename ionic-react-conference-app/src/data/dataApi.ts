@@ -11,16 +11,20 @@ const locationsUrl = '/assets/data/locations.json';
 const HAS_LOGGED_IN = 'hasLoggedIn';
 const HAS_SEEN_TUTORIAL = 'hasSeenTutorial';
 const USERNAME = 'username';
+const JWT = 'jwt'
 
 export const getConfData = async () => {
+
   const response = await Promise.all([
     fetch(dataUrl),
     fetch(locationsUrl)]);
+
   const responseData = await response[0].json();
   const schedule = responseData.schedule[0] as Schedule;
   const sessions = parseSessions(schedule);
   const speakers = responseData.speakers as Speaker[];
   const locations = await response[1].json() as Location[];
+
   const allTracks = sessions
     .reduce((all, session) => all.concat(session.tracks), [] as string[])
     .filter((trackName, index, array) => array.indexOf(trackName) === index)
@@ -34,23 +38,34 @@ export const getConfData = async () => {
     allTracks,
     filteredTracks: [...allTracks]
   }
+
   return data;
+
 }
 
 export const getUserData = async () => {
+
   const response = await Promise.all([
     Storage.get({ key: HAS_LOGGED_IN }),
     Storage.get({ key: HAS_SEEN_TUTORIAL }),
-    Storage.get({ key: USERNAME })]);
+    Storage.get({ key: USERNAME }),
+    Storage.get({ key: JWT }),
+  ]);
+
   const isLoggedin = await response[0].value === 'true';
   const hasSeenTutorial = await response[1].value === 'true';
   const username = await response[2].value || undefined;
+  const jwt = await response[3].value || undefined;
+
   const data = {
     isLoggedin,
     hasSeenTutorial,
-    username
+    username,
+    jwt
   }
+
   return data;
+
 }
 
 export const setIsLoggedInData = async (isLoggedIn: boolean) => {
@@ -66,6 +81,14 @@ export const setUsernameData = async (username?: string) => {
     await Storage.remove({ key: USERNAME });
   } else {
     await Storage.set({ key: USERNAME, value: username });
+  }
+}
+
+export const setJwtData = async (jwt?: string) => {
+  if (!jwt) {
+    await Storage.remove({ key: JWT });
+  } else {
+    await Storage.set({ key: JWT, value: jwt });
   }
 }
 

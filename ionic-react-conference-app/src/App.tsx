@@ -66,23 +66,7 @@ const IonicApp: React.FC<IonicAppProps> = ({ darkMode, schedule, setIsLoggedIn, 
 
   useEffect(() => {
 
-    console.log(restCall({
-      req: {
-        url: 'auth/local',
-        data: { 
-          identifier: 'bunny@gmail.com',
-          password: 'Qwer1234' 
-        },
-        method: 'post'
-      },
-      onSuccess: (ret: JSON)=>{
-        console.log('Estoy aquí', ret)
-      },
-      onError: (err: Error)=> {
-        console.log('estoy aquí', err)
-      }
-    
-    }))
+
 
     loadUserData();
     loadConfData();

@@ -1,4 +1,4 @@
-import { getUserData, setIsLoggedInData, setUsernameData, setHasSeenTutorialData } from '../dataApi';
+import { getUserData, setIsLoggedInData, setUsernameData, setHasSeenTutorialData, setJwtData } from '../dataApi';
 import { ActionType } from '../../util/types';
 import { UserState } from './user.state';
 
@@ -53,6 +53,13 @@ export const setDarkMode = (darkMode: boolean) => ({
   type: 'set-dark-mode',
   darkMode
 } as const);
+
+export const setJwt = (jwt?: string) => async (dispatch: React.Dispatch<any>) => {
+  await setJwtData(jwt);
+  return ({
+    type: 'set-jwt',jwt
+  } as const);
+}
 
 export type UserActions =
   | ActionType<typeof setLoading>

@@ -4,6 +4,7 @@ import './Login.scss';
 import { setIsLoggedIn, setUsername } from '../data/user/user.actions';
 import { connect } from '../data/connect';
 import { RouteComponentProps } from 'react-router';
+import { restCallAsync } from '../calls/axios';
 
 interface OwnProps extends RouteComponentProps {}
 
@@ -14,17 +15,31 @@ interface DispatchProps {
 
 interface LoginProps extends OwnProps,  DispatchProps { }
 
-const Login: React.FC<LoginProps> = ({setIsLoggedIn, history, setUsername: setUsernameAction}) => {
+export interface AuthProps {
+  user: {
+    username?: string
+  },
+  jwt?: string
+}
+
+const Login: React.FC<LoginProps> = ({
+  setIsLoggedIn, 
+  history, 
+  setUsername: setUsernameAction
+}) => {
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+
   const [formSubmitted, setFormSubmitted] = useState(false);
   const [usernameError, setUsernameError] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
 
   const login = async (e: React.FormEvent) => {
+
     e.preventDefault();
     setFormSubmitted(true);
+    
     if(!username) {
       setUsernameError(true);
     }
@@ -33,9 +48,29 @@ const Login: React.FC<LoginProps> = ({setIsLoggedIn, history, setUsername: setUs
     }
 
     if(username && password) {
-      await setIsLoggedIn(true);
-      await setUsernameAction(username);
+
+      await restCallAsync({
+        req: {
+          url: 'auth/local',
+          data: { 
+            identifier: 'bunny@gmail.com',
+            password: 'Qwer1234' 
+          },
+          method: 'post'
+        },
+        onSuccess: (ret: AuthProps)=>{
+          console.log('Estoy aquí', ret)
+          setIsLoggedIn(true);
+          setUsernameAction(ret.user.username)
+        },
+        onError: (err: Error)=> {
+          console.log('estoy aquí', err)
+        }
+      
+      })
+
       history.push('/tabs/schedule', {direction: 'none'});
+
     }
   };
 
