@@ -36,6 +36,7 @@ import Tutorial from './pages/Tutorial';
 import HomeOrTutorial from './components/HomeOrTutorial';
 import { Schedule } from "./models/Schedule";
 import RedirectToLogin from './components/RedirectToLogin';
+import { restCall } from './calls/axios';
 
 setupIonicReact();
 
@@ -64,6 +65,25 @@ interface IonicAppProps extends StateProps, DispatchProps { }
 const IonicApp: React.FC<IonicAppProps> = ({ darkMode, schedule, setIsLoggedIn, setUsername, loadConfData, loadUserData }) => {
 
   useEffect(() => {
+
+    console.log(restCall({
+      req: {
+        url: 'auth/local',
+        data: { 
+          identifier: 'bunny@gmail.com',
+          password: 'Qwer1234' 
+        },
+        method: 'post'
+      },
+      onSuccess: (ret: JSON)=>{
+        console.log('Estoy aquí', ret)
+      },
+      onError: (err: Error)=> {
+        console.log('estoy aquí', err)
+      }
+    
+    }))
+
     loadUserData();
     loadConfData();
     // eslint-disable-next-line

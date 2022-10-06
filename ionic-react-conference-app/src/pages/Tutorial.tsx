@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { IonContent, IonPage, IonHeader, IonToolbar, IonButtons, IonButton, IonIcon, useIonViewWillEnter } from '@ionic/react';
-import { Swiper, SwiperSlide } from 'swiper/react/swiper-react.js';
+import { Swiper, SwiperSlide } from 'swiper/react';
 import { Swiper as SwiperCore } from 'swiper';
 import { arrowForward } from 'ionicons/icons';
 import { setMenuEnabled } from '../data/sessions/sessions.actions';
