@@ -12,6 +12,7 @@ const HAS_LOGGED_IN = 'hasLoggedIn';
 const HAS_SEEN_TUTORIAL = 'hasSeenTutorial';
 const USERNAME = 'username';
 const JWT = 'jwt'
+const BLOCKED = 'blocked'
 
 export const getConfData = async () => {
 
@@ -50,18 +51,21 @@ export const getUserData = async () => {
     Storage.get({ key: HAS_SEEN_TUTORIAL }),
     Storage.get({ key: USERNAME }),
     Storage.get({ key: JWT }),
+    Storage.get({ key: BLOCKED }),
   ]);
 
   const isLoggedin = await response[0].value === 'true';
   const hasSeenTutorial = await response[1].value === 'true';
   const username = await response[2].value || undefined;
   const jwt = await response[3].value || undefined;
+  const blocked = await response[4].value === 'true';
 
   const data = {
     isLoggedin,
     hasSeenTutorial,
     username,
-    jwt
+    jwt,
+    blocked
   }
 
   return data;
@@ -89,6 +93,14 @@ export const setJwtData = async (jwt?: string) => {
     await Storage.remove({ key: JWT });
   } else {
     await Storage.set({ key: JWT, value: jwt });
+  }
+}
+
+export const setBlockedData = async (blocked?: boolean) => {
+  if (!blocked) {
+    await Storage.remove({ key: BLOCKED });
+  } else {
+    await Storage.set({ key: BLOCKED, value: JSON.stringify(blocked) });
   }
 }
 

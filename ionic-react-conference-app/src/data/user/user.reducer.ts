@@ -15,5 +15,9 @@ export function userReducer(state: UserState, action: UserActions): UserState {
       return { ...state, darkMode: action.darkMode };
     case 'set-is-loggedin':
       return { ...state, isLoggedin: action.loggedIn };
+    case 'set-jwt':
+      return { ...state, jwt: action.jwt };
+    case 'set-blocked':
+      return { ...state, blocked: action.blocked };
   }
 }

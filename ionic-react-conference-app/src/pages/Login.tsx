@@ -1,50 +1,55 @@
-import React, { useState } from 'react';
-import { IonHeader, IonToolbar, IonTitle, IonContent, IonPage, IonButtons, IonMenuButton, IonRow, IonCol, IonButton, IonList, IonItem, IonLabel, IonInput, IonText } from '@ionic/react';
-import './Login.scss';
-import { setIsLoggedIn, setUsername } from '../data/user/user.actions';
-import { connect } from '../data/connect';
-import { RouteComponentProps } from 'react-router';
-import { restCallAsync } from '../calls/axios';
+import React, { useState } from 'react'
+import { IonHeader, IonToolbar, IonTitle, IonContent, IonPage, IonButtons, IonMenuButton, IonRow, IonCol, IonButton, IonList, IonItem, IonLabel, IonInput, IonText } from '@ionic/react'
+import './Login.scss'
+import { setIsLoggedIn, setUsername, setJwt, setBlocked } from '../data/user/user.actions'
+import { connect } from '../data/connect'
+import { RouteComponentProps } from 'react-router'
+import { restCallAsync } from '../calls/axios'
 
 interface OwnProps extends RouteComponentProps {}
 
 interface DispatchProps {
-  setIsLoggedIn: typeof setIsLoggedIn;
-  setUsername: typeof setUsername;
+  setIsLoggedIn: typeof setIsLoggedIn
+  setUsername: typeof setUsername
+  setJwt: typeof setJwt
+  setBlocked: typeof setBlocked
 }
 
 interface LoginProps extends OwnProps,  DispatchProps { }
 
 export interface AuthProps {
   user: {
-    username?: string
+    username?: string,
+    blocked?: boolean
   },
   jwt?: string
 }
 
 const Login: React.FC<LoginProps> = ({
-  setIsLoggedIn, 
   history, 
-  setUsername: setUsernameAction
+  setIsLoggedIn, 
+  setUsername: setUsernameAction,
+  setJwt: setJwtAction,
+  setBlocked: setBlockedAction
 }) => {
 
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
 
-  const [formSubmitted, setFormSubmitted] = useState(false);
-  const [usernameError, setUsernameError] = useState(false);
-  const [passwordError, setPasswordError] = useState(false);
+  const [formSubmitted, setFormSubmitted] = useState(false)
+  const [usernameError, setUsernameError] = useState(false)
+  const [passwordError, setPasswordError] = useState(false)
 
   const login = async (e: React.FormEvent) => {
 
-    e.preventDefault();
-    setFormSubmitted(true);
+    e.preventDefault()
+    setFormSubmitted(true)
     
     if(!username) {
-      setUsernameError(true);
+      setUsernameError(true)
     }
     if(!password) {
-      setPasswordError(true);
+      setPasswordError(true)
     }
 
     if(username && password) {
@@ -60,8 +65,10 @@ const Login: React.FC<LoginProps> = ({
         },
         onSuccess: (ret: AuthProps)=>{
           console.log('Estoy aquí', ret)
-          setIsLoggedIn(true);
+          setIsLoggedIn(true)
           setUsernameAction(ret.user.username)
+          setBlockedAction(ret.user.blocked)
+          setJwtAction(ret.jwt)
         },
         onError: (err: Error)=> {
           console.log('estoy aquí', err)
@@ -69,10 +76,10 @@ const Login: React.FC<LoginProps> = ({
       
       })
 
-      history.push('/tabs/schedule', {direction: 'none'});
+      history.push('/tabs/schedule', {direction: 'none'})
 
     }
-  };
+  }
 
   return (
     <IonPage id="login-page">
@@ -131,13 +138,15 @@ const Login: React.FC<LoginProps> = ({
       </IonContent>
 
     </IonPage>
-  );
-};
+  )
+}
 
 export default connect<OwnProps, {}, DispatchProps>({
   mapDispatchToProps: {
     setIsLoggedIn,
-    setUsername
+    setUsername,
+    setJwt,
+    setBlocked
   },
   component: Login
 })

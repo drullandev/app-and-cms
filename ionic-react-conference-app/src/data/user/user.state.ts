@@ -5,4 +5,5 @@ export interface UserState {
   hasSeenTutorial: boolean
   loading: boolean
   jwt?: string
+  blocked?: boolean
 }
