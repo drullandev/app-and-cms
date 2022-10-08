@@ -19,5 +19,17 @@ export function userReducer(state: UserState, action: UserActions): UserState {
       return { ...state, jwt: action.jwt };
     case 'set-blocked':
       return { ...state, blocked: action.blocked };
+    case 'set-confirmed':
+      return { ...state, confirmed: action.confirmed}
+    case 'set-created-at':
+      return { ...state, createdAt: action.createdAt}
+    case 'set-updated-at':
+      return { ...state, updatedAt: action.updatedAt}
+    case 'set-email':
+      return { ...state, email: action.email}
+    //case 'set-provider':
+    //  return { ...state, provider: action.provider}
+    //case 'set-id':
+    //  return { ...state, id: action.id}
   }
 }

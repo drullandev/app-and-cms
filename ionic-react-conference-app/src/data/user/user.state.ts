@@ -6,4 +6,10 @@ export interface UserState {
   loading: boolean
   jwt?: string
   blocked?: boolean
+  confirmed?: boolean
+  createdAt?: string // Convert the correct type of data required here
+  updatedAt?: string // Convert the correct type of data required here
+  email?: string
+  //provider?: string
+  //id?: number
 }
