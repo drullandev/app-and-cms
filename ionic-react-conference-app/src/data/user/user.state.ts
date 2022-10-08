@@ -10,6 +10,6 @@ export interface UserState {
   createdAt?: string // Convert the correct type of data required here
   updatedAt?: string // Convert the correct type of data required here
   email?: string
-  //provider?: string
-  //id?: number
+  provider?: string
+  id?: string
 }

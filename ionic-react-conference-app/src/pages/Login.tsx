@@ -1,10 +1,39 @@
 import React, { useState } from 'react'
-import { IonHeader, IonToolbar, IonTitle, IonContent, IonPage, IonButtons, IonMenuButton, IonRow, IonCol, IonButton, IonList, IonItem, IonLabel, IonInput, IonText } from '@ionic/react'
-import './Login.scss'
-import { setIsLoggedIn, setUsername, setJwt, setBlocked } from '../data/user/user.actions'
+import {
+  IonHeader,
+  IonToolbar,
+  IonTitle,
+  IonContent,
+  IonPage,
+  IonButtons,
+  IonMenuButton,
+  IonRow,
+  IonCol,
+  IonButton,
+  IonList,
+  IonItem,
+  IonLabel,
+  IonInput,
+  IonText
+} from '@ionic/react'
+import {
+  setIsLoggedIn,
+  setUsername,
+  setJwt,
+  setBlocked,
+  setConfirmed,
+  setEmail,
+  setCreatedAt,
+  setUpdatedAt,
+  setProvider,
+  setId
+} from '../data/user/user.actions'
+
 import { connect } from '../data/connect'
 import { RouteComponentProps } from 'react-router'
 import { restCallAsync } from '../calls/axios'
+
+import './Login.scss'
 
 interface OwnProps extends RouteComponentProps {}
 
@@ -13,14 +42,26 @@ interface DispatchProps {
   setUsername: typeof setUsername
   setJwt: typeof setJwt
   setBlocked: typeof setBlocked
+  setConfirmed: typeof setConfirmed
+  setEmail: typeof setEmail
+  setCreatedAt: typeof setCreatedAt
+  setUpdatedAt: typeof setUpdatedAt
+  setProvider: typeof setProvider
+  setId: typeof setId
 }
 
 interface LoginProps extends OwnProps,  DispatchProps { }
 
-export interface AuthProps {
+export interface StrapiAuthProps {
   user: {
-    username?: string,
+    username?: string
     blocked?: boolean
+    confirmed?: boolean
+    email?: string
+    createdAt?: string
+    updatedAt?: string
+    provider?: string
+    id?: string
   },
   jwt?: string
 }
@@ -30,7 +71,13 @@ const Login: React.FC<LoginProps> = ({
   setIsLoggedIn, 
   setUsername: setUsernameAction,
   setJwt: setJwtAction,
-  setBlocked: setBlockedAction
+  setBlocked: setBlockedAction,
+  setConfirmed: setConfirmedAction,
+  setEmail: setEmailAction,
+  setCreatedAt: setCreatedAtAction,
+  setUpdatedAt: setUpdatedAtAction,
+  setProvider: setProviderAction,
+  setId: setIdAction
 }) => {
 
   const [username, setUsername] = useState('')
@@ -39,6 +86,23 @@ const Login: React.FC<LoginProps> = ({
   const [formSubmitted, setFormSubmitted] = useState(false)
   const [usernameError, setUsernameError] = useState(false)
   const [passwordError, setPasswordError] = useState(false)
+
+  const tmpLoginData = {
+
+  }
+
+  const onLoginSuccess = (ret: StrapiAuthProps) => {
+    setIsLoggedIn(true)
+    setUsernameAction(ret.user.username)
+    setBlockedAction(ret.user.blocked)
+    setConfirmedAction(ret.user.confirmed)
+    setCreatedAtAction(ret.user.createdAt)
+    setUpdatedAtAction(ret.user.updatedAt)
+    setProviderAction(ret.user.provider)
+    setEmailAction(ret.user.email)
+    setIdAction(ret.user.id)
+    setJwtAction(ret.jwt)
+  }
 
   const login = async (e: React.FormEvent) => {
 
@@ -57,18 +121,16 @@ const Login: React.FC<LoginProps> = ({
       await restCallAsync({
         req: {
           url: 'auth/local',
-          data: { 
-            identifier: 'bunny@gmail.com',
-            password: 'Qwer1234' 
-          },
+          data:
+            { 
+              identifier: 'bunny@gmail.com',
+              password: 'Qwer1234' 
+            }          
+          ,
           method: 'post'
         },
-        onSuccess: (ret: AuthProps)=>{
-          console.log('Estoy aquí', ret)
-          setIsLoggedIn(true)
-          setUsernameAction(ret.user.username)
-          setBlockedAction(ret.user.blocked)
-          setJwtAction(ret.jwt)
+        onSuccess: (ret: StrapiAuthProps)=>{
+          onLoginSuccess(ret)
         },
         onError: (err: Error)=> {
           console.log('estoy aquí', err)
@@ -146,7 +208,13 @@ export default connect<OwnProps, {}, DispatchProps>({
     setIsLoggedIn,
     setUsername,
     setJwt,
-    setBlocked
+    setBlocked, 
+    setConfirmed,
+    setEmail,
+    setCreatedAt,
+    setUpdatedAt,
+    setProvider,
+    setId
   },
   component: Login
 })

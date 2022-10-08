@@ -63,8 +63,8 @@ export const getUserData = async () => {
     Storage.get({ key: CREATED_AT }),
     Storage.get({ key: UPDATED_AT }),
     Storage.get({ key: EMAIL }),
-    //Storage.get({ key: PROVIDER }),
-    //Storage.get({ key: ID }),
+    Storage.get({ key: PROVIDER }),
+    Storage.get({ key: ID }),
   ]);
 
   const isLoggedin = await response[0].value === 'true';
@@ -76,8 +76,8 @@ export const getUserData = async () => {
   const created_at = await response[6].value || undefined;
   const updated_at = await response[7].value || undefined;
   const email = await response[8].value || undefined;
-  //const provider = await response[9].value === 'true';
-  //const id = await response[10].value || '0';
+  const provider = await response[9].value || undefined;
+  const id = await response[10].value || '0';
 
   const data = {
     isLoggedin,
@@ -89,8 +89,8 @@ export const getUserData = async () => {
     created_at,
     updated_at,
     email,
-    //provider,    
-    //id
+    provider,    
+    id
   }
 
   return data;
@@ -161,19 +161,19 @@ export const setEmailData = async (email?: string) => {
   }
 }
 
-export const setIdData = async (id?: number) => {
-  if (!id) {
+export const setIdData = async (id2?: string) => {
+  if (!id2) {
     await Storage.remove({ key: ID });
   } else {
-    await Storage.set({ key: ID, value: JSON.stringify(id) });
+    await Storage.set({ key: ID, value: JSON.stringify(id2) });
   }
 }
 
-export const setProviderData = async (provider?: string) => {
-  if (!provider) {
+export const setProviderData = async (provider2?: string) => {
+  if (!provider2) {
     await Storage.remove({ key: PROVIDER });
   } else {
-    await Storage.set({ key: PROVIDER, value: provider });
+    await Storage.set({ key: PROVIDER, value: provider2 });
   }
 }
 
