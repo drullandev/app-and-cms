@@ -14,70 +14,62 @@ import {
   IonItem,
   IonLabel,
   IonInput,
-  IonText
+  IonText,
+  useIonToast,
 } from '@ionic/react'
+
 import {
-  setIsLoggedIn,
-  setUsername,
+  setId,
   setJwt,
+  setUsername,
+  setEmail,
   setBlocked,
   setConfirmed,
-  setEmail,
   setCreatedAt,
   setUpdatedAt,
   setProvider,
-  setId
+  setIsLoggedIn,
 } from '../data/user/user.actions'
 
 import { connect } from '../data/connect'
 import { RouteComponentProps } from 'react-router'
-import { restCallAsync } from '../calls/axios'
+
+import { StrapiAuthProps } from '../classes/strapi/models/StrapiAuthProps'
+import { sendLoginForm } from '../classes/strapi/login'
 
 import './Login.scss'
 
+interface DispatchProps {
+  // Common
+  setId:          typeof setId
+  setJwt:         typeof setJwt
+  setUsername:    typeof setUsername
+  setEmail:       typeof setEmail
+  setBlocked:     typeof setBlocked
+  setConfirmed:   typeof setConfirmed
+  setCreatedAt:   typeof setCreatedAt
+  setUpdatedAt:   typeof setUpdatedAt
+  setProvider:    typeof setProvider
+  // Extra
+  setIsLoggedIn:  typeof setIsLoggedIn
+}
+
 interface OwnProps extends RouteComponentProps {}
 
-interface DispatchProps {
-  setIsLoggedIn: typeof setIsLoggedIn
-  setUsername: typeof setUsername
-  setJwt: typeof setJwt
-  setBlocked: typeof setBlocked
-  setConfirmed: typeof setConfirmed
-  setEmail: typeof setEmail
-  setCreatedAt: typeof setCreatedAt
-  setUpdatedAt: typeof setUpdatedAt
-  setProvider: typeof setProvider
-  setId: typeof setId
-}
-
-interface LoginProps extends OwnProps,  DispatchProps { }
-
-export interface StrapiAuthProps {
-  user: {
-    username?: string
-    blocked?: boolean
-    confirmed?: boolean
-    email?: string
-    createdAt?: string
-    updatedAt?: string
-    provider?: string
-    id?: string
-  },
-  jwt?: string
-}
+interface LoginProps extends OwnProps, DispatchProps { }
 
 const Login: React.FC<LoginProps> = ({
   history, 
-  setIsLoggedIn, 
-  setUsername: setUsernameAction,
-  setJwt: setJwtAction,
-  setBlocked: setBlockedAction,
+  setId:        setIdAction,
+  setJwt:       setJwtAction,
+  setUsername:  setUsernameAction,
+  setEmail:     setEmailAction,
+  setBlocked:   setBlockedAction,
   setConfirmed: setConfirmedAction,
-  setEmail: setEmailAction,
   setCreatedAt: setCreatedAtAction,
   setUpdatedAt: setUpdatedAtAction,
-  setProvider: setProviderAction,
-  setId: setIdAction
+  setProvider:  setProviderAction,
+  setIsLoggedIn, 
 }) => {
 
   const [username, setUsername] = useState('')
@@ -87,24 +79,9 @@ const Login: React.FC<LoginProps> = ({
   const [usernameError, setUsernameError] = useState(false)
   const [passwordError, setPasswordError] = useState(false)
 
-  const tmpLoginData = {
+  const [setToast, dismissToast] = useIonToast()
 
-  }
-
-  const onLoginSuccess = (ret: StrapiAuthProps) => {
-    setIsLoggedIn(true)
-    setUsernameAction(ret.user.username)
-    setBlockedAction(ret.user.blocked)
-    setConfirmedAction(ret.user.confirmed)
-    setCreatedAtAction(ret.user.createdAt)
-    setUpdatedAtAction(ret.user.updatedAt)
-    setProviderAction(ret.user.provider)
-    setEmailAction(ret.user.email)
-    setIdAction(ret.user.id)
-    setJwtAction(ret.jwt)
-  }
-
-  const login = async (e: React.FormEvent) => {
+  const submitLogin = async (e: React.FormEvent) => {
 
     e.preventDefault()
     setFormSubmitted(true)
@@ -118,29 +95,41 @@ const Login: React.FC<LoginProps> = ({
 
     if(username && password) {
 
-      await restCallAsync({
-        req: {
-          url: 'auth/local',
-          data:
-            { 
-              identifier: 'bunny@gmail.com',
-              password: 'Qwer1234' 
-            }          
-          ,
-          method: 'post'
+      const onLoginSuccess = async (ret: StrapiAuthProps) => {
+        setIdAction(ret.user.id)
+        setJwtAction(ret.jwt)
+        setUsernameAction(ret.user.username)
+        setEmailAction(ret.user.email)
+        setBlockedAction(ret.user.blocked)
+        setConfirmedAction(ret.user.confirmed)
+        setCreatedAtAction(ret.user.createdAt)
+        setUpdatedAtAction(ret.user.updatedAt)
+        setProviderAction(ret.user.provider)
+        setIsLoggedIn(true)
+      }
+      
+
+      await sendLoginForm({
+        data: { 
+          identifier: 'bunny@gmail.com',
+          password: 'Qwer1234' 
         },
         onSuccess: (ret: StrapiAuthProps)=>{
           onLoginSuccess(ret)
+            .then(()=>{
+              setToast({
+                message: 'Has logrado logearte',
+                duration: 1500,
+                position: 'top'
+              })
+                .then(()=> history.push('/tabs/schedule', {direction: 'none'}))            
+            })
         },
-        onError: (err: Error)=> {
-          console.log('estoy aquí', err)
-        }
-      
+        onError: (err: Error)=> console.log('error', err)        
       })
-
-      history.push('/tabs/schedule', {direction: 'none'})
-
+    
     }
+
   }
 
   return (
@@ -159,7 +148,7 @@ const Login: React.FC<LoginProps> = ({
           <img src="assets/img/appicon.svg" alt="Ionic logo" />
         </div>
 
-        <form noValidate onSubmit={login}>
+        <form noValidate onSubmit={submitLogin}>
           <IonList>
             <IonItem>
               <IonLabel position="stacked" color="primary">Username</IonLabel>
@@ -205,16 +194,16 @@ const Login: React.FC<LoginProps> = ({
 
 export default connect<OwnProps, {}, DispatchProps>({
   mapDispatchToProps: {
-    setIsLoggedIn,
-    setUsername,
+    setId,
     setJwt,
+    setUsername,
+    setEmail,
     setBlocked, 
     setConfirmed,
-    setEmail,
     setCreatedAt,
     setUpdatedAt,
     setProvider,
-    setId
+    setIsLoggedIn,
   },
   component: Login
 })

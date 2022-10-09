@@ -23,6 +23,7 @@ export const logoutUser = () => async (dispatch: React.Dispatch<any>) => {
   await setIsLoggedInData(false)
   dispatch(setUsername())
   dispatch(setEmail())
+  dispatch(setDarkMode())
 }
 
 export const setIsLoggedIn = (loggedIn: boolean) => async (dispatch: React.Dispatch<any>) => {
@@ -30,24 +31,27 @@ export const setIsLoggedIn = (loggedIn: boolean) => async (dispatch: React.Dispa
   return ({ type: 'set-is-loggedin', loggedIn } as const)
 }
 
-export const setUsername = (username?: string) => async (dispatch: React.Dispatch<any>) => {
-  await setUsernameData(username)
-  return ({ type: 'set-username', username } as const)
+
+export const setId = (id?: string) => async (dispatch: React.Dispatch<any>) => {
+  await setIdData(id)
+  return ({ type: 'set-id', id } as const)
 }
-
-export const setHasSeenTutorial = (hasSeenTutorial: boolean) => async (dispatch: React.Dispatch<any>) => {
-  await setHasSeenTutorialData(hasSeenTutorial)
-  return ({ type: 'set-has-seen-tutorial', hasSeenTutorial } as const)
-} 
-
-export const setDarkMode = (darkMode: boolean) => ({
-  type: 'set-dark-mode', darkMode } as const
-)
 
 export const setJwt = (jwt?: string) => async (dispatch: React.Dispatch<any>) => {
   await setJwtData(jwt)
   return ({type: 'set-jwt',jwt  } as const)
 }
+
+export const setUsername = (username?: string) => async (dispatch: React.Dispatch<any>) => {
+  await setUsernameData(username)
+  return ({ type: 'set-username', username } as const)
+}
+
+export const setEmail = (email?: string) => async (dispatch: React.Dispatch<any>) => {
+  await setEmailData(email)
+  return ({ type: 'set-email', email } as const)
+}
+
 
 export const setBlocked = (blocked?: boolean) => async (dispatch: React.Dispatch<any>) => {
   await setBlockedData(blocked)
@@ -69,33 +73,33 @@ export const setUpdatedAt = (updatedAt?: string) => async (dispatch: React.Dispa
   return ({ type: 'set-updated-at', updatedAt } as const)
 }
 
-export const setEmail = (email?: string) => async (dispatch: React.Dispatch<any>) => {
-  await setEmailData(email)
-  return ({ type: 'set-email', email } as const)
-}
-
 export const setProvider = (provider2?: string) => async (dispatch: React.Dispatch<any>) => {
   await setProviderData(provider2)
   return ({ type: 'set-provider', provider2 } as const)
 }
 
-export const setId = (id?: string) => async (dispatch: React.Dispatch<any>) => {
-  await setIdData(id)
-  return ({ type: 'set-id', id } as const)
-}
+
+export const setHasSeenTutorial = (hasSeenTutorial: boolean) => async (dispatch: React.Dispatch<any>) => {
+  await setHasSeenTutorialData(hasSeenTutorial)
+  return ({ type: 'set-has-seen-tutorial', hasSeenTutorial } as const)
+} 
+
+export const setDarkMode = (darkMode: boolean = true) => ({
+  type: 'set-dark-mode', darkMode } as const
+)
 
 export type UserActions =
-  | ActionType<typeof setLoading>
-  | ActionType<typeof setData>
-  | ActionType<typeof setIsLoggedIn>
-  | ActionType<typeof setUsername>
-  | ActionType<typeof setHasSeenTutorial>
-  | ActionType<typeof setDarkMode>
-  | ActionType<typeof setJwt>
-  | ActionType<typeof setBlocked>
-  | ActionType<typeof setConfirmed>
-  | ActionType<typeof setCreatedAt>
-  | ActionType<typeof setUpdatedAt>
-  | ActionType<typeof setEmail>
-  | ActionType<typeof setProvider>
-  | ActionType<typeof setId>
+| ActionType<typeof setId>
+| ActionType<typeof setJwt>
+| ActionType<typeof setUsername>
+| ActionType<typeof setEmail>
+| ActionType<typeof setBlocked>
+| ActionType<typeof setConfirmed>
+| ActionType<typeof setCreatedAt>
+| ActionType<typeof setUpdatedAt>
+| ActionType<typeof setProvider>
+| ActionType<typeof setLoading>
+| ActionType<typeof setData>
+| ActionType<typeof setIsLoggedIn>
+| ActionType<typeof setHasSeenTutorial>
+| ActionType<typeof setDarkMode>

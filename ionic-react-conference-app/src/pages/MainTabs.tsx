@@ -1,17 +1,21 @@
-import React  from 'react';
-import { IonTabs, IonRouterOutlet, IonTabBar, IonTabButton, IonIcon, IonLabel } from '@ionic/react';
-import { Route, Redirect } from 'react-router';
-import { calendar, location, informationCircle, people } from 'ionicons/icons';
-import SchedulePage from './SchedulePage';
-import SpeakerList from './SpeakerList';
-import SpeakerDetail from './SpeakerDetail';
-import SessionDetail from './SessionDetail';
-import MapView from './MapView';
-import About from './About';
+import React, { useEffect }  from 'react'
+import { IonTabs, IonRouterOutlet, IonTabBar, IonTabButton, IonIcon, IonLabel } from '@ionic/react'
+import { Route, Redirect } from 'react-router'
+import { calendar, location, informationCircle, people } from 'ionicons/icons'
+import SchedulePage from './SchedulePage'
+import SpeakerList from './SpeakerList'
+import SpeakerDetail from './SpeakerDetail'
+import SessionDetail from './SessionDetail'
+import MapView from './MapView'
+import About from './About'
 
 interface MainTabsProps { }
 
 const MainTabs: React.FC<MainTabsProps> = () => {
+
+  useEffect(()=>{
+    
+  })
 
   return (
     <IonTabs>
@@ -48,7 +52,7 @@ const MainTabs: React.FC<MainTabsProps> = () => {
         </IonTabButton>
       </IonTabBar>
     </IonTabs>
-  );
-};
+  )
+}
 
-export default MainTabs;
+export default MainTabs

@@ -1,50 +1,50 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef } from 'react'
 
-import { IonToolbar, IonContent, IonPage, IonButtons, IonTitle, IonMenuButton, IonSegment, IonSegmentButton, IonButton, IonIcon, IonSearchbar, IonRefresher, IonRefresherContent, IonToast, IonModal, IonHeader, getConfig } from '@ionic/react';
-import { options, search } from 'ionicons/icons';
+import { IonToolbar, IonContent, IonPage, IonButtons, IonTitle, IonMenuButton, IonSegment, IonSegmentButton, IonButton, IonIcon, IonSearchbar, IonRefresher, IonRefresherContent, IonToast, IonModal, IonHeader, getConfig } from '@ionic/react'
+import { options, search } from 'ionicons/icons'
 
-import SessionList from '../components/SessionList';
-import SessionListFilter from '../components/SessionListFilter';
+import SessionList from '../components/SessionList'
+import SessionListFilter from '../components/SessionListFilter'
 import './SchedulePage.scss'
 
-import ShareSocialFab from '../components/ShareSocialFab';
+import ShareSocialFab from '../components/ShareSocialFab'
 
-import * as selectors from '../data/selectors';
-import { connect } from '../data/connect';
-import { setSearchText } from '../data/sessions/sessions.actions';
-import { Schedule } from '../models/Schedule';
+import * as selectors from '../data/selectors'
+import { connect } from '../data/connect'
+import { setSearchText } from '../data/sessions/sessions.actions'
+import { Schedule } from '../models/Schedule'
 
 interface OwnProps { }
 
 interface StateProps {
-  schedule: Schedule;
-  favoritesSchedule: Schedule;
+  schedule: Schedule
+  favoritesSchedule: Schedule
   mode: 'ios' | 'md'
 }
 
 interface DispatchProps {
-  setSearchText: typeof setSearchText;
+  setSearchText: typeof setSearchText
 }
 
-type SchedulePageProps = OwnProps & StateProps & DispatchProps;
+type SchedulePageProps = OwnProps & StateProps & DispatchProps
 
 const SchedulePage: React.FC<SchedulePageProps> = ({ favoritesSchedule, schedule, setSearchText, mode }) => {
-  const [segment, setSegment] = useState<'all' | 'favorites'>('all');
-  const [showSearchbar, setShowSearchbar] = useState<boolean>(false);
-  const [showFilterModal, setShowFilterModal] = useState(false);
-  const ionRefresherRef = useRef<HTMLIonRefresherElement>(null);
-  const [showCompleteToast, setShowCompleteToast] = useState(false);
+  const [segment, setSegment] = useState<'all' | 'favorites'>('all')
+  const [showSearchbar, setShowSearchbar] = useState<boolean>(false)
+  const [showFilterModal, setShowFilterModal] = useState(false)
+  const ionRefresherRef = useRef<HTMLIonRefresherElement>(null)
+  const [showCompleteToast, setShowCompleteToast] = useState(false)
 
-  const pageRef = useRef<HTMLElement>(null);
+  const pageRef = useRef<HTMLElement>(null)
 
-  const ios = mode === 'ios';
+  const ios = mode === 'ios'
 
   const doRefresh = () => {
     setTimeout(() => {
-      ionRefresherRef.current!.complete();
-      setShowCompleteToast(true);
+      ionRefresherRef.current!.complete()
+      setShowCompleteToast(true)
     }, 2500)
-  };
+  }
 
   return (
     <IonPage ref={pageRef} id="schedule-page">
@@ -148,8 +148,8 @@ const SchedulePage: React.FC<SchedulePageProps> = ({ favoritesSchedule, schedule
       <ShareSocialFab />
 
     </IonPage>
-  );
-};
+  )
+}
 
 export default connect<OwnProps, StateProps, DispatchProps>({
   mapStateToProps: (state) => ({
@@ -161,4 +161,4 @@ export default connect<OwnProps, StateProps, DispatchProps>({
     setSearchText
   },
   component: React.memo(SchedulePage)
-});
+})
