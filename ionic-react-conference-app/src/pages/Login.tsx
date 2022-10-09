@@ -16,6 +16,7 @@ import {
   IonInput,
   IonText,
   useIonToast,
+  IonRippleEffect
 } from '@ionic/react'
 
 import {
@@ -35,9 +36,10 @@ import { connect } from '../data/connect'
 import { RouteComponentProps } from 'react-router'
 
 import { StrapiAuthProps } from '../classes/strapi/models/StrapiAuthProps'
-import { sendLoginForm } from '../classes/strapi/login'
+import { sendLoginForm } from '../classes/strapi/sendLoginForm'
 
 import './Login.scss'
+import { globe } from 'ionicons/icons'
 
 interface DispatchProps {
   // Common
@@ -56,7 +58,7 @@ interface DispatchProps {
 
 interface OwnProps extends RouteComponentProps {}
 
-interface LoginProps extends OwnProps, DispatchProps { }
+interface LoginProps extends OwnProps, DispatchProps {}
 
 const Login: React.FC<LoginProps> = ({
   history, 
@@ -95,6 +97,18 @@ const Login: React.FC<LoginProps> = ({
 
     if(username && password) {
 
+      const launchToast = async (data: any) => {
+        await setToast({
+          message: data.message,
+          duration: data.duration ?? 1500,
+          position: data.position ?? 'top',
+          icon: data.icon ?? globe
+        })
+        setTimeout(()=>{
+          dismissToast()
+        },data.duration ?? 1500)
+      }
+
       const onLoginSuccess = async (ret: StrapiAuthProps) => {
         setIdAction(ret.user.id)
         setJwtAction(ret.jwt)
@@ -106,8 +120,7 @@ const Login: React.FC<LoginProps> = ({
         setUpdatedAtAction(ret.user.updatedAt)
         setProviderAction(ret.user.provider)
         setIsLoggedIn(true)
-      }
-      
+      }      
 
       await sendLoginForm({
         data: { 
@@ -117,15 +130,13 @@ const Login: React.FC<LoginProps> = ({
         onSuccess: (ret: StrapiAuthProps)=>{
           onLoginSuccess(ret)
             .then(()=>{
-              setToast({
-                message: 'Has logrado logearte',
-                duration: 1500,
-                position: 'top'
-              })
+              launchToast({ message: 'Has logrado logearte' })
                 .then(()=> history.push('/tabs/schedule', {direction: 'none'}))            
             })
         },
-        onError: (err: Error)=> console.log('error', err)        
+        onError: (err: Error)=> {
+          launchToast({ message: 'No tienes permisos de acceso' })
+        }     
       })
     
     }
@@ -181,7 +192,7 @@ const Login: React.FC<LoginProps> = ({
               <IonButton type="submit" expand="block">Login</IonButton>
             </IonCol>
             <IonCol>
-              <IonButton routerLink="/signup" color="light" expand="block">Signup</IonButton>
+              <IonButton className={'ion-activatable ripple-parent'} routerLink="/signup" color="light" expand="block">Signup<IonRippleEffect></IonRippleEffect></IonButton>
             </IonCol>
           </IonRow>
         </form>

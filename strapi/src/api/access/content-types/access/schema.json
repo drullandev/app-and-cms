@@ -28,9 +28,6 @@
       "type": "relation",
       "relation": "oneToOne",
       "target": "api::ionicon.ionicon"
-    },
-    "label": {
-      "type": "string"
     }
   }
 }

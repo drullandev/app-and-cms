@@ -1,4 +1,18 @@
-import { getUserData, setIsLoggedInData, setUsernameData, setHasSeenTutorialData, setJwtData, setBlockedData, setConfirmedData, setCreatedAtData, setUpdatedAtData, setEmailData, setIdData, setProviderData } from '../dataApi'
+import {
+  getUserData,
+  setIsLoggedInData,
+  setUsernameData,
+  setHasSeenTutorialData,
+  setJwtData,
+  setBlockedData,
+  setConfirmedData,
+  setCreatedAtData,
+  setUpdatedAtData,
+  setEmailData,
+  setIdData,
+  setProviderData,
+  setDarkModeData
+} from '../dataApi'
 import { ActionType } from '../../util/types'
 import { UserState } from './user.state'
 
@@ -78,15 +92,16 @@ export const setProvider = (provider2?: string) => async (dispatch: React.Dispat
   return ({ type: 'set-provider', provider2 } as const)
 }
 
+export const setDarkMode = (darkMode?: boolean) => async (dispatch: React.Dispatch<any>) => {
+  await setDarkModeData(darkMode)
+  return ({ type: 'set-dark-mode', darkMode } as const)
+}
 
 export const setHasSeenTutorial = (hasSeenTutorial: boolean) => async (dispatch: React.Dispatch<any>) => {
   await setHasSeenTutorialData(hasSeenTutorial)
   return ({ type: 'set-has-seen-tutorial', hasSeenTutorial } as const)
 } 
 
-export const setDarkMode = (darkMode: boolean = true) => ({
-  type: 'set-dark-mode', darkMode } as const
-)
 
 export type UserActions =
 | ActionType<typeof setId>
@@ -98,8 +113,9 @@ export type UserActions =
 | ActionType<typeof setCreatedAt>
 | ActionType<typeof setUpdatedAt>
 | ActionType<typeof setProvider>
+| ActionType<typeof setDarkMode>
+
+| ActionType<typeof setHasSeenTutorial>
 | ActionType<typeof setLoading>
 | ActionType<typeof setData>
 | ActionType<typeof setIsLoggedIn>
-| ActionType<typeof setHasSeenTutorial>
-| ActionType<typeof setDarkMode>

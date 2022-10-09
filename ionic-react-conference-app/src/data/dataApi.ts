@@ -17,6 +17,7 @@ const CONFIRMED = 'confirmed'
 const CREATED_AT = 'createdAt'
 const UPDATED_AT = 'updatedAt'
 const PROVIDER = 'provider'
+const DARK_MODE = 'darkMode'
 
 const HAS_LOGGED_IN = 'hasLoggedIn'
 const HAS_SEEN_TUTORIAL = 'hasSeenTutorial'
@@ -63,6 +64,7 @@ export const getUserData = async () => {
     Storage.get({ key: CREATED_AT }),
     Storage.get({ key: UPDATED_AT }),
     Storage.get({ key: PROVIDER }),
+    Storage.get({ key: DARK_MODE }),
     Storage.get({ key: HAS_LOGGED_IN }),
     Storage.get({ key: HAS_SEEN_TUTORIAL }),
   ])
@@ -76,9 +78,10 @@ export const getUserData = async () => {
   const updated_at  = await response[6].value || undefined
   const email       = await response[7].value || undefined
   const provider    = await response[8].value || undefined
+  const darkMode    = await response[9].value  === 'true'
 
-  const isLoggedin      = await response[9].value === 'true'
-  const hasSeenTutorial = await response[10].value === 'true'
+  const isLoggedin      = await response[10].value === 'true'
+  const hasSeenTutorial = await response[11].value === 'true'
 
   const data = {
     id,
@@ -90,6 +93,7 @@ export const getUserData = async () => {
     created_at,
     updated_at,
     provider,    
+    darkMode,
     isLoggedin,
     hasSeenTutorial,
   }
@@ -170,6 +174,15 @@ export const setProviderData = async (provider2?: string) => {
   }
 }
 
+export const setDarkModeData = async (darkMode?: boolean) => {
+  if (!darkMode) {
+    await Storage.remove({ key: DARK_MODE })
+  } else {
+    await Storage.set({ key: DARK_MODE, value: JSON.stringify(darkMode) })
+  }
+}
+
+
 // Extra ??
 
 export const setIsLoggedInData = async (isLoggedIn: boolean) => {
@@ -181,7 +194,7 @@ export const setHasSeenTutorialData = async (hasSeenTutorial: boolean) => {
 }
 
 
-function parseSessions(schedule: Schedule) {
+export const parseSessions = (schedule: Schedule)=>{
   const sessions: Session[] = []
   schedule.groups.forEach(g => {
     g.sessions.forEach(s => sessions.push(s))

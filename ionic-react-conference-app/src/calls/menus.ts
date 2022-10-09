@@ -9,7 +9,7 @@ export const getMenuById = (id: number, onSuccess: Function, onError: Function) 
     req: {
       url: 'menus/'+id
     },
-    onSuccess: (ret: any)=>{
+    onSuccess: (ret: any)=>{  
       console.log(' Getting the menu '+id, ret)
       return onSuccess()
     },

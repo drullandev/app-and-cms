@@ -1,16 +1,16 @@
-import React from 'react';
+import React from 'react'
 
-import { getMode } from '@ionic/core';
-import { IonHeader, IonToolbar, IonButtons, IonButton, IonTitle, IonContent, IonList, IonListHeader, IonItem, IonLabel, IonCheckbox, IonFooter, IonIcon } from '@ionic/react';
-import { logoAngular, call, document, logoIonic, hammer, restaurant, cog, colorPalette, construct, compass } from 'ionicons/icons';
+import { getMode } from '@ionic/core'
+import { IonHeader, IonToolbar, IonButtons, IonButton, IonTitle, IonContent, IonList, IonListHeader, IonItem, IonLabel, IonCheckbox, IonFooter, IonIcon } from '@ionic/react'
+import { logoAngular, call, document, logoIonic, hammer, restaurant, cog, colorPalette, construct, compass } from 'ionicons/icons'
 
-import './SessionListFilter.css'
+import '../styles/SessionListFilter.css'
 
-import { connect } from '../data/connect';
-import { updateFilteredTracks } from '../data/sessions/sessions.actions';
+import { connect } from '../data/connect'
+import { updateFilteredTracks } from '../data/sessions/sessions.actions'
 
 interface OwnProps {
-  onDismissModal: () => void;
+  onDismissModal: () => void
 }
 
 interface StateProps {
@@ -19,29 +19,29 @@ interface StateProps {
 }
 
 interface DispatchProps {
-  updateFilteredTracks: typeof updateFilteredTracks;
+  updateFilteredTracks: typeof updateFilteredTracks
 }
 
-type SessionListFilterProps = OwnProps & StateProps & DispatchProps;
+type SessionListFilterProps = OwnProps & StateProps & DispatchProps
 
 const SessionListFilter: React.FC<SessionListFilterProps> = ({ allTracks, filteredTracks, onDismissModal, updateFilteredTracks }) => {
-  const ios = getMode() === 'ios';
+  const ios = getMode() === 'ios'
 
   const toggleTrackFilter = (track: string) => {
     if (filteredTracks.indexOf(track) > -1) {
-      updateFilteredTracks(filteredTracks.filter(x => x !== track));
+      updateFilteredTracks(filteredTracks.filter(x => x !== track))
     } else {
-      updateFilteredTracks([...filteredTracks, track]);
+      updateFilteredTracks([...filteredTracks, track])
     }
-  };
+  }
 
   const handleDeselectAll = () => {
-    updateFilteredTracks([]);
-  };
+    updateFilteredTracks([])
+  }
 
   const handleSelectAll = () => {
-    updateFilteredTracks([...allTracks]);
-  };
+    updateFilteredTracks([...allTracks])
+  }
 
   const iconMap: { [key: string]: any } = {
     'Angular': logoAngular,
@@ -113,8 +113,8 @@ const SessionListFilter: React.FC<SessionListFilterProps> = ({ allTracks, filter
         </IonFooter>
       }
     </>
-  );
-};
+  )
+}
 
 export default connect<OwnProps, StateProps, DispatchProps>({
   mapStateToProps: (state) => ({

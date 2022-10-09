@@ -1,13 +1,13 @@
-import React from 'react';
-import { RouteComponentProps, withRouter, useLocation } from 'react-router';
+import React from 'react'
+import { RouteComponentProps, withRouter, useLocation } from 'react-router'
 
-import { IonContent, IonIcon, IonItem, IonLabel, IonList, IonListHeader, IonMenu, IonMenuToggle, IonToggle } from '@ionic/react';
-import { calendarOutline, hammer, moonOutline, help, informationCircleOutline, logIn, logOut, mapOutline, peopleOutline, person, personAdd } from 'ionicons/icons';
+import { IonContent, IonIcon, IonItem, IonLabel, IonList, IonListHeader, IonMenu, IonMenuToggle, IonToggle } from '@ionic/react'
+import { calendarOutline, hammer, moonOutline, help, informationCircleOutline, logIn, logOut, mapOutline, peopleOutline, person, personAdd } from 'ionicons/icons'
 
-import { connect } from '../data/connect';
-import { setDarkMode } from '../data/user/user.actions';
+import { connect } from '../data/connect'
+import { setDarkMode } from '../data/user/user.actions'
 
-import './Menu.css'
+import '../styles/Menu.css'
 
 const routes = {
   appPages: [
@@ -26,7 +26,7 @@ const routes = {
     { title: 'Support', path: '/support', icon: help },
     { title: 'Signup', path: '/signup', icon: personAdd }
   ]
-};
+}
 
 interface Pages {
   title: string,
@@ -35,9 +35,9 @@ interface Pages {
   routerDirection?: string
 }
 interface StateProps {
-  darkMode: boolean;
-  isAuthenticated: boolean;
-  menuEnabled: boolean;
+  darkMode: boolean
+  isAuthenticated: boolean
+  menuEnabled: boolean
 }
 
 interface DispatchProps {
@@ -47,7 +47,7 @@ interface DispatchProps {
 interface MenuProps extends RouteComponentProps, StateProps, DispatchProps { }
 
 const Menu: React.FC<MenuProps> = ({ darkMode, history, isAuthenticated, setDarkMode, menuEnabled }) => {
-  const location = useLocation();
+  const location = useLocation()
 
   function renderlistItems(list: Pages[]) {
     return list
@@ -59,7 +59,7 @@ const Menu: React.FC<MenuProps> = ({ darkMode, history, isAuthenticated, setDark
             <IonLabel>{p.title}</IonLabel>
           </IonItem>
         </IonMenuToggle>
-      ));
+      ))
   }
 
   return (
@@ -81,7 +81,7 @@ const Menu: React.FC<MenuProps> = ({ darkMode, history, isAuthenticated, setDark
         <IonList lines="none">
           <IonListHeader>Tutorial</IonListHeader>
           <IonItem button onClick={() => {
-            history.push('/tutorial');
+            history.push('/tutorial')
           }}>
             <IonIcon slot="start" icon={hammer} />
             Show Tutorial
@@ -89,8 +89,8 @@ const Menu: React.FC<MenuProps> = ({ darkMode, history, isAuthenticated, setDark
         </IonList>
       </IonContent>
     </IonMenu>
-  );
-};
+  )
+}
 
 export default connect<{}, StateProps, {}>({
   mapStateToProps: (state) => ({

@@ -11,21 +11,10 @@
       "type": "string",
       "required": true
     },
-    "url": {
-      "type": "string",
-      "required": true
-    },
     "icon": {
       "type": "relation",
       "relation": "oneToOne",
       "target": "api::ionicon.ionicon"
-    },
-    "target": {
-      "type": "enumeration",
-      "enum": [
-        "_blank",
-        "_self"
-      ]
     },
     "menus": {
       "type": "relation",
@@ -35,10 +24,10 @@
     "extra": {
       "type": "json"
     },
-    "slug": {
-      "type": "string",
-      "unique": true,
-      "required": true
+    "access": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::access.access"
     }
   }
 }

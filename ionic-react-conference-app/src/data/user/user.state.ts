@@ -9,9 +9,9 @@ export interface UserState {
   createdAt?: string // Convert the correct type of data required here
   updatedAt?: string // Convert the correct type of data required here
   provider?: string
+  darkMode?: boolean
   // Extra
   isLoggedin: boolean
-  darkMode: boolean
   hasSeenTutorial: boolean
   loading: boolean
 }

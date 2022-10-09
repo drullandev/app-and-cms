@@ -4,7 +4,8 @@
   "info": {
     "singularName": "section",
     "pluralName": "sections",
-    "displayName": "section"
+    "displayName": "Section",
+    "description": ""
   },
   "options": {
     "draftAndPublish": false
