@@ -1,18 +1,19 @@
 import {
-  getUserData,
-  setIsLoggedInData,
-  setUsernameData,
-  setHasSeenTutorialData,
+  setIdData,
   setJwtData,
+  setUsernameData,
+  setEmailData,
   setBlockedData,
   setConfirmedData,
   setCreatedAtData,
   setUpdatedAtData,
-  setEmailData,
-  setIdData,
   setProviderData,
-  setDarkModeData
+  setDarkModeData,
+  setHasSeenTutorialData,
+  setIsLoggedInData,
+  getUserData,
 } from '../dataApi'
+
 import { ActionType } from '../../util/types'
 import { UserState } from './user.state'
 
@@ -25,10 +26,6 @@ export const loadUserData = () => async (dispatch: React.Dispatch<any>) => {
   dispatch(setLoading(false))
 }
 
-export const setLoading = (isLoading: boolean) => { 
-  return { type: 'set-user-loading',  isLoading } as const
-}
-
 export const setData = (data: Partial<UserState>) => ({
   type: 'set-user-data', data
 } as const)
@@ -37,7 +34,7 @@ export const logoutUser = () => async (dispatch: React.Dispatch<any>) => {
   await setIsLoggedInData(false)
   dispatch(setUsername())
   dispatch(setEmail())
-  dispatch(setDarkMode())
+  dispatch(setDarkMode(true))
 }
 
 export const setIsLoggedIn = (loggedIn: boolean) => async (dispatch: React.Dispatch<any>) => {
@@ -45,6 +42,7 @@ export const setIsLoggedIn = (loggedIn: boolean) => async (dispatch: React.Dispa
   return ({ type: 'set-is-loggedin', loggedIn } as const)
 }
 
+// COMMON
 
 export const setId = (id?: string) => async (dispatch: React.Dispatch<any>) => {
   await setIdData(id)
@@ -102,6 +100,9 @@ export const setHasSeenTutorial = (hasSeenTutorial: boolean) => async (dispatch:
   return ({ type: 'set-has-seen-tutorial', hasSeenTutorial } as const)
 } 
 
+export const setLoading = (isLoading: boolean) => { 
+  return { type: 'set-user-loading',  isLoading } as const
+}
 
 export type UserActions =
 | ActionType<typeof setId>
@@ -114,7 +115,6 @@ export type UserActions =
 | ActionType<typeof setUpdatedAt>
 | ActionType<typeof setProvider>
 | ActionType<typeof setDarkMode>
-
 | ActionType<typeof setHasSeenTutorial>
 | ActionType<typeof setLoading>
 | ActionType<typeof setData>
