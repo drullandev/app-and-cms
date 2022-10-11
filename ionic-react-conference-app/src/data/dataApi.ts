@@ -2,6 +2,7 @@ import { Plugins } from '@capacitor/core'
 import { Schedule, Session } from '../models/Schedule'
 import { Speaker } from '../models/Speaker'
 import { Location } from '../models/Location'
+import { setOrRemove, parseSessions, boolSwitch } from './reducer.utils'
 
 const { Storage } = Plugins
 
@@ -18,9 +19,9 @@ const CREATED_AT = 'createdAt'
 const UPDATED_AT = 'updatedAt'
 const PROVIDER = 'provider'
 const DARK_MODE = 'darkMode'
+const HAS_SEEN_TUTORIAL = 'hasSeenTutorial'
 
 const HAS_LOGGED_IN = 'hasLoggedIn'
-const HAS_SEEN_TUTORIAL = 'hasSeenTutorial'
 
 export const getConfData = async () => {
 
@@ -65,23 +66,23 @@ export const getUserData = async () => {
     Storage.get({ key: UPDATED_AT }),
     Storage.get({ key: PROVIDER }),
     Storage.get({ key: DARK_MODE }),
-    Storage.get({ key: HAS_LOGGED_IN }),
     Storage.get({ key: HAS_SEEN_TUTORIAL }),
+    Storage.get({ key: HAS_LOGGED_IN }),
   ])
 
   const id          = await response[0].value || '0'
   const jwt         = await response[1].value || undefined
   const username    = await response[2].value || undefined
-  const blocked     = await response[3].value === 'true'
-  const confirmed   = await response[4].value === 'true'
-  const created_at  = await response[5].value || undefined
-  const updated_at  = await response[6].value || undefined
-  const email       = await response[7].value || undefined
+  const email       = await response[3].value || undefined
+  const blocked     = await response[4].value === 'true'
+  const confirmed   = await response[5].value === 'true'
+  const created_at  = await response[6].value || undefined
+  const updated_at  = await response[7].value || undefined
   const provider    = await response[8].value || undefined
   const darkMode    = await response[9].value  === 'true'
+  const hasSeenTutorial = await response[11].value === 'true'
 
   const isLoggedin      = await response[10].value === 'true'
-  const hasSeenTutorial = await response[11].value === 'true'
 
   const data = {
     id,
@@ -94,110 +95,23 @@ export const getUserData = async () => {
     updated_at,
     provider,    
     darkMode,
-    isLoggedin,
     hasSeenTutorial,
+    isLoggedin,
   }
 
   return data
 
 }
 
-export const setIdData = async (id2?: string) => {
-  if (!id2) {
-    await Storage.remove({ key: ID })
-  } else {
-    await Storage.set({ key: ID, value: JSON.stringify(id2) })
-  }
-}
-
-export const setJwtData = async (jwt?: string) => {
-  if (!jwt) {
-    await Storage.remove({ key: JWT })
-  } else {
-    await Storage.set({ key: JWT, value: jwt })
-  }
-}
-
-export const setUsernameData = async (username?: string) => {
-  if (!username) {
-    await Storage.remove({ key: USERNAME })
-  } else {
-    await Storage.set({ key: USERNAME, value: username })
-  }
-}
-
-export const setEmailData = async (email?: string) => {
-  if (!email) {
-    await Storage.remove({ key: EMAIL })
-  } else {
-    await Storage.set({ key: EMAIL, value: email })
-  }
-}
-
-export const setBlockedData = async (blocked?: boolean) => {
-  if (!blocked) {
-    await Storage.remove({ key: BLOCKED })
-  } else {
-    await Storage.set({ key: BLOCKED, value: JSON.stringify(blocked) })
-  }
-}
-
-export const setConfirmedData = async (confirmed?: boolean) => {
-  if (!confirmed) {
-    await Storage.remove({ key: CONFIRMED })
-  } else {
-    await Storage.set({ key: CONFIRMED, value: JSON.stringify(confirmed) })
-  }
-}
-
-export const setCreatedAtData = async (createdAt?: string) => {
-  if (!createdAt) {
-    await Storage.remove({ key: CREATED_AT })
-  } else {
-    await Storage.set({ key: CREATED_AT, value: createdAt })
-  }
-}
-
-export const setUpdatedAtData = async (updatedAt?: string) => {
-  if (!updatedAt) {
-    await Storage.remove({ key: UPDATED_AT })
-  } else {
-    await Storage.set({ key: UPDATED_AT, value: updatedAt })
-  }
-}
-
-export const setProviderData = async (provider2?: string) => {
-  if (!provider2) {
-    await Storage.remove({ key: PROVIDER })
-  } else {
-    await Storage.set({ key: PROVIDER, value: provider2 })
-  }
-}
-
-export const setDarkModeData = async (darkMode?: boolean) => {
-  if (!darkMode) {
-    await Storage.remove({ key: DARK_MODE })
-  } else {
-    await Storage.set({ key: DARK_MODE, value: JSON.stringify(darkMode) })
-  }
-}
-
-
-// Extra ??
-
-export const setIsLoggedInData = async (isLoggedIn: boolean) => {
-  await Storage.set({ key: HAS_LOGGED_IN, value: JSON.stringify(isLoggedIn) })
-}
-
-export const setHasSeenTutorialData = async (hasSeenTutorial: boolean) => {
-  await Storage.set({ key: HAS_SEEN_TUTORIAL, value: JSON.stringify(hasSeenTutorial) })
-}
-
-
-export const parseSessions = (schedule: Schedule)=>{
-  const sessions: Session[] = []
-  schedule.groups.forEach(g => {
-    g.sessions.forEach(s => sessions.push(s))
-  })
-  return sessions
-}
+export const setIdData = async (id2?: string) => setOrRemove(ID, id2, false)
+export const setJwtData = async (jwt?: string) => setOrRemove(JWT, jwt)
+export const setUsernameData = async (username?: string) => setOrRemove(USERNAME, username)
+export const setEmailData = async (email?: string) => setOrRemove(EMAIL, email)
+export const setBlockedData = async (blocked?: boolean) => setOrRemove(BLOCKED, blocked)
+export const setConfirmedData = async (confirmed?: boolean) => setOrRemove(CONFIRMED, confirmed)
+export const setCreatedAtData = async (createdAt?: string) => setOrRemove(CREATED_AT, createdAt)
+export const setUpdatedAtData = async (updatedAt?: string) => setOrRemove(UPDATED_AT, updatedAt)
+export const setProviderData = async (provider2?: string) => setOrRemove(UPDATED_AT, provider2)
+export const setDarkModeData = async (darkMode?: boolean) => boolSwitch(DARK_MODE, darkMode)
+export const setHasSeenTutorialData = async (hasSeenTutorial?: boolean) => setOrRemove(HAS_SEEN_TUTORIAL, hasSeenTutorial)
+export const setIsLoggedInData = async (isLoggedIn?: boolean) => setOrRemove(HAS_LOGGED_IN, isLoggedIn)

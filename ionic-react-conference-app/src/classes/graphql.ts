@@ -1,5 +1,11 @@
-import * as AppConst from '../../static/constants'
 import { empty } from './common'
+
+export interface WhereProps {
+  type: string
+  key: string
+  action: string
+  value: string
+}
 
 export interface GqlModel {
   model: string
@@ -7,15 +13,11 @@ export interface GqlModel {
     limit: number,
     start: number,
   }
-  where: {
-    type: string
-    key: string
-    action: string
-    value: string
-  }
+  where: WhereProps[]
   filter: any
   struct: any
   sort: string
+  searchString: string
   orderField: string
   searchOrder: string
   filterField: string
@@ -52,11 +54,11 @@ export const setGQLQuery = (params: GqlModel) =>{
             const rowLen = whereType.length
             var rows: [] = []
             var stringedWhere = whereType.map((row: any, index: number)=>{
-              rows.push(row)
-              if (rowLen === index + 1) {
+              //rows.push(row)
+              //if (rowLen === index + 1) {
                 // last one
-                stringedWhere = rows.join(',')
-              }
+                //stringedWhere = rows.join(',')
+              //}
             })
             whereType = '["'+stringedWhere+'"]';
             where.push(row.key+'_'+row.action+' : '+whereType)
@@ -95,7 +97,7 @@ export const setGQLQuery = (params: GqlModel) =>{
   }
 
   queryString += `\n}`
-console.log(queryString)
+  console.log(queryString)
   return queryString
 
 }

@@ -2,9 +2,8 @@ import { UserActions } from './user.actions'
 import { UserState } from './user.state'
 
 export function userReducer(state: UserState, action: UserActions): UserState {
+  console.log('settingReducer', { action: action, type: action.type })
   switch (action.type) {
-    case 'set-user-loading':      return { ...state, loading:           action.isLoading }
-    case 'set-user-data':         return { ...state,                    ...action.data }
     case 'set-id':                return { ...state, id:                action.id }
     case 'set-jwt':               return { ...state, jwt:               action.jwt }
     case 'set-username':          return { ...state, username:          action.username }
@@ -17,5 +16,7 @@ export function userReducer(state: UserState, action: UserActions): UserState {
     case 'set-dark-mode':         return { ...state, darkMode:          action.darkMode }
     case 'set-has-seen-tutorial': return { ...state, hasSeenTutorial:   action.hasSeenTutorial }
     case 'set-is-loggedin':       return { ...state, isLoggedin:        action.loggedIn }
+    case 'set-user-loading':      return { ...state, loading:           action.isLoading }
+    case 'set-user-data':         return { ...state,                    ...action.data }
   }
 }
