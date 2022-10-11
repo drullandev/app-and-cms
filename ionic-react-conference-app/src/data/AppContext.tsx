@@ -13,11 +13,12 @@ export const AppContext = createContext<AppContextState>({
 
 export const AppContextProvider: React.FC = (props => {
   const [store, dispatch] = useReducer(reducers, initialState)
+  const conf = {
+    state: store,
+    dispatch
+  }
   return (
-    <AppContext.Provider value={{
-      state: store,
-      dispatch
-    }}>
+    <AppContext.Provider value={conf}>
       {props.children}
     </AppContext.Provider>
   )

@@ -24,6 +24,8 @@ export const loadUserData = () => async (dispatch: React.Dispatch<any>) => {
   const data = await getUserData()
   dispatch(setData(data))
   dispatch(setLoading(false))
+  dispatch(setDarkMode(true))
+  dispatch(setLoading(false))
 }
 
 export const setData = (data: Partial<UserState>) => {

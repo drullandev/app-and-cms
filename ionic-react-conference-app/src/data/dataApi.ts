@@ -3,11 +3,15 @@ import { Schedule, Session } from '../models/Schedule'
 import { Speaker } from '../models/Speaker'
 import { Location } from '../models/Location'
 import { setOrRemove, parseSessions, boolSwitch } from './reducer.utils'
+import { restCall } from '../calls/axios';
 
 const { Storage } = Plugins
 
 const dataUrl = '/assets/data/data.json'
 const locationsUrl = '/assets/data/locations.json'
+
+const dataUrl2 = process.env.REACT_APP_HOST+'nose'
+const locations = process.env.REACT_APP_HOST+'nose'
 
 const ID = 'id'
 const JWT = 'jwt'
@@ -107,11 +111,45 @@ export const setIdData = async (id2?: string) => setOrRemove(ID, id2, false)
 export const setJwtData = async (jwt?: string) => setOrRemove(JWT, jwt)
 export const setUsernameData = async (username?: string) => setOrRemove(USERNAME, username)
 export const setEmailData = async (email?: string) => setOrRemove(EMAIL, email)
-export const setBlockedData = async (blocked?: boolean) => setOrRemove(BLOCKED, blocked)
-export const setConfirmedData = async (confirmed?: boolean) => setOrRemove(CONFIRMED, confirmed)
+export const setBlockedData = async (blocked?: boolean) => boolSwitch(BLOCKED, blocked)
+export const setConfirmedData = async (confirmed?: boolean) => boolSwitch(CONFIRMED, confirmed)
 export const setCreatedAtData = async (createdAt?: string) => setOrRemove(CREATED_AT, createdAt)
 export const setUpdatedAtData = async (updatedAt?: string) => setOrRemove(UPDATED_AT, updatedAt)
 export const setProviderData = async (provider2?: string) => setOrRemove(UPDATED_AT, provider2)
 export const setDarkModeData = async (darkMode?: boolean) => boolSwitch(DARK_MODE, darkMode)
-export const setHasSeenTutorialData = async (hasSeenTutorial?: boolean) => setOrRemove(HAS_SEEN_TUTORIAL, hasSeenTutorial)
-export const setIsLoggedInData = async (isLoggedIn?: boolean) => setOrRemove(HAS_LOGGED_IN, isLoggedIn)
+export const setHasSeenTutorialData = async (hasSeenTutorial?: boolean) => boolSwitch(HAS_SEEN_TUTORIAL, hasSeenTutorial)
+export const setIsLoggedInData = async (isLoggedIn?: boolean) => boolSwitch(HAS_LOGGED_IN, isLoggedIn)
+
+
+export const crud = (
+  operation: string,
+  model:string,
+  data: any
+) => {
+  const op = (operation: string) => {
+    switch(operation){
+      case 'update': {
+        return restCall({
+          req: {
+            url: model,
+            method: 'POST',
+            data: data
+          }
+        })
+      } break;
+      case 'insert': {
+        return restCall({
+          req: {
+            url: model,
+            method: 'PUT',
+            data: data
+          }
+        })
+      } break;
+      default:
+
+        break;
+    }
+  }
+
+}
