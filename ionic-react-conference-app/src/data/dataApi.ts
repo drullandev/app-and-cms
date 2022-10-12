@@ -3,7 +3,7 @@ import { Schedule, Session } from '../models/Schedule'
 import { Speaker } from '../models/Speaker'
 import { Location } from '../models/Location'
 import { setOrRemove, parseSessions, boolSwitch } from './reducer.utils'
-import { restCall } from '../calls/axios';
+import { restCall } from '../classes/calls/axios';
 
 const { Storage } = Plugins
 
@@ -119,37 +119,3 @@ export const setProviderData = async (provider2?: string) => setOrRemove(UPDATED
 export const setDarkModeData = async (darkMode?: boolean) => boolSwitch(DARK_MODE, darkMode)
 export const setHasSeenTutorialData = async (hasSeenTutorial?: boolean) => boolSwitch(HAS_SEEN_TUTORIAL, hasSeenTutorial)
 export const setIsLoggedInData = async (isLoggedIn?: boolean) => boolSwitch(HAS_LOGGED_IN, isLoggedIn)
-
-
-export const crud = (
-  operation: string,
-  model:string,
-  data: any
-) => {
-  const op = (operation: string) => {
-    switch(operation){
-      case 'update': {
-        return restCall({
-          req: {
-            url: model,
-            method: 'POST',
-            data: data
-          }
-        })
-      } break;
-      case 'insert': {
-        return restCall({
-          req: {
-            url: model,
-            method: 'PUT',
-            data: data
-          }
-        })
-      } break;
-      default:
-
-        break;
-    }
-  }
-
-}

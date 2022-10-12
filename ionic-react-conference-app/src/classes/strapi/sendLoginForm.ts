@@ -1,4 +1,4 @@
-import { restCallAsync } from '../../calls/axios'
+import { restCallAsync } from '../calls/axios'
 import { StrapiAuthProps } from './models/StrapiAuthProps'
 import { LoginFormProps } from './models/SendStrapiAuthProps' 
 
@@ -16,6 +16,4 @@ export const sendLoginForm = async (data: LoginFormProps) => {
       data.onError(err)
     }
   })
-
-
 }

@@ -1,4 +1,4 @@
-import { empty } from './common'
+import { empty } from '../common'
 
 export interface WhereProps {
   type: string

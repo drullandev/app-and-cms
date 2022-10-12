@@ -24,13 +24,6 @@ export const loadUserData = () => async (dispatch: React.Dispatch<any>) => {
   const data = await getUserData()
   dispatch(setData(data))
   dispatch(setLoading(false))
-  dispatch(setDarkMode(true))
-  dispatch(setLoading(false))
-}
-
-export const setData = (data: Partial<UserState>) => {
-  console.log('user.action::setData', data)
-  return ({ type: 'set-user-data', data} as const)
 }
 
 export const logoutUser = () => async (dispatch: React.Dispatch<any>) => {
@@ -38,7 +31,18 @@ export const logoutUser = () => async (dispatch: React.Dispatch<any>) => {
   await setIsLoggedInData(false)
   dispatch(setUsername())
   dispatch(setEmail())
+  dispatch(setBlocked())
+  dispatch(setConfirmed(false))
+  dispatch(setCreatedAt())
+  dispatch(setUpdatedAt())
+  dispatch(setProvider())
   dispatch(setDarkMode(true))
+  dispatch(setLoading(false))
+}
+
+export const setData = (data: Partial<UserState>) => {
+  console.log('user.action::setData', data)
+  return ({ type: 'set-user-data', data} as const)
 }
 
 export const setIsLoggedIn = (loggedIn: boolean) => async (dispatch: React.Dispatch<any>) => {
