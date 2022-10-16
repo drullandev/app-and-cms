@@ -30,9 +30,7 @@ export const sendLoginForm = async (data: LoginFormProps) => {
   return restCall({
     req: {
       url: 'graphql',
-      data: {
-        variables: LOGIN_USER
-      },
+      data:  LOGIN_USER,
       method: 'POST'
     },
     onSuccess: (ret: StrapiAuthProps)=>{
