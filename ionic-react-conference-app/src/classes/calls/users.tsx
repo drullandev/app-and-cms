@@ -1,5 +1,9 @@
 /* tslint:disable interface-name jsx-no-lambda */
 
+
+// https://docs.strapi.io/developer-docs/latest/development/plugins/graphql.html
+
+
 import { useMutation, useQuery } from "@apollo/react-hooks"
 import {
   IonButton,
@@ -11,6 +15,73 @@ import {
 } from "@ionic/react"
 import { gql } from "apollo-boost"
 import React from "react"
+
+const STRAPI_REGISTER = gql`mutation {
+  register(input: { username: "username", email: "email", password: "password" }) {
+    jwt
+    user {
+      username
+      email
+    }
+  }
+}`
+
+const STRAPI_LOGIN = gql`mutation {
+  login(input: { identifier: "email", password: "password" }) {
+    jwt
+  }
+}
+`
+
+const STRAPI_QUERY = gql`query {
+  user(id: "5aafe871ad624b7380d7a224") {
+    username
+    email
+  }
+}
+`
+
+const STRAPI_UPDATE = gql`mutation {
+  updateUser(
+    input: {
+      where: { id: "5b28f1747c739e4afb48605c" }
+      data: { username: "John", email: "john@doe.com" }
+    }
+  ) {
+    user {
+      username
+      email
+    }
+  }
+}
+`
+
+const STRAPI_DELETE = gql`mutation {
+  deleteUser(input: { where: { id: "5b28f1747c739e4afb48605c" } }) {
+    user {
+      username
+      email
+    }
+  }
+}
+`
+const USER_QUERY = gql`query {
+  users(limit: 10, start: 10, sort: "username:asc", where: { email_contains: "@strapi.io" }) {
+    username
+    email
+  }
+  restaurants(
+    limit: 10
+    where: { _id_nin: ["5c4dad1a8f3845222ca88a56", "5c4dad1a8f3845222ca88a57"] }
+  ) {
+    _id
+    name
+  }
+}
+`
+
+
+/*
 import "./home.css"
 
 const NEW_VARIABLES = {
@@ -168,3 +239,5 @@ function Home() {
 }
 
 export default Home
+
+*/

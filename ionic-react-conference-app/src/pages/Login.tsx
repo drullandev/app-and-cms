@@ -35,7 +35,6 @@ import {
 import { connect } from '../data/connect'
 import { RouteComponentProps } from 'react-router'
 
-import { StrapiAuthProps } from '../classes/strapi/models/StrapiAuthProps'
 import { sendLoginForm } from '../classes/strapi/sendLoginForm'
 
 import './Login.scss'
@@ -97,7 +96,7 @@ const Login: React.FC<LoginProps> = ({
 
     if(username && password) {
 
-      const launchToast = async (data: any) => {
+      const launchToast = async (data: any, setToast: Function) => {
         await setToast({
           message: data.message,
           duration: data.duration ?? 1500,
@@ -109,7 +108,7 @@ const Login: React.FC<LoginProps> = ({
         },data.duration ?? 1500)
       }
 
-      const onLoginSuccess = async (ret: StrapiAuthProps) => {
+      const onLoginSuccess = async (ret: any) => {
         setIdAction(ret.user.id)
         setJwtAction(ret.jwt)
         setUsernameAction(ret.user.username)
@@ -123,20 +122,20 @@ const Login: React.FC<LoginProps> = ({
       }      
 
       await sendLoginForm({
-        data: { 
+        input: { 
           identifier: 'bunny@gmail.com',
           password: 'Qwer1234' 
-        },
+        }/*,
         onSuccess: (ret: StrapiAuthProps)=>{
           onLoginSuccess(ret)
             .then(()=>{
-              launchToast({ message: 'Has logrado logearte' })
+              launchToast({ message: 'Has logrado logearte' }, setToast)
                 .then(()=> history.push('/tabs/schedule', {direction: 'none'}))            
             })
         },
         onError: (err: Error)=> {
-          launchToast({ message: 'No tienes permisos de acceso' })
-        }     
+          launchToast({ message: 'No tienes permisos de acceso' }, setToast)
+        }*/     
       })
     
     }

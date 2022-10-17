@@ -1,11 +1,61 @@
-import { restCallAsync } from '../calls/apollo'
-import { StrapiAuthProps } from './models/StrapiAuthProps'
-import { LoginFormProps } from './models/SendStrapiAuthProps' 
-import { useQuery, useMutation } from '@apollo/client'
-import { gql } from 'apollo-boost'
-import { restCall } from '../../classes/calls/axios'
+import {
+  //setQuery,
+  setMutation,
+  getMutation
+} from '../graphql/graphql'
+//import { GeolocationPluginWeb } from '@capacitor/core'
+//import { sad, star } from 'ionicons/icons'
+//import { initialUser } from '../../data/state'
 
-export const sendLoginForm = async (data: LoginFormProps) => {
+export interface LoginFormProps  {
+  input: {
+    identifier: string
+    password: string
+  }
+  onSuccess?: Function
+  onError?: Function
+}
+
+export interface StrapiAuthProps {
+  user: {
+    id?: string
+    username?: string
+    email?: string
+    blocked?: boolean
+    confirmed?: boolean
+    createdAt?: string
+    updatedAt?: string
+    provider?: string
+    darkMode?: boolean
+  },
+  jwt?: string
+}
+  
+export const sendLoginForm = async (formData: LoginFormProps) => {
+
+  console.log('param', formData)
+
+  let login = {
+    action: "login",
+    data: {
+      input: formData.input,
+      output: {//TODO find the way to put this as type :P initiator
+        user: {
+          id: 'string',
+          username: 'string',
+          email: 'string',
+          blocked: true,
+          confirmed: true,
+        },
+        jwt: 'string'
+      } as StrapiAuthProps
+    }
+  }
+
+  
+
+  console.log(getMutation(login))
+
   /*await restCallAsync({
     req: {
       url: 'api/auth/local',
@@ -19,7 +69,7 @@ export const sendLoginForm = async (data: LoginFormProps) => {
       data.onError(err)
     }
   })
-  await null*/
+  await null
   const LOGIN_USER = gql`
   mutation {
     login(input: { identifier: "bunny@gmail.com", password: "Qwer1234"}) {
@@ -41,6 +91,7 @@ export const sendLoginForm = async (data: LoginFormProps) => {
     }
 
   })
+*/
 
 
 //    data.query = LOGIN_USER

@@ -1,4 +1,6 @@
-import { empty } from '../common'
+import { restCall } from '../calls/axios'
+import { empty, camelCase } from '../common'
+import { graphqlCall } from '../calls/apollo'
 
 export interface WhereProps {
   type: string
@@ -7,12 +9,76 @@ export interface WhereProps {
   value: string
 }
 
-export interface GqlModel {
-  model: string
-  paginator: {
-    limit: number,
-    start: number,
+export interface PaginatorProps {
+  limit: number
+  start: number
+}
+
+
+export interface GqlMutationModel {
+  model?: string
+  action?: string
+  data?: {
+    input?: {
+      identifier?: string
+      password?: string
+    }
+    output?: any
   }
+}
+
+export const getMutation = (p: GqlMutationModel) => {
+  return graphqlCall(setMutation(p))
+}
+
+export const setMutation = (p: GqlMutationModel) => {
+
+  let qs = `mutation {\t`
+
+  if( p.model !== undefined && p.action !== undefined ){
+    qs += camelCase(p.action+' '+p.model)
+  }else if( p.action ){
+    qs += camelCase(p.action)
+  }else if( p.model ){
+    qs += p.model
+  }
+
+  if( p.data?.input !== undefined ){
+    let inputString = ''
+    qs += '(input:'
+    Object.entries(p.data?.input).forEach(([key, value]) => {
+      inputString = inputString + ` ${key}: `
+      if(typeof value === 'boolean'){
+        inputString = inputString + `${value},`
+      }else{
+        inputString = inputString + `"${value}",`
+      }
+    })
+    qs += '{ ' + inputString.replace(/,+$/, '') + ' }'
+    qs += ')'
+  }
+
+  if( p.data?.output !== undefined){
+    if (p.data.output) {    
+      qs += JSON.stringify(p.data?.output, null, ' ')
+        .replace(/number|string| date|true|,/g, '')
+        .replace(/[":]/g, '')
+    }
+  }
+
+  qs += `}`
+
+  return qs
+
+}
+
+export const giveAFuck = (yesgiveafuck: object) => {
+  
+}
+
+export interface GqlQueryModel {
+  model: string
+  paginator: PaginatorProps
   where: WhereProps[]
   filter: any
   struct: any
@@ -25,24 +91,26 @@ export interface GqlModel {
   direction: string
 }
 
-export const setGQLQuery = (params: GqlModel) =>{
+export const setQuery = (p: GqlQueryModel) =>{
   
-  console.log(params.orderField)
+  console.log(p.orderField)
 
-  let queryString = `query ` + params.model + ` {\n\t` + params.model
+  let qs = `query `
 
-  queryString += `( `  
+  qs =+ p.model + ` {\n\t` + p.model
 
-  if (params.paginator) {
-    queryString += JSON.stringify(params.paginator, null, '')
+  qs +=`( `  
+
+  if (p.paginator) {
+    qs +=JSON.stringify(p.paginator, null, '')
       .replace(',',', ')
       .replace(/["{}]/g, '')
   }
 
   // WHERE
   var where = []
-  if(!empty(params.where)){
-    params.where.map((row:any)=>{
+  if(!empty(p.where)){
+    p.where.map((row:any)=>{
       if(row.value !== undefined && row.value !== ''){
         var whereType = row.value
         switch(row.type){
@@ -73,31 +141,146 @@ export const setGQLQuery = (params: GqlModel) =>{
     })
   }
 
-  console.log(params)
+  console.log(p)
 
-  if(params.filterField !== undefined){
-    if(params.filterCondition !== undefined && typeof params.searchString !== undefined){
-      where.push(params.filterField+'_'+params.filterCondition+' : '+params.searchString)
+  if(p.filterField !== undefined){
+    if(p.filterCondition !== undefined && typeof p.searchString !== undefined){
+      where.push(p.filterField+'_'+p.filterCondition+' : '+p.searchString)
     }
   }
 
   //https://strapi.io/documentation/developer-docs/latest/development/plugins/graphql.html#query-api
-  if(!empty(where)) queryString+=', where: { '+where.join(',')+' }'
+  if(!empty(where)) qs+=', where: { '+where.join(',')+' }'
 
   //ORDER
-  queryString += `, sort: "` + params.orderField + `:` + ( params.searchOrder ? params.searchOrder : params.direction ) + `"`
+  qs +=`, sort: "` + p.orderField + `:` + ( p.searchOrder ? p.searchOrder : p.direction ) + `"`
 
-  queryString += ` )`
+  qs +=` )`
 
-  if (params.struct) {
-    queryString += JSON.stringify(params.struct,null,'\t')
+  if (p.struct) {
+    qs +=JSON.stringify(p.struct,null,'\t')
       .replace(/number|string|date/g, '')
       .replace(/[":]/g, '')  
       .replace(',', ',')
   }
 
-  queryString += `\n}`
-  console.log(queryString)
-  return queryString
+  qs +=`\n}`
+
+  console.log(qs)
+  
+  return qs
 
 }
+
+export const filter = () => {
+  
+  return {
+    order : {
+      default: 'desc',
+      options: [ 
+        {
+          label: 'Descendant',
+          value: 'desc'
+        },{
+          label: 'Ascendant',
+          value: 'asc',
+        }
+      ]
+    },
+    fields: {
+      default: 'published_at',
+      options: [
+        {
+          label: 'Published at',
+          value: 'published_at',
+          type: 'date'
+        },{
+          label: 'Created at',
+          value: 'created_at',
+          type: 'date'
+        },{
+          label: 'Updated at',
+          value: 'updated_at',
+          type: 'date'
+        },{
+          label: 'Content',
+          value: 'content',
+          type: 'string'
+        }
+      ]    
+    },
+    conditions: {
+      default: 'contains',
+      options: [
+        {
+          label: 'Distinct',
+          value: 'ne',
+          families: ['all']
+        },
+        {
+          label: 'Lower than',
+          value: 'lt',
+          families: ['all']
+        },
+        {
+          label: 'Lower or equal',
+          value: 'lte',
+          families: ['all']
+        },
+        {
+          label: 'Greater than',
+          value: 'gt',
+          families: ['all']
+        },
+        {
+          label: 'Greater or equal',
+          value: 'gte',
+          families: ['all']
+        },
+        {
+          label: 'Contains',
+          value: 'contains',
+          families: ['all']
+        },
+        {
+          label: 'Contains sensitive',
+          value: 'containss',
+          families: ['all']
+        },
+        {
+          label: 'No Contains',
+          value: 'ncontains',
+          families: ['all']
+        },
+        {
+          label: 'No Contains sensitive',
+          value: 'ncontainss',
+          families: ['all']
+        },
+        {
+          label: 'In',
+          value: 'in',
+          families: ['array']
+        },
+        {
+          label: 'Not in',
+          value: 'nin',
+          families: ['array'] 
+        },
+        {
+          label: 'Equals null',
+          value: 'null',
+          families: []
+        },
+        {
+          label: 'Not equals null',
+          value: 'nnull',
+          families: []
+        }
+      ]
+    }
+  }
+}
+
+
+

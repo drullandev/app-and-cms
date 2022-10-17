@@ -1,5 +1,5 @@
 import * as AppConst from '../../../static/constants'
-import { setGQLQuery } from '../graphql'
+import { setQuery } from '../graphql'
 import axios from 'axios'
 
 export const restGet = async (model: string, params: any = {}) => {
@@ -30,6 +30,6 @@ export const getGQL = async (
   params: any
 ) => {
   return axios.post(AppConst.RestAPI + '/graphql', {
-    query: setGQLQuery(params),
+    query: setQuery(params),
   })
 }

@@ -23,7 +23,7 @@ export interface GqlModel {
   direction: string
 }
 
-export const setGQLQuery = (params: GqlModel) =>{
+export const setQuery = (params: GqlModel) =>{
   
   console.log(params.orderField)
 
