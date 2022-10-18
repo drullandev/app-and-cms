@@ -32,14 +32,12 @@ export interface StrapiAuthProps {
 }
   
 export const sendLoginForm = async (formData: LoginFormProps) => {
-
-  console.log('param', formData)
-
-  let login = {
+  
+  return getMutation({
     action: "login",
     data: {
       input: formData.input,
-      output: {//TODO find the way to put this as type :P initiator
+      output: {// TODO find the way to put this by type or the initiator
         user: {
           id: 'string',
           username: 'string',
@@ -50,51 +48,7 @@ export const sendLoginForm = async (formData: LoginFormProps) => {
         jwt: 'string'
       } as StrapiAuthProps
     }
-  }
-
-  
-
-  console.log(getMutation(login))
-
-  /*await restCallAsync({
-    req: {
-      url: 'api/auth/local',
-      data: data.data,
-      method: 'post'
-    },
-    onSuccess: (ret: StrapiAuthProps)=>{
-      data.onSuccess(ret)
-    },
-    onError: (err: Error)=> {
-      data.onError(err)
-    }
   })
-  await null
-  const LOGIN_USER = gql`
-  mutation {
-    login(input: { identifier: "bunny@gmail.com", password: "Qwer1234"}) {
-      jwt
-    }
-  }` 
-
-  return restCall({
-    req: {
-      url: 'graphql',
-      data:  LOGIN_USER,
-      method: 'POST'
-    },
-    onSuccess: (ret: StrapiAuthProps)=>{
-      data.onSuccess(ret)
-    },
-    onError: (err:Error)=>{
-      data.onError(err)
-    }
-
-  })
-*/
-
-
-//    data.query = LOGIN_USER
 
 }
 

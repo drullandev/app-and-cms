@@ -1,7 +1,5 @@
-import { useQuery, useMutation } from '@apollo/client'
-import axios, { AxiosRequestConfig } from 'axios'
+import { AxiosRequestConfig } from 'axios'
 import { restCall, restCallAsync } from './axios'
-import { gql } from 'apollo-boost'
 
 export interface CallProps {
   req: AxiosRequestConfig,
@@ -10,22 +8,18 @@ export interface CallProps {
   onFinally?: Function
 }
 
-export const graphqlCall = (call: string): any => {
-  return restCall({
+export const setCall = (call: string): CallProps => {
+  return {
     req: {
       method: 'POST',
       url: 'graphql',
-      data: { query: `${call}` }      
+      data: {
+        query: `${call}`
+      }      
     }
-  })
+  }
 }
 
-export const graphqlCallAsync = async (call: string) => {
-  return await restCallAsync({
-    req: {
-      method: 'POST',
-      url: 'graphql',
-      data: gql`${call}`      
-    }
-  })
-}
+export const graphqlCall = (call: string): any => restCall(setCall(call))
+
+export const graphqlCallAsync = async (call: string) => await restCallAsync(setCall(call))
