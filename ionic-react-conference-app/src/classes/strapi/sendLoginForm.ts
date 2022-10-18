@@ -1,11 +1,7 @@
-import {
-  //setQuery,
-  setMutation,
-  getMutation
-} from '../graphql/graphql'
-//import { GeolocationPluginWeb } from '@capacitor/core'
-//import { sad, star } from 'ionicons/icons'
-//import { initialUser } from '../../data/state'
+import { reducers } from '../../data/state'
+import { restCall, restCallAsync } from '../core/axios'
+//import { getMutation} from '../graphql/graphql'
+import { crud } from '../strapi/crud'
 
 export interface LoginFormProps  {
   input: {
@@ -31,14 +27,33 @@ export interface StrapiAuthProps {
   jwt?: string
 }
   
-export const sendLoginForm = async (formData: LoginFormProps) => {
+export const sendLoginForm = (data: LoginFormProps) => {
 
-  console.log('param', formData)
+  return restCall({
+    req: {
+      url: 'api/auth/local',
+      data: data.input,
+      method: 'POST'
+    },
+    onSuccess: (ret: StrapiAuthProps)=>{
+      //let crud('get', 'user', { id: ret.user.id })) 
+      if(data.onSuccess ) return data.onSuccess(ret)
 
-  let login = {
+    },
+    onError: (err: Error)=> {
+      console.log('error')
+      if(data.onError ) return data.onError(err)
+    }
+  })
+
+  // XXX GrahpQL: Was nice to prepare this hability, the way I can generate mutations 
+  // with few data in my own way... But finally, I skip to API for all the common, 
+  // less for the basic listing
+  /*
+  return await getMutation({
     action: "login",
     data: {
-      input: formData.input,
+      input: data.input,
       output: {//TODO find the way to put this as type :P initiator
         user: {
           id: 'string',
@@ -50,51 +65,7 @@ export const sendLoginForm = async (formData: LoginFormProps) => {
         jwt: 'string'
       } as StrapiAuthProps
     }
-  }
-
-  
-
-  console.log(getMutation(login))
-
-  /*await restCallAsync({
-    req: {
-      url: 'api/auth/local',
-      data: data.data,
-      method: 'post'
-    },
-    onSuccess: (ret: StrapiAuthProps)=>{
-      data.onSuccess(ret)
-    },
-    onError: (err: Error)=> {
-      data.onError(err)
-    }
-  })
-  await null
-  const LOGIN_USER = gql`
-  mutation {
-    login(input: { identifier: "bunny@gmail.com", password: "Qwer1234"}) {
-      jwt
-    }
-  }` 
-
-  return restCall({
-    req: {
-      url: 'graphql',
-      data:  LOGIN_USER,
-      method: 'POST'
-    },
-    onSuccess: (ret: StrapiAuthProps)=>{
-      data.onSuccess(ret)
-    },
-    onError: (err:Error)=>{
-      data.onError(err)
-    }
-
-  })
-*/
-
-
-//    data.query = LOGIN_USER
+  }).data.login
+  */
 
 }
-

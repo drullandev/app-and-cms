@@ -3,7 +3,7 @@ import { Schedule, Session } from '../models/Schedule'
 import { Speaker } from '../models/Speaker'
 import { Location } from '../models/Location'
 import { setOrRemove, parseSessions, boolSwitch } from './reducer.utils'
-import { restCall } from '../classes/calls/axios';
+import { restCall } from '../classes/core/axios';
 
 const { Storage } = Plugins
 

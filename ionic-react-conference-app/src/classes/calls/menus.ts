@@ -2,7 +2,7 @@
  For more references, take a look on the docs about Preferences api
  https://capacitorjs.com/docs/apis/preferences
 */
-import {restCall} from './axios'
+import {restCall} from '../core/axios'
 
 export const getMenuById = (id: number, onSuccess: Function, onError: Function) => {
   return restCall({
