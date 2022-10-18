@@ -26,6 +26,7 @@ export interface StrapiAuthProps {
   jwt?: string
 }
   
+<<<<<<< HEAD
 export const sendLoginForm = (data: LoginFormProps) => {
 
   return restCall({
@@ -53,6 +54,15 @@ export const sendLoginForm = (data: LoginFormProps) => {
     data: {
       input: data.input,
       output: {//TODO find the way to put this as type :P initiator
+=======
+export const sendLoginForm = async (formData: LoginFormProps) => {
+  
+  return getMutation({
+    action: "login",
+    data: {
+      input: formData.input,
+      output: {// TODO find the way to put this by type or the initiator
+>>>>>>> 0197264f47f600e5156776224a2e0d254c2cce24
         user: {
           id: 'string',
           username: 'string',
@@ -63,7 +73,13 @@ export const sendLoginForm = (data: LoginFormProps) => {
         jwt: 'string'
       } as StrapiAuthProps
     }
+<<<<<<< HEAD
   }).data.login
   */
+=======
+  })
+
+}
+>>>>>>> 0197264f47f600e5156776224a2e0d254c2cce24
 
 }
