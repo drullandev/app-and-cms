@@ -37,6 +37,8 @@ import { RouteComponentProps } from 'react-router'
 
 import { sendLoginForm } from '../classes/strapi/sendLoginForm'
 
+import { StrapiAuthProps } from '../classes/strapi/sendLoginForm'
+
 import './Login.scss'
 import { globe } from 'ionicons/icons'
 
@@ -125,7 +127,7 @@ const Login: React.FC<LoginProps> = ({
         input: { 
           identifier: 'bunny@gmail.com',
           password: 'Qwer1234' 
-        }/*,
+        },
         onSuccess: (ret: StrapiAuthProps)=>{
           onLoginSuccess(ret)
             .then(()=>{
@@ -135,7 +137,7 @@ const Login: React.FC<LoginProps> = ({
         },
         onError: (err: Error)=> {
           launchToast({ message: 'No tienes permisos de acceso' }, setToast)
-        }*/     
+        }
       })
     
     }

@@ -1,7 +1,6 @@
-import { reducers } from '../../data/state'
-import { restCall, restCallAsync } from '../core/axios'
+import { restCall } from '../core/axios'
 //import { getMutation} from '../graphql/graphql'
-import { crud } from '../strapi/crud'
+//import { crud } from '../strapi/crud'
 
 export interface LoginFormProps  {
   input: {
@@ -41,7 +40,6 @@ export const sendLoginForm = (data: LoginFormProps) => {
 
     },
     onError: (err: Error)=> {
-      console.log('error')
       if(data.onError ) return data.onError(err)
     }
   })

@@ -1,17 +1,15 @@
 import { Plugins } from '@capacitor/core'
-import { Schedule, Session } from '../models/Schedule'
+import { Schedule, 
+  //Session
+} from '../models/Schedule'
 import { Speaker } from '../models/Speaker'
 import { Location } from '../models/Location'
 import { setOrRemove, parseSessions, boolSwitch } from './reducer.utils'
-import { restCall } from '../classes/core/axios';
 
 const { Storage } = Plugins
 
 const dataUrl = '/assets/data/data.json'
 const locationsUrl = '/assets/data/locations.json'
-
-const dataUrl2 = process.env.REACT_APP_HOST+'nose'
-const locations = process.env.REACT_APP_HOST+'nose'
 
 const ID = 'id'
 const JWT = 'jwt'
