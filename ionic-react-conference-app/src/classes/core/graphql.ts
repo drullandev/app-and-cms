@@ -14,6 +14,7 @@ export interface PaginatorProps {
   start: number
 }
 
+// MUTATION GENERATOR
 export interface GqlMutationModel {
   model?: string
   action?: string
@@ -30,7 +31,7 @@ export const getMutation = (p: GqlMutationModel) => {
   return graphqlCall(setMutation(p))
 }
 
-export const setMutation = (p: GqlMutationModel) => {
+const setMutation = (p: GqlMutationModel) => {
 
   let qs = `mutation {\t`
 
@@ -71,6 +72,9 @@ export const setMutation = (p: GqlMutationModel) => {
 
 }
 
+
+// QUERY GENERATOR
+
 export interface GqlQueryModel {
   model: string
   paginator: PaginatorProps
@@ -90,7 +94,7 @@ export const setQuery = (p: GqlQueryModel) => {
   return graphqlCall(getQuery(p))
 }
 
-export const getQuery = (p: GqlQueryModel) =>{
+const getQuery = (p: GqlQueryModel) =>{
   
   console.log(p.orderField)
 
@@ -178,7 +182,7 @@ export interface CallProps {
   onFinally?: Function
 }
 
-export const graphqlCall = (call: string): any => {
+const graphqlCall = (call: string): any => {
   return restCall({
     req: {
       method: 'POST',
@@ -188,7 +192,7 @@ export const graphqlCall = (call: string): any => {
   })
 }
 
-export const graphqlCallAsync = async (call: string) => {
+const graphqlCallAsync = async (call: string) => {
   return await restCallAsync({
     req: {
       method: 'POST',

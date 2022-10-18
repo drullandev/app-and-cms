@@ -16,7 +16,7 @@ export const initialData = {
 }
 
 export const initialUser = {
-  id: 0,
+  id: '',
   jwt: '',
   username: '',
   email: '',

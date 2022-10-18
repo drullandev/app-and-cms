@@ -5,6 +5,7 @@ import { Schedule,
 import { Speaker } from '../models/Speaker'
 import { Location } from '../models/Location'
 import { setOrRemove, parseSessions, boolSwitch } from './reducer.utils'
+import { UserState } from './user/user.state'
 
 const { Storage } = Plugins
 
@@ -103,6 +104,21 @@ export const getUserData = async () => {
 
   return data
 
+}
+
+export const resetUserData = async (data: UserState) => {
+  setIdData(data.id)
+  setJwtData(data.jwt)
+  setUsernameData(data.username)
+  setEmailData(data.email)
+  setBlockedData(data.blocked)
+  setConfirmedData(data.confirmed)
+  setCreatedAtData(data.createdAt)
+  setUpdatedAtData(data.updatedAt)
+  setProviderData(data.provider)
+  setDarkModeData(data.darkMode)
+  setHasSeenTutorialData(true)
+  setIsLoggedInData(false)
 }
 
 export const setIdData = async (id2?: string) => setOrRemove(ID, id2, false)

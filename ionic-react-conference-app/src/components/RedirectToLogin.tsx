@@ -1,22 +1,20 @@
 import React, { useEffect, useContext } from 'react'
 import { IonRouterContext } from '@ionic/react'
+import { initialUser } from '../data/state'
 
 interface RedirectToLoginProps {
-  setIsLoggedIn: Function
-  setUsername: Function
+  setData: Function
 }
 
 const RedirectToLogin: React.FC<RedirectToLoginProps> = ({
-  setIsLoggedIn,
-  setUsername
+  setData
 }) => {
 
   const ionRouterContext = useContext(IonRouterContext)
   useEffect(() => {
-    setIsLoggedIn(false)
-    setUsername(undefined)
+    setData(initialUser)
     ionRouterContext.push('/tabs/schedule')
-  }, [setIsLoggedIn, setUsername, ionRouterContext])
+  }, [setData, ionRouterContext])
 
   return null
 

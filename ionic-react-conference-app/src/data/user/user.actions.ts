@@ -12,10 +12,12 @@ import {
   setHasSeenTutorialData,
   setIsLoggedInData,
   getUserData,
+  resetUserData
 } from '../dataApi'
 
 import { ActionType } from '../../util/types'
 import { UserState } from './user.state'
+import { initialUser } from '../state'
 
 // Keep it simple
 
@@ -29,19 +31,22 @@ export const loadUserData = () => async (dispatch: React.Dispatch<any>) => {
 export const logoutUser = () => async (dispatch: React.Dispatch<any>) => {
   console.log('user.action::logoutUser')
   await setIsLoggedInData(false)
-  dispatch(setUsername())
-  dispatch(setEmail())
-  dispatch(setBlocked())
-  dispatch(setConfirmed(false))
-  dispatch(setCreatedAt())
-  dispatch(setUpdatedAt())
-  dispatch(setProvider())
-  dispatch(setDarkMode(true))
-  dispatch(setLoading(false))
+  await resetUserData(initialUser)
 }
 
-export const setData = (data: Partial<UserState>) => {
+export const setData = (data: Partial<UserState>) => async (dispatch: React.Dispatch<any>) => {
   console.log('user.action::setData', data)
+  setIdData(data.id)
+  setJwtData(data.jwt)
+  setUsernameData(data.username)
+  setEmailData(data.email)
+  setBlockedData(data.blocked)
+  setConfirmedData(data.confirmed)
+  setCreatedAtData(data.createdAt)
+  setUpdatedAtData(data.updatedAt)
+  setProviderData(data.provider)
+  setDarkModeData(data.darkMode)
+  setIsLoggedInData(data.darkMode)
   return ({ type: 'set-user-data', data} as const)
 }
 

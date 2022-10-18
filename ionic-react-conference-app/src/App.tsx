@@ -27,7 +27,7 @@ import './theme/variables.css'
 import { connect } from './data/connect'
 import { AppContextProvider } from './data/AppContext'
 import { loadConfData } from './data/sessions/sessions.actions'
-import { setIsLoggedIn, setUsername, loadUserData } from './data/user/user.actions'
+import { loadUserData, setData, setIsLoggedIn } from './data/user/user.actions'
 
 import Login from './pages/Login'
 import Signup from './pages/Signup'
@@ -50,13 +50,13 @@ setupIonicReact({
 interface StateProps {
   darkMode: boolean
   schedule: Schedule
+  hasLoggedIn: boolean
 }
 
 interface DispatchProps {
   loadConfData: typeof loadConfData
   loadUserData: typeof loadUserData
-  setIsLoggedIn: typeof setIsLoggedIn
-  setUsername: typeof setUsername
+  setData: typeof setData
 }
 
 interface IonicAppProps extends StateProps, DispatchProps { }
@@ -64,8 +64,8 @@ interface IonicAppProps extends StateProps, DispatchProps { }
 const IonicApp: React.FC<IonicAppProps> = ({ 
   darkMode,
   schedule,
-  setIsLoggedIn,
-  setUsername,
+  hasLoggedIn,
+  setData,
   loadConfData,
   loadUserData
 }) => {
@@ -73,6 +73,7 @@ const IonicApp: React.FC<IonicAppProps> = ({
   useEffect(() => {
     loadUserData()
     loadConfData()
+    //setData(initialUser)
     // eslint-disable-next-line
   }, [])
 
@@ -96,10 +97,7 @@ const IonicApp: React.FC<IonicAppProps> = ({
               <Route path='/support' component={Support} />
               <Route path='/tutorial' component={Tutorial} />
               <Route path='/logout' render={() => {
-                return <RedirectToLogin
-                  setIsLoggedIn={setIsLoggedIn}
-                  setUsername={setUsername}
-                />
+                return <RedirectToLogin setData={setData}/>
               }} />
               <Route path='/' component={HomeOrTutorial} exact />
             </IonRouterOutlet>
@@ -120,13 +118,13 @@ export default App
 const connectProps = {
   mapStateToProps: (state:any) => ({
     darkMode: state.user.darkMode,
-    schedule: state.data.schedule
+    schedule: state.data.schedule,
+    hasLoggedIn: state.user.hasLoggedIn,
   }),
   mapDispatchToProps: {
     loadConfData,
     loadUserData,
-    setIsLoggedIn,
-    setUsername
+    setData
   },
   component: IonicApp
 }
