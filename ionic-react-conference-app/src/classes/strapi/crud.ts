@@ -7,7 +7,7 @@ import { CallProps, restCall } from '../core/axios'
  * @param data 
  * @returns 
  */
-export const crud = ( operation: string, model:string, data: any ) => {
+export const crud = ( operation: string, model:string, data?: any ) => {
   
   const method =
     ( operation === 'insert') ? 'PUT'     :
@@ -18,16 +18,16 @@ export const crud = ( operation: string, model:string, data: any ) => {
   let uri = model+'s' //XXX Used to be plural under this context (Strapi calls)
 
   if(method === 'GET' || method === 'POST'){
-    let m2 = '/'
+    let queryStr = '/'
     Object.entries(data).forEach(([key, value]) => {
       if(key === 'id'){
-        m2 = m2 + `${value}`
+        queryStr = queryStr + `${value}`
       }else{
-        m2 = m2 + `${key}=${value}&`
+        queryStr = queryStr + `${key}=${value}&`
       }      
     })
-    m2.replace(/&+$/, '')
-    uri = uri + m2
+    queryStr.replace(/&+$/, '')
+    uri = uri + queryStr
   }
 
   let call: CallProps = {

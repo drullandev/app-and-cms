@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { RouteComponentProps } from 'react-router'
 import {
   IonHeader,
   IonToolbar,
@@ -18,7 +19,6 @@ import {
   useIonToast,
   IonRippleEffect
 } from '@ionic/react'
-
 import {
   setId,
   setJwt,
@@ -30,20 +30,18 @@ import {
   setUpdatedAt,
   setProvider,
   setIsLoggedIn,
+  setData,
 } from '../data/user/user.actions'
-
 import { connect } from '../data/connect'
-import { RouteComponentProps } from 'react-router'
 
 import { sendLoginForm } from '../classes/strapi/sendLoginForm'
-
 import { StrapiAuthProps } from '../classes/strapi/sendLoginForm'
 
 import './Login.scss'
 import { globe } from 'ionicons/icons'
 
 interface DispatchProps {
-  // Common
+  setData:        typeof setData
   setId:          typeof setId
   setJwt:         typeof setJwt
   setUsername:    typeof setUsername
@@ -53,7 +51,6 @@ interface DispatchProps {
   setCreatedAt:   typeof setCreatedAt
   setUpdatedAt:   typeof setUpdatedAt
   setProvider:    typeof setProvider
-  // Extra
   setIsLoggedIn:  typeof setIsLoggedIn
 }
 
@@ -72,6 +69,7 @@ const Login: React.FC<LoginProps> = ({
   setCreatedAt: setCreatedAtAction,
   setUpdatedAt: setUpdatedAtAction,
   setProvider:  setProviderAction,
+  setData:      setDataAction,
   setIsLoggedIn, 
 }) => {
 
@@ -101,8 +99,8 @@ const Login: React.FC<LoginProps> = ({
       const launchToast = async (data: any, setToast: Function) => {
         await setToast({
           message: data.message,
-          duration: data.duration ?? 1500,
-          position: data.position ?? 'top',
+          duration: data.duration ?? 1000,
+          position: data.position ?? 'bottom',
           icon: data.icon ?? globe
         })
         setTimeout(()=>{
@@ -111,15 +109,9 @@ const Login: React.FC<LoginProps> = ({
       }
 
       const onLoginSuccess = async (ret: any) => {
-        setIdAction(ret.user.id)
-        setJwtAction(ret.jwt)
-        setUsernameAction(ret.user.username)
-        setEmailAction(ret.user.email)
-        setBlockedAction(ret.user.blocked)
-        setConfirmedAction(ret.user.confirmed)
-        setCreatedAtAction(ret.user.createdAt)
-        setUpdatedAtAction(ret.user.updatedAt)
-        setProviderAction(ret.user.provider)
+        let r = ret.user
+        r.jwt = ret.jwt
+        setDataAction(r)
         setIsLoggedIn(true)
       }      
 
@@ -206,6 +198,7 @@ const Login: React.FC<LoginProps> = ({
 
 export default connect<OwnProps, {}, DispatchProps>({
   mapDispatchToProps: {
+    setData,
     setId,
     setJwt,
     setUsername,
