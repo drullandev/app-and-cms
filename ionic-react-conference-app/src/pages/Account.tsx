@@ -6,6 +6,7 @@ import { connect } from '../data/connect'
 import { RouteComponentProps } from 'react-router'
 import { moonOutline, pencilOutline } from 'ionicons/icons'
 import { setDarkModeData } from '../data/dataApi'
+import Alert from '../components/Alert'
 
 interface StateProps {
   username: string
@@ -56,34 +57,12 @@ const Account: React.FC<AccountProps> = ({
             <IonInput style={{display: 'none'}} value={ username }></IonInput>
             <IonIcon slot="end" icon={pencilOutline} onClick={() => console.log('pinga')}></IonIcon>
 
-            <IonList inset>
-              <IonItem onClick={() => clicked('Update Picture')}>Update Picture</IonItem>
-              <IonItem onClick={() => setShowAlert(true)}>Change Username</IonItem>
-              <IonItem onClick={() => clicked('Change Password')}>Change Password</IonItem>
-            </IonList>
-
             <IonList lines="none">
-              <IonItem onClick={() => clicked('Update Picture')}>
+              <IonItem onClick={() => clicked('Change Password')}>
                 <IonIcon slot="start" icon={moonOutline}></IonIcon>
-                <IonLabel>Update Picture</IonLabel>
+                <IonLabel>Change Password</IonLabel>
               </IonItem>
             </IonList>
-
-            <IonList lines="none">
-              <IonItem onClick={() => setShowAlert(true)}>
-                <IonIcon slot="start" icon={moonOutline}></IonIcon>
-                <IonLabel>Username</IonLabel>
-              </IonItem>
-            </IonList>
-
-            <IonList lines="none">
-              <IonItem routerLink="/support" routerDirection="none">
-                <IonIcon slot="start" icon={moonOutline}></IonIcon>
-                <IonLabel>Support</IonLabel>
-              </IonItem>
-            </IonList>
-
-
 
             <IonList lines="none">
               <IonItem routerLink="/support" routerDirection="none">
@@ -103,34 +82,35 @@ const Account: React.FC<AccountProps> = ({
               <IonItem>
                 <IonIcon slot="start" icon={moonOutline}></IonIcon>
                 <IonLabel>Dark Mode</IonLabel>
-                <IonToggle checked={darkMode} onClick={() => setDarkModeAction(!darkMode)} />
+                <IonToggle checked={darkMode} onClick={() => setDarkMode(!darkMode)} />
               </IonItem>
             </IonList>
           </div>)
         }
       </IonContent>
-      <IonAlert
-        isOpen={showAlert}
-        header="Change Username"
-        buttons={[
+      {/* Alert({
+        isOpen: showAlert,
+        header: "Change Username",
+        buttons: [
           'Cancel',
           {
             text: 'Ok',
-            handler: (data) => {
+            handler: (data: any) => {
               setUsername(data.username)
             }
           }
-        ]}
-        inputs={[
+        ],
+        inputs: [
           {
             type: 'text',
             name: 'username',
             value: username,
             placeholder: 'username'
           }
-        ]}
-        onDidDismiss={() => setShowAlert(false)}
-      />
+        ],
+        onDidDismiss: () => setShowAlert(false)
+      })}*/}
+
     </IonPage>
   )
 }
