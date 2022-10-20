@@ -12,7 +12,7 @@ import {
   setHasSeenTutorialData,
   setIsLoggedInData,
   getUserData,
-  resetUserData
+  setUserData
 } from '../dataApi'
 
 import { ActionType } from '../../util/types'
@@ -22,6 +22,7 @@ import { initialUser } from '../state'
 // Keep it simple
 
 export const loadUserData = () => async (dispatch: React.Dispatch<any>) => {
+  testing(loadUserData)
   dispatch(setLoading(true))
   const data = await getUserData()
   dispatch(setData(data))
@@ -29,13 +30,20 @@ export const loadUserData = () => async (dispatch: React.Dispatch<any>) => {
 }
 
 export const logoutUser = () => async (dispatch: React.Dispatch<any>) => {
-  console.log('user.action::logoutUser')
+  testing(logoutUser)
   await setIsLoggedInData(false)
-  await resetUserData(initialUser)
+  await setUserData(initialUser)
 }
 
+/*export const onLoginSuccess = async (ret: any) => {
+  let user = ret.user
+  user.jwt = ret.jwt // Attach JWT...
+  setDataAction(user)
+  setIsLoggedIn(true)
+}*/    
+
 export const setData = (data: Partial<UserState>) => async (dispatch: React.Dispatch<any>) => {
-  console.log('user.action::setData', data)
+  testing(setData, data)
   setIdData(data.id)
   setJwtData(data.jwt)
   setUsernameData(data.username)
@@ -46,12 +54,11 @@ export const setData = (data: Partial<UserState>) => async (dispatch: React.Disp
   setUpdatedAtData(data.updatedAt)
   setProviderData(data.provider)
   setDarkModeData(data.darkMode)
-  setIsLoggedInData(data.darkMode)
   return ({ type: 'set-user-data', data} as const)
 }
 
 export const setIsLoggedIn = (loggedIn: boolean) => async (dispatch: React.Dispatch<any>) => {
-  console.log('user.action::setIsLoggedIn', loggedIn)
+  testing(setIsLoggedIn, loggedIn)
   await setIsLoggedInData(loggedIn)
   return ({ type: 'set-is-loggedin', loggedIn } as const)
 }
@@ -59,75 +66,79 @@ export const setIsLoggedIn = (loggedIn: boolean) => async (dispatch: React.Dispa
 // COMMON
 
 export const setId = (id?: string) => async (dispatch: React.Dispatch<any>) => {
-  console.log('user.action::setId', id)
+  testing(setId, id)
   await setIdData(id)
   return ({ type: 'set-id', id } as const)
 }
 
 export const setJwt = (jwt?: string) => async (dispatch: React.Dispatch<any>) => {
-  console.log('user.action::setJwt', jwt)
+  testing(setJwt, jwt)
   await setJwtData(jwt)
   return ({type: 'set-jwt',jwt  } as const)
 }
 
 export const setUsername = (username?: string) => async (dispatch: React.Dispatch<any>) => {
-  console.log('user.action::setUsername', username)
+  testing(setUsername, username)
   await setUsernameData(username)
   return ({ type: 'set-username', username } as const)
 }
 
 export const setEmail = (email?: string) => async (dispatch: React.Dispatch<any>) => {
-  console.log('user.action::setEmail', email)
+  testing(setEmail, email)
   await setEmailData(email)
   return ({ type: 'set-email', email } as const)
 }
 
 
 export const setBlocked = (blocked?: boolean) => async (dispatch: React.Dispatch<any>) => {
-  console.log('user.action::setBlocked', blocked)
+  testing(setBlocked, blocked)
   await setBlockedData(blocked)
   return ({ type: 'set-blocked', blocked } as const)
 }
 
 export const setConfirmed = (confirmed?: boolean) => async (dispatch: React.Dispatch<any>) => {
-  console.log('user.action::setConfirmed', confirmed)
+  testing(setConfirmed, confirmed)
   await setConfirmedData(confirmed)
   return ({ type: 'set-confirmed', confirmed } as const)
 }
 
 export const setCreatedAt = (createdAt?: string) => async (dispatch: React.Dispatch<any>) => {
-  console.log('user.action::setCreatedAt', createdAt)
+  testing(setCreatedAt, createdAt)
   await setCreatedAtData(createdAt)
   return ({ type: 'set-created-at', createdAt } as const)
 }
 
 export const setUpdatedAt = (updatedAt?: string) => async (dispatch: React.Dispatch<any>) => {
-  console.log('user.action::setUpdatedAt', updatedAt)
+  testing(setUpdatedAt, updatedAt)
   await setUpdatedAtData(updatedAt)
   return ({ type: 'set-updated-at', updatedAt } as const)
 }
 
 export const setProvider = (provider2?: string) => async (dispatch: React.Dispatch<any>) => {
-  console.log('user.action::setProvider', provider2)
+  testing(setProvider, provider2)
   await setProviderData(provider2)
   return ({ type: 'set-provider', provider2 } as const)
 }
 
 export const setDarkMode = (darkMode?: boolean) => async (dispatch: React.Dispatch<any>) => {
-  console.log('user.action::DarkMode', darkMode)
+  testing(setDarkMode, darkMode)
   await setDarkModeData(darkMode)
   return ({ type: 'set-dark-mode', darkMode } as const)
 }
 
 export const setHasSeenTutorial = (hasSeenTutorial: boolean) => async (dispatch: React.Dispatch<any>) => {
-  console.log('user.action::setHasSeenTutorial',hasSeenTutorial)
+  testing(setHasSeenTutorial, hasSeenTutorial)
   await setHasSeenTutorialData(hasSeenTutorial)
   return ({ type: 'set-has-seen-tutorial', hasSeenTutorial } as const)
 } 
 
 export const setLoading = (isLoading: boolean) => {
-  console.log('user.action::setLoading', isLoading)
+  testing(setLoading, isLoading)
   return { type: 'set-user-loading',  isLoading } as const
+}
+
+export const testing = (func: Function, data: any = undefined, schema: string = 'user') => {
+  console.log(schema+'.action::'+func.name, data)
 }
 
 export type UserActions =

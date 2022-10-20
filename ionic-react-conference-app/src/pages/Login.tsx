@@ -29,6 +29,7 @@ import {
   setCreatedAt,
   setUpdatedAt,
   setProvider,
+  setDarkMode,
   setIsLoggedIn,
   setData,
 } from '../data/user/user.actions'
@@ -51,6 +52,7 @@ interface DispatchProps {
   setCreatedAt:   typeof setCreatedAt
   setUpdatedAt:   typeof setUpdatedAt
   setProvider:    typeof setProvider
+  setDarkMode:    typeof setDarkMode
   setIsLoggedIn:  typeof setIsLoggedIn
 }
 
@@ -70,8 +72,11 @@ const Login: React.FC<LoginProps> = ({
   setUpdatedAt: setUpdatedAtAction,
   setProvider:  setProviderAction,
   setData:      setDataAction,
+  setDarkMode,
   setIsLoggedIn, 
 }) => {
+
+  let testing = true && process.env.REACT_APP_TESTING
 
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
@@ -109,9 +114,9 @@ const Login: React.FC<LoginProps> = ({
       }
 
       const onLoginSuccess = async (ret: any) => {
-        let r = ret.user
-        r.jwt = ret.jwt
-        setDataAction(r)
+        let user = ret.user
+        user.jwt = ret.jwt // Attach JWT...
+        setDataAction(user)
         setIsLoggedIn(true)
       }      
 
@@ -208,6 +213,7 @@ export default connect<OwnProps, {}, DispatchProps>({
     setCreatedAt,
     setUpdatedAt,
     setProvider,
+    setDarkMode,
     setIsLoggedIn,
   },
   component: Login

@@ -106,7 +106,22 @@ export const getUserData = async () => {
 
 }
 
-export const resetUserData = async (data: UserState) => {
+// BASIC
+export const setIdData = async (id2?: string) => setOrRemove(ID, id2, false)
+export const setJwtData = async (jwt?: string) => setOrRemove(JWT, jwt)
+export const setUsernameData = async (username?: string) => setOrRemove(USERNAME, username)
+export const setEmailData = async (email?: string) => setOrRemove(EMAIL, email)
+export const setBlockedData = async (blocked?: boolean) => boolSwitch(BLOCKED, blocked)
+export const setConfirmedData = async (confirmed?: boolean) => boolSwitch(CONFIRMED, confirmed)
+export const setCreatedAtData = async (createdAt?: string) => setOrRemove(CREATED_AT, createdAt)
+export const setUpdatedAtData = async (updatedAt?: string) => setOrRemove(UPDATED_AT, updatedAt)
+export const setProviderData = async (provider2?: string) => setOrRemove(UPDATED_AT, provider2)
+export const setDarkModeData = async (darkMode?: boolean) => boolSwitch(DARK_MODE, darkMode)
+export const setHasSeenTutorialData = async (hasSeenTutorial?: boolean) => boolSwitch(HAS_SEEN_TUTORIAL, hasSeenTutorial)
+export const setIsLoggedInData = async (isLoggedIn?: boolean) => boolSwitch(HAS_LOGGED_IN, isLoggedIn)
+
+// EXTRA
+export const setUserData = async (data: UserState) => {
   setIdData(data.id)
   setJwtData(data.jwt)
   setUsernameData(data.username)
@@ -120,16 +135,3 @@ export const resetUserData = async (data: UserState) => {
   setHasSeenTutorialData(true)
   setIsLoggedInData(false)
 }
-
-export const setIdData = async (id2?: string) => setOrRemove(ID, id2, false)
-export const setJwtData = async (jwt?: string) => setOrRemove(JWT, jwt)
-export const setUsernameData = async (username?: string) => setOrRemove(USERNAME, username)
-export const setEmailData = async (email?: string) => setOrRemove(EMAIL, email)
-export const setBlockedData = async (blocked?: boolean) => boolSwitch(BLOCKED, blocked)
-export const setConfirmedData = async (confirmed?: boolean) => boolSwitch(CONFIRMED, confirmed)
-export const setCreatedAtData = async (createdAt?: string) => setOrRemove(CREATED_AT, createdAt)
-export const setUpdatedAtData = async (updatedAt?: string) => setOrRemove(UPDATED_AT, updatedAt)
-export const setProviderData = async (provider2?: string) => setOrRemove(UPDATED_AT, provider2)
-export const setDarkModeData = async (darkMode?: boolean) => boolSwitch(DARK_MODE, darkMode)
-export const setHasSeenTutorialData = async (hasSeenTutorial?: boolean) => boolSwitch(HAS_SEEN_TUTORIAL, hasSeenTutorial)
-export const setIsLoggedInData = async (isLoggedIn?: boolean) => boolSwitch(HAS_LOGGED_IN, isLoggedIn)

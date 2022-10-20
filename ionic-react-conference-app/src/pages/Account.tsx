@@ -28,7 +28,7 @@ const Account: React.FC<AccountProps> = ({
   isAuthenticated,
   darkMode,
   setUsername,
-  setDarkMode: setDarkModeAction,
+  setDarkMode,
 }) => {
 
   const [showAlert, setShowAlert] = useState(false)
@@ -36,6 +36,8 @@ const Account: React.FC<AccountProps> = ({
   const clicked = (text: string) => {
     console.log(`Clicked ${text}`)
   }
+
+  const allowed = username
 
   return (
     <IonPage id="account-page" className={`${darkMode ? 'dark-theme' : ''}`}>
@@ -48,14 +50,20 @@ const Account: React.FC<AccountProps> = ({
         </IonToolbar>
       </IonHeader>
       <IonContent>
-        {username &&
-          (<div className="ion-padding-top ion-text-center"> 
+        {allowed &&
+        
+          (<div className="ion-padding-top ion-text-center">
+
+            <IonList>
+              <img src="https://www.gravatar.com/avatar?d=mm&s=140" alt="avatar" />
+              <IonIcon slot="end" icon={pencilOutline} onClick={() => console.log('pinga')}></IonIcon>
+            </IonList>
             
-            <img src="https://www.gravatar.com/avatar?d=mm&s=140" alt="avatar" />
-            
-            <IonLabel slot="start">{ username }</IonLabel>
-            <IonInput style={{display: 'none'}} value={ username }></IonInput>
-            <IonIcon slot="end" icon={pencilOutline} onClick={() => console.log('pinga')}></IonIcon>
+            <IonList>
+              <IonLabel slot="start">{ username }</IonLabel>
+              <IonInput style={{display: 'none'}} value={ username }></IonInput>
+              <IonIcon slot="end" icon={pencilOutline} onClick={() => console.log('pinga')}></IonIcon>
+            </IonList>
 
             <IonList lines="none">
               <IonItem onClick={() => clicked('Change Password')}>
@@ -85,6 +93,7 @@ const Account: React.FC<AccountProps> = ({
                 <IonToggle checked={darkMode} onClick={() => setDarkMode(!darkMode)} />
               </IonItem>
             </IonList>
+
           </div>)
         }
       </IonContent>
