@@ -19,7 +19,8 @@ import { ActionType } from '../../util/types'
 import { UserState } from './user.state'
 import { initialUser } from '../state'
 
-// Keep it simple
+// !Keep it simple !!!!!!!!!!!
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 export const loadUserData = () => async (dispatch: React.Dispatch<any>) => {
   testing(loadUserData)
@@ -35,25 +36,17 @@ export const logoutUser = () => async (dispatch: React.Dispatch<any>) => {
   await setUserData(initialUser)
 }
 
-/*export const onLoginSuccess = async (ret: any) => {
+export const onLoginSuccess = async (ret: any) => {
   let user = ret.user
   user.jwt = ret.jwt // Attach JWT...
-  setDataAction(user)
+  setData(user)
   setIsLoggedIn(true)
-}*/    
+  return user
+}    
 
 export const setData = (data: Partial<UserState>) => async (dispatch: React.Dispatch<any>) => {
   testing(setData, data)
-  setIdData(data.id)
-  setJwtData(data.jwt)
-  setUsernameData(data.username)
-  setEmailData(data.email)
-  setBlockedData(data.blocked)
-  setConfirmedData(data.confirmed)
-  setCreatedAtData(data.createdAt)
-  setUpdatedAtData(data.updatedAt)
-  setProviderData(data.provider)
-  setDarkModeData(data.darkMode)
+  await setUserData(data)
   return ({ type: 'set-user-data', data} as const)
 }
 
@@ -137,7 +130,7 @@ export const setLoading = (isLoading: boolean) => {
   return { type: 'set-user-loading',  isLoading } as const
 }
 
-export const testing = (func: Function, data: any = undefined, schema: string = 'user') => {
+const testing = (func: Function, data: any = undefined, schema: string = 'user') => {
   console.log(schema+'.action::'+func.name, data)
 }
 

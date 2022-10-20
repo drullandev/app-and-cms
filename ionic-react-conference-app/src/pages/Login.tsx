@@ -20,18 +20,7 @@ import {
   IonRippleEffect
 } from '@ionic/react'
 import {
-  setId,
-  setJwt,
-  setUsername,
-  setEmail,
-  setBlocked,
-  setConfirmed,
-  setCreatedAt,
-  setUpdatedAt,
-  setProvider,
-  setDarkMode,
-  setIsLoggedIn,
-  setData,
+  onLoginSuccess,
 } from '../data/user/user.actions'
 import { connect } from '../data/connect'
 
@@ -42,18 +31,7 @@ import './Login.scss'
 import { globe } from 'ionicons/icons'
 
 interface DispatchProps {
-  setData:        typeof setData
-  setId:          typeof setId
-  setJwt:         typeof setJwt
-  setUsername:    typeof setUsername
-  setEmail:       typeof setEmail
-  setBlocked:     typeof setBlocked
-  setConfirmed:   typeof setConfirmed
-  setCreatedAt:   typeof setCreatedAt
-  setUpdatedAt:   typeof setUpdatedAt
-  setProvider:    typeof setProvider
-  setDarkMode:    typeof setDarkMode
-  setIsLoggedIn:  typeof setIsLoggedIn
+  onLoginSuccess: typeof onLoginSuccess
 }
 
 interface OwnProps extends RouteComponentProps {}
@@ -62,18 +40,7 @@ interface LoginProps extends OwnProps, DispatchProps {}
 
 const Login: React.FC<LoginProps> = ({
   history, 
-  setId:        setIdAction,
-  setJwt:       setJwtAction,
-  setUsername:  setUsernameAction,
-  setEmail:     setEmailAction,
-  setBlocked:   setBlockedAction,
-  setConfirmed: setConfirmedAction,
-  setCreatedAt: setCreatedAtAction,
-  setUpdatedAt: setUpdatedAtAction,
-  setProvider:  setProviderAction,
-  setData:      setDataAction,
-  setDarkMode,
-  setIsLoggedIn, 
+  onLoginSuccess,
 }) => {
 
   let testing = true && process.env.REACT_APP_TESTING
@@ -87,38 +54,26 @@ const Login: React.FC<LoginProps> = ({
 
   const [setToast, dismissToast] = useIonToast()
 
+  const launchToast = async (data: any, setToast: Function) => {
+    await setToast({
+      message: data.message,
+      duration: data.duration ?? 1000,
+      position: data.position ?? 'bottom',
+      icon: data.icon ?? globe
+    })
+    setTimeout(()=>{
+      dismissToast()
+    },data.duration ?? 1500)
+  }
+
   const submitLogin = async (e: React.FormEvent) => {
 
     e.preventDefault()
     setFormSubmitted(true)
-    
-    if(!username) {
-      setUsernameError(true)
-    }
-    if(!password) {
-      setPasswordError(true)
-    }
 
+    if(!username) setUsernameError(true)    
+    if(!password) setPasswordError(true)
     if(username && password) {
-
-      const launchToast = async (data: any, setToast: Function) => {
-        await setToast({
-          message: data.message,
-          duration: data.duration ?? 1000,
-          position: data.position ?? 'bottom',
-          icon: data.icon ?? globe
-        })
-        setTimeout(()=>{
-          dismissToast()
-        },data.duration ?? 1500)
-      }
-
-      const onLoginSuccess = async (ret: any) => {
-        let user = ret.user
-        user.jwt = ret.jwt // Attach JWT...
-        setDataAction(user)
-        setIsLoggedIn(true)
-      }      
 
       await sendLoginForm({
         input: { 
@@ -127,8 +82,8 @@ const Login: React.FC<LoginProps> = ({
         },
         onSuccess: (ret: StrapiAuthProps)=>{
           onLoginSuccess(ret)
-            .then(()=>{
-              launchToast({ message: 'Has logrado logearte' }, setToast)
+            .then((user: any)=>{
+              launchToast({ message: `${user.username} Has logrado logearte` }, setToast)
                 .then(()=> history.push('/tabs/schedule', {direction: 'none'}))            
             })
         },
@@ -203,18 +158,7 @@ const Login: React.FC<LoginProps> = ({
 
 export default connect<OwnProps, {}, DispatchProps>({
   mapDispatchToProps: {
-    setData,
-    setId,
-    setJwt,
-    setUsername,
-    setEmail,
-    setBlocked, 
-    setConfirmed,
-    setCreatedAt,
-    setUpdatedAt,
-    setProvider,
-    setDarkMode,
-    setIsLoggedIn,
+    onLoginSuccess
   },
   component: Login
 })

@@ -121,7 +121,7 @@ export const setHasSeenTutorialData = async (hasSeenTutorial?: boolean) => boolS
 export const setIsLoggedInData = async (isLoggedIn?: boolean) => boolSwitch(HAS_LOGGED_IN, isLoggedIn)
 
 // EXTRA
-export const setUserData = async (data: UserState) => {
+export const setUserData = async (data: Partial<UserState>) => {
   setIdData(data.id)
   setJwtData(data.jwt)
   setUsernameData(data.username)
