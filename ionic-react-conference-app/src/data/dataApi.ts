@@ -132,6 +132,6 @@ export const setUserData = async (data: Partial<UserState>) => {
   setUpdatedAtData(data.updatedAt)
   setProviderData(data.provider)
   setDarkModeData(data.darkMode)
-  setHasSeenTutorialData(true)
-  setIsLoggedInData(false)
+  setHasSeenTutorialData(data.hasSeenTutorial)
+  //setIsLoggedInData//XXX no!
 }

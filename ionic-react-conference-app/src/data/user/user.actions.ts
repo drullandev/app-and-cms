@@ -36,14 +36,6 @@ export const logoutUser = () => async (dispatch: React.Dispatch<any>) => {
   await setUserData(initialUser)
 }
 
-export const onLoginSuccess = async (ret: any) => {
-  let user = ret.user
-  user.jwt = ret.jwt // Attach JWT...
-  setData(user)
-  setIsLoggedIn(true)
-  return user
-}    
-
 export const setData = (data: Partial<UserState>) => async (dispatch: React.Dispatch<any>) => {
   testing(setData, data)
   await setUserData(data)

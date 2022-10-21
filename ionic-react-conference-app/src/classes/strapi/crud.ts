@@ -7,7 +7,7 @@ import { CallProps, restCall } from '../core/axios'
  * @param data 
  * @returns 
  */
-export const crud = ( operation: string, model:string, data?: any ) => {
+export const crud = ( operation: string, model:string, data?: any, onSuccess?: Function, onError?: Function) => {
   
   const method =
     ( operation === 'insert') ? 'PUT'     :
@@ -38,7 +38,9 @@ export const crud = ( operation: string, model:string, data?: any ) => {
         ( operation === 'update') ? 'POST'    :
         ( operation === 'delete') ? 'DELETE'  :
         ( operation === 'get'   ) ? 'GET'     : 'OPTIONS'
-    }    
+    },
+    onSuccess: onSuccess !== undefined ? (ret: any) => onSuccess(data) : ()=>{},
+    onError: onError !== undefined ? (err:Error)=> onError(err) : ()=>{},
   }
 
   if(call.req.method === 'GET'){

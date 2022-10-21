@@ -1,6 +1,7 @@
 import { restCall, restCallAsync } from '../core/axios'
 import { AxiosRequestConfig } from 'axios'
 import { empty, camelCase } from '../common'
+import i18n from 'i18next'
 
 export interface WhereProps {
   type: string
@@ -29,6 +30,10 @@ export interface GqlMutationModel {
 
 export const getMutation = (p: GqlMutationModel) => {
   return graphqlCall(setMutation(p))
+}
+
+export const getMutationAsync = async (p: GqlMutationModel) => {
+  return await graphqlCallAsync(setMutation(p))
 }
 
 const setMutation = (p: GqlMutationModel) => {
@@ -177,8 +182,8 @@ const getQuery = (p: GqlQueryModel) =>{
 
 export interface CallProps {
   req: AxiosRequestConfig,
-  onSuccess?: Function
-  onError?: Function
+  onSuccess: Function
+  onError: Function
   onFinally?: Function
 }
 
@@ -188,7 +193,9 @@ const graphqlCall = (call: string): any => {
       method: 'POST',
       url: 'graphql',
       data: { query: `${call}` }      
-    }
+    },
+    onSuccess: ()=>{},//
+    onError: ()=>{}//
   })
 }
 
@@ -198,7 +205,9 @@ const graphqlCallAsync = async (call: string) => {
       method: 'POST',
       url: 'graphql',
       data: { query: `${call}` }
-    }
+    },
+    onSuccess: ()=>{},//
+    onError: ()=>{}//
   })
 }
 
@@ -221,19 +230,19 @@ export const filter = () => {
       default: 'published_at',
       options: [
         {
-          label: 'Published at',
+          label: i18n.t('Published at'),
           value: 'published_at',
           type: 'date'
         },{
-          label: 'Created at',
+          label: i18n.t('Created at'),
           value: 'created_at',
           type: 'date'
         },{
-          label: 'Updated at',
+          label: i18n.t('Updated at'),
           value: 'updated_at',
           type: 'date'
         },{
-          label: 'Content',
+          label: i18n.t('Content'),
           value: 'content',
           type: 'string'
         }
@@ -243,67 +252,67 @@ export const filter = () => {
       default: 'contains',
       options: [
         {
-          label: 'Distinct',
+          label: i18n.t('Distinct'),
           value: 'ne',
           families: ['all']
         },
         {
-          label: 'Lower than',
+          label: i18n.t('Lower than'),
           value: 'lt',
           families: ['all']
         },
         {
-          label: 'Lower or equal',
+          label: i18n.t('Lower or equal'),
           value: 'lte',
           families: ['all']
         },
         {
-          label: 'Greater than',
+          label: i18n.t('Greater than'),
           value: 'gt',
           families: ['all']
         },
         {
-          label: 'Greater or equal',
+          label: i18n.t('Greater or equal'),
           value: 'gte',
           families: ['all']
         },
         {
-          label: 'Contains',
+          label: i18n.t('Contains'),
           value: 'contains',
           families: ['all']
         },
         {
-          label: 'Contains sensitive',
+          label: i18n.t('Contains sensitive'),
           value: 'containss',
           families: ['all']
         },
         {
-          label: 'No Contains',
+          label: i18n.t('No Contains'),
           value: 'ncontains',
           families: ['all']
         },
         {
-          label: 'No Contains sensitive',
+          label: i18n.t('No Contains sensitive'),
           value: 'ncontainss',
           families: ['all']
         },
         {
-          label: 'In',
+          label: i18n.t('In'),
           value: 'in',
           families: ['array']
         },
         {
-          label: 'Not in',
+          label: i18n.t('Not in'),
           value: 'nin',
           families: ['array'] 
         },
         {
-          label: 'Equals null',
+          label: i18n.t('Equals null'),
           value: 'null',
           families: []
         },
         {
-          label: 'Not equals null',
+          label: i18n.t('Not equals null'),
           value: 'nnull',
           families: []
         }
@@ -311,6 +320,4 @@ export const filter = () => {
     }
   }
 }
-
-
 
