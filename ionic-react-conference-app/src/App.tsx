@@ -34,13 +34,13 @@ import Signup from './pages/Signup'
 import Account from './pages/Account'
 //import Support from './pages/Support'
 import MainTabs from './pages/MainTabs'
-//import Tutorial from './pages/Tutorial'
+import Tutorial from './pages/Tutorial'
 
 import { Schedule } from './models/Schedule'
 
 import HomeOrTutorial from './components/HomeOrTutorial'
 import RedirectToLogin from './components/RedirectToLogin'
-//import { initialUser } from './data/state'
+import { initialUser } from './data/state'
 
 // https://ionicframework.com/docs/react/config#global-config
 setupIonicReact({
@@ -70,11 +70,11 @@ const IonicApp: React.FC<IonicAppProps> = ({
   loadConfData,
   loadUserData
 }) => {
-
+  
   useEffect(() => {
     loadUserData()
     loadConfData()
-    //setData(initialUser)
+    setData(initialUser)
     // eslint-disable-next-line
   }, [])
 

@@ -22,6 +22,8 @@ import { initialUser } from '../state'
 // !Keep it simple !!!!!!!!!!!
 // !!!!!!!!!!!!!!!!!!!!!!!!!!!
 
+// EXTRA
+
 export const loadUserData = () => async (dispatch: React.Dispatch<any>) => {
   testing(loadUserData)
   dispatch(setLoading(true))
@@ -48,6 +50,8 @@ export const setIsLoggedIn = (loggedIn: boolean) => async (dispatch: React.Dispa
   return ({ type: 'set-is-loggedin', loggedIn } as const)
 }
 
+
+
 // COMMON
 
 export const setId = (id?: string) => async (dispatch: React.Dispatch<any>) => {
@@ -73,7 +77,6 @@ export const setEmail = (email?: string) => async (dispatch: React.Dispatch<any>
   await setEmailData(email)
   return ({ type: 'set-email', email } as const)
 }
-
 
 export const setBlocked = (blocked?: boolean) => async (dispatch: React.Dispatch<any>) => {
   testing(setBlocked, blocked)
