@@ -19,9 +19,6 @@ import {
   useIonToast,
   IonRippleEffect
 } from '@ionic/react'
-import {
-  onLoginSuccess,
-} from '../data/user/user.actions'
 import { connect } from '../data/connect'
 
 import { sendLoginForm } from '../classes/strapi/sendLoginForm'
@@ -29,9 +26,14 @@ import { StrapiAuthProps } from '../classes/strapi/sendLoginForm'
 
 import './Login.scss'
 import { globe } from 'ionicons/icons'
+import { setIsLoggedInData, setUserData } from '../data/dataApi'
+import { restCallAsync } from '../classes/core/axios';
+import { useTranslation } from 'react-i18next'
+
+
 
 interface DispatchProps {
-  onLoginSuccess: typeof onLoginSuccess
+
 }
 
 interface OwnProps extends RouteComponentProps {}
@@ -39,9 +41,10 @@ interface OwnProps extends RouteComponentProps {}
 interface LoginProps extends OwnProps, DispatchProps {}
 
 const Login: React.FC<LoginProps> = ({
-  history, 
-  onLoginSuccess,
+  history
 }) => {
+
+  const { t, i18n } = useTranslation();
 
   let testing = true && process.env.REACT_APP_TESTING
 
@@ -53,7 +56,6 @@ const Login: React.FC<LoginProps> = ({
   const [passwordError, setPasswordError] = useState(false)
 
   const [setToast, dismissToast] = useIonToast()
-
   const launchToast = async (data: any, setToast: Function) => {
     await setToast({
       message: data.message,
@@ -66,6 +68,14 @@ const Login: React.FC<LoginProps> = ({
     },data.duration ?? 1500)
   }
 
+ const onLoginSuccess = async (ret: any) => {
+    let user = ret.user
+    user.jwt = ret.jwt // Attach JWT...
+    await setUserData(user)
+    await setIsLoggedInData(true)
+    return user
+  }    
+
   const submitLogin = async (e: React.FormEvent) => {
 
     e.preventDefault()
@@ -75,15 +85,20 @@ const Login: React.FC<LoginProps> = ({
     if(!password) setPasswordError(true)
     if(username && password) {
 
-      await sendLoginForm({
-        input: { 
-          identifier: 'bunny@gmail.com',
-          password: 'Qwer1234' 
+      await restCallAsync({
+        req: {
+          url: 'api/auth/local',
+          data: { 
+            identifier: testing ? 'bunny@gmail.com' : username,
+            password: testing ? 'Qwer1234' : password 
+          },
+          method: 'POST'
         },
-        onSuccess: (ret: StrapiAuthProps)=>{
-          onLoginSuccess(ret)
+        onSuccess: async (ret: StrapiAuthProps)=>{
+          await onLoginSuccess(ret)
             .then((user: any)=>{
-              launchToast({ message: `${user.username} Has logrado logearte` }, setToast)
+              console.log('ret', user)
+              launchToast({ message: t(`{{username}}, has logrado logearte`,{ username: user.username }) }, setToast)
                 .then(()=> history.push('/tabs/schedule', {direction: 'none'}))            
             })
         },
@@ -158,7 +173,6 @@ const Login: React.FC<LoginProps> = ({
 
 export default connect<OwnProps, {}, DispatchProps>({
   mapDispatchToProps: {
-    onLoginSuccess
-  },
+      },
   component: Login
 })

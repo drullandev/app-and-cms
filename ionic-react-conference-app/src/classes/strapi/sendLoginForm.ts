@@ -1,14 +1,15 @@
-import { restCall } from '../core/axios'
-//import { getMutation} from '../graphql/graphql'
-//import { crud } from '../strapi/crud'
+import {
+  restCall,
+  restCallAsync
+} from '../core/axios'
 
 export interface LoginFormProps  {
   input: {
     identifier: string
     password: string
   }
-  onSuccess?: Function
-  onError?: Function
+  onSuccess: Function
+  onError: Function
 }
 
 export interface StrapiAuthProps {
@@ -25,23 +26,18 @@ export interface StrapiAuthProps {
   },
   jwt?: string
 }
+
+let testing = true && process.env.REACT_APP_TESTING
   
 export const sendLoginForm = (data: LoginFormProps) => {
-
   return restCall({
     req: {
       url: 'api/auth/local',
       data: data.input,
       method: 'POST'
     },
-    onSuccess: (ret: StrapiAuthProps)=>{
-      //let crud('get', 'user', { id: ret.user.id })) 
-      if(data.onSuccess ) return data.onSuccess(ret)
-
-    },
-    onError: (err: Error)=> {
-      if(data.onError ) return data.onError(err)
-    }
+    onSuccess: data.onSuccess,
+    onError: data.onError
   })
 
   // XXX GrahpQL: Was nice to prepare this hability, the way I can generate mutations 

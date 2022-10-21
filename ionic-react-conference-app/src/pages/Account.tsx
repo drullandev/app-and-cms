@@ -6,7 +6,7 @@ import { connect } from '../data/connect'
 import { RouteComponentProps } from 'react-router'
 import { moonOutline, pencilOutline } from 'ionicons/icons'
 import { setDarkModeData } from '../data/dataApi'
-import Alert from '../components/Alert'
+//import Alert from '../components/Alert'
 
 interface StateProps {
   username: string
@@ -25,9 +25,7 @@ interface AccountProps extends OwnProps, StateProps, DispatchProps { }
 
 const Account: React.FC<AccountProps> = ({
   username,
-  isAuthenticated,
   darkMode,
-  setUsername,
   setDarkMode,
 }) => {
 
