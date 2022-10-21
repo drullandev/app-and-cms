@@ -15,6 +15,6 @@ export const setOrRemove = async (key: string, value: any, string: boolean = tru
     : await Storage.set({ key: key, value: string ? value : JSON.stringify(value) })
 }
 
-export const boolSwitch = async (key: string, value: any) => {
-  await Storage.set({ key: key, value: value })
+export const toogleBool = async (key: string, value: any) => {
+  await Storage.set({ key: key, value: value !== undefined ? value : false })
 }

@@ -4,7 +4,7 @@ import { Schedule,
 } from '../models/Schedule'
 import { Speaker } from '../models/Speaker'
 import { Location } from '../models/Location'
-import { setOrRemove, parseSessions, boolSwitch } from './reducer.utils'
+import { setOrRemove, parseSessions, toogleBool } from './reducer.utils'
 import { UserState } from './user/user.state'
 import { initialUser } from './state'
 
@@ -112,14 +112,14 @@ export const setIdData = async (id2?: string) => setOrRemove(ID, id2, false)
 export const setJwtData = async (jwt?: string) => setOrRemove(JWT, jwt)
 export const setUsernameData = async (username?: string) => setOrRemove(USERNAME, username)
 export const setEmailData = async (email?: string) => setOrRemove(EMAIL, email)
-export const setBlockedData = async (blocked?: boolean) => boolSwitch(BLOCKED, blocked)
-export const setConfirmedData = async (confirmed?: boolean) => boolSwitch(CONFIRMED, confirmed)
+export const setBlockedData = async (blocked?: boolean) => toogleBool(BLOCKED, blocked)
+export const setConfirmedData = async (confirmed?: boolean) => toogleBool(CONFIRMED, confirmed)
 export const setCreatedAtData = async (createdAt?: string) => setOrRemove(CREATED_AT, createdAt)
 export const setUpdatedAtData = async (updatedAt?: string) => setOrRemove(UPDATED_AT, updatedAt)
 export const setProviderData = async (provider2?: string) => setOrRemove(UPDATED_AT, provider2)
-export const setDarkModeData = async (darkMode?: boolean) => boolSwitch(DARK_MODE, darkMode)
-export const setHasSeenTutorialData = async (hasSeenTutorial?: boolean) => boolSwitch(HAS_SEEN_TUTORIAL, hasSeenTutorial)
-export const setIsLoggedInData = async (isLoggedIn?: boolean) => boolSwitch(HAS_LOGGED_IN, isLoggedIn)
+export const setDarkModeData = async (darkMode?: boolean) => toogleBool(DARK_MODE, darkMode)
+export const setHasSeenTutorialData = async (hasSeenTutorial?: boolean) => toogleBool(HAS_SEEN_TUTORIAL, hasSeenTutorial)
+export const setIsLoggedInData = async (isLoggedIn?: boolean) => toogleBool(HAS_LOGGED_IN, isLoggedIn)
 
 // EXTRA
 export const setUserData = async (data: Partial<UserState>) => {
