@@ -6,6 +6,7 @@ import { Speaker } from '../models/Speaker'
 import { Location } from '../models/Location'
 import { setOrRemove, parseSessions, boolSwitch } from './reducer.utils'
 import { UserState } from './user/user.state'
+import { initialUser } from './state'
 
 const { Storage } = Plugins
 
@@ -131,7 +132,7 @@ export const setUserData = async (data: Partial<UserState>) => {
   setCreatedAtData(data.createdAt)
   setUpdatedAtData(data.updatedAt)
   setProviderData(data.provider)
-  setDarkModeData(data.darkMode)
+  setDarkModeData(data.darkMode !== null ? data.darkMode : initialUser.darkMode)
   setHasSeenTutorialData(true)
   setIsLoggedInData(false)
 }
