@@ -1,4 +1,4 @@
-import { restCall, restCallAsync } from '../core/axios'
+import { restCall, restCallAsync } from './axios'
 import { AxiosRequestConfig } from 'axios'
 import { empty, camelCase } from '../common'
 import i18n from 'i18next'
