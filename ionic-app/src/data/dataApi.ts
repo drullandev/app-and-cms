@@ -6,8 +6,6 @@ import { Speaker } from '../models/Speaker'
 import { Location } from '../models/Location'
 import { setOrRemove, parseSessions, toogleBool } from './reducer.utils'
 import { UserState } from './user/user.state'
-import { initialUser } from './state'
-
 const { Storage } = Plugins
 
 const dataUrl = '/assets/data/data.json'

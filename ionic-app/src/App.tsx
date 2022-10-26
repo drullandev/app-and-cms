@@ -27,7 +27,7 @@ import './theme/variables.css'
 import { connect } from './data/connect'
 import { AppContextProvider } from './data/AppContext'
 import { loadConfData } from './data/sessions/sessions.actions'
-import { loadUserData, setData, setIsLoggedIn } from './data/user/user.actions'
+import { loadUserData, setData } from './data/user/user.actions'
 
 import Login from './pages/Login'
 import Signup from './pages/Signup'

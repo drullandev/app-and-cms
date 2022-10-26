@@ -1,11 +1,10 @@
-import React, { useState } from 'react'
-import { IonHeader, IonToolbar, IonTitle, IonContent, IonPage, IonButtons, IonMenuButton, IonList, IonItem, IonAlert, IonListHeader, IonIcon, IonLabel, IonToggle, IonInput } from '@ionic/react'
+import React from 'react'
+import { IonHeader, IonToolbar, IonTitle, IonContent, IonPage, IonButtons, IonMenuButton, IonList, IonItem, IonIcon, IonLabel, IonToggle, IonInput } from '@ionic/react'
 import './Account.scss'
 import { setDarkMode, setUsername } from '../data/user/user.actions'
 import { connect } from '../data/connect'
 import { RouteComponentProps } from 'react-router'
 import { moonOutline, pencilOutline } from 'ionicons/icons'
-import { setDarkModeData } from '../data/dataApi'
 //import Alert from '../components/Alert'
 
 interface StateProps {
@@ -28,8 +27,6 @@ const Account: React.FC<AccountProps> = ({
   darkMode,
   setDarkMode,
 }) => {
-
-  const [showAlert, setShowAlert] = useState(false)
 
   const clicked = (text: string) => {
     console.log(`Clicked ${text}`)

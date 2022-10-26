@@ -20,9 +20,8 @@ import {
   IonRippleEffect
 } from '@ionic/react'
 import { connect } from '../data/connect'
-
-import { sendLoginForm } from '../classes/strapi/sendLoginForm'
 import { StrapiAuthProps } from '../classes/strapi/sendLoginForm'
+
 
 import './Login.scss'
 import { globe } from 'ionicons/icons'
@@ -31,12 +30,9 @@ import { restCallAsync } from '../classes/core/axios';
 import { useTranslation } from 'react-i18next'
 
 
-
-interface DispatchProps {
-
-}
-
 interface OwnProps extends RouteComponentProps {}
+
+interface DispatchProps {}
 
 interface LoginProps extends OwnProps, DispatchProps {}
 
@@ -44,7 +40,7 @@ const Login: React.FC<LoginProps> = ({
   history
 }) => {
 
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
 
   let testing = true && process.env.REACT_APP_TESTING
 
