@@ -2,31 +2,15 @@ import React from 'react'
 import { RouteComponentProps, withRouter, useLocation } from 'react-router'
 
 import { IonContent, IonIcon, IonItem, IonLabel, IonList, IonListHeader, IonMenu, IonMenuToggle } from '@ionic/react'
-import { informationCircleOutline, logIn, logOut, person, personAdd } from 'ionicons/icons'
 
 import { connect } from '../data/connect'
 import { setDarkMode } from '../data/user/user.actions'
 
 import '../styles/Menu.css'
+import { useTranslation } from 'react-i18next'
 
-const routes = {
-  appPages: [
-    //{ title: 'Schedule', path: '/tabs/schedule', icon: calendarOutline },
-    //{ title: 'Speakers', path: '/tabs/speakers', icon: peopleOutline },
-    //{ title: 'Map', path: '/tabs/map', icon: mapOutline }, // Not for now...
-    { title: 'About', path: '/tabs/about', icon: informationCircleOutline }
-  ],
-  loggedInPages: [
-    { title: 'Account', path: '/account', icon: person },
-    //{ title: 'Support', path: '/support', icon: help },
-    { title: 'Logout', path: '/logout', icon: logOut }
-  ],
-  loggedOutPages: [
-    { title: 'Login', path: '/login', icon: logIn },
-    //{ title: 'Support', path: '/support', icon: help }, // I will move to account
-    { title: 'Signup', path: '/signup', icon: personAdd }
-  ]
-}
+import { routes } from '../data/static/routes'
+
 
 interface Pages {
   title: string,
@@ -46,10 +30,18 @@ interface DispatchProps {
 
 interface MenuProps extends RouteComponentProps, StateProps, DispatchProps { }
 
-const Menu: React.FC<MenuProps> = ({ darkMode, history, isAuthenticated, setDarkMode, menuEnabled }) => {
-  const location = useLocation()
+const Menu: React.FC<MenuProps> = ({
+  darkMode,
+  history,
+  isAuthenticated,
+  setDarkMode,
+  menuEnabled
+}) => {
 
-  function renderlistItems(list: Pages[]) {
+  const location = useLocation()
+  const { t, i18n } = useTranslation()
+
+  const renderlistItems = (list: Pages[]) => {    
     return list
       .filter(route => !!route.path)
       .map(p => (
@@ -67,8 +59,11 @@ const Menu: React.FC<MenuProps> = ({ darkMode, history, isAuthenticated, setDark
       <IonContent forceOverscroll={false}>
 
         <IonList lines="none">
-          <IonListHeader>Account</IonListHeader>
-          {isAuthenticated ? renderlistItems(routes.loggedInPages) : renderlistItems(routes.loggedOutPages)}
+          <IonListHeader>{t('Account')}</IonListHeader>
+          {isAuthenticated
+            ? renderlistItems(routes.loggedInPages)
+            : renderlistItems(routes.loggedOutPages)
+          }
           {renderlistItems(routes.appPages)}
         </IonList>
 

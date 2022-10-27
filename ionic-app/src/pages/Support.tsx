@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import { IonHeader, IonToolbar, IonTitle, IonContent, IonPage, IonButtons, IonMenuButton, IonRow, IonCol, IonButton, IonList, IonItem, IonLabel, IonText, IonTextarea, IonToast } from '@ionic/react';
-import './Login.scss';
-import { connect } from '../data/connect';
+import React, { useState } from 'react'
+import { IonHeader, IonToolbar, IonTitle, IonContent, IonPage, IonButtons, IonMenuButton, IonRow, IonCol, IonButton, IonList, IonItem, IonLabel, IonText, IonTextarea, IonToast } from '@ionic/react'
+import './Login.scss'
+import { connect } from '../data/connect'
 
 interface OwnProps { }
 
@@ -11,22 +11,22 @@ interface SupportProps extends OwnProps, DispatchProps { }
 
 const Support: React.FC<SupportProps> = () => {
 
-  const [message, setMessage] = useState('');
-  const [formSubmitted, setFormSubmitted] = useState(false);
-  const [messageError, setMessageError] = useState(false);
-  const [showToast, setShowToast] = useState(false);
+  const [message, setMessage] = useState('')
+  const [formSubmitted, setFormSubmitted] = useState(false)
+  const [messageError, setMessageError] = useState(false)
+  const [showToast, setShowToast] = useState(false)
 
   const send = (e: React.FormEvent) => {
-    e.preventDefault();
-    setFormSubmitted(true);
+    e.preventDefault()
+    setFormSubmitted(true)
     if (!message) {
-      setMessageError(true);
+      setMessageError(true)
     }
     if (message) {
-      setMessage('');
-      setShowToast(true);
+      setMessage('')
+      setShowToast(true)
     }
-  };
+  }
 
   return (
     <IonPage id="support-page">
@@ -75,8 +75,8 @@ const Support: React.FC<SupportProps> = () => {
         message="Your support request has been sent"
         onDidDismiss={() => setShowToast(false)} />
     </IonPage>
-  );
-};
+  )
+}
 
 export default connect<OwnProps, {}, DispatchProps>({
   component: Support

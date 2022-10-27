@@ -1,30 +1,30 @@
-import React, { useState } from 'react';
-import { IonHeader, IonToolbar, IonContent, IonPage, IonButtons, IonMenuButton, IonButton, IonIcon, IonDatetime, IonSelectOption, IonList, IonItem, IonLabel, IonSelect, IonPopover, IonText } from '@ionic/react';
-import './About.scss';
-import { ellipsisHorizontal, ellipsisVertical } from 'ionicons/icons';
-import AboutPopover from '../components/AboutPopover';
-import { format, parseISO } from 'date-fns';
+import React, { useState } from 'react'
+import { IonHeader, IonToolbar, IonContent, IonPage, IonButtons, IonMenuButton, IonButton, IonIcon, IonDatetime, IonSelectOption, IonList, IonItem, IonLabel, IonSelect, IonPopover, IonText } from '@ionic/react'
+import './About.scss'
+import { ellipsisHorizontal, ellipsisVertical } from 'ionicons/icons'
+import AboutPopover from '../components/AboutPopover'
+import { format, parseISO } from 'date-fns'
 
 interface AboutProps { }
 
 const About: React.FC<AboutProps> = () => {
 
-  const [showPopover, setShowPopover] = useState(false);
-  const [popoverEvent, setPopoverEvent] = useState<MouseEvent>();
-  const [location, setLocation] = useState<'madison' | 'austin' | 'chicago' | 'seattle'>('madison');
-  const [conferenceDate, setConferenceDate] = useState('2047-05-17T00:00:00-05:00');
+  const [showPopover, setShowPopover] = useState(false)
+  const [popoverEvent, setPopoverEvent] = useState<MouseEvent>()
+  const [location, setLocation] = useState<'madison' | 'austin' | 'chicago' | 'seattle'>('madison')
+  const [conferenceDate, setConferenceDate] = useState('2047-05-17T00:00:00-05:00')
 
   const selectOptions = {
     header: 'Select a Location'
-  };
+  }
 
   const presentPopover = (e: React.MouseEvent) => {
-    setPopoverEvent(e.nativeEvent);
-    setShowPopover(true);
-  };
+    setPopoverEvent(e.nativeEvent)
+    setShowPopover(true)
+  }
 
   function displayDate(date: string, dateFormat: string) {
-    return format(parseISO(date), dateFormat);
+    return format(parseISO(date), dateFormat)
   }
 
   return (
@@ -119,7 +119,7 @@ const About: React.FC<AboutProps> = () => {
         <AboutPopover dismiss={() => setShowPopover(false)} />
       </IonPopover>
     </IonPage>
-  );
-};
+  )
+}
 
-export default React.memo(About);
+export default React.memo(About)

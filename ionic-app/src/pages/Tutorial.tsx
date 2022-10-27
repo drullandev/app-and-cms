@@ -1,43 +1,43 @@
-import React, { useState } from 'react';
-import { IonContent, IonPage, IonHeader, IonToolbar, IonButtons, IonButton, IonIcon, useIonViewWillEnter } from '@ionic/react';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Swiper as SwiperCore } from 'swiper';
-import { arrowForward } from 'ionicons/icons';
-import { setMenuEnabled } from '../data/sessions/sessions.actions';
-import { setHasSeenTutorial } from '../data/user/user.actions';
-import './Tutorial.scss';
-import 'swiper/swiper.min.css';
-import '@ionic/react/css/ionic-swiper.css';
-import { connect } from '../data/connect';
-import { RouteComponentProps } from 'react-router';
+import React, { useState } from 'react'
+import { IonContent, IonPage, IonHeader, IonToolbar, IonButtons, IonButton, IonIcon, useIonViewWillEnter } from '@ionic/react'
+import { Swiper, SwiperSlide } from 'swiper/react'
+import { Swiper as SwiperCore } from 'swiper'
+import { arrowForward } from 'ionicons/icons'
+import { setMenuEnabled } from '../data/sessions/sessions.actions'
+import { setHasSeenTutorial } from '../data/user/user.actions'
+import './Tutorial.scss'
+import 'swiper/swiper.min.css'
+import '@ionic/react/css/ionic-swiper.css'
+import { connect } from '../data/connect'
+import { RouteComponentProps } from 'react-router'
 
-interface OwnProps extends RouteComponentProps {};
+interface OwnProps extends RouteComponentProps {}
 
 interface DispatchProps {
-  setHasSeenTutorial: typeof setHasSeenTutorial;
-  setMenuEnabled: typeof setMenuEnabled;
+  setHasSeenTutorial: typeof setHasSeenTutorial
+  setMenuEnabled: typeof setMenuEnabled
 }
 
-interface TutorialProps extends OwnProps, DispatchProps { };
+interface TutorialProps extends OwnProps, DispatchProps { }
 
 const Tutorial: React.FC<TutorialProps> = ({ history, setHasSeenTutorial, setMenuEnabled }) => {
-  const [showSkip, setShowSkip] = useState(true);
-  let [swiper, setSwiper] = useState<SwiperCore>();
+  const [showSkip, setShowSkip] = useState(true)
+  let [swiper, setSwiper] = useState<SwiperCore>()
 
   useIonViewWillEnter(() => {
-    setMenuEnabled(false);
-  });
+    setMenuEnabled(false)
+  })
   
   const startApp = async () => { 
-    await setHasSeenTutorial(true);
-    await setMenuEnabled(true);
-    history.push('/tabs/schedule', { direction: 'none' });
-  };
+    await setHasSeenTutorial(true)
+    await setMenuEnabled(true)
+    history.push('/tabs/schedule', { direction: 'none' })
+  }
 
   const handleSlideChangeStart = () => { 
-    if(!swiper) return;
-    setShowSkip(!swiper.isEnd);
-  };
+    if(!swiper) return
+    setShowSkip(!swiper.isEnd)
+  }
 
   return (
     <IonPage id="tutorial-page">
@@ -88,8 +88,8 @@ const Tutorial: React.FC<TutorialProps> = ({ history, setHasSeenTutorial, setMen
         </Swiper>
       </IonContent>
     </IonPage>
-  );
-};
+  )
+}
 
 export default connect<OwnProps, {}, DispatchProps>({
   mapDispatchToProps: ({
@@ -97,4 +97,4 @@ export default connect<OwnProps, {}, DispatchProps>({
     setMenuEnabled
   }),
   component: Tutorial
-});
+})

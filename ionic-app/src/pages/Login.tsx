@@ -26,7 +26,7 @@ import { StrapiAuthProps } from '../classes/strapi/sendLoginForm'
 import './Login.scss'
 import { globe } from 'ionicons/icons'
 import { setIsLoggedInData, setUserData } from '../data/dataApi'
-import { restCallAsync } from '../classes/core/axios';
+import { restCallAsync } from '../classes/core/axios'
 import { useTranslation } from 'react-i18next'
 
 
@@ -40,7 +40,7 @@ const Login: React.FC<LoginProps> = ({
   history
 }) => {
 
-  const { t } = useTranslation();
+  const { t } = useTranslation()
 
   let testing = true && process.env.REACT_APP_TESTING
 
@@ -168,7 +168,6 @@ const Login: React.FC<LoginProps> = ({
 }
 
 export default connect<OwnProps, {}, DispatchProps>({
-  mapDispatchToProps: {
-      },
+  mapDispatchToProps: {},
   component: Login
 })
