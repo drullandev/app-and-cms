@@ -1,7 +1,7 @@
 {
     "en-GB": {
         "test": {
-            "key": "test"
+            "{{username}}, has logged in!!": "{{username}}, has logged in!!"
         }
     }
 }

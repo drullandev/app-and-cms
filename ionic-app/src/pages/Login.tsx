@@ -28,6 +28,8 @@ import { globe } from 'ionicons/icons'
 import { setIsLoggedInData, setUserData } from '../data/dataApi'
 import { restCallAsync } from '../classes/core/axios'
 import { useTranslation } from 'react-i18next'
+import i18next from 'i18next'
+
 
 
 interface OwnProps extends RouteComponentProps {}
@@ -94,12 +96,13 @@ const Login: React.FC<LoginProps> = ({
           await onLoginSuccess(ret)
             .then((user: any)=>{
               console.log('ret', user)
-              launchToast({ message: t(`{{username}}, has logrado logearte`,{ username: user.username }) }, setToast)
+              launchToast({ 
+                message: t("{{username}}, has logged in!!",{ username: user.username }) }, setToast)
                 .then(()=> history.push('/tabs/schedule', {direction: 'none'}))            
             })
         },
         onError: (err: Error)=> {
-          launchToast({ message: 'No tienes permisos de acceso' }, setToast)
+          launchToast({ message: t('No tienes permisos de acceso') }, setToast)
         }
       })
     
