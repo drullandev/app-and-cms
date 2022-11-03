@@ -8,5 +8,9 @@ export interface PageRowProps {
     slug: string
     params: string
   }
-  params: string
+  content?: {
+    name: string
+    slug: string
+  }
+  params: string[]
 }

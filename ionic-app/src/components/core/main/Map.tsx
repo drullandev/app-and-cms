@@ -14,21 +14,21 @@ const Map: React.FC<MapProps> = ({ mapCenter, locations }) => {
 
   useEffect(() => {
 
-    map.current = new google.maps.Map(mapEle.current, {
+    /*map.current = new google.maps.Map(mapEle.current, {
       center: {
         lat: mapCenter.lat,
         lng: mapCenter.lng
       },
       zoom: 16
-    })
+    })*/
 
     addMarkers()
 
-    google.maps.event.addListenerOnce(map.current, 'idle', () => {
+    /*google.maps.event.addListenerOnce(map.current, 'idle', () => {
       if (mapEle.current) {
         mapEle.current.classList.add('show-map')
       }
-    })
+    })*/
 
     function addMarkers() {
       locations.forEach((markerData) => {

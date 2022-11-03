@@ -53,7 +53,7 @@ const FilterRow: React.FC<ThisProps> = ({ filter }) => {
   }
 
   const updateFilter = (key: number, values: Filter)=>{
-    console.log('values', values)
+    /*console.log('values', values)
     var newFilter = []
     for (var i = 0; i < filter.length; i++) {
       console.log(filter[i].key+'==='+key)
@@ -65,6 +65,7 @@ const FilterRow: React.FC<ThisProps> = ({ filter }) => {
     }
     setFilter(newFilter)
     console.log('the new filter', newFilter)
+    */
   }
 
   return <>
@@ -108,10 +109,11 @@ const FilterRow: React.FC<ThisProps> = ({ filter }) => {
             </IonTextarea>
           </IonItem>
         : <IonDatetime
-            displayFormat="DD:MM:YY - mm:ss"
+            //displayFormat="DD:MM:YY - mm:ss"
             placeholder="Select Date"
             value={filterValue}
-            onIonChange={e => setFilterValue(e.detail.value!)}>
+            //</IonCol>onIonChange={e => setFilterValue(e.detail.value!)}
+          >
           </IonDatetime>
         }
       </IonCol>

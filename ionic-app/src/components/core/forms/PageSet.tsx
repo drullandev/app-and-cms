@@ -58,7 +58,7 @@ const PageSet: React.FC<PageProps> = ({ slug, id }) => {
   }
 
   const getPageRow = (row: any, i: number) => (
-    <PageRow key={i} menu={row.menu} form={row.form} component={row.component} content={row.content} />
+    <PageRow key={i} menu={row.menu} form={row.form} component={row.component} content={row.content} params={row.params}/>
   )
 
   return (

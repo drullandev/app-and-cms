@@ -3,6 +3,11 @@ export interface Schedule {
   groups: ScheduleGroup[]
 }
 
+export interface Home {
+  date: string;
+  groups: ScheduleGroup[]
+}
+
 export interface ScheduleGroup {
   time: string;
   sessions: Session[];

@@ -1,4 +1,4 @@
-import * as AppConst from '../../static/constants'
+import * as AppConst from '../../data/static/constants'
 import { empty } from './common'
 
 export interface GqlModel {
@@ -18,6 +18,7 @@ export interface GqlModel {
   sort: string
   orderField: string
   searchOrder: string
+  searchString: string
   filterField: string
   filterCondition: string
   direction: string
@@ -38,7 +39,7 @@ export const setQuery = (params: GqlModel) =>{
   }
 
   // WHERE
-  var where = []
+  /*var where = []
   if(!empty(params.where)){
     params.where.map((row:any)=>{
       if(row.value !== undefined && row.value !== ''){
@@ -70,17 +71,18 @@ export const setQuery = (params: GqlModel) =>{
       }
     })
   }
+  */
 
   console.log(params)
 
   if(params.filterField !== undefined){
     if(params.filterCondition !== undefined && typeof params.searchString !== undefined){
-      where.push(params.filterField+'_'+params.filterCondition+' : '+params.searchString)
+    //  where.push(params.filterField+'_'+params.filterCondition+' : '+params.searchString)
     }
   }
 
   //https://strapi.io/documentation/developer-docs/latest/development/plugins/graphql.html#query-api
-  if(!empty(where)) queryString+=', where: { '+where.join(',')+' }'
+  //if(!empty(where)) queryString+=', where: { '+where.join(',')+' }'
 
   //ORDER
   queryString += `, sort: "` + params.orderField + `:` + ( params.searchOrder ? params.searchOrder : params.direction ) + `"`

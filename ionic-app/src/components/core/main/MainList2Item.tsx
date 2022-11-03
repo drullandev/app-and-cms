@@ -6,6 +6,7 @@ import { connect } from '../../../data/connect'
 import { restGet } from '../../../data/utils/rest/rest.utils'
 
 import Icon from './Icon'
+import { ListRowProps } from '../../../models/ListRowProps'
  
 interface LineProps {
   id: string,
@@ -15,7 +16,7 @@ interface LineProps {
 }
 
 interface OwnProps {
-  row: ListRow;
+  row: ListRowProps
   //timestamp: number
 }
 
@@ -57,7 +58,7 @@ const SessionListItem: React.FC<SessionListItemProps> = ({ row, searchString }) 
       console.log(res)
     })
 
-  },[row.id, searchString])
+  },[row?.id, searchString])
 
   /*
   const removeFavoriteSession = () => {

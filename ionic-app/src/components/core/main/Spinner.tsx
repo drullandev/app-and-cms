@@ -6,7 +6,7 @@ interface Spinner {
   name: "bubbles" | "circles" | "circular" | "crescent" | "dots" | "lines" | "lines-small"
 }
 
-const Spinner: React.FC<SpinnerProps> = ({ name = 'circular' }) => (
+const Spinner: React.FC<any> = ({ name = 'circular' }) => (
   <IonSpinner name={name}/>
 )
 

@@ -3,10 +3,10 @@ import { IonAlert } from '@ionic/react'
 
 export interface AlertProps {
   slug: string
-
+  showAlert: boolean
 }
 
-const Alert: React.FC<AlertProps> = ({ slug }) => (
+const Alert: React.FC<AlertProps> = ({ slug, showAlert}) => (
   <IonAlert
     isOpen={showAlert}
     header="Change Username"
@@ -15,7 +15,7 @@ const Alert: React.FC<AlertProps> = ({ slug }) => (
       {
         text: 'Ok',
         handler: (data) => {
-          setNickname(data.username);
+          //setNickname(data.username);
         }
       }
     ]}
@@ -27,7 +27,8 @@ const Alert: React.FC<AlertProps> = ({ slug }) => (
         placeholder: 'username'
       }
     ]}
-    onDidDismiss={() => setShowAlert(false)}
+    onDidDismiss={() => console.log() //setShowAlert(false)
+  }
   />
 )
 

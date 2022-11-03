@@ -80,7 +80,7 @@ const About: React.FC<AboutProps> = () => {
                 <IonDatetime
                   max="2056"
                   value={conferenceDate}
-                  onIonChange={(e) => setConferenceDate(e.detail.value!)}
+                  //onIonChange={(e) => setConferenceDate(e.detail.value!)}
                   presentation="date">
                 </IonDatetime>
               </IonPopover>

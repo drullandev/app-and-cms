@@ -26,9 +26,9 @@ const Content: React.FC<ContentProps> = ({row}) => {
   },[])
   
   return <IonContent>
-    <IonLabel color='primary'>{content.title}</IonLabel>
+    {/*<IonLabel color='primary'>{content.title}</IonLabel>
     <IonImg src={image}></IonImg>
-    <IonTextarea>{content.content}</IonTextarea>
+    <IonTextarea>{content.content}</IonTextarea>*/}
   </IonContent>
 
 }

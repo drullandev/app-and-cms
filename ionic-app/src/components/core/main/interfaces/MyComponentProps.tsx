@@ -4,11 +4,11 @@ export interface MyComponentProps {
   content?:{
     slug: string
   }
-  params: {
+  params?: {
     label?: string
     slot?: string
   }
-  override: {
+  override?: {
     label?: string
     slot?: string
   }

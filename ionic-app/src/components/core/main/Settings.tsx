@@ -1,37 +1,14 @@
-import * as AppConst from '../static/constants'
+import * as AppConst from '../../../data/static/constants'
 import React from 'react'
-import { gql, useQuery } from '@apollo/client'
+// I did it with graphql
 
 interface PopoverProps {
-  dismiss: () => void
+  dismiss: Function
 }
 
 
-const Settings: React.FC<PopoverProps> = ({ dismiss }) => {
-
-  const close = (url: string) => {
-    window.open(url, '_blank')
-    dismiss()
-  }
-
-  const { loading, error, data } = useQuery(gql`
-    query Settings {
-      settings {
-        id          
-      }
-    }
-  `);
-
-  if (loading) return 'Loading...'
-  if (error) return `Error! ${error.message}`;
-
-  return (
-    <>
-      {data.map((setting: any) => (
-        console.log(setting)
-      ))}
-    </>
-  )
+const Settings: React.FC<PopoverProps> = ({dismiss}) => {
+  return <></>
 }
 
 export default Settings

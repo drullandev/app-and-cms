@@ -21,7 +21,7 @@ export const Modal: React.FC<ModalProps> = ({open, showButton, model, slug}) => 
   },[])*/
 
   return <>
-    <IonModal key={slug+'-modal'}  isOpen={open} cssClass='my-custom-class'>
+    <IonModal key={slug+'-modal'}  isOpen={open} class='my-custom-class'>
       <p>This is modal content</p>
       <IonButton onClick={() => setShowModal(false)}>Close Modal</IonButton>
     </IonModal>

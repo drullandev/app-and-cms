@@ -10,6 +10,7 @@ const Map: React.FC<MapProps> = ({ mapCenter, locations }) => {
   const mapEle = useRef<HTMLDivElement>(null);
   const map = useRef<google.maps.Map>();
 
+  /*
   useEffect(() => {
 
     map.current = new google.maps.Map(mapEle.current, {
@@ -47,6 +48,7 @@ const Map: React.FC<MapProps> = ({ mapCenter, locations }) => {
     }
 
   }, [mapCenter, locations]);
+  */
 
   return (
     <div ref={mapEle} className="map-canvas"></div>

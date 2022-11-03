@@ -12,7 +12,23 @@ import Page from '../../../pages/core/Page'
 
 const testing = false
 
-interface TabMenuProps { }
+
+import { Filter } from './interfaces/Filter'
+
+interface TabMenuProps {
+  mode: 'ios' | 'md'
+  searchString: string | undefined
+  searchOrder: 'asc' | 'desc'
+  orderField: 'published_at' | string
+  filterDate: string
+  filterField: string
+  filterCondition: string
+  filter: Filter[]
+  setSearchOrder: Function
+  setOrderField: Function
+  setFilter: Function
+}
+
 
 const TabMenu: React.FC<TabMenuProps> = () => {
 
@@ -65,7 +81,19 @@ const TabMenu: React.FC<TabMenuProps> = () => {
         <Redirect exact path='/tabs' to='/tabs/home' />
       */} 
         <Redirect path='/tabs' to={'/tabs/home'} />
-        <Route path='/list' render={() => <Main />} />
+        {/*<Route path='/list' render={() => <Main mode={'ios'}
+          searchString={''}
+          searchOrder={'desc'}
+          orderField={''}
+          filterDate={''}
+          filterField={''}
+          filterCondition={''}
+          filter={[]}
+          setSearchOrder={()=>{}}
+          setOrderField={undefined}
+          setFilter={undefined}
+          />}
+    />*/}
         <Route path='/tabs/speakers/sessions/:id' component={MateDetail} />
         <Route path='/tabs/speakers/:id' component={MateDetail}/>
         <Route path='/tabs/home/:id' component={SessionDetail} />

@@ -1,11 +1,11 @@
-import * as AppConst from '../../../static/constants'
+import * as AppConst from '../../../data/static/constants'
 
 import {
   setIsLoggedIn,
-  setNickname,
-  setUserEmail,
-  setUserJwt,
-  setUserId,
+  setUsername,
+  //setUserEmail,
+  setJwt,
+  //setUserId,
   logoutUser
 } from '../../user/user.actions'
 
@@ -46,10 +46,10 @@ const login = async (form: any) => {//}, history: any){
     if(res.status === 200){
 
       setIsLoggedIn(true)
-      setUserEmail(res.data.user.mail)
-      setNickname(res.data.user.nickname)
-      setUserJwt(res.data.jwt)
-      setUserId(res.data.user.id)
+      //setUserEmail(res.data.user.mail)
+      //setNickname(res.data.user.nickname)
+      //setUserJwt(res.data.jwt)
+      //setUserId(res.data.user.id)
 
       return {
         type: 'history',

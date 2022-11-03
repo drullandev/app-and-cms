@@ -22,11 +22,11 @@ const SubMenu: React.FC<SubMenuProps> = ({ menu }) => {
   return (
     <>
       <IonListHeader>
-        <IonLabel>{menu.title}</IonLabel>
+        {/*<IonLabel>{menu.title}</IonLabel>*/}
       </IonListHeader>
       <IonList lines='none' key={menu.menu.slug}>
         {menus.map((row:any, i:number)=>(
-          <MenuRow key={i.toString()} row={row}/>
+          {/*<MenuRow key={i.toString()} row={row}/>*/}
         ))}
       </IonList>
     </>

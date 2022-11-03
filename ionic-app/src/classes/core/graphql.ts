@@ -1,7 +1,7 @@
 import { restCall, restCallAsync } from './axios'
 import { AxiosRequestConfig } from 'axios'
 import { empty, camelCase } from '../common'
-import i18n from 'i18next'
+import { useTranslation } from 'react-i18next'
 
 export interface WhereProps {
   type: string
@@ -212,7 +212,7 @@ const graphqlCallAsync = async (call: string) => {
 }
 
 export const filter = () => {
-  
+  const {t} = useTranslation()
   return {
     order : {
       default: 'desc',
@@ -230,19 +230,19 @@ export const filter = () => {
       default: 'published_at',
       options: [
         {
-          label: i18n.t('Published at'),
+          label: t('Published at'),
           value: 'published_at',
           type: 'date'
         },{
-          label: i18n.t('Created at'),
+          label: t('Created at'),
           value: 'created_at',
           type: 'date'
         },{
-          label: i18n.t('Updated at'),
+          label: t('Updated at'),
           value: 'updated_at',
           type: 'date'
         },{
-          label: i18n.t('Content'),
+          label: t('Content'),
           value: 'content',
           type: 'string'
         }
@@ -252,67 +252,67 @@ export const filter = () => {
       default: 'contains',
       options: [
         {
-          label: i18n.t('Distinct'),
+          label: t('Distinct'),
           value: 'ne',
           families: ['all']
         },
         {
-          label: i18n.t('Lower than'),
+          label: t('Lower than'),
           value: 'lt',
           families: ['all']
         },
         {
-          label: i18n.t('Lower or equal'),
+          label: t('Lower or equal'),
           value: 'lte',
           families: ['all']
         },
         {
-          label: i18n.t('Greater than'),
+          label: t('Greater than'),
           value: 'gt',
           families: ['all']
         },
         {
-          label: i18n.t('Greater or equal'),
+          label: t('Greater or equal'),
           value: 'gte',
           families: ['all']
         },
         {
-          label: i18n.t('Contains'),
+          label: t('Contains'),
           value: 'contains',
           families: ['all']
         },
         {
-          label: i18n.t('Contains sensitive'),
+          label: t('Contains sensitive'),
           value: 'containss',
           families: ['all']
         },
         {
-          label: i18n.t('No Contains'),
+          label: t('No Contains'),
           value: 'ncontains',
           families: ['all']
         },
         {
-          label: i18n.t('No Contains sensitive'),
+          label: t('No Contains sensitive'),
           value: 'ncontainss',
           families: ['all']
         },
         {
-          label: i18n.t('In'),
+          label: t('In'),
           value: 'in',
           families: ['array']
         },
         {
-          label: i18n.t('Not in'),
+          label: t('Not in'),
           value: 'nin',
           families: ['array'] 
         },
         {
-          label: i18n.t('Equals null'),
+          label: t('Equals null'),
           value: 'null',
           families: []
         },
         {
-          label: i18n.t('Not equals null'),
+          label: t('Not equals null'),
           value: 'nnull',
           families: []
         }

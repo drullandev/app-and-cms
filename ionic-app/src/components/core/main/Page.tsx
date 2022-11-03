@@ -39,7 +39,7 @@ const Page: React.FC<PageProps> = ({ match }) => {
   }
 
   const getPageRow = (row: any, i: number) => (
-    <PageRow key={i} menu={row.menu} form={row.form} component={row.component} />
+    <PageRow key={i} menu={row.menu} form={row.form} component={row.component} params={[]} />
   )
 
   return (

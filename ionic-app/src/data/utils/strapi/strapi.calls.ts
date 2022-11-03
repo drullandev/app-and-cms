@@ -1,4 +1,4 @@
-import * as AppConst from '../../../static/constants'
+import * as AppConst from '../../../data/static/constants'
 import axios from 'axios'
 
 const testing = false
@@ -12,8 +12,8 @@ const testing = false
 export const restGet = async (model:string, params:object = {}) => {
   if(testing) console.log('app.calls.restGet::'+model)
   const searchString = (params)
-    ? '?'+Object.keys(params).map(key => `${key}=${params[key]}`)
-    : ''
+    //? '?'+Object.keys(params).map(key => `${key}=${params[key]}`)
+    //: ''
   return axios.get(AppConst.RestAPI+'/'+model+searchString)
 }
 

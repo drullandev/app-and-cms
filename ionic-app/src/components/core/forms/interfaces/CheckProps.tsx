@@ -1,4 +1,5 @@
-import { Control, DeepMap, FieldError } from 'react-hook-form'
+import { Control, NestDataObject, FieldError } from 'react-hook-form'
+
 export interface CheckProps {
   field: {
     label: string,
@@ -6,5 +7,5 @@ export interface CheckProps {
   }
   onChange: boolean,
   control?: Control,
-  errors?: DeepMap<Record<string, any>, FieldError>,
+  errors?: NestDataObject<Record<string, any>, FieldError>,
 }

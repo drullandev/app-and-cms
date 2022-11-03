@@ -26,7 +26,7 @@ export interface FilterModel {
 interface OwnProps { }
 interface StateProps {
   mode: 'ios' | 'md'
-  searchString: string
+  searchString: string | undefined
   searchOrder: 'asc' | 'desc'
   orderField: 'published_at' | string,
   filterDate: string,
@@ -68,7 +68,7 @@ const Main: React.FC<ThisProps> = ({
   },[])
 
   const resetFilters = () => {
-    setFilter([])
+    setFilter('')
   }
 
   const addFilter = () => {

@@ -220,7 +220,7 @@ const MainList: React.FC<ThisProps> = ({
       disabled={isInfiniteDisabled}
     >
       <IonInfiniteScrollContent
-        loadingSpinner={getDataToCall().content.spinner}
+        //loadingSpinner={getDataToCall().content.spinner}
         loadingText={getDataToCall().content.content}
       ></IonInfiniteScrollContent>
     </IonInfiniteScroll>

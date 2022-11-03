@@ -1,6 +1,6 @@
-import { DeepMap, FieldError } from "react-hook-form"
+import { NestDataObject, FieldError } from "react-hook-form"
 export interface ErrorProps {
   name: string,
   label: string,
-  errors?: DeepMap<Record<string, any>, FieldError>
+  errors?: NestDataObject<Record<string, any>, FieldError>
 }

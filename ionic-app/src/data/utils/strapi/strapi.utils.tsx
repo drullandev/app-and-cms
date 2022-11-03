@@ -1,11 +1,11 @@
-/*import * as AppConst from '../../../static/constants'
+import * as AppConst from '../../../data/static/constants'
 
 import {
   setIsLoggedIn,
-  setNickname,
-  setUserEmail,
-  setUserJwt,
-  setUserId,
+  //setNickname,
+  //setUserEmail,
+  //setUserJwt,
+  //setUserId,
   logoutUser
 } from '../../user/user.actions'
 
@@ -41,11 +41,11 @@ function login(form: any) {//}, history: any){
 
         setIsLoggedIn(true)
 
-        setUserJwt(res.data.jwt)
+        //setUserJwt(res.data.jwt)
 
-        setUserEmail(userData.mail)
-        setNickname(userData.nickname)
-        setUserId(userData.id)
+        //setUserEmail(userData.mail)
+        //setNickname(userData.nickname)
+        //setUserId(userData.id)
 
         return {
           history: {
@@ -149,4 +149,4 @@ function recover(form: any) {//}, history: any){
       }
     })
   return dataPromise
-}*/
+}
