@@ -28,7 +28,7 @@ import { globe } from 'ionicons/icons'
 import { setIsLoggedInData, setUserData } from '../data/dataApi'
 import { restCallAsync } from '../classes/core/axios'
 import { useTranslation } from 'react-i18next'
-import i18next from 'i18next'
+//import i18next from 'i18next'
 
 
 
@@ -54,6 +54,7 @@ const Login: React.FC<LoginProps> = ({
   const [passwordError, setPasswordError] = useState(false)
 
   const [setToast, dismissToast] = useIonToast()
+
   const launchToast = async (data: any, setToast: Function) => {
     await setToast({
       message: data.message,
@@ -95,9 +96,9 @@ const Login: React.FC<LoginProps> = ({
         onSuccess: async (ret: StrapiAuthProps)=>{
           await onLoginSuccess(ret)
             .then((user: any)=>{
-              console.log('ret', user)
               launchToast({ 
-                message: t("{{username}}, has logged in!!",{ username: user.username }) }, setToast)
+                message: t("user-wellcome",{ username: user.username }) 
+              }, setToast)
                 .then(()=> history.push('/tabs/schedule', {direction: 'none'}))            
             })
         },

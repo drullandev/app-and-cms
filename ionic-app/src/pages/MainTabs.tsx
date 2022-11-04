@@ -1,7 +1,9 @@
-import React, { useEffect }  from 'react'
-import { IonTabs, IonRouterOutlet, IonTabBar, IonTabButton, IonIcon, IonLabel } from '@ionic/react'
+import React, { 
+  //useEffect
+ }  from 'react'
+import { IonTabs, IonRouterOutlet, IonTabBar, IonTabButton, //IonIcon, 
+IonLabel } from '@ionic/react'
 import { Route, Redirect } from 'react-router'
-import { calendar, location, informationCircle, people } from 'ionicons/icons'
 import SchedulePage from './SchedulePage'
 import SpeakerList from './SpeakerList'
 import SpeakerDetail from './SpeakerDetail'
@@ -9,13 +11,51 @@ import SessionDetail from './SessionDetail'
 import MapView from './MapView'
 import About from './About'
 
+import Icon from '../components/core/main/Icon'
+
 interface MainTabsProps { }
+
+interface TabProps {
+  name: string
+  href: string
+  icon: string
+  label: string
+}
 
 const MainTabs: React.FC<MainTabsProps> = () => {
 
-  useEffect(()=>{
-    
-  })
+  let menu = [
+    {
+      name: 'schedule', 
+      href: '/tabs/schedule',
+      icon: 'calendar',
+      label: 'Schedule'
+    },
+    {
+      name: 'speakers', 
+      href: '/tabs/speakers',
+      icon: 'people',
+      label: 'Speakers'
+    },
+    {
+      name: 'map', 
+      href: '/tabs/map',
+      icon: 'location',
+      label: 'Map'
+    },
+    {
+      name: 'about', 
+      href: '/tabs/about',
+      icon: 'informationCircle',
+      label: 'Speakers'
+    }
+  ]
+
+  const TabButton = (tab: TabProps) =>
+    <IonTabButton key={tab.href + '-tab'} tab={tab.name} href={tab.href}>
+      <Icon name={tab.icon}/>
+      <IonLabel>{tab.label}</IonLabel>
+    </IonTabButton>
 
   return (
     <IonTabs>
@@ -34,22 +74,7 @@ const MainTabs: React.FC<MainTabsProps> = () => {
         <Route path="/tabs/about" render={() => <About />} exact={true} />
       </IonRouterOutlet>
       <IonTabBar slot="bottom">
-        <IonTabButton tab="schedule" href="/tabs/schedule">
-          <IonIcon icon={calendar} />
-          <IonLabel>Schedule</IonLabel>
-        </IonTabButton>
-        <IonTabButton tab="speakers" href="/tabs/speakers">
-          <IonIcon icon={people} />
-          <IonLabel>Speakers</IonLabel>
-        </IonTabButton>
-        <IonTabButton tab="map" href="/tabs/map">
-          <IonIcon icon={location} />
-          <IonLabel>Map</IonLabel>
-        </IonTabButton>
-        <IonTabButton tab="about" href="/tabs/about">
-          <IonIcon icon={informationCircle} />
-          <IonLabel>About</IonLabel>
-        </IonTabButton>
+        {menu && menu.map((tab: TabProps)=> TabButton(tab) )}
       </IonTabBar>
     </IonTabs>
   )

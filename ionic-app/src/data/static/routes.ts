@@ -1,4 +1,10 @@
-import { informationCircleOutline, logIn, logOut, person, personAdd } from 'ionicons/icons'
+import {
+  //informationCircleOutline,
+  logIn,
+  logOut,
+  person,
+  personAdd
+} from 'ionicons/icons'
 
 export const routes = {    
     appPages: [

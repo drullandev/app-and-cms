@@ -2,7 +2,7 @@ import { getConfData } from '../dataApi'
 import { ActionType } from '../../util/types'
 import { ConfState } from './conf.state'
 
-import { FilterModel } from '../../components/core/main/Main' 
+//import { FilterModel } from '../../components/core/main/Main' 
 
 export const loadConfData = () =>
   async (dispatch: React.Dispatch<any>) => {

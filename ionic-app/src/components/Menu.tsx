@@ -31,22 +31,27 @@ interface DispatchProps {
 interface MenuProps extends RouteComponentProps, StateProps, DispatchProps { }
 
 const Menu: React.FC<MenuProps> = ({
-  darkMode,
-  history,
+  //darkMode,
+  //history,
   isAuthenticated,
   setDarkMode,
   menuEnabled
 }) => {
 
   const location = useLocation()
-  const { t, i18n } = useTranslation()
+  const { t } = useTranslation()
 
   const renderlistItems = (list: Pages[]) => {    
     return list
       .filter(route => !!route.path)
       .map(p => (
         <IonMenuToggle key={p.title} auto-hide="false">
-          <IonItem detail={false} routerLink={p.path} routerDirection="none" className={location.pathname.startsWith(p.path) ? 'selected' : undefined}>
+          <IonItem
+            detail={false}
+            routerLink={p.path}
+            routerDirection="none"
+            className={location.pathname.startsWith(p.path) ? 'selected' : undefined}
+          >
             <IonIcon slot="start" icon={p.icon} />
             <IonLabel>{p.title}</IonLabel>
           </IonItem>

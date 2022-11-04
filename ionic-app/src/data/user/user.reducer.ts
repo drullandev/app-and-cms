@@ -1,8 +1,11 @@
 import { UserActions } from './user.actions'
 import { UserState } from './user.state'
 
+let testingReducer = false
+let testing = testingReducer && process.env.REACT_APP_TESTING
+
 export function userReducer(state: UserState, action: UserActions): UserState {
-  console.log('userReducer', action.type, action)
+  if (testing) console.log('userReducer', action.type, action)
   switch (action.type) {
     case 'set-id':                return { ...state, id:                action.id }
     case 'set-jwt':               return { ...state, jwt:               action.jwt }
