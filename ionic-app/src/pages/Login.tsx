@@ -28,23 +28,28 @@ import { globe } from 'ionicons/icons'
 import { setIsLoggedInData, setUserData } from '../data/dataApi'
 import { restCallAsync } from '../classes/core/axios'
 import { useTranslation } from 'react-i18next'
+import { setIsLoggedIn, setData } from '../data/user/user.actions'
+import { State } from 'ionicons/dist/types/stencil-public-runtime'
 //import i18next from 'i18next'
 
-
+let testing = true && process.env.REACT_APP_TESTING
 
 interface OwnProps extends RouteComponentProps {}
 
-interface DispatchProps {}
+interface DispatchProps {
+  setIsLoggedIn: typeof setIsLoggedIn
+  setData: typeof setData
+}
+
 
 interface LoginProps extends OwnProps, DispatchProps {}
 
 const Login: React.FC<LoginProps> = ({
-  history
+  history,
+  setData
 }) => {
 
-  const { t } = useTranslation()
-
-  let testing = true && process.env.REACT_APP_TESTING
+  const { t } = useTranslation()  
 
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
@@ -69,9 +74,9 @@ const Login: React.FC<LoginProps> = ({
 
  const onLoginSuccess = async (ret: any) => {
     let user = ret.user
-    user.jwt = ret.jwt // Attach JWT...
-    await setUserData(user)
-    await setIsLoggedInData(true)
+    user.jwt = ret.jwt // Attaching the JWT to the user level and state...
+    await setData(user)
+    await setIsLoggedIn(true)
     return user
   }    
 
@@ -99,7 +104,7 @@ const Login: React.FC<LoginProps> = ({
               launchToast({ 
                 message: t("user-wellcome",{ username: user.username }) 
               }, setToast)
-                .then(()=> history.push('/tabs/schedule', {direction: 'none'}))            
+                .then(()=> history.push('/login', {direction: 'none'}))            
             })
         },
         onError: (err: Error)=> {
@@ -172,6 +177,9 @@ const Login: React.FC<LoginProps> = ({
 }
 
 export default connect<OwnProps, {}, DispatchProps>({
-  mapDispatchToProps: {},
+  mapDispatchToProps: {
+    setIsLoggedIn,
+    setData
+  },
   component: Login
 })

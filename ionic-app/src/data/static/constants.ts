@@ -24,7 +24,7 @@ export const menusOrigin = RestAPI + '/menus?slug='
 
 // OVERRIDE FROM THE CMS!!!! TODO TODO TODO TODO
 
-export const HOME = '/tabs/main'
+export const HOME = '/tabs/schedule'
 export const ADD_DATA = '/add-user-data'
 export const APP_ICON = '/add-user-data'
 export const TUTORIAL = '/tutorial'

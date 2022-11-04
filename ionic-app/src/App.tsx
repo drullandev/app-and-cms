@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { Route } from 'react-router-dom'
+import { Redirect, Route } from 'react-router-dom'
 import { IonApp, IonRouterOutlet, IonSplitPane, setupIonicReact } from '@ionic/react'
 import { IonReactRouter } from '@ionic/react-router'
 
@@ -32,9 +32,11 @@ import { loadUserData, setData } from './data/user/user.actions'
 import Login from './pages/Login'
 import Signup from './pages/Signup'
 import Account from './pages/Account'
-//import Support from './pages/Support'
-import MainTabs from './pages/MainTabs'
+import Support from './pages/Support'
+import MainTabs from './components/core/main/MainTabs'
 import Tutorial from './pages/Tutorial'
+
+import Page from './pages/core/Page'
 
 import { Schedule } from './models/Schedule'
 
@@ -78,35 +80,32 @@ const IonicApp: React.FC<IonicAppProps> = ({
     // eslint-disable-next-line
   }, [])
 
-  return (
-    schedule.groups.length === 0 ? (
-      <div></div>
-    ) : (
-      <IonApp className={`${darkMode ? 'dark-theme' : ''}`}>
-        <IonReactRouter>
-          <IonSplitPane contentId='main'>
-            <Menu />
-            <IonRouterOutlet id='main'>
-              {/*
-              We use IonRoute here to keep the tabs state intact,
-              which makes transitions between tabs and non tab pages smooth
-              */}
-              <Route path='/tabs' render={() => <MainTabs />} />
-              <Route path='/account' component={Account} />
-              <Route path='/login' component={Login} />
-              <Route path='/signup' component={Signup} />
-              {/*<Route path='/support' component={Support} />*/}
-              <Route path='/tutorial' component={Tutorial} />
-              <Route path='/logout' render={() => {
-                return <RedirectToLogin setData={setData}/>
-              }} />
-              <Route path='/' component={HomeOrTutorial} exact />
-            </IonRouterOutlet>
-          </IonSplitPane>
-        </IonReactRouter>
-      </IonApp>
-    )
-  )
+  return <IonApp className={`${darkMode ? 'dark-theme' : ''}`}>
+    <IonReactRouter>
+      <IonSplitPane contentId='main'>
+        <Menu />
+        <IonRouterOutlet id='main'>
+          {/*
+            We use IonRoute here to keep the tabs state intact,
+            which makes transitions between tabs and non tab pages smooth
+          */}
+          <Route path='/tabs' render={() => <MainTabs />} />
+          <Route path='/:slug' component={Page} />
+          <Route path='/tabs/home/:id' render={() => <MainTabs />} />
+          <Route path='/tabs/:slug' render={() => <MainTabs />} />
+            <Route path='/login' component={Login} />
+            <Route path='/signup' component={Signup} />
+            <Route path='/support' component={Support} />
+            <Route path='/tutorial' component={Tutorial} />
+          <Route path='/logout' render={() =>
+            <RedirectToLogin setData={setData}/>
+          } />
+          <Route path='/' component={HomeOrTutorial} exact />
+        </IonRouterOutlet>
+      </IonSplitPane>
+    </IonReactRouter>
+  </IonApp>
+
 }
 
 const App: React.FC = () => <AppContextProvider><IonicAppConnected />

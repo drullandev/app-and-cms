@@ -16,5 +16,6 @@ export const setOrRemove = async (key: string, value: any, string: boolean = tru
 }
 
 export const toogleBool = async (key: string, value: any) => {
-  await Storage.set({ key: key, value: value !== undefined ? value : false })
+  console.log('typebollis;'+key, typeof value, value)
+  await Storage.set({ key: key, value: (typeof value === 'boolean' ? value.toString() : 'false'  ) })
 }

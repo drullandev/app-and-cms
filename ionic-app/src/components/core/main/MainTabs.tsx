@@ -1,110 +1,53 @@
-import React, { useEffect, useState } from 'react'
-import { IonTabs, IonRouterOutlet, IonTabBar, IonTabButton, IonLabel } from '@ionic/react'
+import React, { 
+  //useEffect
+ }  from 'react'
+import { IonTabs, IonRouterOutlet, IonTabBar, IonTabButton, //IonIcon, 
+IonLabel } from '@ionic/react'
+import { Route, Redirect } from 'react-router'
+import SchedulePage from '../../../pages/SchedulePage'
+import SpeakerList from '../../../pages/SpeakerList'
+import SpeakerDetail from '../../../pages/SpeakerDetail'
+import SessionDetail from '../../../pages/SessionDetail'
+import MapView from '../../../pages/MapView'
+import About from '../../../pages/About'
 
-import { Redirect, Route } from 'react-router'
-import { restGet } from '../../../data/utils/rest/rest.utils'
+import { MainMenu, TabProps } from '../../../data/static/mainMenu'
 
-import MateDetail from '../../extra/MateDetail'
-import SessionDetail from '../../extra/SessionDetail'
-import Main from './Main'
 import Icon from './Icon'
-import Page from '../../../pages/core/Page'
 
-const testing = false
-
-
-import { Filter } from './interfaces/Filter'
-
-interface TabMenuProps {
-  mode: 'ios' | 'md'
-  searchString: string | undefined
-  searchOrder: 'asc' | 'desc'
-  orderField: 'published_at' | string
-  filterDate: string
-  filterField: string
-  filterCondition: string
-  filter: Filter[]
-  setSearchOrder: Function
-  setOrderField: Function
-  setFilter: Function
-}
+interface MainTabsProps { }
 
 
-const TabMenu: React.FC<TabMenuProps> = () => {
 
-  const [paths, setPaths ] = useState([])
-  const [menu, setMenu ] = useState([])
-  const [submenus, setSubmenus] = useState([])
-  
-  useEffect(() => {
-    restGet('components', { slug: 'tab-menu'})
-    .then(res => {
-      setPaths(res.data[0].paths)
-    })
-    .catch(err => { console.log(err) })
-  }, [])
+const MainTabs: React.FC<MainTabsProps> = () => {
 
-  useEffect(() => {
-    restGet('menus', { slug: 'main-tab'})
-    .then(res => {
-      setMenu(res.data[0])      
-      setSubmenus(res.data[0].rows)
-    })
-    .catch(err => { console.log(err) })
-  }, [])
-
-  const TabButton = (tab:any) => {
-    /*
-    console.log('TabButton', tab)
-    var icon = restGet('paths', { slug: tab.path.slug })
-    .then(res => {
-      console.log('setIcon '+res.data[0].component.icon)
-      return res.data[0].component.icon
-    })
-    .catch(err => { console.log(err) })
-
-    if(testing) console.log('icon', icon)
-    */
-
-    return <IonTabButton key={tab.path.slug + '-tab'} tab={tab.path.slug} href={tab.path.value}>
-      <Icon name={tab.icon ? tab.icon : 'person'} />
-      <IonLabel>{tab.title}</IonLabel>
+  // TODO:: USE THE COMPONENT INSTEAD !!!!
+  const TabButton = (tab: TabProps) =>
+    <IonTabButton key={tab.href + '-tab'} tab={tab.name} href={tab.href}>
+      <Icon name={tab.icon}/>
+      <IonLabel>{tab.label}</IonLabel>
     </IonTabButton>
-    
-  }
 
-  return (
-    <IonTabs>
-      <IonRouterOutlet>
-        {/*
-          <Route path='/:slug' component={Page} />
-        <Redirect exact path='/tabs' to='/tabs/home' />
-      */} 
-        <Redirect path='/tabs' to={'/tabs/home'} />
-        {/*<Route path='/list' render={() => <Main mode={'ios'}
-          searchString={''}
-          searchOrder={'desc'}
-          orderField={''}
-          filterDate={''}
-          filterField={''}
-          filterCondition={''}
-          filter={[]}
-          setSearchOrder={()=>{}}
-          setOrderField={undefined}
-          setFilter={undefined}
-          />}
-    />*/}
-        <Route path='/tabs/speakers/sessions/:id' component={MateDetail} />
-        <Route path='/tabs/speakers/:id' component={MateDetail}/>
-        <Route path='/tabs/home/:id' component={SessionDetail} />
-        <Route path='/tabs/:slug' component={Page} exact={true}/>
-      </IonRouterOutlet>
-      <IonTabBar slot='bottom'>
-        {submenus && submenus.map((tab: any)=>( TabButton(tab) ))}
-      </IonTabBar>
-    </IonTabs>
-  )
+  return <IonTabs>
+    <IonRouterOutlet>
+      <Redirect exact path="/tabs" to="/tabs/schedule" />
+      {/*
+        Using the render method prop cuts down the number of renders your components will have due to route changes.
+        Use the component prop when your component depends on the RouterComponentProps passed in automatically.
+      */}
+      <Route path="/tabs/schedule" render={() => <SchedulePage />} exact={true} />
+      <Route path="/tabs/speakers" render={() => <SpeakerList />} exact={true} />
+      <Route path="/tabs/speakers/:id" component={SpeakerDetail} exact={true} />
+      <Route path="/tabs/schedule/:id" component={SessionDetail} />
+      <Route path="/tabs/speakers/sessions/:id" component={SessionDetail} />
+      <Route path="/tabs/map" render={() => <MapView />} exact={true} />
+      <Route path="/tabs/about" render={() => <About />} exact={true} />
+    </IonRouterOutlet>
+    <IonTabBar slot="bottom">
+      {MainMenu && MainMenu.map((tab: TabProps)=> TabButton(tab) )}
+    </IonTabBar>
+  </IonTabs>
 
 }
 
-export default React.memo(TabMenu)
+export default MainTabs

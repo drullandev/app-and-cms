@@ -17,14 +17,12 @@ const PageRow: React.FC<PageRowProps> = ({ menu, form, component, content }) => 
   if(testing) console.log('PageRowProps', { menu, form, component})
   const returnComponent = () => {
     if (!component) return
-    return component && <></>
-    /*<MyComponent
+    return component && 
+    <MyComponent
       name={component.name}
       slug={component.slug}
       content={content}
-      params={component.params}
-      override={component.params}
-    />*/
+    />
   }
 
   return (

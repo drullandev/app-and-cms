@@ -19,7 +19,7 @@ import { ActionType } from '../../util/types'
 import { UserState } from './user.state'
 import { initialUser } from '../state'
 
-let testingUserActions = false
+let testingUserActions = true
 let testing = testingUserActions && process.env.REACT_APP_TESTING
 
 // !Keep it simple !!!!!!!!!!!
@@ -52,7 +52,6 @@ export const setIsLoggedIn = (loggedIn: boolean) => async (dispatch: React.Dispa
   await setIsLoggedInData(loggedIn)
   return ({ type: 'set-is-loggedin', loggedIn } as const)
 }
-
 
 
 // COMMON
@@ -113,7 +112,7 @@ export const setProvider = (provider2?: string) => async (dispatch: React.Dispat
 
 export const setDarkMode = (darkMode?: boolean) => async (dispatch: React.Dispatch<any>) => {
   setTesting(setDarkMode, darkMode)
-  await setDarkModeData(darkMode)
+  dispatch(await setDarkModeData(darkMode))
   return ({ type: 'set-dark-mode', darkMode } as const)
 }
 

@@ -121,7 +121,8 @@ const Form: FC<MyFormProps> = ({
 
   useEffect(() => {
     launchLoading('Loading form...', 345)
-    restGet('forms', { slug: slug })
+    
+    /*restGet('forms', { slug: slug })
       .then(res => {
         switch (res.status) {
           case 200:
@@ -137,6 +138,8 @@ const Form: FC<MyFormProps> = ({
       .catch(err => {
         launchToast(err.response.data.message[0].messages[0].message, 'danger')
       })
+    */
+   
     // eslint-disable-next-line
   }, [slug])
 

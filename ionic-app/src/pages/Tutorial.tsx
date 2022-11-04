@@ -3,13 +3,14 @@ import { IonContent, IonPage, IonHeader, IonToolbar, IonButtons, IonButton, IonI
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Swiper as SwiperCore } from 'swiper'
 import { arrowForward } from 'ionicons/icons'
-import { setMenuEnabled } from '../data/sessions/sessions.actions'
+import { setData, setMenuEnabled } from '../data/sessions/sessions.actions'
 import { setHasSeenTutorial } from '../data/user/user.actions'
 import './Tutorial.scss'
 import 'swiper/swiper.min.css'
 import '@ionic/react/css/ionic-swiper.css'
 import { connect } from '../data/connect'
 import { RouteComponentProps } from 'react-router'
+import { initialUser } from '../data/state'
 
 interface OwnProps extends RouteComponentProps {}
 
@@ -29,6 +30,7 @@ const Tutorial: React.FC<TutorialProps> = ({ history, setHasSeenTutorial, setMen
   })
   
   const startApp = async () => { 
+    await setData(initialUser)
     await setHasSeenTutorial(true)
     await setMenuEnabled(true)
     history.push('/tabs/schedule', { direction: 'none' })

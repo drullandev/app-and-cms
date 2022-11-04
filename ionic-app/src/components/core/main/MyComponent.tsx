@@ -7,7 +7,7 @@ import Page from '../../../pages/core/Page'
 import About from '../../../pages/core/About'
 //import Account from '../../../pages/core/Account'
 
-import Home from '../../../pages/core/Schedule'
+import Home from '../../../pages/core/SchedulePage'
 import SpeakerList from '../../extra/MatesList'
 import MateDetail from '../../extra/MateDetail'
 import MapView from '../../extra/MapView'

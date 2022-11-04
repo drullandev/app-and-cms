@@ -3,13 +3,14 @@ import React, { useState, useRef } from 'react'
 import { IonContent, IonPage, IonHeader, IonToolbar, IonButtons, IonButton, IonSlides, IonSlide, IonIcon, useIonViewWillEnter } from '@ionic/react'
 import { arrowForward } from 'ionicons/icons'
 
-import { setMenuEnabled } from '../../data/sessions/sessions.actions'
+import { setData, setMenuEnabled } from '../../data/sessions/sessions.actions'
 import { setHasSeenTutorial } from '../../data/user/user.actions'
 
 import './styles/Tutorial.scss'
 
 import { connect } from '../../data/connect'
 import { RouteComponentProps, withRouter } from 'react-router'
+import { initialUser } from '../../data/state'
 
 interface OwnProps extends RouteComponentProps { }
 
@@ -30,6 +31,7 @@ const Tutorial: React.FC<TutorialProps> = ({ history, setHasSeenTutorial, setMen
   })
 
   const startApp = async () => {
+    await setData(initialUser)
     setHasSeenTutorial(true)
     setMenuEnabled(true)
     history.push(AppConst.HOME, { direction: 'none' })

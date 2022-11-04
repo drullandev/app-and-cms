@@ -23,8 +23,10 @@ const Login: React.FC<LoginProps> = ({setIsLoggedIn, history, setUsername: setUs
   const [passwordError, setPasswordError] = useState(false)
 
   const login = async (e: React.FormEvent) => {
+
     e.preventDefault()
     setFormSubmitted(true)
+    
     if(!username) {
       setUsernameError(true)
     }

@@ -1,9 +1,9 @@
-import * as AppConst from '../../data/static/constants'
+//import * as AppConst from '../../data/static/constants'
 import React, { useEffect, useState } from 'react'
 import { IonPage, IonHeader, IonContent, IonFooter, IonSpinner, getConfig } from '@ionic/react'
 import { useLocation, useHistory } from 'react-router-dom'
 import { RouteComponentProps } from 'react-router'
-import { restGet } from '../../data/utils/rest/rest.utils'
+//import { restGet } from '../../data/utils/rest/rest.utils'
 import { connect } from '../../data/connect'
 import PageRow from '../../components/core/main/PageRow'
 
@@ -33,9 +33,11 @@ const Page: React.FC<PageProps> = ({ match }) => {
   //const [page, setPage] = useState<PageProps>()
   const [slugIn, setSlugIn] = useState('')
   const [pageRows, setPageRows] = useState([])
-  const [showMainTab, setShowMainTab] = useState(false)
+  //const [showMainTab, setShowMainTab] = useState(false)
 
   useEffect(() => {
+
+    /*
     //console.log('Load Page', match.params.slug)
     restGet('pages', { slug : match.params.slug})
     .then(res => {
@@ -55,6 +57,8 @@ const Page: React.FC<PageProps> = ({ match }) => {
         history.push(AppConst.HOME)
       }, AppConst.timeout.redirect)
     })
+    */
+
   }, [match])
 
   const setArea = (type: string) => {
