@@ -29,7 +29,7 @@ import { AppContextProvider } from './data/AppContext'
 import { loadConfData } from './data/sessions/sessions.actions'
 import { loadUserData, setData } from './data/user/user.actions'
 
-import Login from './pages/Login'
+import Login from './pages/_Login'
 import Signup from './pages/Signup'
 import Account from './pages/Account'
 import Support from './pages/Support'
