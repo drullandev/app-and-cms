@@ -1,7 +1,7 @@
 import * as AppConst from '../../../data/static/constants'
 
 import {
-  setIsLoggedIn,
+  setisLoggedIn,
   //setNickname,
   //setUserEmail,
   //setUserJwt,
@@ -39,7 +39,7 @@ function login(form: any) {//}, history: any){
       var userData = res.data.user
       if (userData.confirmed && !userData.blocked) {
 
-        setIsLoggedIn(true)
+        setisLoggedIn(true)
 
         //setUserJwt(res.data.jwt)
 

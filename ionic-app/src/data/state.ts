@@ -28,7 +28,7 @@ export const initialUser = {
   darkMode: true,
   hasSeenTutorial: false,
   loading: false,
-  isLoggedin: false,
+  isLoggedIn: false,
 }
 
 export const initialState: AppState = {

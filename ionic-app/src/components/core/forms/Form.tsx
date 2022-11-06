@@ -4,7 +4,7 @@ import { CreateAnimation, IonText, IonGrid, useIonLoading, useIonToast, getConfi
 import React, { FC, useState, useEffect, useRef } from 'react'
 
 import {
-  setIsLoggedIn, 
+  setisLoggedIn, 
   setUsername,
   setEmail,
   setId,
@@ -49,7 +49,7 @@ interface StateProps {
 }
 
 interface DispatchProps {
-  /*setIsLoggedIn: typeof setIsLoggedIn
+  /*setisLoggedIn: typeof setisLoggedIn
   setUserJwt: typeof setUserJwt
   setUserEmail: typeof setUserEmail
   setDarkMode: typeof setDarkMode
@@ -67,7 +67,7 @@ const Form: FC<MyFormProps> = ({
   slug,
   /*setUserJwt,
   userDarkMode, setDarkMode,
-  setIsLoggedIn*/
+  setisLoggedIn*/
 }) => {
 
   const history = useHistory()
@@ -202,7 +202,7 @@ const Form: FC<MyFormProps> = ({
           }).then((res: any) => {
             switch (res.status) {
               case 200:
-                setIsLoggedIn(true)
+                setisLoggedIn(true)
                 setTheUserData(res.data)
                 axios
                   .put(AppConst.RestAPI+'/users/'+res.data.user.id, {
@@ -217,13 +217,13 @@ const Form: FC<MyFormProps> = ({
                 launchHistory(AppConst.HOME)
               break
               default:
-                setIsLoggedIn(false)
+                setisLoggedIn(false)
                 launchToast('Status:' + res.status + ',' + res.data.message[0].messages[0].message, 'warning')
               break
             }
           }).catch((err:any) => {
             console.log(err)
-            setIsLoggedIn(false)
+            setisLoggedIn(false)
             //launchToast(err.response.data.message[0].messages[0].message, 'danger')
           })
 
@@ -239,7 +239,7 @@ const Form: FC<MyFormProps> = ({
           }).then((res: any) => {
             switch (res.status) {
               case 200:
-                setIsLoggedIn(true)
+                setisLoggedIn(true)
                 setTheUserData(res.data)
                 axios
                   .put(AppConst.RestAPI+'/users/'+res.data.user.id, {
@@ -255,12 +255,12 @@ const Form: FC<MyFormProps> = ({
                 launchHistory(AppConst.ADD_DATA, 2000, { direction: 'none' })
               break
               default:
-                setIsLoggedIn(false)
+                setisLoggedIn(false)
                 launchToast('Status:' + res.status + ',' + res.response.data.message[0].messages[0].message, 'warning')
               break
             }
           }).catch(err => {
-            setIsLoggedIn(false)
+            setisLoggedIn(false)
             launchToast(err.response.data.message[0].messages[0].message, 'danger')
           })
 
@@ -281,12 +281,12 @@ const Form: FC<MyFormProps> = ({
               break
               default:
                 console.log('case', res.status)
-                setIsLoggedIn(false)
+                setisLoggedIn(false)
                 launchToast('Status:' + res.status + ',' + res.response.data.message[0].messages[0].message, 'warning')
               break
             }
           }).catch((res: any) => {
-            setIsLoggedIn(false)
+            setisLoggedIn(false)
             launchToast(res.response.data.message[0].messages[0].message, 'danger')
           })
 
@@ -307,12 +307,12 @@ const Form: FC<MyFormProps> = ({
               break
               default:
                 console.log('case', res.status)
-                setIsLoggedIn(false)
+                setisLoggedIn(false)
                 launchToast('Status:' + res.status + ',' + res.response.data.message[0].messages[0].message, 'warning')
               break
             }
           }).catch((res: any) => {
-            setIsLoggedIn(false)
+            setisLoggedIn(false)
             launchToast(res.response.data.message[0].messages[0].message, 'danger')
           })
 
@@ -332,12 +332,12 @@ const Form: FC<MyFormProps> = ({
               break
               default:
                 console.log('case', res.status)
-                setIsLoggedIn(false)
+                setisLoggedIn(false)
                 launchToast('Status:' + res.status + ',' + res.response.data.message[0].messages[0].message, 'warning')
               break
             }
           }).catch((res: any) => {
-            setIsLoggedIn(false)
+            setisLoggedIn(false)
             launchToast(res.response.data.message[0].messages[0].message, 'danger')
           })
 
@@ -357,12 +357,12 @@ const Form: FC<MyFormProps> = ({
               break
               default:
                 console.log('case', res.status)
-                setIsLoggedIn(false)
+                setisLoggedIn(false)
                 launchToast('Status:' + res.status + ',' + res.response.data.message[0].messages[0].message, 'warning')
               break
             }
           }).catch((res: any) => {
-            setIsLoggedIn(false)
+            setisLoggedIn(false)
             launchToast(res.response.data.message[0].messages[0].message, 'danger')
           })
 
@@ -376,7 +376,7 @@ const Form: FC<MyFormProps> = ({
 
     const setTheUserData = (data: any) => {
 
-      setIsLoggedIn(true)
+      setisLoggedIn(true)
       setJwt(data.jwt)
       setUsername(data.user.username)
       setDarkMode(data.user.userDarkMode)
@@ -452,7 +452,7 @@ export default connect<FormProps>({
     //setUserMode,
     setJwt,
     setDarkMode,
-    setIsLoggedIn,
+    setisLoggedIn,
   },
 
   component: Form

@@ -89,7 +89,7 @@ const Menu: React.FC<MenuProps> = ({
 export default connect<{}, StateProps, {}>({
   mapStateToProps: (state) => ({
     darkMode: state.user.darkMode,
-    isAuthenticated: state.user.isLoggedin,
+    isAuthenticated: state.user.isLoggedIn,
     menuEnabled: state.data.menuEnabled
   }),
   mapDispatchToProps: ({

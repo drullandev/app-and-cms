@@ -18,7 +18,7 @@ export function userReducer(state: UserState, action: UserActions): UserState {
     case 'set-provider':          return { ...state, provider:          action.provider2 }
     case 'set-dark-mode':         return { ...state, darkMode:          action.darkMode }
     case 'set-has-seen-tutorial': return { ...state, hasSeenTutorial:   action.hasSeenTutorial }
-    case 'set-is-loggedin':       return { ...state, isLoggedin:        action.loggedIn }
+    case 'set-is-loggedin':       return { ...state, isLoggedIn:        action.loggedIn }
     case 'set-user-loading':      return { ...state, loading:           action.isLoading }
     case 'set-user-data':         return { ...state,                    ...action.data }
   }

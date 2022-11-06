@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { IonHeader, IonToolbar, IonTitle, IonContent, IonPage, IonButtons, IonMenuButton, IonRow, IonCol, IonButton, IonList, IonItem, IonLabel, IonInput, IonText, useIonToast } from '@ionic/react';
 import './Login.scss';
-import { setData, setIsLoggedIn, setUsername, setDarkMode } from '../data/user/user.actions';
+import { setData, setisLoggedIn, setUsername, setDarkMode } from '../data/user/user.actions';
 import { connect } from '../data/connect';
 import { RouteComponentProps } from 'react-router';
 import { restCallAsync } from '../classes/core/axios';
@@ -15,7 +15,7 @@ let testing = true
 interface OwnProps extends RouteComponentProps {}
 
 interface DispatchProps {
-  setIsLoggedIn: typeof setIsLoggedIn;
+  setisLoggedIn: typeof setisLoggedIn;
   setUsername: typeof setUsername;
   setData: typeof setData;
   setDarkMode: typeof setDarkMode
@@ -24,7 +24,7 @@ interface DispatchProps {
 interface LoginProps extends OwnProps,  DispatchProps { }
 
 const Login: React.FC<LoginProps> = ({
-  setIsLoggedIn,
+  setisLoggedIn,
   history,
   setUsername: setUsernameAction,
   setData
@@ -59,7 +59,7 @@ const Login: React.FC<LoginProps> = ({
     user.jwt = ret.jwt // Attaching the JWT to the user level and state...
     await setData(user)
     await setDarkMode(true)
-    await setIsLoggedIn(true)
+    await setisLoggedIn(true)
     return user
   }    
 
@@ -84,7 +84,7 @@ const Login: React.FC<LoginProps> = ({
         onSuccess: async (ret: StrapiAuthProps)=>{
           await onLoginSuccess(ret)
             .then((user: UserState)=>{
-              setIsLoggedIn(true)
+              setisLoggedIn(true)
               launchToast({ 
                 message: t("user-wellcome",{ username: user.username }) 
               }, setToast)
@@ -111,7 +111,7 @@ const Login: React.FC<LoginProps> = ({
     }
 
     if(username && password) {
-      await setIsLoggedIn(true);
+      await setisLoggedIn(true);
       await setUsernameAction(username);
       history.push('/tabs/schedule', {direction: 'none'});
     }
@@ -179,7 +179,7 @@ const Login: React.FC<LoginProps> = ({
 
 export default connect<OwnProps, {}, DispatchProps>({
   mapDispatchToProps: {
-    setIsLoggedIn,
+    setisLoggedIn,
     setUsername,
     setDarkMode,
     setData

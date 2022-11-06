@@ -1,20 +1,20 @@
 import React, { useState } from 'react';
 import { IonHeader, IonToolbar, IonTitle, IonContent, IonPage, IonButtons, IonMenuButton, IonRow, IonCol, IonButton, IonList, IonItem, IonLabel, IonInput, IonText } from '@ionic/react';
 import './Login.scss';
-import { setIsLoggedIn, setUsername } from '../data/user/user.actions';
+import { setisLoggedIn, setUsername } from '../data/user/user.actions';
 import { connect } from '../data/connect';
 import { RouteComponentProps } from 'react-router';
 
 interface OwnProps extends RouteComponentProps {}
 
 interface DispatchProps {
-  setIsLoggedIn: typeof setIsLoggedIn;
+  setisLoggedIn: typeof setisLoggedIn;
   setUsername: typeof setUsername;
 }
 
 interface LoginProps extends OwnProps,  DispatchProps { }
 
-const Login: React.FC<LoginProps> = ({setIsLoggedIn, history, setUsername: setUsernameAction}) => {
+const Login: React.FC<LoginProps> = ({setisLoggedIn, history, setUsername: setUsernameAction}) => {
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -33,7 +33,7 @@ const Login: React.FC<LoginProps> = ({setIsLoggedIn, history, setUsername: setUs
     }
 
     if(username && password) {
-      await setIsLoggedIn(true);
+      await setisLoggedIn(true);
       await setUsernameAction(username);
       history.push('/tabs/schedule', {direction: 'none'});
     }
@@ -101,7 +101,7 @@ const Login: React.FC<LoginProps> = ({setIsLoggedIn, history, setUsername: setUs
 
 export default connect<OwnProps, {}, DispatchProps>({
   mapDispatchToProps: {
-    setIsLoggedIn,
+    setisLoggedIn,
     setUsername
   },
   component: Login

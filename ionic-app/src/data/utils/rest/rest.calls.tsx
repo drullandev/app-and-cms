@@ -1,7 +1,7 @@
 import * as AppConst from '../../../data/static/constants'
 
 import {
-  setIsLoggedIn,
+  setisLoggedIn,
   setUsername,
   //setUserEmail,
   setJwt,
@@ -45,7 +45,7 @@ const login = async (form: any) => {//}, history: any){
 
     if(res.status === 200){
 
-      setIsLoggedIn(true)
+      setisLoggedIn(true)
       //setUserEmail(res.data.user.mail)
       //setNickname(res.data.user.nickname)
       //setUserJwt(res.data.jwt)

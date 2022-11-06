@@ -85,7 +85,7 @@ export const getUserData = async () => {
   const darkMode    = await response[9].value  === 'true'
   const hasSeenTutorial = await response[11].value === 'true'
 
-  const isLoggedin      = await response[10].value === 'true'
+  const isLoggedIn      = await response[10].value === 'true'
 
   const data = {
     id,
@@ -99,7 +99,7 @@ export const getUserData = async () => {
     provider,    
     darkMode,
     hasSeenTutorial,
-    isLoggedin,
+    isLoggedIn,
   }
 
   return data
@@ -111,14 +111,14 @@ export const setIdData = async (id2?: string) => setOrRemove(ID, id2, false)
 export const setJwtData = async (jwt?: string) => setOrRemove(JWT, jwt)
 export const setUsernameData = async (username?: string) => setOrRemove(USERNAME, username)
 export const setEmailData = async (email?: string) => setOrRemove(EMAIL, email)
-export const setBlockedData = async (blocked?: boolean) => toogleBool(BLOCKED, blocked)
-export const setConfirmedData = async (confirmed?: boolean) => toogleBool(CONFIRMED, confirmed)
+export const setBlockedData = async (blocked?: boolean) => toogleBool(BLOCKED, blocked, initialUser.blocked)
+export const setConfirmedData = async (confirmed?: boolean) => toogleBool(CONFIRMED, confirmed, initialUser.confirmed)
 export const setCreatedAtData = async (createdAt?: string) => setOrRemove(CREATED_AT, createdAt)
 export const setUpdatedAtData = async (updatedAt?: string) => setOrRemove(UPDATED_AT, updatedAt)
 export const setProviderData = async (provider2?: string) => setOrRemove(UPDATED_AT, provider2)
-export const setDarkModeData = async (darkMode?: boolean) => toogleBool(DARK_MODE, darkMode)
-export const setHasSeenTutorialData = async (hasSeenTutorial?: boolean) => toogleBool(HAS_SEEN_TUTORIAL, hasSeenTutorial)
-export const setIsLoggedInData = async (isLoggedIn?: boolean) => toogleBool(HAS_LOGGED_IN, isLoggedIn)
+export const setDarkModeData = async (darkMode?: boolean) => toogleBool(DARK_MODE, darkMode, initialUser.darkMode)
+export const setHasSeenTutorialData = async (hasSeenTutorial?: boolean) => toogleBool(HAS_SEEN_TUTORIAL, hasSeenTutorial, initialUser.hasSeenTutorial)
+export const setisLoggedInData = async (isLoggedIn?: boolean) => toogleBool(HAS_LOGGED_IN, isLoggedIn, initialUser.isLoggedIn)
 
 // EXTRA
 export const setUserData = async (data: Partial<UserState>) => {
@@ -133,5 +133,5 @@ export const setUserData = async (data: Partial<UserState>) => {
   setProviderData(data.provider)
   setDarkModeData(data.darkMode !== null ? data.darkMode : initialUser.darkMode)
   setHasSeenTutorialData(data.hasSeenTutorial)
-  //setIsLoggedInData//XXX no!
+  //setisLoggedInData//XXX no!
 }

@@ -10,7 +10,7 @@ import {
   setProviderData,
   setDarkModeData,
   setHasSeenTutorialData,
-  setIsLoggedInData,
+  setisLoggedInData,
   getUserData,
   setUserData
 } from '../dataApi'
@@ -37,7 +37,7 @@ export const loadUserData = () => async (dispatch: React.Dispatch<any>) => {
 
 export const logoutUser = () => async (dispatch: React.Dispatch<any>) => {
   setTesting(logoutUser)
-  await setIsLoggedInData(false)
+  await setisLoggedInData(false)
   await setUserData(initialUser)
 }
 
@@ -47,9 +47,9 @@ export const setData = (data: Partial<UserState>) => async (dispatch: React.Disp
   return ({ type: 'set-user-data', data} as const)
 }
 
-export const setIsLoggedIn = (loggedIn: boolean) => async (dispatch: React.Dispatch<any>) => {
-  setTesting(setIsLoggedIn, loggedIn)
-  await setIsLoggedInData(loggedIn)
+export const setisLoggedIn = (loggedIn: boolean) => async (dispatch: React.Dispatch<any>) => {
+  setTesting(setisLoggedIn, loggedIn)
+  await setisLoggedInData(loggedIn)
   return ({ type: 'set-is-loggedin', loggedIn } as const)
 }
 
@@ -145,4 +145,4 @@ export type UserActions =
 | ActionType<typeof setHasSeenTutorial>
 | ActionType<typeof setLoading>
 | ActionType<typeof setData>
-| ActionType<typeof setIsLoggedIn>
+| ActionType<typeof setisLoggedIn>
