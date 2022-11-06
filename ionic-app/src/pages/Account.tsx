@@ -25,7 +25,7 @@ interface AccountProps extends OwnProps, StateProps, DispatchProps { }
 const Account: React.FC<AccountProps> = ({
   username,
   darkMode,
-  setDarkMode,
+  setDarkMode: setDarkModeData,
 }) => {
 
   const clicked = (text: string) => {
@@ -85,7 +85,7 @@ const Account: React.FC<AccountProps> = ({
               <IonItem>
                 <IonIcon slot="start" icon={moonOutline}></IonIcon>
                 <IonLabel>Dark Mode</IonLabel>
-                <IonToggle checked={darkMode} onClick={() => setDarkMode(!darkMode)} />
+                <IonToggle checked={darkMode} onClick={() => setDarkModeData(!darkMode)} />
               </IonItem>
             </IonList>
 

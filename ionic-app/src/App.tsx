@@ -97,6 +97,7 @@ const IonicApp: React.FC<IonicAppProps> = ({
             <Route path='/signup' component={Signup} />
             <Route path='/support' component={Support} />
             <Route path='/tutorial' component={Tutorial} />
+            <Route path='/account' component={Account} />
           <Route path='/logout' render={() =>
             <RedirectToLogin setData={setData}/>
           } />

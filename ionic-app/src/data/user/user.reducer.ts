@@ -1,7 +1,7 @@
 import { UserActions } from './user.actions'
 import { UserState } from './user.state'
 
-let testingReducer = false
+let testingReducer = true
 let testing = testingReducer && process.env.REACT_APP_TESTING
 
 export function userReducer(state: UserState, action: UserActions): UserState {
