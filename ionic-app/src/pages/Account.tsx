@@ -1,41 +1,40 @@
-import React from 'react'
-import { IonHeader, IonToolbar, IonTitle, IonContent, IonPage, IonButtons, IonMenuButton, IonList, IonItem, IonIcon, IonLabel, IonToggle, IonInput } from '@ionic/react'
-import './Account.scss'
-import { setDarkMode, setUsername } from '../data/user/user.actions'
-import { connect } from '../data/connect'
-import { RouteComponentProps } from 'react-router'
-import { moonOutline, pencilOutline } from 'ionicons/icons'
-//import Alert from '../components/Alert'
+import React, { useState } from 'react';
+import { IonHeader, IonToolbar, IonTitle, IonContent, IonPage, IonButtons, IonMenuButton, IonList, IonItem, IonAlert, IonIcon, IonLabel, IonToggle } from '@ionic/react';
+import './Account.scss';
+import { setUsername, setDarkMode } from '../data/user/user.actions';
+import { connect } from '../data/connect';
+import { RouteComponentProps } from 'react-router';
+import { moonOutline } from 'ionicons/icons';
+
+interface OwnProps extends RouteComponentProps { }
 
 interface StateProps {
-  username: string
-  isAuthenticated: boolean
-  darkMode: boolean
+  username?: string;
+  darkMode: boolean | true
 }
 
 interface DispatchProps {
-  setUsername: typeof setUsername
-  setDarkMode: typeof setDarkMode
+  setUsername: typeof setUsername;
+  setDarkMode: typeof setDarkMode;
 }
-
-interface OwnProps extends RouteComponentProps {}
 
 interface AccountProps extends OwnProps, StateProps, DispatchProps { }
 
 const Account: React.FC<AccountProps> = ({
+  setUsername,
+  setDarkMode,
   username,
-  darkMode,
-  setDarkMode: setDarkModeData,
+  darkMode
 }) => {
 
+  const [showAlert, setShowAlert] = useState(false);
+
   const clicked = (text: string) => {
-    console.log(`Clicked ${text}`)
+    console.log(`Clicked ${text}`);
   }
 
-  const allowed = username
-
   return (
-    <IonPage id="account-page" className={`${darkMode ? 'dark-theme' : ''}`}>
+    <IonPage id="account-page">
       <IonHeader>
         <IonToolbar>
           <IonButtons slot="start">
@@ -45,84 +44,56 @@ const Account: React.FC<AccountProps> = ({
         </IonToolbar>
       </IonHeader>
       <IonContent>
-        {allowed &&
-        
+        {username &&
           (<div className="ion-padding-top ion-text-center">
-
-            <IonList>
-              <img src="https://www.gravatar.com/avatar?d=mm&s=140" alt="avatar" />
-              <IonIcon slot="end" icon={pencilOutline} onClick={() => console.log('pinga')}></IonIcon>
+            <img src="https://www.gravatar.com/avatar?d=mm&s=140" alt="avatar" />
+            <h2>{ username }</h2>
+            <IonList inset>
+              <IonItem onClick={() => clicked('Update Picture')}>Update Picture</IonItem>
+              <IonItem onClick={() => setShowAlert(true)}>Change Username</IonItem>
+              <IonItem onClick={() => clicked('Change Password')}>Change Password</IonItem>
+              <IonItem routerLink="/support" routerDirection="none">Support</IonItem>
+              <IonItem routerLink="/logout" routerDirection="none">Logout</IonItem>
             </IonList>
-            
-            <IonList>
-              <IonLabel slot="start">{ username }</IonLabel>
-              <IonInput style={{display: 'none'}} value={ username }></IonInput>
-              <IonIcon slot="end" icon={pencilOutline} onClick={() => console.log('pinga')}></IonIcon>
-            </IonList>
-
-            <IonList lines="none">
-              <IonItem onClick={() => clicked('Change Password')}>
-                <IonIcon slot="start" icon={moonOutline}></IonIcon>
-                <IonLabel>Change Password</IonLabel>
-              </IonItem>
-            </IonList>
-
-            <IonList lines="none">
-              <IonItem routerLink="/support" routerDirection="none">
-                <IonIcon slot="start" icon={moonOutline}></IonIcon>
-                <IonLabel>Support</IonLabel>
-              </IonItem>
-            </IonList>
-            
-            <IonList lines="none">
-              <IonItem routerLink="/logout" routerDirection="none">
-                <IonIcon slot="start" icon={moonOutline}></IonIcon>
-                <IonLabel>Logout</IonLabel>
-              </IonItem>
-            </IonList>
-
             <IonList lines="none">
               <IonItem>
                 <IonIcon slot="start" icon={moonOutline}></IonIcon>
                 <IonLabel>Dark Mode</IonLabel>
-                <IonToggle checked={darkMode} onClick={() => setDarkModeData(!darkMode)} />
+                <IonToggle checked={darkMode} onClick={() => setDarkMode(!darkMode)} />
               </IonItem>
             </IonList>
-
           </div>)
         }
       </IonContent>
-      {/* Alert({
-        isOpen: showAlert,
-        header: "Change Username",
-        buttons: [
+      <IonAlert
+        isOpen={showAlert}
+        header="Change Username"
+        buttons={[
           'Cancel',
           {
             text: 'Ok',
-            handler: (data: any) => {
-              setUsername(data.username)
+            handler: (data) => {
+              setUsername(data.username);
             }
           }
-        ],
-        inputs: [
+        ]}
+        inputs={[
           {
             type: 'text',
             name: 'username',
             value: username,
             placeholder: 'username'
           }
-        ],
-        onDidDismiss: () => setShowAlert(false)
-      })}*/}
-
+        ]}
+        onDidDismiss={() => setShowAlert(false)}
+      />
     </IonPage>
-  )
-}
+  );
+};
 
 export default connect<OwnProps, StateProps, DispatchProps>({
   mapStateToProps: (state) => ({
     username: state.user.username,
-    isAuthenticated: state.user.isLoggedIn,
     darkMode: state.user.darkMode
   }),
   mapDispatchToProps: {

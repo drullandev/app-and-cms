@@ -73,21 +73,21 @@ export const getUserData = async () => {
     Storage.get({ key: HAS_LOGGED_IN }),
   ])
 
-  const id          = await response[0].value || '0'
-  const jwt         = await response[1].value || undefined
-  const username    = await response[2].value || undefined
-  const email       = await response[3].value || undefined
-  const blocked     = await response[4].value === 'true'
-  const confirmed   = await response[5].value === 'true'
-  const created_at  = await response[6].value || undefined
-  const updated_at  = await response[7].value || undefined
-  const provider    = await response[8].value || undefined
-  const darkMode    = await response[9].value  === 'true'
-  const hasSeenTutorial = await response[11].value === 'true'
+  const id          = response[0].value || '0'
+  const jwt         = response[1].value || undefined
+  const username    = response[2].value || undefined
+  const email       = response[3].value || undefined
+  const blocked     = response[4].value === 'true'
+  const confirmed   = response[5].value === 'true'
+  const created_at  = response[6].value || undefined
+  const updated_at  = response[7].value || undefined
+  const provider    = response[8].value || undefined
+  const darkMode    = response[9].value  === 'true'
+  const hasSeenTutorial = response[11].value === 'true'
 
-  const isLoggedIn      = await response[10].value === 'true'
+  const isLoggedIn      = response[10].value === 'true'
 
-  const data = {
+  return {
     id,
     jwt,
     username,
@@ -101,8 +101,6 @@ export const getUserData = async () => {
     hasSeenTutorial,
     isLoggedIn,
   }
-
-  return data
 
 }
 
@@ -133,5 +131,5 @@ export const setUserData = async (data: Partial<UserState>) => {
   setProviderData(data.provider)
   setDarkModeData(data.darkMode !== null ? data.darkMode : initialUser.darkMode)
   setHasSeenTutorialData(data.hasSeenTutorial)
-  //setisLoggedInData//XXX no!
+  setisLoggedInData(data.isLoggedIn)
 }

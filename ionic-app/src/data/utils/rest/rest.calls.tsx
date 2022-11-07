@@ -15,8 +15,8 @@ export const set = async (action:string, form:React.FormEvent, func:Function)=>{
   console.log('action', action)
   func(true)
   switch(action){
-    case 'login':   return login(form)//, history)
-    case 'signup':  return signup(form)//, history)
+    //case 'login':   return login(form)//, history)
+    //case 'signup':  return signup(form)//, history)
     case 'recover': return recover(form)//, history)
     default:
       return {
@@ -28,98 +28,6 @@ export const set = async (action:string, form:React.FormEvent, func:Function)=>{
       }  
     break;
   }
-}
-
-const login = async (form: any) => {//}, history: any){
-  
-  console.log('doing login...', form)
-  //if(typeof form.identifier === 'undefined') return
-  //if(typeof form.password === 'undefined') return
-  //if(form.terms !== 'on') return
-  //if(form.policy !== 'on') return
-
-  return await axios.post(AppConst.RestAPI+'/auth/local', {
-    identifier: form.identifier,
-    password: form.password
-  }).then((res:any) => {  
-
-    if(res.status === 200){
-
-      setisLoggedIn(true)
-      //setUserEmail(res.data.user.mail)
-      //setNickname(res.data.user.nickname)
-      //setUserJwt(res.data.jwt)
-      //setUserId(res.data.user.id)
-
-      return {
-        type: 'history',
-        params: {
-          push: AppConst.HOME,
-          direction: 'none'
-        }
-      }
-
-    }else{
-
-      logoutUser()
-
-      return {
-        type: 'toast',
-        params: {
-          message: res.data.message[0].messages[0].message,
-          duration: 3000
-        }
-      }
-
-    }   
-
-  })
-  .catch((err:any) => {
-
-    return {
-      type: 'toast',//Home
-      params: {
-        message: err.response.data.message[0].messages[0].message,
-        duration: 3000
-      }
-    }
-
-  })
-
-}
-
-const signup = async (form: any) => {
-
-  var data = {
-    username: form.identifier,
-    password: form.password,
-    email: form.email
-  }
-
-  return await axios.post(AppConst.RestAPI+'/auth/local/register', data)
-  .then((res:any) => {    
-
-    return {
-      type: 'history',
-      params: {
-        push: '/account',
-        direction: 'none'
-      }
-    }
-
-  })
-  .catch((err:any) => {
-
-    return {
-      type: 'toast',
-      params: {
-        message: err.response.data.message[0].messages[0].message,
-        duration: 3000
-      }
-    }
-    
-  })
-
 }
 
 function recover(form: any){

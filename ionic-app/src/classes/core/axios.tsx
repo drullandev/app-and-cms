@@ -21,11 +21,21 @@ export const restCall = (call: CallProps) => {
 
 const setCall = (call:any) =>{
   axios(call.req)
-    .then((res: any)=> { 
-      return call.onSuccess(res.data) 
+    .then((res: any)=> {
+      return call.onSuccess(res) 
     })
-    .catch((err: Error)=> { 
-      return call.onError(err) 
+    .catch((err: any)=> {
+      if (err.response) {
+        // The client was given an error response (5xx, 4xx)
+        return call.onError(err) 
+      } else if (err.request) {
+        // The client never received a response, and the request was never left
+        return call.onError(err) //TODO
+      } else {
+        // Anything else
+        //return call.onError(err) //TODO finally for error
+      }
+
     })
     .finally(()=>{
       return (call.onFinally !== undefined) ? call.onFinally() : null

@@ -29,7 +29,7 @@ import { AppContextProvider } from './data/AppContext'
 import { loadConfData } from './data/sessions/sessions.actions'
 import { loadUserData, setData } from './data/user/user.actions'
 
-import Login from './pages/_Login'
+import Login from './pages/Login'
 import Signup from './pages/Signup'
 import Account from './pages/Account'
 import Support from './pages/Support'
@@ -93,7 +93,7 @@ const IonicApp: React.FC<IonicAppProps> = ({
           <Route path='/:slug' component={Page} />
           <Route path='/tabs/home/:id' render={() => <MainTabs />} />
           <Route path='/tabs/:slug' render={() => <MainTabs />} />
-            <Route path='/login' component={Login} />
+          <Route path='/login' component={Login} />
             <Route path='/signup' component={Signup} />
             <Route path='/support' component={Support} />
             <Route path='/tutorial' component={Tutorial} />
