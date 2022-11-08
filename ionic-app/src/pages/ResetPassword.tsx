@@ -9,9 +9,9 @@ import { random } from '../classes/common'
 import { globe } from 'ionicons/icons'
 import { useTranslation } from 'react-i18next'
 
+
 let testingSignup = true
 let testing = testingSignup && process.env.REACT_APP_TESTING
-
 
 interface OwnProps extends RouteComponentProps {}
 
@@ -20,9 +20,9 @@ interface DispatchProps {
   setUsername: typeof setUsername
 }
 
-interface LoginProps extends OwnProps,  DispatchProps { }
+interface LoginProps extends OwnProps, DispatchProps {}
 
-const Signup: React.FC<LoginProps> = ({setisLoggedIn, history, setUsername: setUsernameAction}) => {
+const ResetPassword: React.FC<LoginProps> = ({setisLoggedIn, history, setUsername: setUsernameAction}) => {
 
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
@@ -33,9 +33,6 @@ const Signup: React.FC<LoginProps> = ({setisLoggedIn, history, setUsername: setU
   const [emailError, setEmailError] = useState(false)
 
   const { t, i18n } = useTranslation()
-
-
-
 
   const [setToast, dismissToast] = useIonToast()
 
@@ -58,13 +55,11 @@ const Signup: React.FC<LoginProps> = ({setisLoggedIn, history, setUsername: setU
     e.preventDefault()
     setFormSubmitted(true)
 
-    if(!username) setUsernameError(true)    
-    if(!password) setPasswordError(true)
     if(!email) setEmailError(true)
 
-    if(username && password) {
+    if(email ) {
 
-      const onSignupSuccess = async (ret: any) => {
+      const onResetSuccess = async (ret: any) => {
         let user = ret.user
         user.jwt = ret.jwt // Attaching the JWT to the user level and state...
         await setisLoggedIn(true)
@@ -73,23 +68,19 @@ const Signup: React.FC<LoginProps> = ({setisLoggedIn, history, setUsername: setU
 
       await restCallAsync({
         req: {
-          url: 'api/auth/local/register',
+          url: 'api/auth/reset-password',
           method: 'POST',
           data: testing
           ? { 
-              username: random(12),
-              password: random(12),
               email: random(12)+'@gmail.com'
             }
           : { 
-              username: username,
-              password: password,
               email: email
             }
           ,
         },
         onSuccess: async (ret: any)=>{
-          await onSignupSuccess(ret.data)
+          await onResetSuccess(ret.data)
             .then((ret: any)=>{
               switch (ret.status) {
                 case 200:
@@ -124,7 +115,7 @@ const Signup: React.FC<LoginProps> = ({setisLoggedIn, history, setUsername: setU
           <IonButtons slot="start">
             <IonMenuButton></IonMenuButton>
           </IonButtons>
-          <IonTitle>Signup</IonTitle>
+          <IonTitle>Reset Password</IonTitle>
         </IonToolbar>
       </IonHeader>
 
@@ -136,21 +127,6 @@ const Signup: React.FC<LoginProps> = ({setisLoggedIn, history, setUsername: setU
 
         <form noValidate onSubmit={submitSignup}>
           <IonList>
-            <IonItem>
-              <IonLabel position="stacked" color="primary">Username</IonLabel>
-              <IonInput name="username" type="text" value={username} spellCheck={false} autocapitalize="off" onIonChange={e => {
-                setUsername(e.detail.value!)
-                setUsernameError(false)
-              }}
-                required>
-              </IonInput>
-            </IonItem>
-
-            {formSubmitted && usernameError && <IonText color="danger">
-              <p className="ion-padding-start">
-                Username is required
-              </p>
-            </IonText>}
 
             <IonItem>
               <IonLabel position="stacked" color="primary">Email</IonLabel>
@@ -166,22 +142,6 @@ const Signup: React.FC<LoginProps> = ({setisLoggedIn, history, setUsername: setU
                 Email is required
               </p>
             </IonText>}
-
-            <IonItem>
-              <IonLabel position="stacked" color="primary">Password</IonLabel>
-              <IonInput name="password" type="password" value={password} onIonChange={e => {
-                setPassword(e.detail.value!)
-                setPasswordError(false)
-              }}>
-              </IonInput>
-            </IonItem>
-
-            {formSubmitted && passwordError && <IonText color="danger">
-              <p className="ion-padding-start">
-                Password is required
-              </p>
-            </IonText>}
-
 
           </IonList>
 
@@ -203,5 +163,5 @@ export default connect<OwnProps, {}, DispatchProps>({
     setisLoggedIn,
     setUsername
   },
-  component: Signup
+  component: ResetPassword
 })

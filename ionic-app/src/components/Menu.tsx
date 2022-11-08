@@ -20,7 +20,7 @@ interface Pages {
 }
 interface StateProps {
   darkMode: boolean
-  isAuthenticated: boolean
+  isLoggedIn: boolean
   menuEnabled: boolean
 }
 
@@ -33,7 +33,7 @@ interface MenuProps extends RouteComponentProps, StateProps, DispatchProps { }
 const Menu: React.FC<MenuProps> = ({
   //darkMode,
   //history,
-  isAuthenticated,
+  isLoggedIn,
   setDarkMode,
   menuEnabled
 }) => {
@@ -65,7 +65,7 @@ const Menu: React.FC<MenuProps> = ({
 
         <IonList lines="none">
           <IonListHeader>{t('Account')}</IonListHeader>
-          {isAuthenticated
+          {isLoggedIn
             ? renderlistItems(routes.loggedInPages)
             : renderlistItems(routes.loggedOutPages)
           }
@@ -89,7 +89,7 @@ const Menu: React.FC<MenuProps> = ({
 export default connect<{}, StateProps, {}>({
   mapStateToProps: (state) => ({
     darkMode: state.user.darkMode,
-    isAuthenticated: state.user.isLoggedIn,
+    isLoggedIn: state.user.isLoggedIn,
     menuEnabled: state.data.menuEnabled
   }),
   mapDispatchToProps: ({

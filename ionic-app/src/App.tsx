@@ -35,6 +35,8 @@ import Account from './pages/Account'
 import Support from './pages/Support'
 import MainTabs from './components/core/main/MainTabs'
 import Tutorial from './pages/Tutorial'
+import ResetPassword from './pages/ResetPassword'
+import Recover from './pages/Recover'
 
 import Page from './pages/core/Page'
 
@@ -95,6 +97,8 @@ const IonicApp: React.FC<IonicAppProps> = ({
           <Route path='/tabs/:slug' render={() => <MainTabs />} />
           <Route path='/login' component={Login} />
             <Route path='/signup' component={Signup} />
+            <Route path='/reset' component={ResetPassword} />
+            <Route path='/recover' component={Recover} />
             <Route path='/support' component={Support} />
             <Route path='/tutorial' component={Tutorial} />
             <Route path='/account' component={Account} />

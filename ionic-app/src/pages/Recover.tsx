@@ -22,7 +22,7 @@ interface DispatchProps {
 
 interface LoginProps extends OwnProps,  DispatchProps { }
 
-const Signup: React.FC<LoginProps> = ({setisLoggedIn, history, setUsername: setUsernameAction}) => {
+const Recover: React.FC<LoginProps> = ({setisLoggedIn, history, setUsername: setUsernameAction}) => {
 
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
@@ -73,7 +73,7 @@ const Signup: React.FC<LoginProps> = ({setisLoggedIn, history, setUsername: setU
 
       await restCallAsync({
         req: {
-          url: 'api/auth/local/register',
+          url: 'api/auth/forgot-password',
           method: 'POST',
           data: testing
           ? { 
@@ -124,7 +124,7 @@ const Signup: React.FC<LoginProps> = ({setisLoggedIn, history, setUsername: setU
           <IonButtons slot="start">
             <IonMenuButton></IonMenuButton>
           </IonButtons>
-          <IonTitle>Signup</IonTitle>
+          <IonTitle>Recover</IonTitle>
         </IonToolbar>
       </IonHeader>
 
@@ -203,5 +203,5 @@ export default connect<OwnProps, {}, DispatchProps>({
     setisLoggedIn,
     setUsername
   },
-  component: Signup
+  component: Recover
 })

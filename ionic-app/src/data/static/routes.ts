@@ -15,11 +15,13 @@ export const routes = {
     ],
     loggedInPages: [
       { title: 'Account', path: '/account', icon: person },
+      { title: 'Reset Pass', path: '/reset', icon: person },
       //{ title: 'Support', path: '/support', icon: help },
       { title: 'Logout', path: '/logout', icon: logOut }
     ],
     loggedOutPages: [
       { title: 'Login', path: '/login', icon: logIn },
+      { title: 'Recover', path: '/recover', icon: person },
       //{ title: 'Support', path: '/support', icon: help }, // I will move to account
       { title: 'Signup', path: '/signup', icon: personAdd }
     ]

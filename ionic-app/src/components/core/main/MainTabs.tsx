@@ -15,9 +15,7 @@ import { MainMenu, TabProps } from '../../../data/static/mainMenu'
 
 import Icon from './Icon'
 
-interface MainTabsProps { }
-
-
+interface MainTabsProps {}
 
 const MainTabs: React.FC<MainTabsProps> = () => {
 
