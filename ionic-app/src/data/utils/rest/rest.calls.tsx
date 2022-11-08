@@ -34,6 +34,7 @@ function recover(form: any){
 
   if( typeof form.email === 'undefined' ) return
 
+  /*
   const promise = axios.post(AppConst.RestAPI+'/auth/forgot-password', form)
   const dataPromise = promise.then((res:any) => {    
 
@@ -60,5 +61,6 @@ function recover(form: any){
 
   })
   return dataPromise
+  */
 
 }
