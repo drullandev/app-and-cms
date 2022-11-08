@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { IonContent, IonFooter, IonSpinner, getConfig } from '@ionic/react'
 import { useLocation, useHistory } from 'react-router-dom'
 //import { RouteComponentProps } from 'react-router'
-import { restGet } from '../../../data/utils/rest/rest.utils'
+////import { restGet } from '../../../data/utils/rest/rest.utils'
 import { connect } from '../../../data/connect'
 import PageRow from '../main/PageRow'
 
@@ -28,6 +28,7 @@ const FormPage: React.FC<PageProps> = ({ slug }) => {
 
   useEffect(() => {
     console.log('Load FormPage:', slug)
+    /*
     restGet('pages', { slug : slug})
     .then(res => {
       setSlugIn(res.data[0].slug)
@@ -35,6 +36,7 @@ const FormPage: React.FC<PageProps> = ({ slug }) => {
     }).catch(res=>{
 
     })
+    */
   }, [slug])
 
   const setArea = (type: string) => {

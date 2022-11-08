@@ -8,7 +8,7 @@ import { moonOutline } from 'ionicons/icons'
 // Functions
 import { connect } from '../../../data/connect'
 import { setDarkMode } from '../../../data/user/user.actions'
-import { restGet } from '../../../data/utils/rest/rest.utils'
+//import { restGet } from '../../../data/utils/rest/rest.utils'
 
 // Components
 import Header from './Header'
@@ -47,11 +47,12 @@ const Menu: React.FC<MenuProps> = ({ slug, menuEnabled, userDarkMode, isLoggedIn
   const [slot, setSlot] = useState('')
   useEffect(() => {
     setSlot('start')
-    restGet('menus', { slug: slug })
+    /*restGet('menus', { slug: slug })
       .then(res => {
         setMenu(res.data[0])
         setMenus(res.data[0].rows)
       })
+    */
   }, [slug])
 
   return (

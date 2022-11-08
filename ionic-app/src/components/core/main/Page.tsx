@@ -3,7 +3,7 @@ import { RouteComponentProps } from 'react-router'
 import { IonPage, IonHeader, IonContent, IonFooter, IonSpinner } from '@ionic/react'
 import { useLocation } from 'react-router-dom'
 
-import { restGet } from '../../../data/utils/strapi/strapi.calls'
+//import { restGet } from '../../../data/utils/strapi/strapi.calls'
 
 import PageRow from './PageRow'
 
@@ -24,12 +24,14 @@ const Page: React.FC<PageProps> = ({ match }) => {
   const [pageRows, setPageRows] = useState([])
 
   useEffect(() => {
+    /*
     restGet('pages', { slug: match.params.slug })
       .then(res => {
         if(testing) console.log('Recovered page', res.data)
         setSlugIn(res.data[0].slug)
         if (typeof res.data[0].rows !== 'undefined') setPageRows(res.data[0].rows)
       })
+      */
   }, [match.params.slug])
 
   const setArea = (type: string) => {

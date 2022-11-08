@@ -4,7 +4,7 @@ import { connect } from '../../../data/connect'
 import { useLocation } from 'react-router'
 import { useHistory } from 'react-router-dom'
 
-import { restGet } from '../../../data/utils/rest/rest.utils'
+//import { restGet } from '../../../data/utils/rest/rest.utils'
 
 import { PathProps } from './interfaces/PathProps'
 import { MenuRowProps } from './interfaces/MenuRowProps'
@@ -29,6 +29,7 @@ const MenuRow: React.FC<MenuRowProps2> = ({ row, isLoggedIn }) => {
 
   useEffect(() => {
     if (row.path && row.path.slug) {
+      /*
       restGet('paths', { slug: row.path.slug })
         .then(res => {
           var data = res.data[0]
@@ -47,6 +48,7 @@ const MenuRow: React.FC<MenuRowProps2> = ({ row, isLoggedIn }) => {
 
         })
         .catch(err => { console.log(err) })
+        */
     }
     
     // eslint-disable-next-line

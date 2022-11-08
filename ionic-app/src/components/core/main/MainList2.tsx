@@ -2,7 +2,7 @@ import * as AppConst from '../../../data/static/constants'
 
 import { IonList, IonInfiniteScroll, IonInfiniteScrollContent, IonItem, IonLabel, IonRefresher, IonRefresherContent, useIonToast } from '@ionic/react'
 import React, { useState, useEffect, useRef } from 'react'
-import { restGet, getGQL } from '../../../data/utils/rest/rest.utils'
+//import { restGet, getGQL } from '../../../data/utils/rest/rest.utils'
 
 import { connect } from '../../../data/connect'
 
@@ -103,10 +103,12 @@ const MainList: React.FC<ThisProps> = ({
   // Count max pages to avoid get out of range
   useEffect(()=>{
     let dataCall = getDataToCall()
+    /*
     restGet(dataCall.slug+'/count')
     .then(res=>{
       setMaxPage(Math.floor( res.data / AppConst.paginator.size ))
     })
+    */
   },[])
 
   // Push the selected page data set by pagenumber
@@ -114,7 +116,7 @@ const MainList: React.FC<ThisProps> = ({
 
     let dataCall = getDataToCall()
     dataCall.paginator.start = AppConst.paginator.size * page
-
+    /*
     getGQL(dataCall)
     .then(res=>{
       switch(res.status){
@@ -132,7 +134,7 @@ const MainList: React.FC<ThisProps> = ({
       //console.log('Opps!!', dataCall, res)
       launchToast('Oppps!!!',JSON.stringify(res))
     })
-
+    */
   }
   
   // Push the selected page data set

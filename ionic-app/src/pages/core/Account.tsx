@@ -1,7 +1,7 @@
 
 import React, { useEffect, useState } from 'react'
 import { RouteComponentProps } from 'react-router'
-import { restGet, setImage } from '../../data/utils/rest/rest.utils'
+//import { restGet, setImage } from '../../data/utils/rest/rest.utils'
 //import { editUserValue } from '../../data/user/user.calls'
 import { IonContent, IonImg, IonList, IonItem, IonAlert, IonLabel } from '@ionic/react'
 
@@ -38,12 +38,14 @@ const Account: React.FC<AccountProps> = ({ setNickname, nickname, setUserEmail, 
   const [alertHeader, setAlertHeader] = useState('Edition form')
 
   useEffect(() => {
+    /*
     restGet('users', { id: user_id }) //TODO: Change with user/me when I i'm secure Bearer token is sending on each call ^_^
       .then(res => {
         console.log(res.data[0])
         setUserData(res.data[0])
         setAvatar(setImage(res.data[0].avatar.url))
       })
+    */
   }, [])
 
   const [file, setFile] = useState([])

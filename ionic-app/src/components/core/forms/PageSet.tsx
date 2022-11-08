@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { IonPage, IonHeader, IonContent, IonFooter, getConfig, IonSpinner } from '@ionic/react'
 import { useLocation, useHistory } from 'react-router-dom'
 //import { RouteComponentProps } from 'react-router'
-import { restGet } from '../../../data/utils/rest/rest.utils'
+//import { restGet } from '../../../data/utils/rest/rest.utils'
 import { connect } from '../../../data/connect'
 import PageRow from '../../../components/core/main/PageRow'
 
@@ -33,7 +33,7 @@ const PageSet: React.FC<PageProps> = ({ slug, id }) => {
 
   useEffect(() => {
     console.log('Load Page', slug)
-    restGet('pages', { slug : slug})
+    /*restGet('pages', { slug : slug})
     .then(res => {
       setSlugIn(res.data[0].slug)
       setShowMainTab(res.data[0].show_main_tab)
@@ -48,7 +48,7 @@ const PageSet: React.FC<PageProps> = ({ slug, id }) => {
       setTimeout(()=>{
         history.push(AppConst.HOME)
       }, AppConst.timeout.redirect)
-    })
+    })*/
   }, [slug])
 
   const setArea = (type: string) => {

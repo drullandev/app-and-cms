@@ -3,7 +3,7 @@
 import React, { useRef, useEffect, useState } from 'react'
 import { IonItemSliding, IonItem, IonLabel, IonItemOptions, IonItemOption, IonSkeletonText, IonThumbnail } from '@ionic/react'
 import { connect } from '../../../data/connect'
-import { restGet } from '../../../data/utils/rest/rest.utils'
+//import { restGet } from '../../../data/utils/rest/rest.utils'
 
 import Icon from './Icon'
 import { ListRowProps } from '../../../models/ListRowProps'
@@ -43,7 +43,7 @@ const SessionListItem: React.FC<SessionListItemProps> = ({ row, searchString }) 
   }
 
   useEffect(()=>{
-    restGet('user-contents', { id: row.id })
+    /*restGet('user-contents', { id: row.id })
     .then(res=>{
       //console.log(res)
       switch(res.status){
@@ -57,7 +57,7 @@ const SessionListItem: React.FC<SessionListItemProps> = ({ row, searchString }) 
     }).catch(res=>{
       console.log(res)
     })
-
+    */
   },[row?.id, searchString])
 
   /*

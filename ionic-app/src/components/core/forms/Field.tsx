@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useState, useMemo } from 'react'
 import { IonItem, IonLabel, IonInput, IonCheckbox, IonTextarea, IonSpinner } from '@ionic/react'
 import { Controller } from 'react-hook-form'
-import { restGet } from '../../../data/utils/rest/rest.utils'
+////import { restGet } from '../../../data/utils/rest/rest.utils'
 import ContentCheck from '../../../components/core/forms/ContentCheck'
 
 import Error from './Error'
@@ -21,7 +21,7 @@ const Field: FC<FieldProps> = ({ name, slug, label, control, errors, required })
 
   // Get the field settings
   useEffect(() => {
-    restGet('fields', { slug: slug })
+    /*restGet('fields', { slug: slug })
       .then(res => {
         switch(res.status) {
           case 200:
@@ -33,6 +33,7 @@ const Field: FC<FieldProps> = ({ name, slug, label, control, errors, required })
           break
         }})
       .catch(error => console.error(error))
+      */
   }, [slug])
 
   // Set the data field to the desired component

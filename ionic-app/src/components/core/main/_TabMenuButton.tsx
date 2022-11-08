@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { IonTabButton, IonLabel } from '@ionic/react'
-import { restGet } from '../../../data/utils/rest/rest.utils'
+//import { restGet } from '../../../data/utils/rest/rest.utils'
 
 import Icon from './Icon'
 

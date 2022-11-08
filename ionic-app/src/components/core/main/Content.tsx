@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { IonContent, IonImg, IonLabel, IonTextarea } from '@ionic/react'
 
-import { restGet, setImage } from '../../../data/utils/rest/rest.utils'
+//import { restGet, setImage } from '../../../data/utils/rest/rest.utils'
 
 export interface ContentProps {
   row: {
@@ -15,6 +15,7 @@ const Content: React.FC<ContentProps> = ({row}) => {
   const [image, setThisImage] = useState('')
   
   useEffect(()=>{
+    /*
     restGet('contents', { slug: row.slug })
     .then(res => {
       //console.log('contents', res)
@@ -23,6 +24,7 @@ const Content: React.FC<ContentProps> = ({row}) => {
     }).catch(res=>{
       console.log('error', res)
     })
+    */
   },[])
   
   return <IonContent>
