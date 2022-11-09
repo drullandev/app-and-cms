@@ -9,8 +9,8 @@ import { random } from '../classes/common'
 import { globe } from 'ionicons/icons'
 import { useTranslation } from 'react-i18next'
 
-let testingSignup = true
-let testing = testingSignup && process.env.REACT_APP_TESTING
+let testingRecover = true
+let testing = testingRecover && process.env.REACT_APP_TESTING
 
 
 interface OwnProps extends RouteComponentProps {}
@@ -22,20 +22,17 @@ interface DispatchProps {
 
 interface LoginProps extends OwnProps,  DispatchProps { }
 
-const Recover: React.FC<LoginProps> = ({setisLoggedIn, history, setUsername: setUsernameAction}) => {
-
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
-  const [email, setEmail] = useState('')
-  const [formSubmitted, setFormSubmitted] = useState(false)
-  const [usernameError, setUsernameError] = useState(false)
-  const [passwordError, setPasswordError] = useState(false)
-  const [emailError, setEmailError] = useState(false)
+const Recover: React.FC<LoginProps> = ({
+  setisLoggedIn,
+  history,
+  setUsername: setUsernameAction
+}) => {
 
   const { t, i18n } = useTranslation()
 
-
-
+  const [email, setEmail] = useState(testing ? process.env.REACT_APP_DEFAULT_EMAIL : '')
+  const [formSubmitted, setFormSubmitted] = useState(false)
+  const [emailError, setEmailError] = useState(false)
 
   const [setToast, dismissToast] = useIonToast()
 
@@ -53,18 +50,16 @@ const Recover: React.FC<LoginProps> = ({setisLoggedIn, history, setUsername: set
 
   //SMTP code:550 msg:550-5.1.1 The email account that you tried to reach does not exist. Please try 550-5.1.1 double-checking the recipient's email address for typos or 550-5.1.1 unnecessary spaces. Learn more at 550 5.1.1 https://support.google.com/mail/?p=NoSuchUser q16-20020a2e9690000000b0027744b28539si4283378lji.72 - gsmtp 
 
-  const submitSignup = async (e: React.FormEvent) => {
+  const submitRecover = async (e: React.FormEvent) => {
 
     e.preventDefault()
     setFormSubmitted(true)
 
-    if(!username) setUsernameError(true)    
-    if(!password) setPasswordError(true)
     if(!email) setEmailError(true)
 
-    if(username && password) {
+    if(email) {
 
-      const onSignupSuccess = async (ret: any) => {
+      const onRecoverSuccess = async (ret: any) => {
         let user = ret.user
         user.jwt = ret.jwt // Attaching the JWT to the user level and state...
         await setisLoggedIn(true)
@@ -75,21 +70,10 @@ const Recover: React.FC<LoginProps> = ({setisLoggedIn, history, setUsername: set
         req: {
           url: 'api/auth/forgot-password',
           method: 'POST',
-          data: testing
-          ? { 
-              username: random(12),
-              password: random(12),
-              email: random(12)+'@gmail.com'
-            }
-          : { 
-              username: username,
-              password: password,
-              email: email
-            }
-          ,
+          data: { email: email }
         },
         onSuccess: async (ret: any)=>{
-          await onSignupSuccess(ret.data)
+          await onRecoverSuccess(ret.data)
             .then((ret: any)=>{
               switch (ret.status) {
                 case 200:
@@ -117,7 +101,7 @@ const Recover: React.FC<LoginProps> = ({setisLoggedIn, history, setUsername: set
 
   }
 
-  return <IonPage id="signup-page">
+  return <IonPage id="recover-page">
 
       <IonHeader>
         <IonToolbar>
@@ -134,23 +118,8 @@ const Recover: React.FC<LoginProps> = ({setisLoggedIn, history, setUsername: set
           <img src="assets/img/appicon.svg" alt="Ionic logo" />
         </div>
 
-        <form noValidate onSubmit={submitSignup}>
+        <form noValidate onSubmit={submitRecover}>
           <IonList>
-            <IonItem>
-              <IonLabel position="stacked" color="primary">Username</IonLabel>
-              <IonInput name="username" type="text" value={username} spellCheck={false} autocapitalize="off" onIonChange={e => {
-                setUsername(e.detail.value!)
-                setUsernameError(false)
-              }}
-                required>
-              </IonInput>
-            </IonItem>
-
-            {formSubmitted && usernameError && <IonText color="danger">
-              <p className="ion-padding-start">
-                Username is required
-              </p>
-            </IonText>}
 
             <IonItem>
               <IonLabel position="stacked" color="primary">Email</IonLabel>
@@ -166,22 +135,6 @@ const Recover: React.FC<LoginProps> = ({setisLoggedIn, history, setUsername: set
                 Email is required
               </p>
             </IonText>}
-
-            <IonItem>
-              <IonLabel position="stacked" color="primary">Password</IonLabel>
-              <IonInput name="password" type="password" value={password} onIonChange={e => {
-                setPassword(e.detail.value!)
-                setPasswordError(false)
-              }}>
-              </IonInput>
-            </IonItem>
-
-            {formSubmitted && passwordError && <IonText color="danger">
-              <p className="ion-padding-start">
-                Password is required
-              </p>
-            </IonText>}
-
 
           </IonList>
 

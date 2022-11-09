@@ -6,8 +6,12 @@ interface StateProps {
   hasSeenTutorial: boolean
 }
 
-const HomeOrTutorial: React.FC<StateProps> = ({ hasSeenTutorial }) => {
-  return hasSeenTutorial ? <Redirect to='/tabs/schedule' /> : <Redirect to='/tutorial' />
+const HomeOrTutorial: React.FC<StateProps> = ({
+  hasSeenTutorial = false
+}) => {
+  let home = process.env.REACT_APP_HOME_PATH
+  let tutorial = '/tutorial'
+  return hasSeenTutorial ? <Redirect to={`${home}`} /> : <Redirect to={`${tutorial}`} />
 }
 
 export default connect<{}, StateProps, {}>({

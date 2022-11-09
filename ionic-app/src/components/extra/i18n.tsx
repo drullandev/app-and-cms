@@ -30,7 +30,7 @@ i18n
   .init({    
     initImmediate: false,
     resources,
-    lng: process.env.REACT_APP_MAIN_LNG, // Main language
+    lng: process.env.REACT_APP_DEFAULT_LNG, // Main language
     fallbackLng: process.env.REACT_APP_FALLBACK_LNG, // Use REACT_APP_FALLBACK_LNG if detected lng is not available
     keySeparator: false, // We do not use keys in form messages.welcome
     interpolation: {

@@ -51,8 +51,8 @@ const Login: React.FC<LoginProps> = ({
   setData
 }) => {
 
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
+  const [username, setUsername] = useState(testing ? process.env.REACT_APP_DEFAULT_USER : '')
+  const [password, setPassword] = useState(testing ? process.env.REACT_APP_DEFAULT_PASS : '')
   const [formSubmitted, setFormSubmitted] = useState(false)
   const [usernameError, setUsernameError] = useState(false)
   const [passwordError, setPasswordError] = useState(false)
@@ -92,15 +92,10 @@ const Login: React.FC<LoginProps> = ({
         req: {
           url: 'api/auth/local',
           method: 'POST',
-          data: testing 
-          ? { 
-              identifier: 'bunny@gmail.com',
-              password: 'Qwer1234' 
-            }
-          : { 
-              identifier: username,
-              password: password 
-            },
+          data: { 
+            identifier: username,
+            password: password 
+          },
         },
         onSuccess: async (ret: any)=> {
           switch (ret.status) {

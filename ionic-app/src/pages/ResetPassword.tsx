@@ -22,14 +22,14 @@ interface DispatchProps {
 
 interface LoginProps extends OwnProps, DispatchProps {}
 
-const ResetPassword: React.FC<LoginProps> = ({setisLoggedIn, history, setUsername: setUsernameAction}) => {
+const ResetPassword: React.FC<LoginProps> = ({
+  setisLoggedIn,
+  history,
+  setUsername: setUsernameAction
+}) => {
 
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
   const [email, setEmail] = useState('')
   const [formSubmitted, setFormSubmitted] = useState(false)
-  const [usernameError, setUsernameError] = useState(false)
-  const [passwordError, setPasswordError] = useState(false)
   const [emailError, setEmailError] = useState(false)
 
   const { t, i18n } = useTranslation()
@@ -50,7 +50,7 @@ const ResetPassword: React.FC<LoginProps> = ({setisLoggedIn, history, setUsernam
 
   //SMTP code:550 msg:550-5.1.1 The email account that you tried to reach does not exist. Please try 550-5.1.1 double-checking the recipient's email address for typos or 550-5.1.1 unnecessary spaces. Learn more at 550 5.1.1 https://support.google.com/mail/?p=NoSuchUser q16-20020a2e9690000000b0027744b28539si4283378lji.72 - gsmtp 
 
-  const submitSignup = async (e: React.FormEvent) => {
+  const submitReset = async (e: React.FormEvent) => {
 
     e.preventDefault()
     setFormSubmitted(true)
@@ -125,7 +125,7 @@ const ResetPassword: React.FC<LoginProps> = ({setisLoggedIn, history, setUsernam
           <img src="assets/img/appicon.svg" alt="Ionic logo" />
         </div>
 
-        <form noValidate onSubmit={submitSignup}>
+        <form noValidate onSubmit={submitReset}>
           <IonList>
 
             <IonItem>
