@@ -7,6 +7,13 @@ import { RouteComponentProps } from 'react-router';
 import { restCallAsync } from '../classes/core/axios';
 import { globe } from 'ionicons/icons';
 import { useTranslation } from 'react-i18next';
+
+import FormNew from '../components/core/forms/FormNew'
+
+let testingLogin = true
+let testing = testingLogin && process.env.REACT_APP_TESTING
+
+
 export interface LoginFormProps  {
   input: {
     identifier: string
@@ -31,7 +38,6 @@ export interface StrapiAuthProps {
   jwt?: string
 }
 
-let testing = true
 
 interface OwnProps extends RouteComponentProps {}
 
@@ -51,19 +57,12 @@ const Login: React.FC<LoginProps> = ({
   setData
 }) => {
 
-  const [username, setUsername] = useState(testing ? process.env.REACT_APP_DEFAULT_USER : '')
-  const [password, setPassword] = useState(testing ? process.env.REACT_APP_DEFAULT_PASS : '')
-  const [formSubmitted, setFormSubmitted] = useState(false)
-  const [usernameError, setUsernameError] = useState(false)
-  const [passwordError, setPasswordError] = useState(false)
-
-
   const { t, i18n } = useTranslation();
 
-
+  const [username, setUsername] = useState(testing ? process.env.REACT_APP_DEFAULT_USER : '')
+  const [password, setPassword] = useState(testing ? process.env.REACT_APP_DEFAULT_PASS : '')
 
   const [setToast, dismissToast] = useIonToast()
-
   const launchToast = async (data: any, setToast: Function) => {
     let dur = data.duration ?? 2000
     await setToast({
@@ -76,59 +75,79 @@ const Login: React.FC<LoginProps> = ({
     return true
   }
 
-  
+  const loginForm = {
 
-  const submitLogin = async (e: React.FormEvent) => {
-
-    e.preventDefault()
-    setFormSubmitted(true)
-
-    if(!username) setUsernameError(true)    
-    if(!password) setPasswordError(true)
-
-    if(username && password) {
-
-      await restCallAsync({
-        req: {
-          url: 'api/auth/local',
-          method: 'POST',
-          data: { 
-            identifier: username,
-            password: password 
-          },
-        },
-        onSuccess: async (ret: any)=> {
-          switch (ret.status) {
-            case 200:          
-
-              // Set user state
-              let user = ret.data.user
-              user.jwt = ret.jwt // Attaching the JWT to the user level and state...
-              user.isLoggedIn = true
-              await setData(user)
-
-              launchToast({ 
-                message: t('user-wellcome', { username: ret.data.user.username }) 
-              }, setToast)
-              .then(()=>
-                history.push('/tabs/schedule', { direction: 'none' }
-              ))
-
-            break
-            default:
-          }            
-        },
-        onError: (err: any)=> {
-          switch(err?.response.status){
-            case 400: 
-              launchToast({ message: t(err.response.data.error.message) }, setToast)
-            break
-            default:
-              launchToast({ message: t(err.response.data.message[0].messages[0].message) }, setToast)
-          }
+    fields: [
+      {
+        label: t('User or email'),
+        types: ['email', 'string'],
+        type: 'input',
+        value: testing ? process.env.REACT_APP_DEFAULT_USER : undefined,
+        onChange: (e:any)=>{
+          setUsername(e.detail.value)
         }
-      })
-    
+      },{
+        label: t('Password'),
+        type: 'password',
+        types: ['password'],
+        value: testing ? process.env.REACT_APP_DEFAULT_PASS : undefined,
+        onChange: (e:any)=>{
+          setPassword(e.detail.value)
+        }
+      }
+    ],
+
+    onSubmit: async (e: React.FormEvent) => {
+
+      console.log('asdfasd')
+
+      //e.preventDefault()
+
+      if(username && password) {
+  
+        await restCallAsync({
+          req: {
+            url: 'api/auth/local',
+            method: 'POST',
+            data: { 
+              identifier: username,
+              password: password 
+            },
+          },
+          onSuccess: async (ret: any)=> {
+            switch (ret.status) {
+              case 200:          
+  
+                // Set user state
+                let user = ret.data.user
+                user.jwt = ret.jwt // Attaching the JWT to the user level and state...
+                user.isLoggedIn = true
+                await setData(user)
+  
+                launchToast({ 
+                  message: t('user-wellcome', { username: ret.data.user.username }) 
+                }, setToast)
+                .then(()=>
+                  history.push('/tabs/schedule', { direction: 'none' }
+                ))
+  
+              break
+              default:
+            }            
+          },
+          onError: (err: any)=> {
+            switch(err?.response.status){
+              case 400: 
+                launchToast({ message: t(err.response.data.error.message) }, setToast)
+              break
+              default:
+                launchToast({ message: t(err.response.data.message[0].messages[0].message) }, setToast)
+            }
+          }
+        })
+      
+      }
+  
     }
 
   }
@@ -146,49 +165,7 @@ const Login: React.FC<LoginProps> = ({
       </IonHeader>
 
       <IonContent>
-
-        <div className="login-logo">
-          <img src="assets/img/appicon.svg" alt="Ionic logo" />
-        </div>
-
-        <form noValidate onSubmit={submitLogin}>
-          <IonList>
-            <IonItem>
-              <IonLabel position="stacked" color="primary">Username</IonLabel>
-              <IonInput name="username" type="text" value={username} spellCheck={false} autocapitalize="off" onIonChange={e => setUsername(e.detail.value!)}
-                required>
-              </IonInput>
-            </IonItem>
-
-            {formSubmitted && usernameError && <IonText color="danger">
-              <p className="ion-padding-start">
-                Username is required
-              </p>
-            </IonText>}
-
-            <IonItem>
-              <IonLabel position="stacked" color="primary">Password</IonLabel>
-              <IonInput name="password" type="password" value={password} onIonChange={e => setPassword(e.detail.value!)}>
-              </IonInput>
-            </IonItem>
-
-            {formSubmitted && passwordError && <IonText color="danger">
-              <p className="ion-padding-start">
-                Password is required
-              </p>
-            </IonText>}
-          </IonList>
-
-          <IonRow>
-            <IonCol>
-              <IonButton type="submit" expand="block">Login</IonButton>
-            </IonCol>
-            <IonCol>
-              <IonButton routerLink="/signup" color="light" expand="block">Signup</IonButton>
-            </IonCol>
-          </IonRow>
-        </form>
-
+        <FormNew {...loginForm}/>
       </IonContent>
 
     </IonPage>

@@ -2,7 +2,7 @@ import { Plugins } from '@capacitor/core'
 import { Schedule, Session } from '../models/Schedule'
 const { Storage } = Plugins
 
-let testingReducer = true
+let testingReducer = false
 let testing = testingReducer && process.env.REACT_APP_TESTING
 
 export const parseSessions = (schedule: Schedule)=>{

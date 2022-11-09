@@ -1,4 +1,5 @@
 import { Control, NestDataObject, FieldError } from 'react-hook-form'
+import { FieldNewProps } from './FieldNewProps'
 
 export interface Column {
   id: number,
@@ -13,6 +14,12 @@ export interface Column {
 
 export interface FormRowProps {
   columns: Column[]
+  control?: Control
+  errors?: NestDataObject<Record<string, any>, FieldError>
+}
+
+export interface FormNewRowProps {
+  fields: FieldNewProps[]
   control?: Control
   errors?: NestDataObject<Record<string, any>, FieldError>
 }
