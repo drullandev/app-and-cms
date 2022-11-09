@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
-import { IonHeader, IonToolbar, IonTitle, IonContent, IonPage, IonButtons, IonMenuButton, IonRow, IonCol, IonButton, IonList, IonItem, IonLabel, IonInput, IonText, useIonToast } from '@ionic/react';
+import React, { useState } from 'react'
+import { IonHeader, IonToolbar, IonTitle, IonContent, IonPage, IonButtons, IonMenuButton, useIonToast } from '@ionic/react'
+
 import './Login.scss';
 import { setData, setisLoggedIn, setUsername, setDarkMode } from '../data/user/user.actions';
 import { connect } from '../data/connect';
