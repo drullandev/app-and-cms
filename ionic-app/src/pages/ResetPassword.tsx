@@ -79,27 +79,25 @@ const ResetPassword: React.FC<LoginProps> = ({
             }
           ,
         },
-        onSuccess: async (ret: any)=>{
-          await onResetSuccess(ret.data)
-            .then((ret: any)=>{
-              switch (ret.status) {
-                case 200:
-                  //setisLoggedIn(true)
-                  /*launchToast({ 
-                    message: t('user-wellcome', { username: ret.data.user.username }) 
-                  }, setToast)
-                    .then(()=> history.push('/tabs/schedule', { direction: 'none' }))
-                    */
-              }            
-            })
+        onSuccess: {
+          200: async (ret: any)=>{
+            await onResetSuccess(ret.data)
+              .then((ret: any)=>{
+                switch (ret.status) {
+                  case 200:
+                    //setisLoggedIn(true)
+                    /*launchToast({ 
+                      message: t('user-wellcome', { username: ret.data.user.username }) 
+                    }, setToast)
+                      .then(()=> history.push('/tabs/schedule', { direction: 'none' }))
+                      */
+                }            
+              })
+          }
         },
-        onError: (err: any)=> {
-          switch(err?.response.status){
-            case 400: 
-              launchToast({ message: t(err.response.data.error.message) }, setToast)
-            break
-            default:
-              launchToast({ message: t(err.response.data.message[0].messages[0].message) }, setToast)
+        onError: {
+          400: (err: any)=> { 
+            launchToast({ message: t(err.response.data.error.message ?? err.response.data.message[0].messages[0].message) }, setToast)
           }
         }
       })

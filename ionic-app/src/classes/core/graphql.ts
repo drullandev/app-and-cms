@@ -194,8 +194,12 @@ const graphqlCall = (call: string): any => {
       url: 'graphql',
       data: { query: `${call}` }      
     },
-    onSuccess: ()=>{},//
-    onError: ()=>{}//
+    onSuccess: {
+      200: ()=>{}
+    },//
+    onError: {
+      400: ()=>{}//
+    }
   })
 }
 
@@ -206,8 +210,12 @@ const graphqlCallAsync = async (call: string) => {
       url: 'graphql',
       data: { query: `${call}` }
     },
-    onSuccess: ()=>{},//
-    onError: ()=>{}//
+    onSuccess: {
+      200: ()=>{}
+    },//
+    onError: {
+      400: ()=>{}//
+    }
   })
 }
 

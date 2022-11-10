@@ -2,8 +2,12 @@ import axios, { AxiosRequestConfig } from 'axios'
 
 export interface CallProps {
   req: AxiosRequestConfig,
-  onSuccess: Function
-  onError: Function
+  onSuccess: {
+    200: Function
+  }
+  onError: {
+    400: Function
+  }
   onFinally?: Function
 }
 

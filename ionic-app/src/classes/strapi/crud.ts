@@ -39,8 +39,12 @@ export const crud = ( operation: string, model:string, data?: any, onSuccess?: F
         ( operation === 'delete') ? 'DELETE'  :
         ( operation === 'get'   ) ? 'GET'     : 'OPTIONS'
     },
-    onSuccess: onSuccess !== undefined ? (ret: any) => onSuccess(data) : ()=>{},
-    onError: onError !== undefined ? (err:Error)=> onError(err) : ()=>{},
+    onSuccess: { 
+      200: onSuccess !== undefined ? (ret: any) => onSuccess(data) : ()=>{}
+    },
+    onError: {
+      400: onError !== undefined ? (err:Error)=> onError(err) : ()=>{}
+    }
   }
 
   if(call.req.method === 'GET'){
