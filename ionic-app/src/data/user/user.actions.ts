@@ -19,7 +19,7 @@ import { ActionType } from '../../util/types'
 import { UserState } from './user.state'
 import { initialUser } from '../state'
 
-let testingUserActions = true
+let testingUserActions = false
 let testing = testingUserActions && process.env.REACT_APP_TESTING
 
 // !Keep it simple !!!!!!!!!!!

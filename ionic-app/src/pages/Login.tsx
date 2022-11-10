@@ -10,6 +10,7 @@ import { globe } from 'ionicons/icons';
 import { useTranslation } from 'react-i18next';
 
 import FormNew from '../components/core/forms/FormNew'
+import { Controller } from 'react-hook-form';
 
 let testingLogin = true
 let testing = testingLogin && process.env.REACT_APP_TESTING
@@ -80,18 +81,22 @@ const Login: React.FC<LoginProps> = ({
 
     fields: [
       {
+        name: 'identifier',
         label: t('User or email'),
-        types: ['email', 'string'],
+        fieldType: 'email',// TODO: Liberate for email and also nickname
         type: 'input',
         value: testing ? process.env.REACT_APP_DEFAULT_USER : undefined,
+        required: true,
         onChange: (e:any)=>{
           setUsername(e.detail.value)
         }
       },{
+        name: 'password',
         label: t('Password'),
-        type: 'password',
-        types: ['password'],
+        type: 'input',
+        fieldType: 'password',
         value: testing ? process.env.REACT_APP_DEFAULT_PASS : undefined,
+        required: true,
         onChange: (e:any)=>{
           setPassword(e.detail.value)
         }
@@ -115,35 +120,29 @@ const Login: React.FC<LoginProps> = ({
               password: password 
             },
           },
-          onSuccess: async (ret: any)=> {
-            switch (ret.status) {
-              case 200:          
+          onSuccess: {
+
+            200: async (ret:any)=>{
   
-                // Set user state
-                let user = ret.data.user
-                user.jwt = ret.jwt // Attaching the JWT to the user level and state...
-                user.isLoggedIn = true
-                await setData(user)
-  
-                launchToast({ 
-                  message: t('user-wellcome', { username: ret.data.user.username }) 
-                }, setToast)
-                .then(()=>
-                  history.push('/tabs/schedule', { direction: 'none' }
-                ))
-  
-              break
-              default:
-            }            
+              // Set user state
+              let user = ret.data.user
+              user.jwt = ret.jwt // Attaching the JWT to the user level and state...
+              user.isLoggedIn = true
+              await setData(user)
+
+              launchToast({ 
+                message: t('user-wellcome', { username: ret.data.user.username }) 
+              }, setToast)
+              .then(()=>
+                history.push('/tabs/schedule', { direction: 'none' }
+              ))
+
+            }         
           },
-          onError: (err: any)=> {
-            switch(err?.response.status){
-              case 400: 
-                launchToast({ message: t(err.response.data.error.message) }, setToast)
-              break
-              default:
-                launchToast({ message: t(err.response.data.message[0].messages[0].message) }, setToast)
-            }
+          onError: {
+            400: (err: any)=> {
+              launchToast({ message: err?.response.status ? t(err.response.data.error.message) : t(err.response.data.message[0].messages[0].message) }, setToast)
+            }          
           }
         })
       

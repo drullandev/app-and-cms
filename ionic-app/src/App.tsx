@@ -96,12 +96,12 @@ const IonicApp: React.FC<IonicAppProps> = ({
           <Route path='/tabs/home/:id' render={() => <MainTabs />} />
           <Route path='/tabs/:slug' render={() => <MainTabs />} />
           <Route path='/login' component={Login} />
-            <Route path='/signup' component={Signup} />
-            <Route path='/reset' component={ResetPassword} />
-            <Route path='/recover' component={Recover} />
-            <Route path='/support' component={Support} />
-            <Route path='/tutorial' component={Tutorial} />
-            <Route path='/account' component={Account} />
+          <Route path='/signup' component={Signup} />
+          <Route path='/reset' component={ResetPassword} />
+          <Route path='/recover' component={Recover} />
+          <Route path='/support' component={Support} />
+          <Route path='/tutorial' component={Tutorial} />
+          <Route path='/account' component={Account} />
           <Route path='/logout' render={() =>
             <RedirectToLogin setData={setData}/>
           } />
@@ -113,7 +113,8 @@ const IonicApp: React.FC<IonicAppProps> = ({
 
 }
 
-const App: React.FC = () => <AppContextProvider><IonicAppConnected />
+const App: React.FC = () => <AppContextProvider>
+    <IonicAppConnected />
   </AppContextProvider>
 
 export default App

@@ -203,9 +203,13 @@ const FormNew: FC<MyFormProps> = ({
           <h2>{formTitle}</h2>
         </IonText>
         <IonGrid>
-          {fields.map((row: any, i: number) => (
-            <FormNewRow key={i} {...row} control={control} errors={errors} />
-          ))}
+          {fields.map((row: any, i: number) => {
+
+            let vars = { ...row, control}  
+            return  <FormNewRow key={i} {...row} control={control} errors={errors} />
+
+          }
+          )}
         </IonGrid>
         <IonButton type="submit">LEche</IonButton>
       </form>
