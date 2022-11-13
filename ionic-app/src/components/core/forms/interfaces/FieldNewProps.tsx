@@ -9,5 +9,6 @@ export interface FieldNewProps {
   columns?: any[]
   control?: Control
   component?: JSX.Element
-  errors?: NestDataObject<Record<string, any>, FieldError>
+  errors?: NestDataObject<Record<string, any>, FieldError>,
+  action?: Function
 }

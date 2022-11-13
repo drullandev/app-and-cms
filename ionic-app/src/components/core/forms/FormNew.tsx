@@ -1,6 +1,6 @@
 import * as AppConst from '../../../data/static/constants'
 
-import { CreateAnimation, IonText, IonGrid, useIonLoading, useIonToast, getConfig, IonButton } from '@ionic/react'
+import { CreateAnimation, IonText, IonGrid, useIonLoading, useIonToast, getConfig, IonButton, IonRow, IonCol } from '@ionic/react'
 import React, { FC, useState, useEffect, useRef } from 'react'
 
 import {
@@ -33,6 +33,8 @@ import { FormNewProps } from './interfaces/FormNewProps'
 // FORM STYLES
 import '../main/styles/Form.scss'
 import { ObjectShape } from 'yup/lib/object'
+import { FieldNewProps } from './interfaces/FieldNewProps'
+import FieldNew from './FieldNew'
 
 const validation = true
 
@@ -61,11 +63,11 @@ interface DispatchProps {
   //loadUserData: typeof loadUserData
 }
 
-interface MyFormProps extends FormNewProps, StateProps, DispatchProps { }
+interface MyFormProps extends FormNewProps, StateProps, DispatchProps {}
 
 const FormNew: FC<MyFormProps> = ({
-  fields,
-  onSubmit
+  onSubmit,
+  rows
   /* 
   params,
   setUserJwt,
@@ -78,7 +80,6 @@ const FormNew: FC<MyFormProps> = ({
 
   // Form Component settings...
   const [formTitle, setFormTitle] = useState([])
-  const [formRows, setFormRows] = useState(fields)
   const [formOpacity, setFormOpacity] = useState(0)
 
   // Form validation conditions...
@@ -190,6 +191,15 @@ const FormNew: FC<MyFormProps> = ({
               type === 'number' ? yup.number() : yup.string()
   }
 
+  const FieldRow = (row:any)=>{
+    return <IonRow>{FieldColumns(row)}</IonRow>
+  }
+
+  const FieldColumns = (columns: any) =>{
+    return <>{columns.map((field: any, i: number) => {  
+      return <IonCol><FieldNew {...field}/></IonCol>
+    })}</>
+  }
 
   return <div className='ion-padding'>
     <CreateAnimation
@@ -199,19 +209,19 @@ const FormNew: FC<MyFormProps> = ({
       fromTo={[{ property: 'opacity', fromValue: 0, toValue: 1 }]}
     >
       <form noValidate key={'aasdf'} name={'asfsadf'} onSubmit={handleSubmit(onSubmit)}>
-        <IonText color='primary' style={{ textAlign: 'center' }}>
+        {formTitle && <IonText color='primary' style={{ textAlign: 'center' }}>
           <h2>{formTitle}</h2>
-        </IonText>
-        <IonGrid>
-          {fields.map((row: any, i: number) => {
-
-            let vars = { ...row, control}  
+        </IonText>}
+        {/*<IonGrid>
+          {fields.map((row: any, i: number) => {  
             return  <FormNewRow key={i} {...row} control={control} errors={errors} />
-
-          }
-          )}
+          })}
+        </IonGrid>*/}
+        <IonGrid>
+          {rows.map((field: any, i: number) => {                
+              return <IonCol key={i+'-'+field.name}><FieldNew {...field}/></IonCol>
+          })}          
         </IonGrid>
-        <IonButton type="submit">LEche</IonButton>
       </form>
     </CreateAnimation>
   </div>

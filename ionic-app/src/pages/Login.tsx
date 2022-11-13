@@ -10,7 +10,6 @@ import { globe } from 'ionicons/icons';
 import { useTranslation } from 'react-i18next';
 
 import FormNew from '../components/core/forms/FormNew'
-import { Controller } from 'react-hook-form';
 
 let testingLogin = true
 let testing = testingLogin && process.env.REACT_APP_TESTING
@@ -79,7 +78,15 @@ const Login: React.FC<LoginProps> = ({
 
   const loginForm = {
 
-    fields: [
+    rows: [
+      /*{
+        name: 'login-header',          
+        type: 'component',
+        //component: ()=>  <Header/>
+      },
+      {
+        name: 'app-icon',
+      },*/
       {
         name: 'identifier',
         label: t('User or email'),
@@ -87,25 +94,39 @@ const Login: React.FC<LoginProps> = ({
         type: 'input',
         value: testing ? process.env.REACT_APP_DEFAULT_USER : undefined,
         required: true,
-        onChange: (e:any)=>{
-          setUsername(e.detail.value)
-        }
-      },{
+        onChange: (e:any)=> setUsername(e.detail.value)        
+      },
+      {
         name: 'password',
         label: t('Password'),
         type: 'input',
         fieldType: 'password',
         value: testing ? process.env.REACT_APP_DEFAULT_PASS : undefined,
         required: true,
-        onChange: (e:any)=>{
-          setPassword(e.detail.value)
-        }
-      }
+        onChange: (e:any)=> setPassword(e.detail.value)
+      },
+      /*{
+        name: 'terms'
+      },
+      {
+        cols: [
+          {
+            name: 'login-submit',
+            type: 'button',
+            fieldType: 'submit',
+            onClick: (e:any) : any => loginForm.onSubmit(e)
+          },
+          {
+            name: 'login-cancel',
+            type: 'cancel',
+            fieldType: 'submit',
+            onClick: () : any=> loginForm.onCancel()
+          }
+        ],
+      },*/
     ],
 
     onSubmit: async (e: React.FormEvent) => {
-
-      console.log('asdfasd')
 
       //e.preventDefault()
 
@@ -136,19 +157,28 @@ const Login: React.FC<LoginProps> = ({
               .then(()=>
                 history.push('/tabs/schedule', { direction: 'none' }
               ))
-
+              return true
             }         
           },
           onError: {
             400: (err: any)=> {
-              launchToast({ message: err?.response.status ? t(err.response.data.error.message) : t(err.response.data.message[0].messages[0].message) }, setToast)
-            }          
+              let message = err?.response.status 
+                ? t(err.response.data.error.message)
+                : t(err.response.data.message[0].messages[0].message)
+              launchToast({ message: message }, setToast)
+              return false    
+            }      
           }
         })
       
       }
   
+    },
+/*
+    onCancel: ()=> {
+      return history.push('/home', { direction: 'none' })
     }
+    */
 
   }
 
