@@ -54,9 +54,12 @@ interface LoginProps extends OwnProps,  DispatchProps { }
 
 interface Dali {
   rows: {
-    cols: FieldNewProps[]
+    cols?: FieldNewProps[],
+    FieldNewProps[]
   }
-  methods: Function[]
+  methods: {
+    onSubmit: Function
+  }
 }
 
 const Login: React.FC<LoginProps> = ({
