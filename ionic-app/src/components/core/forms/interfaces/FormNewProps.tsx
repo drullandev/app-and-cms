@@ -4,8 +4,7 @@ export interface FieldNew {
 }
 
 export interface FormNewProps {
-  fields: FieldNew[],
-  onSubmit:any
-  //action: string,
-  //onSubmit: SubmitHandler<FieldValues>
+  rows: any
+  onSubmit: any
+  onCancel?: any
 }

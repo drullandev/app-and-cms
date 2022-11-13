@@ -54,7 +54,7 @@ const FieldNew: FC<FieldNewProps> = (params) => {
     },
 
     renderInput: (field:any) => {
-      return <IonItem>
+      return <IonItem key={field.name}>
         {field.label && <IonLabel position='floating' color='primary'>{field.label}</IonLabel>}
         {field.required && <IonLabel slot='end' position='stacked' color='primary'>*</IonLabel>}
         <Controller
