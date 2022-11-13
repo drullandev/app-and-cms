@@ -10,6 +10,7 @@ import { globe } from 'ionicons/icons';
 import { useTranslation } from 'react-i18next';
 
 import FormNew from '../components/core/forms/FormNew'
+import { FieldNewProps } from '../components/core/forms/interfaces/FieldNewProps';
 
 let testingLogin = true
 let testing = testingLogin && process.env.REACT_APP_TESTING
@@ -51,6 +52,13 @@ interface DispatchProps {
 
 interface LoginProps extends OwnProps,  DispatchProps { }
 
+interface Dali {
+  rows: {
+    cols: FieldNewProps[]
+  }
+  methods: Function[]
+}
+
 const Login: React.FC<LoginProps> = ({
   setisLoggedIn,
   history,
@@ -76,7 +84,7 @@ const Login: React.FC<LoginProps> = ({
     return true
   }
 
-  const loginForm = {
+  const loginForm : Dali = {
 
     rows: [
       /*{
@@ -88,22 +96,28 @@ const Login: React.FC<LoginProps> = ({
         name: 'app-icon',
       },*/
       {
-        name: 'identifier',
-        label: t('User or email'),
-        fieldType: 'email',// TODO: Liberate for email and also nickname
-        type: 'input',
-        value: testing ? process.env.REACT_APP_DEFAULT_USER : undefined,
-        required: true,
-        onChange: (e:any)=> setUsername(e.detail.value)        
+        cols:
+          {
+            name: 'identifier',
+            label: t('User or email'),
+            fieldType: 'email',// TODO: Liberate for email and also nickname
+            type: 'input',
+            value: testing ? process.env.REACT_APP_DEFAULT_USER : undefined,
+            required: true,
+            onChange: (e:any)=> setUsername(e.detail.value)    
+          }
       },
       {
-        name: 'password',
-        label: t('Password'),
-        type: 'input',
-        fieldType: 'password',
-        value: testing ? process.env.REACT_APP_DEFAULT_PASS : undefined,
-        required: true,
-        onChange: (e:any)=> setPassword(e.detail.value)
+        cols:
+          {
+            name: 'password',
+            label: t('Password'),
+            type: 'input',
+            fieldType: 'password',
+            value: testing ? process.env.REACT_APP_DEFAULT_PASS : undefined,
+            required: true,
+            onChange: (e:any)=> setPassword(e.detail.value)
+          }
       },
       /*{
         name: 'terms'
@@ -126,59 +140,61 @@ const Login: React.FC<LoginProps> = ({
       },*/
     ],
 
-    onSubmit: async (e: React.FormEvent) => {
+    methods:{
+      onSubmit: async (e: React.FormEvent) => {
 
-      //e.preventDefault()
-
-      if(username && password) {
+        //e.preventDefault()
   
-        await restCallAsync({
-          req: {
-            url: 'api/auth/local',
-            method: 'POST',
-            data: { 
-              identifier: username,
-              password: password 
+        if(username && password) {
+    
+          await restCallAsync({
+            req: {
+              url: 'api/auth/local',
+              method: 'POST',
+              data: { 
+                identifier: username,
+                password: password 
+              },
             },
-          },
-          onSuccess: {
-
-            200: async (ret:any)=>{
+            onSuccess: {
   
-              // Set user state
-              let user = ret.data.user
-              user.jwt = ret.jwt // Attaching the JWT to the user level and state...
-              user.isLoggedIn = true
-              await setData(user)
-
-              launchToast({ 
-                message: t('user-wellcome', { username: ret.data.user.username }) 
-              }, setToast)
-              .then(()=>
-                history.push('/tabs/schedule', { direction: 'none' }
-              ))
-              return true
-            }         
-          },
-          onError: {
-            400: (err: any)=> {
-              let message = err?.response.status 
-                ? t(err.response.data.error.message)
-                : t(err.response.data.message[0].messages[0].message)
-              launchToast({ message: message }, setToast)
-              return false    
-            }      
-          }
-        })
-      
+              200: async (ret:any)=>{
+    
+                // Set user state
+                let user = ret.data.user
+                user.jwt = ret.jwt // Attaching the JWT to the user level and state...
+                user.isLoggedIn = true
+                await setData(user)
+  
+                launchToast({ 
+                  message: t('user-wellcome', { username: ret.data.user.username }) 
+                }, setToast)
+                .then(()=>
+                  history.push('/tabs/schedule', { direction: 'none' }
+                ))
+                return true
+              }         
+            },
+            onError: {
+              400: (err: any)=> {
+                let message = err?.response.status 
+                  ? t(err.response.data.error.message)
+                  : t(err.response.data.message[0].messages[0].message)
+                launchToast({ message: message }, setToast)
+                return false    
+              }      
+            }
+          })
+        
+        }
+    
+      },
+      /*
+      onCancel: ()=> {
+        return history.push('/home', { direction: 'none' })
       }
-  
-    },
-/*
-    onCancel: ()=> {
-      return history.push('/home', { direction: 'none' })
-    }
-    */
+      */
+    } 
 
   }
 

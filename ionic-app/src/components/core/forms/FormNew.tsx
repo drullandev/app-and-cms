@@ -192,7 +192,7 @@ const FormNew: FC<MyFormProps> = ({
   }
 
   const FieldRow = (row:any)=>{
-    return <IonRow>{FieldColumns(row)}</IonRow>
+    return <IonRow>{FieldColumns(row.cols)}</IonRow>
   }
 
   const FieldColumns = (columns: any) =>{
@@ -218,8 +218,12 @@ const FormNew: FC<MyFormProps> = ({
           })}
         </IonGrid>*/}
         <IonGrid>
-          {rows.map((field: any, i: number) => {                
-              return <IonCol key={i+'-'+field.name}><FieldNew {...field}/></IonCol>
+          {rows.map((cols: any, i: number) => {
+            {cols.map((field: any, i: number) => {
+              return <IonCol key={'form-col-'+field.name}>
+                <FieldNew {...field}/>
+              </IonCol>
+            })}
           })}          
         </IonGrid>
       </form>
