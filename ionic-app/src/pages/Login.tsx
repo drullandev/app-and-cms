@@ -1,71 +1,48 @@
+// Required
+
 import React, { useState } from 'react'
+import { RouteComponentProps } from 'react-router';
 import { IonHeader, IonToolbar, IonTitle, IonContent, IonPage, IonButtons, IonMenuButton, useIonToast } from '@ionic/react'
 
-import './Login.scss';
-import { setData, setisLoggedIn, setUsername, setDarkMode } from '../data/user/user.actions';
-import { connect } from '../data/connect';
-import { RouteComponentProps } from 'react-router';
-import { restCallAsync } from '../classes/core/axios';
-import { globe } from 'ionicons/icons';
+// Extra required
+
+import { Control, NestDataObject, FieldError, FieldValues, OnSubmit } from 'react-hook-form'
 import { useTranslation } from 'react-i18next';
 
-import FormNew from '../components/core/forms/FormNew'
-import { FieldNewProps } from '../components/core/forms/interfaces/FieldNewProps';
+// Reducer settings
+
+import { connect } from '../data/connect';
+import { restCallAsync } from '../classes/core/axios';
+import { setData, setisLoggedIn, setUsername, setDarkMode } from '../data/user/user.actions';
+
+// My React Dependencies
+
+import Form from '../components/core/forms/FormNew'
+import { FormProps } from '../components/core/forms/interfaces/FormProps2'
+
+// Design Dependencies
+
+import { globe } from 'ionicons/icons';
+import './Login.scss';
+
+
+// Are you testing this tools set && app?
 
 let testingLogin = true
 let testing = testingLogin && process.env.REACT_APP_TESTING
 
-
-export interface LoginFormProps  {
-  input: {
-    identifier: string
-    password: string
-  }
-  onSuccess: Function
-  onError: Function
-}
-
-export interface StrapiAuthProps {
-  user: {
-    id?: string
-    username?: string
-    email?: string
-    blocked?: boolean
-    confirmed?: boolean
-    createdAt?: string
-    updatedAt?: string
-    provider?: string
-    darkMode?: boolean
-  },
-  jwt?: string
-}
-
+// Component Dependencies
 
 interface OwnProps extends RouteComponentProps {}
 
 interface DispatchProps {
-  setisLoggedIn: typeof setisLoggedIn;
-  setUsername: typeof setUsername;
   setData: typeof setData;
-  setDarkMode: typeof setDarkMode
 }
 
-interface LoginProps extends OwnProps,  DispatchProps { }
-
-interface Dali {
-  rows: {
-    cols?: FieldNewProps[],
-    FieldNewProps[]
-  }
-  methods: {
-    onSubmit: Function
-  }
-}
+interface LoginProps extends OwnProps, DispatchProps {}
 
 const Login: React.FC<LoginProps> = ({
-  setisLoggedIn,
   history,
-  setUsername: setUsernameAction,
   setData
 }) => {
 
@@ -87,7 +64,7 @@ const Login: React.FC<LoginProps> = ({
     return true
   }
 
-  const loginForm : Dali = {
+  const loginForm : FormProps = {
 
     rows: [
       /*{
@@ -99,18 +76,19 @@ const Login: React.FC<LoginProps> = ({
         name: 'app-icon',
       },*/
       {
-        cols:
+        cols: [
           {
             name: 'identifier',
             label: t('User or email'),
             fieldType: 'email',// TODO: Liberate for email and also nickname
             type: 'input',
-            value: testing ? process.env.REACT_APP_DEFAULT_USER : undefined,
+            //value: testing ? process.env.REACT_APP_DEFAULT_USER : undefined,
             required: true,
             onChange: (e:any)=> setUsername(e.detail.value)    
           }
+        ]
       },
-      {
+      /*{
         cols:
           {
             name: 'password',
@@ -122,7 +100,7 @@ const Login: React.FC<LoginProps> = ({
             onChange: (e:any)=> setPassword(e.detail.value)
           }
       },
-      /*{
+      {
         name: 'terms'
       },
       {
@@ -144,9 +122,10 @@ const Login: React.FC<LoginProps> = ({
     ],
 
     methods:{
-      onSubmit: async (e: React.FormEvent) => {
+      onSubmit: async (data: FieldValues) => {
 
         //e.preventDefault()
+        
   
         if(username && password) {
     
@@ -179,6 +158,7 @@ const Login: React.FC<LoginProps> = ({
               }         
             },
             onError: {
+
               400: (err: any)=> {
                 let message = err?.response.status 
                   ? t(err.response.data.error.message)
@@ -214,7 +194,7 @@ const Login: React.FC<LoginProps> = ({
       </IonHeader>
 
       <IonContent>
-        <FormNew {...loginForm}/>
+        <Form {...loginForm}/>
       </IonContent>
 
     </IonPage>
@@ -224,9 +204,6 @@ const Login: React.FC<LoginProps> = ({
 
 export default connect<OwnProps, {}, DispatchProps>({
   mapDispatchToProps: {
-    setisLoggedIn,
-    setUsername,
-    setDarkMode,
     setData
   },
   component: Login

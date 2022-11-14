@@ -1,15 +1,11 @@
 import * as AppConst from '../../../data/static/constants'
 
-import { CreateAnimation, IonText, IonGrid, useIonLoading, useIonToast, getConfig, IonButton, IonRow, IonCol } from '@ionic/react'
+import { CreateAnimation, IonText, IonGrid, useIonLoading, useIonToast, getConfig, IonButton, IonRow, IonCol, IonCheckbox, IonInput, IonItem, IonLabel, IonSpinner, IonTextarea } from '@ionic/react'
 import React, { FC, useState, useEffect, useRef } from 'react'
 
 import {
   setisLoggedIn, 
-  setUsername,
-  setEmail,
-  setId,
   setDarkMode,
-  setLoading,
   setJwt
 } from '../../../data/user/user.actions'
 import { connect } from '../../../data/connect'
@@ -18,7 +14,7 @@ import { useTranslation } from 'react-i18next'
 import { useHistory } from 'react-router-dom'
 
 // ABOUT FORMS VALIDATION 
-import { useForm } from 'react-hook-form'
+import { Controller, useForm } from 'react-hook-form'
 import * as yup from 'yup'
 import axios from 'axios'
 
@@ -26,15 +22,17 @@ import axios from 'axios'
 import FormNewRow from './FormNewRow'
 
 // FORM INTERFACES
-import { FormNewProps } from './interfaces/FormNewProps'
+import { FormProps, FieldProps, RowProps } from './interfaces/FormProps2'
 
 ////import { restGet } from '../../../data/utils/rest/rest.utils'
 
 // FORM STYLES
 import '../main/styles/Form.scss'
 import { ObjectShape } from 'yup/lib/object'
-import { FieldNewProps } from './interfaces/FieldNewProps'
-import FieldNew from './FieldNew'
+
+
+//import { FieldProps } from './interfaces/FormProps2'
+import Button from './Button'
 
 const validation = true
 
@@ -45,34 +43,143 @@ interface StateProps {
   userDarkMode: boolean
   isLoggedIn: boolean,
   loading: boolean,
-  //userData: object
-  //userEmail: string
-  //userId: number
 }
 
-interface DispatchProps {
-  /*setisLoggedIn: typeof setisLoggedIn
-  setUserJwt: typeof setUserJwt
-  setUserEmail: typeof setUserEmail
-  setDarkMode: typeof setDarkMode
-  setNickname: typeof setNickname
-  setUserId: typeof setUserId
-  setLoading: typeof setLoading*/
-  //setUserData: typeof setUserData
-  //loadConfData: typeof loadConfData
-  //loadUserData: typeof loadUserData
+interface DispatchProps {}
+
+interface MyFormProps extends FormProps, StateProps, DispatchProps {}
+
+
+const FieldNew: FC<FieldProps> = (params) => {
+
+  //console.log('FieldNew', params)
+
+  const [field, setField] = useState<any>(params)
+  const [type, setType] = useState<any>(params.type)
+
+  // Get the field settings
+  useEffect(() => {    
+    setField(params)
+    /* 
+
+    setType(field.type)
+    restGet('fields', { slug: slug })
+      .then(res => {
+        switch(res.status) {
+          case 200:
+            setField(res.data[0])
+            
+          break
+          default:
+            console.error('call error', res)
+          break
+        }})
+      .catch(error => console.error(error))
+      */
+  }, [params])
+
+  const fieldControl = {
+
+    returnField: (field: any) => {      
+      if (!field) return <IonSpinner name='dots' />
+      switch (field.type) {
+        case 'input':
+          switch (field.fieldType) {
+            //case 'check': return fieldControl.renderCheckbox(field)
+            //case 'textarea': return fieldControl.renderTextarea(field)
+            //case 'check_modal': return fieldControl.renderConditionsCheckbox(field)
+            default: return fieldControl.renderInput(field)
+          }
+        //case 'button': return fieldControl.renderButton(field)
+        default: return <IonSpinner name='dots' />
+      }
+    },
+
+    renderInput: (field: FieldProps) => {
+
+      console.log('field',field)
+      return <IonItem key={field.name}>
+        <IonLabel position='floating' color='primary'>{field.label}</IonLabel>
+        {field.required && <IonLabel slot='end' position='stacked' color='primary'>*</IonLabel>}
+        <Controller
+          as={(
+            <IonInput
+              aria-invalid={field.errors && field.errors[field.name] ? 'true' : 'false'}
+              aria-describedby={`${field.name}Error`}
+              type={field.type}
+            />
+          )}
+          name={field.name}
+          control={field.control}
+          onChangeName='onIonChange'
+          onBlurName='onIonBlur'
+          />
+      </IonItem>
+    },
+  
+    renderCheckbox: () => (
+      <IonItem style={{ paddingTop: '25px' }}>
+        {params?.label && <IonLabel color='primary'>{field.label}</IonLabel>}
+        <Controller
+          as={(
+            <IonCheckbox slot='end' name={field.label} />
+          )}
+          name={field.name}
+          control={field.control}
+          onChangeName='onIonChange'
+          onBlurName='onIonBlur'
+        />
+      </IonItem>
+    ),
+  
+    renderConditionsCheckbox: () => (
+      <IonItem style={{ paddingTop: '25px' }}>
+        {/*<ContentCheck name={field.label} label={label} slug={field.slug} />*/}
+        <Controller
+          as={(
+            <IonCheckbox slot='end' name={field.label} />
+          )}
+          name={field.name}
+          control={field.control}
+          onChangeName='onIonChange'
+          onBlurName='onIonBlur'
+        />
+      </IonItem>
+    ),
+  
+    renderTextarea: () => (
+      <IonItem>
+        {params?.label && <IonLabel position='floating' color='primary'>{field.label}</IonLabel>}      
+        <Controller
+          as={(
+            <IonTextarea value={field.name}></IonTextarea>
+          )}
+          name={field.name}
+          control={field.control}
+          onChangeName='onIonChange'
+          onBlurName='onIonBlur'
+        />
+      </IonItem>
+    ),
+  
+    renderButton: (field:any) => (
+      <Button label={field.label} button={field} />
+    )
+  }
+
+  return <>
+    {field.type === 'input'
+      ? fieldControl.returnField(field)
+      : null
+    }
+    {/*field.type !== 'button' && <Error {...params} />*/}
+  </>
+
 }
 
-interface MyFormProps extends FormNewProps, StateProps, DispatchProps {}
-
-const FormNew: FC<MyFormProps> = ({
-  onSubmit,
-  rows
-  /* 
-  params,
-  setUserJwt,
-  userDarkMode, setDarkMode,
-  setisLoggedIn*/
+const Form: FC<MyFormProps> = ({
+  rows,
+  methods
 }) => {
 
   const history = useHistory()
@@ -85,7 +192,7 @@ const FormNew: FC<MyFormProps> = ({
   // Form validation conditions...
   const [formValidation, setFormValidation] = useState<ObjectShape>({})
   const validationSchema = yup.object().shape(formValidation)
-  const { control, handleSubmit, errors } = useForm({ validationSchema })
+  const { control, register, handleSubmit, errors } = useForm({ validationSchema })
 
   // Form and window actions
   const [setLoadingAlert, dismissLoadingAlert] = useIonLoading()
@@ -125,25 +232,6 @@ const FormNew: FC<MyFormProps> = ({
 
   useEffect(() => {
     launchLoading('Loading form...', 345)
-    
-    /*restGet('forms', { slug: slug })
-      .then(res => {
-        switch (res.status) {
-          case 200:
-            setFormTitle(res.data[0].title)
-            if (validation) setValidations(res.data[0].rows) //XXX Please, before set rows ;)
-            setFormRows(res.data[0].rows)
-          break
-          default:
-            launchToast(res.data.message[0].messages[0].message, 'warning')
-          break
-        }
-      })
-      .catch(err => {
-        launchToast(err.response.data.message[0].messages[0].message, 'danger')
-      })
-    */
-   
     // eslint-disable-next-line
   }, [])
 
@@ -191,16 +279,20 @@ const FormNew: FC<MyFormProps> = ({
               type === 'number' ? yup.number() : yup.string()
   }
 
-  const FieldRow = (row:any)=>{
-    return <IonRow>{FieldColumns(row.cols)}</IonRow>
+  const FormGrid = (rows: RowProps[]) => {
+    return <IonGrid>
+      {Object.keys(rows).map((row: any, key: number)=>{
+        return <IonRow key={'row-'+key}>
+          {rows[key].cols.map((field: FieldProps, i: number) => {  
+            return <IonCol key={'col-'+field.name+i}>
+              <FieldNew {...field}/>
+            </IonCol>
+          })}
+        </IonRow>
+      })}
+    </IonGrid>
   }
-
-  const FieldColumns = (columns: any) =>{
-    return <>{columns.map((field: any, i: number) => {  
-      return <IonCol><FieldNew {...field}/></IonCol>
-    })}</>
-  }
-
+  
   return <div className='ion-padding'>
     <CreateAnimation
       delay={ 1000 }
@@ -208,32 +300,18 @@ const FormNew: FC<MyFormProps> = ({
       iterations={1}
       fromTo={[{ property: 'opacity', fromValue: 0, toValue: 1 }]}
     >
-      <form noValidate key={'aasdf'} name={'asfsadf'} onSubmit={handleSubmit(onSubmit)}>
+      <form noValidate key={'aasdf'} name={'asfsadf'} onSubmit={handleSubmit(methods.onSubmit)}>
         {formTitle && <IonText color='primary' style={{ textAlign: 'center' }}>
           <h2>{formTitle}</h2>
-        </IonText>}
-        {/*<IonGrid>
-          {fields.map((row: any, i: number) => {  
-            return  <FormNewRow key={i} {...row} control={control} errors={errors} />
-          })}
-        </IonGrid>*/}
-        <IonGrid>
-          {rows.map((cols: any, i: number) => {
-            {cols.map((field: any, i: number) => {
-              return <IonCol key={'form-col-'+field.name}>
-                <FieldNew {...field}/>
-              </IonCol>
-            })}
-          })}          
-        </IonGrid>
+        </IonText>}     
+        <FormGrid {...rows}/>
       </form>
     </CreateAnimation>
-  </div>
-  
+  </div>  
 
 }
 
-export default connect<FormNewProps>({
+export default connect<FormProps>({
 
   mapStateToProps: (state) => ({
     mode: getConfig()!.get('mode'),
@@ -249,6 +327,6 @@ export default connect<FormNewProps>({
     setisLoggedIn,
   },
 
-  component: FormNew
+  component: Form
 
 })

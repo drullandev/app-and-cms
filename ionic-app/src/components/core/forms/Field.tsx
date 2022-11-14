@@ -2,7 +2,7 @@ import React, { FC, useEffect, useState, useMemo } from 'react'
 import { IonItem, IonLabel, IonInput, IonCheckbox, IonTextarea, IonSpinner } from '@ionic/react'
 import { Controller } from 'react-hook-form'
 ////import { restGet } from '../../../data/utils/rest/rest.utils'
-import ContentCheck from '../../../components/core/forms/ContentCheck'
+import ContentCheck from '../forms/ContentCheck'
 
 import Error from './Error'
 import Button from './Button'

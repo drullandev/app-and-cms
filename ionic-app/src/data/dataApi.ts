@@ -84,7 +84,6 @@ export const getUserData = async () => {
   const provider    = response[8].value || undefined
   const darkMode    = response[9].value  === 'true'
   const hasSeenTutorial = response[11].value === 'true'
-
   const isLoggedIn      = response[10].value === 'true'
 
   return {

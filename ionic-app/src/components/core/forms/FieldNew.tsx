@@ -6,9 +6,9 @@ import ContentCheck from './ContentCheck'
 import Error from './Error'
 import Button from './Button'
 
-import { FieldNewProps } from './interfaces/FieldNewProps'
+import { FieldProps } from './interfaces/FormProps2'
 
-const FieldNew: FC<FieldNewProps> = (params) => {
+const FieldNew: FC<FieldProps> = (params) => {
 
   //console.log('FieldNew', params)
 
@@ -53,23 +53,24 @@ const FieldNew: FC<FieldNewProps> = (params) => {
       }
     },
 
-    renderInput: (field:any) => {
+    renderInput: (field: FieldProps) => {
+      console.log('field',field)
       return <IonItem key={field.name}>
-        {field.label && <IonLabel position='floating' color='primary'>{field.label}</IonLabel>}
+        <IonLabel position='floating' color='primary'>{field.label}</IonLabel>
         {field.required && <IonLabel slot='end' position='stacked' color='primary'>*</IonLabel>}
         <Controller
           as={(
             <IonInput
               aria-invalid={field.errors && field.errors[field.name] ? 'true' : 'false'}
               aria-describedby={`${field.name}Error`}
-              type={field.type}
+              type='text'
             />
           )}
           name={field.name}
           control={field.control}
           onChangeName='onIonChange'
           onBlurName='onIonBlur'
-        />
+          />
       </IonItem>
     },
   
@@ -126,9 +127,9 @@ const FieldNew: FC<FieldNewProps> = (params) => {
   return <>
     {field.type === 'input'
       ? fieldControl.returnField(field)
-      : fieldControl.renderButton(field)
+      : null
     }
-    {field.type !== 'button' && <Error {...params} />}
+    {/*field.type !== 'button' && <Error {...params} />*/}
   </>
 
 }
