@@ -3,11 +3,6 @@ import * as AppConst from '../../../data/static/constants'
 import { CreateAnimation, IonText, IonGrid, useIonLoading, useIonToast, getConfig, IonButton, IonRow, IonCol, IonCheckbox, IonInput, IonItem, IonLabel, IonSpinner, IonTextarea } from '@ionic/react'
 import React, { FC, useState, useEffect, useRef } from 'react'
 
-import {
-  setisLoggedIn, 
-  setDarkMode,
-  setJwt
-} from '../../../data/user/user.actions'
 import { connect } from '../../../data/connect'
 
 import { useTranslation } from 'react-i18next'
@@ -16,23 +11,18 @@ import { useHistory } from 'react-router-dom'
 // ABOUT FORMS VALIDATION 
 import { Controller, useForm } from 'react-hook-form'
 import * as yup from 'yup'
-import axios from 'axios'
-
-// Components
-import FormNewRow from './FormNewRow'
 
 // FORM INTERFACES
 import { FormProps, FieldProps, RowProps } from './interfaces/FormProps2'
-
-////import { restGet } from '../../../data/utils/rest/rest.utils'
 
 // FORM STYLES
 import '../main/styles/Form.scss'
 import { ObjectShape } from 'yup/lib/object'
 
-
 //import { FieldProps } from './interfaces/FormProps2'
 import Button from './Button'
+import Error from './Error'
+import FieldNew from './FieldNew'
 
 const validation = true
 
@@ -48,134 +38,6 @@ interface StateProps {
 interface DispatchProps {}
 
 interface MyFormProps extends FormProps, StateProps, DispatchProps {}
-
-
-const FieldNew: FC<FieldProps> = (params) => {
-
-  //console.log('FieldNew', params)
-
-  const [field, setField] = useState<any>(params)
-  const [type, setType] = useState<any>(params.type)
-
-  // Get the field settings
-  useEffect(() => {    
-    setField(params)
-    /* 
-
-    setType(field.type)
-    restGet('fields', { slug: slug })
-      .then(res => {
-        switch(res.status) {
-          case 200:
-            setField(res.data[0])
-            
-          break
-          default:
-            console.error('call error', res)
-          break
-        }})
-      .catch(error => console.error(error))
-      */
-  }, [params])
-
-  const fieldControl = {
-
-    returnField: (field: any) => {      
-      if (!field) return <IonSpinner name='dots' />
-      switch (field.type) {
-        case 'input':
-          switch (field.fieldType) {
-            //case 'check': return fieldControl.renderCheckbox(field)
-            //case 'textarea': return fieldControl.renderTextarea(field)
-            //case 'check_modal': return fieldControl.renderConditionsCheckbox(field)
-            default: return fieldControl.renderInput(field)
-          }
-        //case 'button': return fieldControl.renderButton(field)
-        default: return <IonSpinner name='dots' />
-      }
-    },
-
-    renderInput: (field: FieldProps) => {
-
-      console.log('field',field)
-      return <IonItem key={field.name}>
-        <IonLabel position='floating' color='primary'>{field.label}</IonLabel>
-        {field.required && <IonLabel slot='end' position='stacked' color='primary'>*</IonLabel>}
-        <Controller
-          as={(
-            <IonInput
-              aria-invalid={field.errors && field.errors[field.name] ? 'true' : 'false'}
-              aria-describedby={`${field.name}Error`}
-              type={field.type}
-            />
-          )}
-          name={field.name}
-          control={field.control}
-          onChangeName='onIonChange'
-          onBlurName='onIonBlur'
-          />
-      </IonItem>
-    },
-  
-    renderCheckbox: () => (
-      <IonItem style={{ paddingTop: '25px' }}>
-        {params?.label && <IonLabel color='primary'>{field.label}</IonLabel>}
-        <Controller
-          as={(
-            <IonCheckbox slot='end' name={field.label} />
-          )}
-          name={field.name}
-          control={field.control}
-          onChangeName='onIonChange'
-          onBlurName='onIonBlur'
-        />
-      </IonItem>
-    ),
-  
-    renderConditionsCheckbox: () => (
-      <IonItem style={{ paddingTop: '25px' }}>
-        {/*<ContentCheck name={field.label} label={label} slug={field.slug} />*/}
-        <Controller
-          as={(
-            <IonCheckbox slot='end' name={field.label} />
-          )}
-          name={field.name}
-          control={field.control}
-          onChangeName='onIonChange'
-          onBlurName='onIonBlur'
-        />
-      </IonItem>
-    ),
-  
-    renderTextarea: () => (
-      <IonItem>
-        {params?.label && <IonLabel position='floating' color='primary'>{field.label}</IonLabel>}      
-        <Controller
-          as={(
-            <IonTextarea value={field.name}></IonTextarea>
-          )}
-          name={field.name}
-          control={field.control}
-          onChangeName='onIonChange'
-          onBlurName='onIonBlur'
-        />
-      </IonItem>
-    ),
-  
-    renderButton: (field:any) => (
-      <Button label={field.label} button={field} />
-    )
-  }
-
-  return <>
-    {field.type === 'input'
-      ? fieldControl.returnField(field)
-      : null
-    }
-    {/*field.type !== 'button' && <Error {...params} />*/}
-  </>
-
-}
 
 const Form: FC<MyFormProps> = ({
   rows,
@@ -283,9 +145,11 @@ const Form: FC<MyFormProps> = ({
     return <IonGrid>
       {Object.keys(rows).map((row: any, key: number)=>{
         return <IonRow key={'row-'+key}>
-          {rows[key].cols.map((field: FieldProps, i: number) => {  
-            return <IonCol key={'col-'+field.name+i}>
-              <FieldNew {...field}/>
+          {rows[key].cols.map((field: FieldProps, i: number) => {
+            let cField = field  
+            cField.control = control
+            return <IonCol key={'col-'+cField.name+i}>
+              <FieldNew {...cField}/>
             </IonCol>
           })}
         </IonRow>
@@ -312,21 +176,12 @@ const Form: FC<MyFormProps> = ({
 }
 
 export default connect<FormProps>({
-
   mapStateToProps: (state) => ({
     mode: getConfig()!.get('mode'),
     userJwt: state.user.userJwt,
     userDarkMode: state.user.userDarkMode,
     isLoggedIn: state.user.isLoggedIn,
   }),
-
-  mapDispatchToProps: {
-    //setUserMode,
-    setJwt,
-    setDarkMode,
-    setisLoggedIn,
-  },
-
+  mapDispatchToProps: {},
   component: Form
-
 })

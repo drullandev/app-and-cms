@@ -89,7 +89,7 @@ const Signup: React.FC<LoginProps> = ({setisLoggedIn, history, setUsername: setU
           ,
         },
         onSuccess: { 
-          200: async (ret: any)=>{
+          default: async (ret: any)=>{
             await onSignupSuccess(ret.data)
               .then((ret: any)=>{
                 switch (ret.status) {
@@ -105,7 +105,7 @@ const Signup: React.FC<LoginProps> = ({setisLoggedIn, history, setUsername: setU
           }
         },
         onError: {
-          400: (err: any)=> {
+          default: (err: any)=> {
             switch(err?.response.status){
               case 400: 
                 launchToast({ message: t(err.response.data.error.message) }, setToast)

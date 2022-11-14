@@ -80,7 +80,7 @@ const ResetPassword: React.FC<LoginProps> = ({
           ,
         },
         onSuccess: {
-          200: async (ret: any)=>{
+          default: async (ret: any)=>{
             await onResetSuccess(ret.data)
               .then((ret: any)=>{
                 switch (ret.status) {
@@ -96,7 +96,7 @@ const ResetPassword: React.FC<LoginProps> = ({
           }
         },
         onError: {
-          400: (err: any)=> { 
+          default: (err: any)=> { 
             launchToast({ message: t(err.response.data.error.message ?? err.response.data.message[0].messages[0].message) }, setToast)
           }
         }

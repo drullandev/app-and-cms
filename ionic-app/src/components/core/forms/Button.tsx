@@ -2,15 +2,12 @@ import * as AppConst from '../../../data/static/constants'
 
 import React, { FC ,useState } from 'react'
 import { IonLabel, IonButton, IonSpinner, IonItem, IonSkeletonText } from '@ionic/react'
-import { ButtonProps } from './interfaces/ButtonProps'
+//import { ButtonProps } from './interfaces/ButtonProps'
+import { FieldProps } from './interfaces/FormProps2'
 
 const style = { marginTop: '20px' }
 
-
-
-
-
-const Button: FC<ButtonProps> = ({  label, button }) => {
+const Button: FC<FieldProps> = (field) => {
 
   const spinner = {
     type: 'lines-small',
@@ -20,7 +17,8 @@ const Button: FC<ButtonProps> = ({  label, button }) => {
 
   const [display, setDisplay] = useState<any>(spinner.display.false)
 
-  const setActive = async (timeout: number = AppConst.timeout.refresh) => {
+  const setActive = async (timeout: number = AppConst.timeout.refresh, func?: Function) => {
+    if(func) func()
     setDisplay(spinner.display.true)
     setInactive(timeout)
   }
@@ -36,27 +34,38 @@ const Button: FC<ButtonProps> = ({  label, button }) => {
       <IonSpinner style={{display: display}}
         name={spinner.type}
       />
-      <IonLabel>{label}</IonLabel>
+      <IonLabel>{field.label}</IonLabel>
     </>
   )
 
-  return button
+  return <>{
+    field
   
-  ? button.type === 'submit'
-
-    ? <IonButton style={style} expand='block' color={button.color} type={button.type} onClick={(e)=>{setActive(1000)}}>
-        {buttonContent(label, spinner)}
-      </IonButton>
-
-    : <IonButton style={style} expand='block' color={button.color} routerDirection={'root'} routerLink={button.routerLink} onClick={(e)=>{setActive(10000)}}>
-        {buttonContent(label, spinner)}
-      </IonButton>
-
-  : <IonItem lines='none'>
-      <IonLabel>
-        <h3><IonSkeletonText animated style={{ width: '100%', height: '32px', margin: '12px 0px'}} /></h3>
-      </IonLabel>
-    </IonItem>
+    ? field.fieldType === 'submit'
+  
+      ? <IonButton
+          style={style}
+          expand='block'
+          color={field.color}
+          type={field.type} 
+          onClick={(e)=>{setActive(1000, field.onSubmit)}}>
+          {buttonContent(field.label, spinner)}
+        </IonButton>
+  
+      : <IonButton style={style} expand='block' 
+          color={field.color} 
+          routerDirection={'root'} 
+          routerLink={field.routerLink} 
+          onClick={(e)=>{setActive(10000)}}>
+          {buttonContent(field.label, spinner)}
+        </IonButton>
+  
+    : <IonItem lines='none'>
+        <IonLabel>
+          <h3><IonSkeletonText animated style={{ width: '100%', height: '32px', margin: '12px 0px'}} /></h3>
+        </IonLabel>
+      </IonItem>
+  }</>
 
 }
 

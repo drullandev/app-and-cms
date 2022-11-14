@@ -73,7 +73,7 @@ const Recover: React.FC<LoginProps> = ({
           data: { email: email }
         },
         onSuccess: {
-          200: async (ret: any)=>{
+          default: async (ret: any)=>{
             await onRecoverSuccess(ret.data)
               .then((ret: any)=>{
                 switch (ret.status) {
@@ -89,7 +89,7 @@ const Recover: React.FC<LoginProps> = ({
           }
         },
         onError:{
-          400: (err: any)=> {
+          default: (err: any)=> {
             launchToast({ message: t(err.response.data.error.message) ?? t(err.response.data.message[0].messages[0].message) }, setToast)
           }
         }

@@ -40,10 +40,10 @@ export const crud = ( operation: string, model:string, data?: any, onSuccess?: F
         ( operation === 'get'   ) ? 'GET'     : 'OPTIONS'
     },
     onSuccess: { 
-      200: onSuccess !== undefined ? (ret: any) => onSuccess(data) : ()=>{}
+      default: onSuccess !== undefined ? (ret: any) => onSuccess(data) : ()=>{}
     },
     onError: {
-      400: onError !== undefined ? (err:Error)=> onError(err) : ()=>{}
+      default: onError !== undefined ? (err:Error)=> onError(err) : ()=>{}
     }
   }
 

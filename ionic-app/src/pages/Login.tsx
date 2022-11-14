@@ -1,38 +1,30 @@
 // Required
-
 import React, { useState } from 'react'
 import { RouteComponentProps } from 'react-router';
 import { IonHeader, IonToolbar, IonTitle, IonContent, IonPage, IonButtons, IonMenuButton, useIonToast } from '@ionic/react'
 
 // Extra required
-
 import { Control, NestDataObject, FieldError, FieldValues, OnSubmit } from 'react-hook-form'
 import { useTranslation } from 'react-i18next';
 
 // Reducer settings
-
 import { connect } from '../data/connect';
 import { restCallAsync } from '../classes/core/axios';
-import { setData, setisLoggedIn, setUsername, setDarkMode } from '../data/user/user.actions';
+import { setData } from '../data/user/user.actions';
 
 // My React Dependencies
-
 import Form from '../components/core/forms/FormNew'
 import { FormProps } from '../components/core/forms/interfaces/FormProps2'
 
 // Design Dependencies
-
 import { globe } from 'ionicons/icons';
 import './Login.scss';
 
-
 // Are you testing this tools set && app?
-
 let testingLogin = true
 let testing = testingLogin && process.env.REACT_APP_TESTING
 
 // Component Dependencies
-
 interface OwnProps extends RouteComponentProps {}
 
 interface DispatchProps {
@@ -82,14 +74,14 @@ const Login: React.FC<LoginProps> = ({
             label: t('User or email'),
             fieldType: 'email',// TODO: Liberate for email and also nickname
             type: 'input',
-            //value: testing ? process.env.REACT_APP_DEFAULT_USER : undefined,
+            value: testing ? process.env.REACT_APP_DEFAULT_USER : undefined,
             required: true,
             onChange: (e:any)=> setUsername(e.detail.value)    
           }
         ]
       },
-      /*{
-        cols:
+      {
+        cols: [
           {
             name: 'password',
             label: t('Password'),
@@ -99,32 +91,37 @@ const Login: React.FC<LoginProps> = ({
             required: true,
             onChange: (e:any)=> setPassword(e.detail.value)
           }
+        ]
       },
+      /*
       {
         name: 'terms'
-      },
+      },*/
       {
         cols: [
           {
             name: 'login-submit',
+            label: 'Login',
             type: 'button',
             fieldType: 'submit',
-            onClick: (e:any) : any => loginForm.onSubmit(e)
-          },
+            onSubmit: (e:any) => loginForm.methods.onSubmit(e)
+          }/*,
           {
             name: 'login-cancel',
             type: 'cancel',
             fieldType: 'submit',
-            onClick: () : any=> loginForm.onCancel()
-          }
+            //onClick: () : any=> loginForm.onCancel()
+          }*/
         ],
-      },*/
+      },
     ],
 
     methods:{
       onSubmit: async (data: FieldValues) => {
 
         //e.preventDefault()
+
+        console.log('submitting', data)
         
   
         if(username && password) {
@@ -140,7 +137,7 @@ const Login: React.FC<LoginProps> = ({
             },
             onSuccess: {
   
-              200: async (ret:any)=>{
+              default: async (ret:any)=>{
     
                 // Set user state
                 let user = ret.data.user
@@ -159,7 +156,7 @@ const Login: React.FC<LoginProps> = ({
             },
             onError: {
 
-              400: (err: any)=> {
+              default: (err: any)=> {
                 let message = err?.response.status 
                   ? t(err.response.data.error.message)
                   : t(err.response.data.message[0].messages[0].message)

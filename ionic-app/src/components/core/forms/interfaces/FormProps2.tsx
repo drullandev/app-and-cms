@@ -19,16 +19,20 @@ interface FormMethods {
 export interface FieldProps {
   name: string
   type: any
-  fieldType: string
+  fieldType: any
   label: string
-  required: boolean
-  //value?: any
+  required?: boolean
+  value?: any
   columns?: any[]
   component?: JSX.Element
   control?: Control
   errors?: NestDataObject<Record<string, any>, FieldError>,
   action?: Function
   onChange?: any
+  onClick?: any
+  onSubmit?: any
+  routerLink?: string
+  color?: string
 }
 
 
