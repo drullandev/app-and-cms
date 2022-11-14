@@ -14,6 +14,7 @@ export interface RowProps {
 
 interface FormMethods {
   onSubmit: OnSubmit<FieldValues>
+  onCancel: any 
 }
 
 export interface FieldProps {
@@ -35,37 +36,7 @@ export interface FieldProps {
   color?: string
 }
 
-
-///////////////////////////
-
-interface ColumnProps {
-  id: number,
-  field: {
-    id: number
-    slug: string
-    label?: string
-    required?: boolean
-    routeLink?: string
-  }
-}
-
-interface FormRowProps {
-  columns: ColumnProps[]
-  control?: Control
-  errors?: NestDataObject<Record<string, any>, FieldError>
-}
-
-interface FormNewRowProps {
-  control?: Control
-  errors?: NestDataObject<Record<string, any>, FieldError>
-}
-
-interface FormPayloadProps {
-  rows: any
-  methods?: FormMethods
-}
-
-////////////////////////////////////////////////// mmmm espera!
+/////////////////////// mmmm espera!
 
 interface LoginFormProps  {
   input: {

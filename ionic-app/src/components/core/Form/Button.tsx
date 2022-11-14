@@ -2,8 +2,7 @@ import * as AppConst from '../../../data/static/constants'
 
 import React, { FC ,useState } from 'react'
 import { IonLabel, IonButton, IonSpinner, IonItem, IonSkeletonText } from '@ionic/react'
-//import { ButtonProps } from './interfaces/ButtonProps'
-import { FieldProps } from './interfaces/FormProps2'
+import { FieldProps } from './FormProps'
 
 const style = { marginTop: '20px' }
 
@@ -48,7 +47,7 @@ const Button: FC<FieldProps> = (field) => {
           expand='block'
           color={field.color}
           type={field.type} 
-          onClick={(e)=>{setActive(1000, field.onSubmit)}}>
+          onClick={(e:any)=>{setActive(1000, field.onSubmit)}}>
           {buttonContent(field.label, spinner)}
         </IonButton>
   
@@ -56,7 +55,7 @@ const Button: FC<FieldProps> = (field) => {
           color={field.color} 
           routerDirection={'root'} 
           routerLink={field.routerLink} 
-          onClick={(e)=>{setActive(10000)}}>
+          onClick={(e:any)=>{setActive(10000)}}>
           {buttonContent(field.label, spinner)}
         </IonButton>
   

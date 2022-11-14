@@ -1,7 +1,7 @@
 import * as AppConst from '../../../data/static/constants'
 
-import { CreateAnimation, IonText, IonGrid, useIonLoading, useIonToast, getConfig, IonButton, IonRow, IonCol, IonCheckbox, IonInput, IonItem, IonLabel, IonSpinner, IonTextarea } from '@ionic/react'
-import React, { FC, useState, useEffect, useRef } from 'react'
+import { CreateAnimation, IonText, IonGrid, useIonLoading, useIonToast, getConfig, IonRow, IonCol } from '@ionic/react'
+import React, { FC, useState, useEffect } from 'react'
 
 import { connect } from '../../../data/connect'
 
@@ -9,17 +9,17 @@ import { useTranslation } from 'react-i18next'
 import { useHistory } from 'react-router-dom'
 
 // ABOUT FORMS VALIDATION 
-import { Controller, useForm } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import * as yup from 'yup'
 
 // FORM INTERFACES
-import { FormProps, FieldProps, RowProps } from './interfaces/FormProps2'
+import { FormProps, FieldProps, RowProps } from './FormProps'
 
 // FORM STYLES
 import '../main/styles/Form.scss'
 import { ObjectShape } from 'yup/lib/object'
 
-//import { FieldProps } from './interfaces/FormProps2'
+//import { FieldProps } from './interfaces/FormProps'
 import Button from './Button'
 import Error from './Error'
 import FieldNew from './FieldNew'
@@ -65,6 +65,9 @@ const Form: FC<MyFormProps> = ({
     setLoadingAlert({ message: t(message), duration: duration })
   }
 
+
+
+
   const launchToast = (
     message: string,
     color: string = 'light',
@@ -94,8 +97,10 @@ const Form: FC<MyFormProps> = ({
 
   useEffect(() => {
     launchLoading('Loading form...', 345)
+    //let fval = setValidations(rows)
+    //setFormValidation(fval)
     // eslint-disable-next-line
-  }, [])
+  }, [rows])
 
   const setValidations = async (rows: any) => {
     let rules : Array<any> = []

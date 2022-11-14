@@ -1,12 +1,11 @@
-import React, { FC, useEffect, useState, useMemo } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 import { IonItem, IonLabel, IonInput, IonCheckbox, IonTextarea, IonSpinner } from '@ionic/react'
 import { Controller } from 'react-hook-form'
-import ContentCheck from './ContentCheck'
 
 import Error from './Error'
 import Button from './Button'
 
-import { FieldProps } from './interfaces/FormProps2'
+import { FieldProps } from './FormProps'
 
 const FieldNew: FC<FieldProps> = (params) => {
 

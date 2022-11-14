@@ -1,24 +1,24 @@
 // Required
 import React, { useState } from 'react'
-import { RouteComponentProps } from 'react-router';
+import { RouteComponentProps } from 'react-router'
 import { IonHeader, IonToolbar, IonTitle, IonContent, IonPage, IonButtons, IonMenuButton, useIonToast } from '@ionic/react'
 
 // Extra required
-import { Control, NestDataObject, FieldError, FieldValues, OnSubmit } from 'react-hook-form'
-import { useTranslation } from 'react-i18next';
+import { FieldValues } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 
 // Reducer settings
-import { connect } from '../data/connect';
-import { restCallAsync } from '../classes/core/axios';
-import { setData } from '../data/user/user.actions';
+import { connect } from '../data/connect'
+import { restCallAsync } from '../classes/core/axios'
+import { setData } from '../data/user/user.actions'
 
 // My React Dependencies
-import Form from '../components/core/forms/FormNew'
-import { FormProps } from '../components/core/forms/interfaces/FormProps2'
+import Form from '../components/core/Form/Form'
+import { FormProps } from '../components/core/Form/FormProps'
 
 // Design Dependencies
-import { globe } from 'ionicons/icons';
-import './Login.scss';
+import { globe } from 'ionicons/icons'
+import './Login.scss'
 
 // Are you testing this tools set && app?
 let testingLogin = true
@@ -105,18 +105,21 @@ const Login: React.FC<LoginProps> = ({
             type: 'button',
             fieldType: 'submit',
             onSubmit: (e:any) => loginForm.methods.onSubmit(e)
-          }/*,
+          },
           {
             name: 'login-cancel',
-            type: 'cancel',
-            fieldType: 'submit',
-            //onClick: () : any=> loginForm.onCancel()
-          }*/
+            label: 'Cancel',
+            type: 'button',
+            fieldType: 'cancel',
+            routerLink: '/home',
+            onClick: () : any=> loginForm.methods.onCancel()
+          }
         ],
       },
     ],
 
     methods:{
+
       onSubmit: async (data: FieldValues) => {
 
         //e.preventDefault()
@@ -169,11 +172,9 @@ const Login: React.FC<LoginProps> = ({
         }
     
       },
-      /*
-      onCancel: ()=> {
-        return history.push('/home', { direction: 'none' })
-      }
-      */
+
+      onCancel: ()=> history.push('/home', { direction: 'none' })      
+
     } 
 
   }
