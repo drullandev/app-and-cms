@@ -1,6 +1,9 @@
+// Used inspirations...
+//https://www.smashingmagazine.com/2020/08/forms-validation-ionic-react/
+
 import * as AppConst from '../../../data/static/constants'
 
-import { CreateAnimation, IonText, IonGrid, useIonLoading, useIonToast, getConfig, IonRow, IonCol } from '@ionic/react'
+import { CreateAnimation, IonText, IonGrid, useIonLoading, useIonToast, getConfig, IonRow, IonCol, IonLabel, IonCheckbox, IonInput, IonItem, IonSpinner, IonTextarea } from '@ionic/react'
 import React, { FC, useState, useEffect } from 'react'
 
 import { connect } from '../../../data/connect'
@@ -9,7 +12,8 @@ import { useTranslation } from 'react-i18next'
 import { useHistory } from 'react-router-dom'
 
 // ABOUT FORMS VALIDATION 
-import { useForm } from 'react-hook-form'
+import { Controller, useForm } from 'react-hook-form'
+
 import * as yup from 'yup'
 
 // FORM INTERFACES
@@ -53,8 +57,20 @@ const Form: FC<MyFormProps> = ({
 
   // Form validation conditions...
   const [formValidation, setFormValidation] = useState<ObjectShape>({})
-  const validationSchema = yup.object().shape(formValidation)
-  const { control, register, handleSubmit, errors } = useForm({ validationSchema })
+
+  const validationSchema = yup.object().shape({ 
+      identifier: yup.string().required(),
+      password: yup.string().required()
+  })
+
+  interface IFormInputs {
+    firstName: string
+    age: number
+  }
+
+  const { control, register, handleSubmit, errors } = useForm<IFormInputs>({
+    resolver: yupResolver(validationSchema)
+  });
 
   // Form and window actions
   const [setLoadingAlert, dismissLoadingAlert] = useIonLoading()
@@ -64,9 +80,6 @@ const Form: FC<MyFormProps> = ({
     dismissLoadingAlert()
     setLoadingAlert({ message: t(message), duration: duration })
   }
-
-
-
 
   const launchToast = (
     message: string,
@@ -95,45 +108,143 @@ const Form: FC<MyFormProps> = ({
     }, timeout)
   }
 
-  useEffect(() => {
-    launchLoading('Loading form...', 345)
-    //let fval = setValidations(rows)
-    //setFormValidation(fval)
-    // eslint-disable-next-line
-  }, [rows])
+  const getField = {
 
-  const setValidations = async (rows: any) => {
+    returnField: (field: FieldProps) => {      
+      if (!field) return <IonSpinner name='dots' />
+      switch (field.type) {
+        case 'input':
+          switch (field.fieldType) {
+            case 'check': return getField.render.Checkbox(field)
+            case 'textarea': return getField.render.Textarea(field)
+            case 'check_modal': return getField.render.ConditionsCheckbox(field)
+            default: return getField.render.Input(field)
+          }
+        case 'button': return getField.render.Button(field)
+        default: return <IonSpinner name='dots' />
+      }
+    },
+
+    render: {
+
+      Input: (field: FieldProps) => (
+        <IonItem key={field.name}>
+          <IonLabel position='floating' color='primary'>{field.label}</IonLabel>
+          {field.required && field.required === true && <IonLabel slot='end' position='stacked' color='primary'>*</IonLabel>}
+          <Controller
+            as={
+              <IonInput
+                name={field.name}
+                aria-invalid={field.errors && field.errors[field.name] ? 'true' : 'false'}
+                aria-describedby={`${field.name}Error`}
+                type={field.fieldType}
+              />              
+            }
+            name={field.name}
+            control={field.control}
+            onChangeName='onIonChange'
+            onBlurName='onIonBlur'
+          />
+          <Error {...field} />
+        </IonItem>
+      ),
+    
+      Checkbox: (field: FieldProps) => (
+        <IonItem style={{ paddingTop: '25px' }}>
+          {field?.label && <IonLabel color='primary'>{field.label}</IonLabel>}
+          <Controller
+            as={<>
+              <IonCheckbox slot='end' name={field.label} />
+              <Error {...field} />
+            </>}
+            name={field.name}
+            control={field.control}
+            onChangeName='onIonChange'
+            onBlurName='onIonBlur'
+          />
+        </IonItem>
+      ),
+
+      ConditionsCheckbox: (field: FieldProps) => (
+        <IonItem style={{ paddingTop: '25px' }}>
+          {/*<ContentCheck name={field.label} label={label} slug={field.slug} />*/}
+          <Controller
+            as={<>
+              <IonCheckbox slot='end' name={field.label} />
+              <Error {...field} />
+            </>}
+            name={field.name}
+            control={field.control}
+            onChangeName='onIonChange'
+            onBlurName='onIonBlur'
+          />
+        </IonItem>
+      ),
+    
+      Textarea: (field: FieldProps) => (
+        <IonItem>
+          {field?.label && <IonLabel position='floating' color='primary'>{field.label}</IonLabel>}      
+          <Controller
+            as={<>
+              <IonTextarea value={field.name}></IonTextarea>
+              <Error {...field} />
+            </>}
+            name={field.name}
+            control={field.control}
+            onChangeName='onIonChange'
+            onBlurName='onIonBlur'
+          />
+        </IonItem>
+      ),
+    
+      Button: (field: FieldProps) => (
+        <>
+          <Button {...field}/>
+          <Error {...field}/>
+        </>
+      )
+  
+    }
+  
+  }
+
+  const setValidations = (rows: any) => {
+
     let rules : Array<any> = []
     for (let i = 0; i < rows.length; i++) {
-      var columns = rows[i].columns
+
+      var columns = rows[i].cols
       for (var ii = 0; ii < columns.length; ii++) {
 
-        var row = columns[ii]
+        var field = columns[ii]
+        if (field.fieldType === 'input') {
 
-        if (row.field.fieldType === 'input') {
-          var type = row.field.type
-          var rule = setFieldValidation(type)
-          if (type === 'number') {
-            //if (row.field.num_sign === 'positive') rule = rule.positive()
-            //if (row.field.num_type === 'integer') rule = rule.integer()
+          var rule = setFieldValidation(field.type)
+          if (field.type === 'number') {
+            //if (field.num_sign === 'positive') rule = rule.positive()
+            //if (field.num_type === 'integer') rule = rule.integer()
           }
 
-          if (row.field.regexp) {
-            //rule = rule.matches(row.field.regexp, row.field.regexp_message)
-          }
+          //if (row.regexp) {
+            //rule = rule.matches(field.regexp, row.regexp_message)
+          //}
 
-          if (row.required === true) {
+          if (field.required === true) {
             rule = rule.required()
           }
 
-          //if (row.field.min) rule = rule.min(parseInt(row.field.min))
-          //if (row.field.max) rule = rule.max(parseInt(row.field.max))
+          //if (field.min) rule = rule.min(parseInt(field.min))
+          //if (field.max) rule = rule.max(parseInt(field.max))
 
-          rules[row.field.slug] = rule
+          rules[field.name] = rule
 
         }
       }
     }
+    console.log('rules', rules)
+    //console.log('asdfasd',Object.assign(formValidation, rules))
+    //setFormValidation(Object.assign(formValidation, rules))
+    //return rules
     setFormValidation(Object.assign(formValidation, rules))
   }
 
@@ -154,14 +265,22 @@ const Form: FC<MyFormProps> = ({
             let cField = field  
             cField.control = control
             return <IonCol key={'col-'+cField.name+i}>
-              <FieldNew {...cField}/>
+              {getField.returnField(cField)}
             </IonCol>
           })}
         </IonRow>
       })}
     </IonGrid>
   }
+
+  const sendForm = (data: any) => console.log(data);
   
+  useEffect(() => {
+    launchLoading('Loading form...', 345)
+    setValidations(rows)    
+    // eslint-disable-next-line
+  }, [rows])
+    
   return <div className='ion-padding'>
     <CreateAnimation
       delay={ 1000 }
@@ -169,7 +288,7 @@ const Form: FC<MyFormProps> = ({
       iterations={1}
       fromTo={[{ property: 'opacity', fromValue: 0, toValue: 1 }]}
     >
-      <form noValidate key={'aasdf'} name={'asfsadf'} onSubmit={handleSubmit(methods.onSubmit)}>
+      <form noValidate key={'aasdf'} id="pinga" name={'asfsadf'} onSubmit={handleSubmit(sendForm)}>
         {formTitle && <IonText color='primary' style={{ textAlign: 'center' }}>
           <h2>{formTitle}</h2>
         </IonText>}     

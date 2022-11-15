@@ -4,7 +4,8 @@ import { RouteComponentProps } from 'react-router'
 import { IonHeader, IonToolbar, IonTitle, IonContent, IonPage, IonButtons, IonMenuButton, useIonToast } from '@ionic/react'
 
 // Extra required
-import { FieldValues } from 'react-hook-form'
+import { OnSubmit } from 'react-hook-form'
+import { FieldValues } from "react-hook-form"
 import { useTranslation } from 'react-i18next'
 
 // Reducer settings
@@ -120,13 +121,10 @@ const Login: React.FC<LoginProps> = ({
 
     methods:{
 
-      onSubmit: async (data: FieldValues) => {
+      onSubmit:  async (e: OnSubmit<FieldValues>) => {
 
-        //e.preventDefault()
+        console.log(e)
 
-        console.log('submitting', data)
-        
-  
         if(username && password) {
     
           await restCallAsync({
@@ -151,9 +149,9 @@ const Login: React.FC<LoginProps> = ({
                 launchToast({ 
                   message: t('user-wellcome', { username: ret.data.user.username }) 
                 }, setToast)
-                .then(()=>
-                  history.push('/tabs/schedule', { direction: 'none' }
-                ))
+                //.then(()=>
+                //  history.push('/tabs/schedule', { direction: 'none' }
+                //))
                 return true
               }         
             },
@@ -175,7 +173,7 @@ const Login: React.FC<LoginProps> = ({
 
       onCancel: ()=> history.push('/home', { direction: 'none' })      
 
-    } 
+    },
 
   }
 

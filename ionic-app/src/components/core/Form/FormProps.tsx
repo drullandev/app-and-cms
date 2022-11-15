@@ -13,7 +13,7 @@ export interface RowProps {
 }
 
 interface FormMethods {
-  onSubmit: OnSubmit<FieldValues>
+  onSubmit: any
   onCancel: any 
 }
 

@@ -38,19 +38,20 @@ const FieldNew: FC<FieldProps> = (params) => {
           <IonLabel position='floating' color='primary'>{field.label}</IonLabel>
           {field.required && field.required === true && <IonLabel slot='end' position='stacked' color='primary'>*</IonLabel>}
           <Controller
-            as={<>
+            as={
               <IonInput
+                name={field.name}
                 aria-invalid={field.errors && field.errors[field.name] ? 'true' : 'false'}
                 aria-describedby={`${field.name}Error`}
                 type={field.fieldType}
-              />
-              <Error {...field} />
-            </>}
+              />              
+            }
             name={field.name}
             control={field.control}
             onChangeName='onIonChange'
             onBlurName='onIonBlur'
           />
+          <Error {...field} />
         </IonItem>
       ),
     
@@ -103,18 +104,9 @@ const FieldNew: FC<FieldProps> = (params) => {
       ),
     
       Button: (field: FieldProps) => (
-        <>    
-          <Controller
-            as={<>
-              <Button {...field}/>
-              <Error {...field}/>
-            </>}
-            name={field.name}
-            control={field.control}
-            onChangeName='onIonChange'
-            onClick='onIonClick'
-            onBlurName='onIonBlur'
-          />
+        <>
+          <Button {...field}/>
+          <Error {...field}/>
         </>
       )
   
