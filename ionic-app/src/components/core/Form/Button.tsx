@@ -46,14 +46,15 @@ const Button: FC<FieldProps> = (field) => {
           style={style}
           expand='block'
           color={field.color}
-          type={field.type} 
-          onClick={(e:any)=>{setActive(1000, field.onSubmit)}}>
+          type={field.fieldType} 
+          onClick={(e:any)=>{setActive(1000)}}>
           {buttonContent(field.label, spinner)}
         </IonButton>
   
       : <IonButton style={style} expand='block' 
           color={field.color} 
           routerDirection={'root'} 
+          type={field.fieldType} 
           routerLink={field.routerLink} 
           onClick={(e:any)=>{setActive(10000)}}>
           {buttonContent(field.label, spinner)}

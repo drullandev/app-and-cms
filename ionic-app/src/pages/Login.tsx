@@ -22,7 +22,7 @@ import { globe } from 'ionicons/icons'
 import './Login.scss'
 
 // Are you testing this tools set && app?
-let testingLogin = true
+let testingLogin = false
 let testing = testingLogin && process.env.REACT_APP_TESTING
 
 // Component Dependencies
@@ -39,7 +39,7 @@ const Login: React.FC<LoginProps> = ({
   setData
 }) => {
 
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
 
   const [username, setUsername] = useState(testing ? process.env.REACT_APP_DEFAULT_USER : '')
   const [password, setPassword] = useState(testing ? process.env.REACT_APP_DEFAULT_PASS : '')

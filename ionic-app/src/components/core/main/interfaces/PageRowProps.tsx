@@ -1,5 +1,5 @@
 import { MenuProps } from './MenuProps'
-import { FormProps } from '../../../../../../forms/interfaces/FormProps'
+import { FormProps } from '../../Form/FormProps'
 export interface PageRowProps {
   menu?: MenuProps[]
   form?: FormProps[]

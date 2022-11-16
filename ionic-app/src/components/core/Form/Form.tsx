@@ -12,7 +12,7 @@ import { useTranslation } from 'react-i18next'
 import { useHistory } from 'react-router-dom'
 
 // ABOUT FORMS VALIDATION 
-import { Controller, useForm } from 'react-hook-form'
+import { Controller, FieldValues, OnSubmit, useForm } from 'react-hook-form'
 
 import * as yup from 'yup'
 
@@ -26,9 +26,10 @@ import { ObjectShape } from 'yup/lib/object'
 //import { FieldProps } from './interfaces/FormProps'
 import Button from './Button'
 import Error from './Error'
-import FieldNew from './FieldNew'
 
-const validation = true
+const testingForm = false
+const testing = testingForm && process.env.REACT_APP_TESTING
+//const validation = true
 
 interface StateProps {
   mode: 'ios' | 'md'
@@ -43,13 +44,130 @@ interface DispatchProps {}
 
 interface MyFormProps extends FormProps, StateProps, DispatchProps {}
 
-const Form: FC<MyFormProps> = ({
-  rows,
-  methods
-}) => {
+const Form: FC<MyFormProps> = () => {
 
   const history = useHistory()
   const { t } = useTranslation()
+
+  const loginForm = {
+
+    rows: [
+      /*{
+        name: 'login-header',          
+        type: 'component',
+        //component: ()=>  <Header/>
+      },
+      {
+        name: 'app-icon',
+      },*/
+      {
+        cols: [
+          {
+            name: 'identifier',
+            label: t('User or email'),
+            fieldType: 'email',// TODO: Liberate for email and also nickname
+            type: 'input',
+            value: testing ? process.env.REACT_APP_DEFAULT_USER : undefined,
+            required: true,
+            //onChange: (e:any)=> setUsername(e.detail.value)    
+          }
+        ]
+      },
+      {
+        cols: [
+          {
+            name: 'password',
+            label: t('Password'),
+            type: 'input',
+            fieldType: 'password',
+            value: testing ? process.env.REACT_APP_DEFAULT_PASS : undefined,
+            required: true,
+            //onChange: (e:any)=> setPassword(e.detail.value)
+          }
+        ]
+      },
+      /*
+      {
+        name: 'terms'
+      },*/
+      {
+        cols: [
+          {
+            name: 'login-submit',
+            label: 'Login',
+            type: 'button',
+            fieldType: 'submit',
+            onSubmit: (e:any) => loginForm.methods.onSubmit(e)
+          },
+          {
+            name: 'login-cancel',
+            label: 'Cancel',
+            type: 'button',
+            fieldType: 'link',
+            routerLink: '/home',
+            onClick: () : any=> loginForm.methods.onCancel()
+          }
+        ],
+      },
+    ],
+
+    methods:{
+
+      onSubmit:  async (e: React.FormEvent) => {
+e.preventDefault()
+        console.log('event', e)
+        /*
+        if(username && password) {
+    
+          await restCallAsync({
+            req: {
+              url: 'api/auth/local',
+              method: 'POST',
+              data: { 
+                identifier: username,
+                password: password 
+              },
+            },
+            onSuccess: {
+  
+              default: async (ret:any)=>{
+    
+                // Set user state
+                let user = ret.data.user
+                user.jwt = ret.jwt // Attaching the JWT to the user level and state...
+                user.isLoggedIn = true
+                await setData(user)
+  
+                launchToast({ 
+                  message: t('user-wellcome', { username: ret.data.user.username }) 
+                }, setToast)
+                //.then(()=>
+                //  history.push('/tabs/schedule', { direction: 'none' }
+                //))
+                return true
+              }         
+            },
+            onError: {
+
+              default: (err: any)=> {
+                let message = err?.response.status 
+                  ? t(err.response.data.error.message)
+                  : t(err.response.data.message[0].messages[0].message)
+                launchToast({ message: message }, setToast)
+                return false    
+              }      
+            }
+          })
+        
+        }
+        */
+      },
+
+      onCancel: ()=> history.push('/home', { direction: 'none' })      
+
+    },
+
+  }
 
   // Form Component settings...
   const [formTitle, setFormTitle] = useState([])
@@ -59,18 +177,16 @@ const Form: FC<MyFormProps> = ({
   const [formValidation, setFormValidation] = useState<ObjectShape>({})
 
   const validationSchema = yup.object().shape({ 
-      identifier: yup.string().required(),
-      password: yup.string().required()
+    identifier: yup.string().required(),
+    password: yup.string().required()
   })
 
   interface IFormInputs {
-    firstName: string
-    age: number
+    identifier: string
+    password: string
   }
 
-  const { control, register, handleSubmit, errors } = useForm<IFormInputs>({
-    resolver: yupResolver(validationSchema)
-  });
+  const { control, register, handleSubmit, errors } = useForm({ validationSchema });
 
   // Form and window actions
   const [setLoadingAlert, dismissLoadingAlert] = useIonLoading()
@@ -134,7 +250,6 @@ const Form: FC<MyFormProps> = ({
           <Controller
             as={
               <IonInput
-                name={field.name}
                 aria-invalid={field.errors && field.errors[field.name] ? 'true' : 'false'}
                 aria-describedby={`${field.name}Error`}
                 type={field.fieldType}
@@ -145,7 +260,7 @@ const Form: FC<MyFormProps> = ({
             onChangeName='onIonChange'
             onBlurName='onIonBlur'
           />
-          <Error {...field} />
+          <Error name={'asd'} label={'ads'} {...errors} />
         </IonItem>
       ),
     
@@ -273,13 +388,24 @@ const Form: FC<MyFormProps> = ({
     </IonGrid>
   }
 
-  const sendForm = (data: any) => console.log(data);
+  const sendForm = (e:any) =>{
+    e.preventDefault()
+    handleSubmit(e)
+    console.log('joder',e)
+  }
   
   useEffect(() => {
     launchLoading('Loading form...', 345)
-    setValidations(rows)    
+    //setValidations(rows)    
     // eslint-disable-next-line
-  }, [rows])
+  }, [loginForm.rows])
+
+  let formSettings = {
+    key: 'aasdf',
+    id: "pinga", 
+    name: 'asfsadf', 
+    onSubmit: (e:any)=>sendForm(e)
+  }
     
   return <div className='ion-padding'>
     <CreateAnimation
@@ -288,18 +414,18 @@ const Form: FC<MyFormProps> = ({
       iterations={1}
       fromTo={[{ property: 'opacity', fromValue: 0, toValue: 1 }]}
     >
-      <form noValidate key={'aasdf'} id="pinga" name={'asfsadf'} onSubmit={handleSubmit(sendForm)}>
+      <form noValidate {...formSettings}>
         {formTitle && <IonText color='primary' style={{ textAlign: 'center' }}>
           <h2>{formTitle}</h2>
         </IonText>}     
-        <FormGrid {...rows}/>
+        <FormGrid {...loginForm.rows}/>
       </form>
     </CreateAnimation>
   </div>  
 
 }
 
-export default connect<FormProps>({
+export default connect<any>({
   mapStateToProps: (state) => ({
     mode: getConfig()!.get('mode'),
     userJwt: state.user.userJwt,

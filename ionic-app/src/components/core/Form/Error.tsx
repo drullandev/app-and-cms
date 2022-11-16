@@ -14,16 +14,19 @@ export interface ErrorProps {
  * @param ErrorProps  
  * @returns 
  */
-const Error: FC<ErrorProps> = ({ name, label, errors }) => <>
-  {errors && errors[name] && (
-    <IonText color='danger' className='ion-padding-start'>
-      <small>
-        <span role='alert' id={`error-${name}`}>
-          {errors[name].message.replace(name, label)}
-        </span>
-      </small>
-    </IonText>
-  )}
-</>
+const Error: FC<ErrorProps> = ({ name, label, errors }) => {
+  if(errors) console.log('errors', errors)
+  return  <>
+    {errors && errors[name] && (
+      <IonText color='danger' className='ion-padding-start'>
+        <small>
+          <span role='alert' id={`error-${name}`}>
+            {errors[name].message.replace(name, label)}
+          </span>
+        </small>
+      </IonText>
+    )}
+  </>
+}
 
 export default Error
