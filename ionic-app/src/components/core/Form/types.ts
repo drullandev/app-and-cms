@@ -4,12 +4,14 @@ import { Control, NestDataObject, FieldError, FieldValues, OnSubmit } from 'reac
 // This is the required form settings interfaces and classes
 
 export interface FormProps {
+  id: string
   title:{
     label: string
   }
   rows: RowProps[]
   methods: FormMethods
-  validation?: any
+  validation: Function
+  //keyMap: any
 }
 
 export interface RowProps {

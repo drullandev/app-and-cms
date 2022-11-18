@@ -2,7 +2,7 @@ import * as AppConst from '../../../data/static/constants'
 
 import React, { FC ,useState } from 'react'
 import { IonLabel, IonButton, IonSpinner, IonItem, IonSkeletonText } from '@ionic/react'
-import { FieldProps } from './FormProps'
+import { FieldProps } from './types'
 
 const style = { marginTop: '20px' }
 

@@ -1,29 +1,26 @@
 // Required
-import React, { useState } from 'react'
+import React from 'react'
 import { RouteComponentProps } from 'react-router'
 import { IonHeader, IonToolbar, IonTitle, IonContent, IonPage, IonButtons, IonMenuButton, useIonToast } from '@ionic/react'
 
 // Extra required
-import { OnSubmit } from 'react-hook-form'
-import { FieldValues } from "react-hook-form"
 import { useTranslation } from 'react-i18next'
 
 // Reducer settings
 import { connect } from '../data/connect'
 import { restCallAsync } from '../classes/core/axios'
 import { setData } from '../data/user/user.actions'
+
+// Form settings
 import * as yup from 'yup'
-// My React Dependencies
-import Form from '../components/core/Form/Form'
-import Pinga from './Pinga'
-import { FormProps } from '../components/core/Form/FormProps'
+import Form from '../components/core/Form'
+import { FormProps } from '../components/core/Form/types'
 
 // Design Dependencies
 import { globe } from 'ionicons/icons'
-import './Login.scss'
 
 // Are you testing this tools set && app?
-let testingLogin = false
+let testingLogin = true
 let testing = testingLogin && process.env.REACT_APP_TESTING
 
 // Component Dependencies
@@ -57,6 +54,8 @@ const Login: React.FC<LoginProps> = ({
 
   const loginForm: FormProps = {
 
+    id: 'login-form',
+
     title: {
       label: 'Login form'
     },
@@ -77,9 +76,9 @@ const Login: React.FC<LoginProps> = ({
             name: 'identifier',
             fieldType: 'email',// TODO: Liberate for email and also nickname
             label: t('User or email'),
-            value: testing ? process.env.REACT_APP_DEFAULT_USER : undefined,
+            //value: testing ? process.env.REACT_APP_DEFAULT_USER : undefined,
             required: true,
-            //onChange: (e:any)=> setUsername(e.detail.value)    
+            //onChange: (e:any)=> setValue('identifier',e.detail.value)    
           }
         ]
       },
@@ -99,7 +98,8 @@ const Login: React.FC<LoginProps> = ({
       /*
       {
         name: 'terms'
-      },*/
+      },
+      */
       {
         cols: [
           {
@@ -107,7 +107,7 @@ const Login: React.FC<LoginProps> = ({
             label: t('Login'),
             type: 'button',
             fieldType: 'submit',
-            onSubmit: (e:any) => loginForm.methods.onSubmit(e)
+            //onSubmit: (e:any) => loginForm.methods.onSubmit(e)
           },
           {
             name: 'login-cancel',
@@ -115,7 +115,7 @@ const Login: React.FC<LoginProps> = ({
             type: 'button',
             fieldType: 'link',
             routerLink: '/home',
-            onClick: () : any=> loginForm.methods.onCancel()
+            //onClick: () : any=> loginForm.methods.onCancel()
           }
         ],
       },
@@ -123,21 +123,17 @@ const Login: React.FC<LoginProps> = ({
 
     methods:{
 
-      onSubmit:  async (e: OnSubmit<FieldValues>) => {
-        
-        //e.preventDefault()❌✅
-        
-        console.log('event', e)
-        /*
-        if(username && password) {
+      onSubmit:  async (data: any) => {
+
+        if(data.identifier && data.password) {
     
           await restCallAsync({
             req: {
               url: 'api/auth/local',
               method: 'POST',
               data: { 
-                identifier: username,
-                password: password 
+                identifier: testing ? process.env.REACT_APP_DEFAULT_USER : data.identifier,
+                password: testing ? process.env.REACT_APP_DEFAULT_PASS : data.password,
               },
             },
             onSuccess: {
@@ -153,9 +149,9 @@ const Login: React.FC<LoginProps> = ({
                 launchToast({ 
                   message: t('user-wellcome', { username: ret.data.user.username }) 
                 }, setToast)
-                //.then(()=>
-                //  history.push('/tabs/schedule', { direction: 'none' }
-                //))
+                .then(()=>
+                  history.push('/tabs/schedule', { direction: 'none' }
+                ))
                 return true
               }         
             },
@@ -165,23 +161,26 @@ const Login: React.FC<LoginProps> = ({
                 let message = err?.response.status 
                   ? t(err.response.data.error.message)
                   : t(err.response.data.message[0].messages[0].message)
-                launchToast({ message: message }, setToast)
+                //launchToast({ message: message }, setToast)
                 return false    
               }      
             }
           })
         
         }
-        */
       },
 
-      onCancel: ()=> history.push('/home', { direction: 'none' })      
+      onCancel: ()=> console.log('sdfsd')//history.push('/home', { direction: 'none' })      
 
     },
 
-    validation: yup.object().shape({
-      identifier: yup.string().required()
-    })
+    validation: ()=> {
+      return yup.object().shape({
+        identifier: yup.string().required(),
+        password: yup.string().required()
+      })
+    },
+
   }
 
   return (

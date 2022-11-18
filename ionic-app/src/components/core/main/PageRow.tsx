@@ -2,7 +2,7 @@ import React from 'react'
 import { IonSpinner } from '@ionic/react'
 
 import Menu from './Menu'
-import Form from '../../core/Form/Form'
+import Form from '../../core/Form'
 import MyComponent from './MyComponent'
 
 import { PageRowProps } from './interfaces/PageRowProps'
@@ -13,8 +13,8 @@ import { PageRowProps } from './interfaces/PageRowProps'
  * @returns 
  */
 const testing = false
-const PageRow: React.FC<PageRowProps> = ({ menu, form, component, content }) => {
-  if(testing) console.log('PageRowProps', { menu, form, component})
+const PageRow: React.FC<PageRowProps> = ({ menu, component, content }) => {
+  if(testing) console.log('PageRowProps', { menu, component})
   const returnComponent = () => {
     if (!component) return
     return component && 
