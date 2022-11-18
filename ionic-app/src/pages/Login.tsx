@@ -12,9 +12,10 @@ import { useTranslation } from 'react-i18next'
 import { connect } from '../data/connect'
 import { restCallAsync } from '../classes/core/axios'
 import { setData } from '../data/user/user.actions'
-
+import * as yup from 'yup'
 // My React Dependencies
 import Form from '../components/core/Form/Form'
+import Pinga from './Pinga'
 import { FormProps } from '../components/core/Form/FormProps'
 
 // Design Dependencies
@@ -41,9 +42,6 @@ const Login: React.FC<LoginProps> = ({
 
   const { t } = useTranslation();
 
-  const [username, setUsername] = useState(testing ? process.env.REACT_APP_DEFAULT_USER : '')
-  const [password, setPassword] = useState(testing ? process.env.REACT_APP_DEFAULT_PASS : '')
-
   const [setToast, dismissToast] = useIonToast()
   const launchToast = async (data: any, setToast: Function) => {
     let dur = data.duration ?? 2000
@@ -57,7 +55,11 @@ const Login: React.FC<LoginProps> = ({
     return true
   }
 
-  const loginForm : FormProps = {
+  const loginForm: FormProps = {
+
+    title: {
+      label: 'Login form'
+    },
 
     rows: [
       /*{
@@ -71,26 +73,26 @@ const Login: React.FC<LoginProps> = ({
       {
         cols: [
           {
-            name: 'identifier',
-            label: t('User or email'),
-            fieldType: 'email',// TODO: Liberate for email and also nickname
             type: 'input',
+            name: 'identifier',
+            fieldType: 'email',// TODO: Liberate for email and also nickname
+            label: t('User or email'),
             value: testing ? process.env.REACT_APP_DEFAULT_USER : undefined,
             required: true,
-            onChange: (e:any)=> setUsername(e.detail.value)    
+            //onChange: (e:any)=> setUsername(e.detail.value)    
           }
         ]
       },
       {
         cols: [
           {
-            name: 'password',
-            label: t('Password'),
             type: 'input',
+            name: 'password',
             fieldType: 'password',
-            value: testing ? process.env.REACT_APP_DEFAULT_PASS : undefined,
+            label: t('Password'),
+            //value: testing ? process.env.REACT_APP_DEFAULT_PASS : undefined,
             required: true,
-            onChange: (e:any)=> setPassword(e.detail.value)
+            //onChange: (e:any)=> setPassword(e.detail.value)
           }
         ]
       },
@@ -102,16 +104,16 @@ const Login: React.FC<LoginProps> = ({
         cols: [
           {
             name: 'login-submit',
-            label: 'Login',
+            label: t('Login'),
             type: 'button',
             fieldType: 'submit',
             onSubmit: (e:any) => loginForm.methods.onSubmit(e)
           },
           {
             name: 'login-cancel',
-            label: 'Cancel',
+            label: t('Cancel'),
             type: 'button',
-            fieldType: 'cancel',
+            fieldType: 'link',
             routerLink: '/home',
             onClick: () : any=> loginForm.methods.onCancel()
           }
@@ -122,9 +124,11 @@ const Login: React.FC<LoginProps> = ({
     methods:{
 
       onSubmit:  async (e: OnSubmit<FieldValues>) => {
-
-        console.log(e)
-
+        
+        //e.preventDefault()❌✅
+        
+        console.log('event', e)
+        /*
         if(username && password) {
     
           await restCallAsync({
@@ -168,13 +172,16 @@ const Login: React.FC<LoginProps> = ({
           })
         
         }
-    
+        */
       },
 
       onCancel: ()=> history.push('/home', { direction: 'none' })      
 
     },
 
+    validation: yup.object().shape({
+      identifier: yup.string().required()
+    })
   }
 
   return (

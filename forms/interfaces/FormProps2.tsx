@@ -4,12 +4,8 @@ import { Control, NestDataObject, FieldError, FieldValues, OnSubmit } from 'reac
 // This is the required form settings interfaces and classes
 
 export interface FormProps {
-  title:{
-    label: string
-  }
   rows: RowProps[]
   methods: FormMethods
-  validation?: any
 }
 
 export interface RowProps {
@@ -17,8 +13,7 @@ export interface RowProps {
 }
 
 interface FormMethods {
-  onSubmit: any
-  onCancel: any 
+  onSubmit: OnSubmit<FieldValues>
 }
 
 export interface FieldProps {
@@ -40,7 +35,37 @@ export interface FieldProps {
   color?: string
 }
 
-/////////////////////// mmmm espera!
+
+///////////////////////////
+
+interface ColumnProps {
+  id: number,
+  field: {
+    id: number
+    slug: string
+    label?: string
+    required?: boolean
+    routeLink?: string
+  }
+}
+
+interface FormRowProps {
+  columns: ColumnProps[]
+  control?: Control
+  errors?: NestDataObject<Record<string, any>, FieldError>
+}
+
+interface FormNewRowProps {
+  control?: Control
+  errors?: NestDataObject<Record<string, any>, FieldError>
+}
+
+interface FormPayloadProps {
+  rows: any
+  methods?: FormMethods
+}
+
+////////////////////////////////////////////////// mmmm espera!
 
 interface LoginFormProps  {
   input: {

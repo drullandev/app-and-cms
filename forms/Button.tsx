@@ -1,8 +1,9 @@
-import * as AppConst from '../../../data/static/constants'
+import * as AppConst from '../ionic-app/src/data/static/constants'
 
 import React, { FC ,useState } from 'react'
 import { IonLabel, IonButton, IonSpinner, IonItem, IonSkeletonText } from '@ionic/react'
-import { FieldProps } from './FormProps'
+//import { ButtonProps } from './interfaces/ButtonProps'
+import { FieldProps } from './interfaces/FormProps'
 
 const style = { marginTop: '20px' }
 
@@ -39,21 +40,22 @@ const Button: FC<FieldProps> = (field) => {
 
   return <>{
     field
-    
-    ? field.onClick !== undefined
+  
+    ? field.fieldType === 'submit'
   
       ? <IonButton
           style={style}
           expand='block'
           color={field.color}
-          onClick={(e:any)=>{setActive(1000, field.onClick)}}>
+          type={field.type} 
+          onClick={(e:any)=>{setActive(1000, field.onSubmit)}}>
           {buttonContent(field.label, spinner)}
         </IonButton>
   
       : <IonButton style={style} expand='block' 
           color={field.color} 
           routerDirection={'root'} 
-          type={field.fieldType}
+          routerLink={field.routerLink} 
           onClick={(e:any)=>{setActive(10000)}}>
           {buttonContent(field.label, spinner)}
         </IonButton>

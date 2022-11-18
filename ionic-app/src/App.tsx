@@ -37,6 +37,7 @@ import MainTabs from './components/core/main/MainTabs'
 import Tutorial from './pages/Tutorial'
 import ResetPassword from './pages/ResetPassword'
 import Recover from './pages/Recover'
+import Pinga from './pages/Pinga'
 
 import Page from './pages/core/Page'
 
@@ -90,7 +91,8 @@ const IonicApp: React.FC<IonicAppProps> = ({
           {/*
             We use IonRoute here to keep the tabs state intact,
             which makes transitions between tabs and non tab pages smooth
-          */}
+          */}          
+
           <Route path='/tabs' render={() => <MainTabs />} />
           <Route path='/:slug' component={Page} />
           <Route path='/tabs/home/:id' render={() => <MainTabs />} />
@@ -102,6 +104,7 @@ const IonicApp: React.FC<IonicAppProps> = ({
           <Route path='/support' component={Support} />
           <Route path='/tutorial' component={Tutorial} />
           <Route path='/account' component={Account} />
+          <Route path='/pinga' component={Pinga} />
           <Route path='/logout' render={() =>
             <RedirectToLogin setData={setData}/>
           } />

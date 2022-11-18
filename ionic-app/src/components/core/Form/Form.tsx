@@ -5,7 +5,6 @@ import * as AppConst from '../../../data/static/constants'
 
 import { CreateAnimation, IonText, IonGrid, useIonLoading, useIonToast, getConfig, IonRow, IonCol, IonLabel, IonCheckbox, IonInput, IonItem, IonSpinner, IonTextarea } from '@ionic/react'
 import React, { FC, useState, useEffect } from 'react'
-
 import { connect } from '../../../data/connect'
 
 import { useTranslation } from 'react-i18next'
@@ -13,8 +12,8 @@ import { useHistory } from 'react-router-dom'
 
 // ABOUT FORMS VALIDATION 
 import { Controller, FieldValues, OnSubmit, useForm } from 'react-hook-form'
-
 import * as yup from 'yup'
+
 
 // FORM INTERFACES
 import { FormProps, FieldProps, RowProps } from './FormProps'
@@ -27,166 +26,29 @@ import { ObjectShape } from 'yup/lib/object'
 import Button from './Button'
 import Error from './Error'
 
-const testingForm = false
+const testingForm = true
 const testing = testingForm && process.env.REACT_APP_TESTING
 //const validation = true
 
-interface StateProps {
-  mode: 'ios' | 'md'
-  userJwt: string
-  userNickname: string
-  userDarkMode: boolean
-  isLoggedIn: boolean,
-  loading: boolean,
-}
-
-interface DispatchProps {}
-
-interface MyFormProps extends FormProps, StateProps, DispatchProps {}
-
-const Form: FC<MyFormProps> = () => {
+const Form: FC<FormProps> = ({
+  rows,
+  methods,
+  validation
+}) => {
 
   const history = useHistory()
   const { t } = useTranslation()
-
-  const loginForm = {
-
-    rows: [
-      /*{
-        name: 'login-header',          
-        type: 'component',
-        //component: ()=>  <Header/>
-      },
-      {
-        name: 'app-icon',
-      },*/
-      {
-        cols: [
-          {
-            name: 'identifier',
-            label: t('User or email'),
-            fieldType: 'email',// TODO: Liberate for email and also nickname
-            type: 'input',
-            value: testing ? process.env.REACT_APP_DEFAULT_USER : undefined,
-            required: true,
-            //onChange: (e:any)=> setUsername(e.detail.value)    
-          }
-        ]
-      },
-      {
-        cols: [
-          {
-            name: 'password',
-            label: t('Password'),
-            type: 'input',
-            fieldType: 'password',
-            value: testing ? process.env.REACT_APP_DEFAULT_PASS : undefined,
-            required: true,
-            //onChange: (e:any)=> setPassword(e.detail.value)
-          }
-        ]
-      },
-      /*
-      {
-        name: 'terms'
-      },*/
-      {
-        cols: [
-          {
-            name: 'login-submit',
-            label: 'Login',
-            type: 'button',
-            fieldType: 'submit',
-            onSubmit: (e:any) => loginForm.methods.onSubmit(e)
-          },
-          {
-            name: 'login-cancel',
-            label: 'Cancel',
-            type: 'button',
-            fieldType: 'link',
-            routerLink: '/home',
-            onClick: () : any=> loginForm.methods.onCancel()
-          }
-        ],
-      },
-    ],
-
-    methods:{
-
-      onSubmit:  async (e: React.FormEvent) => {
-e.preventDefault()
-        console.log('event', e)
-        /*
-        if(username && password) {
-    
-          await restCallAsync({
-            req: {
-              url: 'api/auth/local',
-              method: 'POST',
-              data: { 
-                identifier: username,
-                password: password 
-              },
-            },
-            onSuccess: {
   
-              default: async (ret:any)=>{
-    
-                // Set user state
-                let user = ret.data.user
-                user.jwt = ret.jwt // Attaching the JWT to the user level and state...
-                user.isLoggedIn = true
-                await setData(user)
-  
-                launchToast({ 
-                  message: t('user-wellcome', { username: ret.data.user.username }) 
-                }, setToast)
-                //.then(()=>
-                //  history.push('/tabs/schedule', { direction: 'none' }
-                //))
-                return true
-              }         
-            },
-            onError: {
-
-              default: (err: any)=> {
-                let message = err?.response.status 
-                  ? t(err.response.data.error.message)
-                  : t(err.response.data.message[0].messages[0].message)
-                launchToast({ message: message }, setToast)
-                return false    
-              }      
-            }
-          })
-        
-        }
-        */
-      },
-
-      onCancel: ()=> history.push('/home', { direction: 'none' })      
-
-    },
-
-  }
-
   // Form Component settings...
-  const [formTitle, setFormTitle] = useState([])
-  const [formOpacity, setFormOpacity] = useState(0)
+  //const [formTitle, setFormTitle] = useState([])
+  //const [formOpacity, setFormOpacity] = useState(0)
 
   // Form validation conditions...
+  // Form validation conditions...
   const [formValidation, setFormValidation] = useState<ObjectShape>({})
+  const validationSchema = yup.object().shape(formValidation)
+  const { control, handleSubmit, errors } = useForm({ validationSchema })
 
-  const validationSchema = yup.object().shape({ 
-    identifier: yup.string().required(),
-    password: yup.string().required()
-  })
-
-  interface IFormInputs {
-    identifier: string
-    password: string
-  }
-
-  const { control, register, handleSubmit, errors } = useForm({ validationSchema });
 
   // Form and window actions
   const [setLoadingAlert, dismissLoadingAlert] = useIonLoading()
@@ -196,7 +58,7 @@ e.preventDefault()
     dismissLoadingAlert()
     setLoadingAlert({ message: t(message), duration: duration })
   }
-
+  
   const launchToast = (
     message: string,
     color: string = 'light',
@@ -248,19 +110,17 @@ e.preventDefault()
           <IonLabel position='floating' color='primary'>{field.label}</IonLabel>
           {field.required && field.required === true && <IonLabel slot='end' position='stacked' color='primary'>*</IonLabel>}
           <Controller
-            as={
-              <IonInput
-                aria-invalid={field.errors && field.errors[field.name] ? 'true' : 'false'}
-                aria-describedby={`${field.name}Error`}
-                type={field.fieldType}
-              />              
-            }
+            as={<IonInput 
+              aria-invalid={field.errors && field.errors[field.name] ? 'true' : 'false'}
+              aria-describedby={`${field.name}Error`}
+              type={field.fieldType}               
+            />}
             name={field.name}
-            control={field.control}
+            control={control}
             onChangeName='onIonChange'
             onBlurName='onIonBlur'
           />
-          <Error name={'asd'} label={'ads'} {...errors} />
+          <Error name={field.name} label={field.name} errors={errors} />  
         </IonItem>
       ),
     
@@ -279,7 +139,7 @@ e.preventDefault()
           />
         </IonItem>
       ),
-
+      
       ConditionsCheckbox: (field: FieldProps) => (
         <IonItem style={{ paddingTop: '25px' }}>
           {/*<ContentCheck name={field.label} label={label} slug={field.slug} />*/}
@@ -295,7 +155,7 @@ e.preventDefault()
           />
         </IonItem>
       ),
-    
+
       Textarea: (field: FieldProps) => (
         <IonItem>
           {field?.label && <IonLabel position='floating' color='primary'>{field.label}</IonLabel>}      
@@ -311,22 +171,17 @@ e.preventDefault()
           />
         </IonItem>
       ),
-    
-      Button: (field: FieldProps) => (
-        <>
-          <Button {...field}/>
-          <Error {...field}/>
-        </>
-      )
-  
+
+      Button: (field: FieldProps) => <Button {...field}/>
+
     }
   
   }
 
-  const setValidations = (rows: any) => {
-
+  const setValidations = async (rows: RowProps[]) => {
+console.log(rows)
     let rules : Array<any> = []
-    for (let i = 0; i < rows.length; i++) {
+    /*for (let i = 0; i < rows.length; i++) {
 
       var columns = rows[i].cols
       for (var ii = 0; ii < columns.length; ii++) {
@@ -335,32 +190,30 @@ e.preventDefault()
         if (field.fieldType === 'input') {
 
           var rule = setFieldValidation(field.type)
-          if (field.type === 'number') {
-            //if (field.num_sign === 'positive') rule = rule.positive()
-            //if (field.num_type === 'integer') rule = rule.integer()
-          }
+
+          //if (field.type === 'number') {
+          //  if (field.min) rule = rule.min(parseInt(field.min))
+          //  if (field.max) rule = rule.max(parseInt(field.max))
+          //  if (field.num_sign === 'positive') rule = rule.positive()
+          //  if (field.num_type === 'integer') rule = rule.integer()
+          //}
 
           //if (row.regexp) {
             //rule = rule.matches(field.regexp, row.regexp_message)
           //}
 
-          if (field.required === true) {
-            rule = rule.required()
-          }
+          //if (field.required === true) {
+          //  rule = rule.required()
+          //}
 
-          //if (field.min) rule = rule.min(parseInt(field.min))
-          //if (field.max) rule = rule.max(parseInt(field.max))
 
-          rules[field.name] = rule
+          rules[ii] = rule
 
         }
       }
     }
-    console.log('rules', rules)
-    //console.log('asdfasd',Object.assign(formValidation, rules))
-    //setFormValidation(Object.assign(formValidation, rules))
-    //return rules
     setFormValidation(Object.assign(formValidation, rules))
+    */
   }
 
   const setFieldValidation = (type: string) => {
@@ -388,50 +241,38 @@ e.preventDefault()
     </IonGrid>
   }
 
-  const sendForm = (e:any) =>{
-    e.preventDefault()
-    handleSubmit(e)
-    console.log('joder',e)
-  }
-  
+
   useEffect(() => {
     launchLoading('Loading form...', 345)
-    //setValidations(rows)    
+    console.log('setting', validation)
+    setFormValidation(validation)
+    //setValidations(validation)    
     // eslint-disable-next-line
-  }, [loginForm.rows])
+  }, [validation])
 
-  let formSettings = {
-    key: 'aasdf',
-    id: "pinga", 
-    name: 'asfsadf', 
-    onSubmit: (e:any)=>sendForm(e)
-  }
-    
+
+  const onSubmit = handleSubmit(({ props }) => {
+    console.log( 'SubmitForm', props );
+  })
+
   return <div className='ion-padding'>
     <CreateAnimation
-      delay={ 1000 }
+      delay={1000}
       duration={1000}
       iterations={1}
-      fromTo={[{ property: 'opacity', fromValue: 0, toValue: 1 }]}
+      fromTo={{ property: 'opacity', fromValue: 0, toValue: 1 }}
     >
-      <form noValidate {...formSettings}>
-        {formTitle && <IonText color='primary' style={{ textAlign: 'center' }}>
+      <form noValidate onSubmit={onSubmit}>
+        {/*formTitle && <IonText color='primary' style={{ textAlign: 'center' }}>
           <h2>{formTitle}</h2>
-        </IonText>}     
-        <FormGrid {...loginForm.rows}/>
+        </IonText>*/}     
+        {rows && <FormGrid {...rows}/>}
+
+        {testing && errors && <IonItem>{JSON.stringify(errors)}</IonItem>}
       </form>
     </CreateAnimation>
   </div>  
 
 }
 
-export default connect<any>({
-  mapStateToProps: (state) => ({
-    mode: getConfig()!.get('mode'),
-    userJwt: state.user.userJwt,
-    userDarkMode: state.user.userDarkMode,
-    isLoggedIn: state.user.isLoggedIn,
-  }),
-  mapDispatchToProps: {},
-  component: Form
-})
+export default  Form

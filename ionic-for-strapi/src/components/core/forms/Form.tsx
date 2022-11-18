@@ -175,6 +175,8 @@ const Form: FC<MyFormProps> = ({
               type === 'number' ? yup.number() : yup.string()
   }
 
+
+  
   const onSubmit: SubmitHandler<any> = async (form: any) => {
 
     launchLoading('Sending form...', AppConst.timeout)

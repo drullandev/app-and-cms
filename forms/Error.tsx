@@ -1,12 +1,6 @@
 import React, { FC } from 'react'
-import { NestDataObject, FieldError } from "react-hook-form"
 import { IonText } from '@ionic/react'
-
-export interface ErrorProps {
-  name: string,
-  label: string,
-  errors?: NestDataObject<Record<string, any>, FieldError>
-}
+import { ErrorProps } from './interfaces/ErrorProps'
 
 /**
  * Universal error case for the
@@ -14,8 +8,8 @@ export interface ErrorProps {
  * @param ErrorProps  
  * @returns 
  */
-const Error: FC<ErrorProps> = ({ name, label, errors }) => {
-  return  <>
+const Error: FC<ErrorProps> = ({ name, label, errors }) => (
+  <>
     {errors && errors[name] && (
       <IonText color='danger' className='ion-padding-start'>
         <small>
@@ -26,6 +20,6 @@ const Error: FC<ErrorProps> = ({ name, label, errors }) => {
       </IonText>
     )}
   </>
-}
+)
 
 export default Error
