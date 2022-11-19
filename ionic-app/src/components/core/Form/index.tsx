@@ -1,22 +1,24 @@
-import * as React from "react";
-import { Controller, useForm } from "react-hook-form";
-import { CreateAnimation, IonGrid, IonRow, IonCol, IonLabel, IonCheckbox, IonInput, IonItem, IonTextarea } from '@ionic/react'
-import { FieldProps, FormProps } from "./types"
+import * as React from 'react'
+import { Controller, useForm } from 'react-hook-form'
+import { CreateAnimation, IonGrid, IonRow, IonCol, IonLabel, IonCheckbox, IonInput, IonItem, IonTextarea, IonText } from '@ionic/react'
+import * as type from './types'
 
-import Error from './Error';
-import Button from './Button';
-import Spinner from "../main/Spinner";
+import Error from './Error'
+import Button from './Button'
+import Spinner from '../main/Spinner'
 import './styles.scss'
 
-// Are you testing this tools set && app?
-let testingPinga = false
-let testing = testingPinga && process.env.REACT_APP_TESTING
+/**
+ * This component allows to create a form with validations ;)
+ * David Rullán Díaz - 19-11-2022
+ * @param formData 
+ * @returns 
+ */
+const Form: React.FC<type.FormProps> = (formData) => {
 
-const Form: React.FC<FormProps> = (loginForm) => {
-
-  const validationSchema = loginForm.validation()  
+  const validationSchema = formData.validation()  
   const { control, handleSubmit, errors } = useForm<any>({validationSchema})
-  const onSubmit = handleSubmit(loginForm.methods.onSubmit)
+  const onSubmit = handleSubmit(formData.methods.onSubmit)
 
   const formAnimation = {
     delay: 1000,
@@ -26,12 +28,17 @@ const Form: React.FC<FormProps> = (loginForm) => {
   }
 
   return <CreateAnimation {...formAnimation}>
-    <form noValidate id={loginForm.id} onSubmit={onSubmit}>
-      <IonGrid>{Object.keys(loginForm.rows).map((row: any, key: number)=>
-        <IonRow key={'row-'+key}>{loginForm.rows[key].cols.map((field: FieldProps, i: number) =>
-          <IonCol key={'col-'+field.name+i}>
-            {field.type === 'input' 
-            ? <>
+    <form noValidate id={formData.id} onSubmit={onSubmit}>
+      <IonGrid>
+        {formData.title.label && <IonRow>
+          <IonCol>
+            <IonText>{formData.title.label}</IonText>
+          </IonCol>
+        </IonRow>}
+        {Object.keys(formData.rows).map((row: any, key: number)=>        
+        <IonRow key={'row-'+key}>{formData.rows[key].cols.map((field: type.FieldProps, i: number) =>
+          {field.type === 'input' 
+            ? <IonCol key={'col-'+field.name+i}>
                 <IonItem>
                   {field.type === 'input' 
                     ? <>
@@ -64,11 +71,11 @@ const Form: React.FC<FormProps> = (loginForm) => {
                   />
                 </IonItem>
                 <Error name={field.name} label={field.label} errors={errors}/>
-              </>
+              </IonCol>
             : field.type === 'button'
-              ? <Button {...field}/>
-              : <Spinner name='dots'/>                  
-          }</IonCol>
+              ? <IonCol key={'col-'+field.name+i}><Button {...field}/></IonCol>
+              : <IonCol key={'col-'+field.name+i}><Spinner name='dots'/></IonCol>              
+          }
         )}</IonRow>
       )}</IonGrid>
     </form>

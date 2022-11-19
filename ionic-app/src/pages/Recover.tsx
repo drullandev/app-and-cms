@@ -5,7 +5,6 @@ import { setisLoggedIn, setUsername } from '../data/user/user.actions'
 import { connect } from '../data/connect'
 import { RouteComponentProps } from 'react-router'
 import { restCallAsync } from '../classes/core/axios'
-import { random } from '../classes/common'
 import { globe } from 'ionicons/icons'
 import { useTranslation } from 'react-i18next'
 

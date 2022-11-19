@@ -32,7 +32,7 @@ const ResetPassword: React.FC<LoginProps> = ({
   const [formSubmitted, setFormSubmitted] = useState(false)
   const [emailError, setEmailError] = useState(false)
 
-  const { t, i18n } = useTranslation()
+  const { t } = useTranslation()
 
   const [setToast, dismissToast] = useIonToast()
 

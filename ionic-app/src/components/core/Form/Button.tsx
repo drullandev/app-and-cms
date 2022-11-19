@@ -6,6 +6,11 @@ import { FieldProps } from './types'
 
 const style = { marginTop: '20px' }
 
+/**
+ * 
+ * @param field This component allows you to create a button with a sort of extras as the spinner
+ * @returns 
+ */
 const Button: FC<FieldProps> = (field) => {
 
   const spinner = {

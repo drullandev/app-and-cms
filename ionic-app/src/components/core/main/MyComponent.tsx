@@ -17,7 +17,7 @@ import MapView from '../../extra/MapView'
 
 import { MyComponentProps } from './interfaces/MyComponentProps'
 
-const  testing = false
+//const  testing = false
 
 const MyComponent: React.FC<MyComponentProps> = ({ name, slug, params, content, override }) => {
 

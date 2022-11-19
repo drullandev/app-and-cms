@@ -1,4 +1,4 @@
-import * as AppConst from '../../../data/static/constants'
+//import * as AppConst from '../../../data/static/constants'
 import React, { useRef, useEffect } from 'react'
 import { Location } from '../../../models/Location'
 

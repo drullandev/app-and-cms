@@ -1,7 +1,7 @@
 // Required
 import React from 'react'
 import { RouteComponentProps } from 'react-router'
-import { IonHeader, IonToolbar, IonTitle, IonContent, IonPage, IonButtons, IonMenuButton, useIonToast } from '@ionic/react'
+import { IonHeader, IonToolbar, IonTitle, IonContent, IonPage, IonButtons, IonMenuButton, useIonToast, IonItem } from '@ionic/react'
 
 // Extra required
 import { useTranslation } from 'react-i18next'
@@ -17,10 +17,11 @@ import Form from '../components/core/Form'
 import { FormProps } from '../components/core/Form/types'
 
 // Design Dependencies
-import { globe } from 'ionicons/icons'
+import * as icon from 'ionicons/icons'
+import Content from '../components/core/main/Content'
 
 // Are you testing this tools set && app?
-let testingLogin = true
+let testingLogin = false
 let testing = testingLogin && process.env.REACT_APP_TESTING
 
 // Component Dependencies
@@ -46,7 +47,7 @@ const Login: React.FC<LoginProps> = ({
       message: data.message,
       duration: dur ?? 1000,
       position: data.position ?? 'bottom',
-      icon: data.icon ?? globe
+      icon: data.icon ?? icon.globe
     })
     setTimeout(()=> dismissToast(), dur + 500)
     return true
@@ -57,7 +58,7 @@ const Login: React.FC<LoginProps> = ({
     id: 'login-form',
 
     title: {
-      label: 'Login form'
+      label: t('Login form')
     },
 
     rows: [
@@ -104,18 +105,16 @@ const Login: React.FC<LoginProps> = ({
         cols: [
           {
             name: 'login-submit',
-            label: t('Login'),
             type: 'button',
             fieldType: 'submit',
-            //onSubmit: (e:any) => loginForm.methods.onSubmit(e)
+            label: t('Login'),
           },
           {
             name: 'login-cancel',
-            label: t('Cancel'),
             type: 'button',
             fieldType: 'link',
-            routerLink: '/home',
-            //onClick: () : any=> loginForm.methods.onCancel()
+            label: t('Cancel'),
+            onClick: () : any=> loginForm.methods.onCancel()
           }
         ],
       },
@@ -170,7 +169,7 @@ const Login: React.FC<LoginProps> = ({
         }
       },
 
-      onCancel: ()=> console.log('sdfsd')//history.push('/home', { direction: 'none' })      
+      onCancel: ()=> history.push('/home', { direction: 'none' })      
 
     },
 
@@ -183,7 +182,30 @@ const Login: React.FC<LoginProps> = ({
 
   }
 
-  return (
+  interface PageProps {
+    id: string
+    header?: any
+    content: any
+    footer?: any
+    sidenavs?: any[]
+  }
+  
+
+  const pageSettings: PageProps = {
+    id: 'login-page',
+    header: ()=>
+      <IonHeader>
+        <IonToolbar>
+          <IonButtons slot="start">
+            <IonMenuButton></IonMenuButton>
+          </IonButtons>
+          <IonTitle>Login</IonTitle>
+        </IonToolbar>    
+      </IonHeader>,
+    content: (loginForm: FormProps)=><Form {...loginForm}/>
+  }
+
+  /*return (
     <IonPage id="login-page">
 
       <IonHeader>
@@ -200,7 +222,14 @@ const Login: React.FC<LoginProps> = ({
       </IonContent>
 
     </IonPage>
-  )
+  )*/
+
+  return <IonPage id={pageSettings.id}>
+    {pageSettings.header !== undefined && pageSettings.header()}
+    <IonContent>
+      {pageSettings.content !== undefined && pageSettings.content(loginForm)}
+    </IonContent>
+  </IonPage>
 
 }
 

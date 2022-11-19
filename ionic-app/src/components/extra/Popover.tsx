@@ -1,4 +1,4 @@
-import * as AppConst from '../../data/static/constants'
+//import * as AppConst from '../../data/static/constants'
 import React from 'react'
 import { IonList, IonItem, IonLabel } from '@ionic/react'
 

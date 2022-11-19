@@ -27,8 +27,8 @@ export interface StateProps {
 
 const Page: React.FC<PageProps> = ({ match }) => {
 
-  const location = useLocation()
-  const history = useHistory()
+  //const location = useLocation()
+  //const history = useHistory()
 
   //const [page, setPage] = useState<PageProps>()
   const [slugIn, setSlugIn] = useState('')
