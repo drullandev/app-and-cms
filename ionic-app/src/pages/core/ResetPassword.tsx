@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { IonHeader, IonToolbar, IonTitle, IonContent, IonPage, IonButtons, IonMenuButton, IonRow, IonCol, IonButton, IonList, IonItem, IonLabel, IonInput, IonText, useIonToast } from '@ionic/react'
+import React from 'react'
+import { IonHeader, IonToolbar, IonTitle, IonButtons, IonMenuButton, useIonToast } from '@ionic/react'
 import '../../pages/Styles.scss'
 
 import { setisLoggedIn, setUsername } from '../../data/user/user.actions'
@@ -7,7 +7,6 @@ import { connect } from '../../data/connect'
 import { RouteComponentProps } from 'react-router'
 import { restCallAsync } from '../../classes/core/axios'
 import { random } from '../../classes/common'
-import { globe } from 'ionicons/icons'
 import { useTranslation } from 'react-i18next'
 import { PageProps } from './Page/types'
 import Page from './Page'
@@ -33,26 +32,8 @@ const ResetPassword: React.FC<LoginProps> = ({
   setUsername: setUsernameAction
 }) => {
 
-  const [email, setEmail] = useState('')
-  const [formSubmitted, setFormSubmitted] = useState(false)
-  const [emailError, setEmailError] = useState(false)
-
   const { t } = useTranslation()
-
-  const [setToast, dismissToast] = useIonToast()
-
-  const launchToast = async (data: any, setToast: Function) => {
-    let dur = 20000
-    await setToast({
-      message: data.message,
-      duration: dur ?? 1000,
-      position: data.position ?? 'bottom',
-      icon: data.icon ?? globe
-    })
-    setTimeout(()=> dismissToast(), dur + 500)
-    return true
-  }
-
+  const [presentToast] = useIonToast()
 
   const pageSettings: PageProps = {
     id: 'reset-page',
@@ -123,14 +104,9 @@ const ResetPassword: React.FC<LoginProps> = ({
               req: {
                 url: 'api/auth/reset-password',
                 method: 'POST',
-                data: testing
-                ? { 
-                    email: random(12)+'@gmail.com'
-                  }
-                : { 
-                    email: data.email
-                  }
-                ,
+                data: { 
+                  email: testing ? random(12)+'@gmail.com' :  data.email
+                }
               },
               onSuccess: {
                 default: async (ret: any)=>{
@@ -139,18 +115,18 @@ const ResetPassword: React.FC<LoginProps> = ({
                       switch (ret.status) {
                         case 200:
                           //setisLoggedIn(true)
-                          /*launchToast({ 
+                          presentToast({ 
                             message: t('user-wellcome', { username: ret.data.user.username }) 
-                          }, setToast)
+                          })
                             .then(()=> history.push('/tabs/schedule', { direction: 'none' }))
-                            */
+                            
                       }            
                     })
                 }
               },
               onError: {
                 default: (err: any)=> { 
-                  launchToast({ message: t(err.response.data.error.message ?? err.response.data.message[0].messages[0].message) }, setToast)
+                  presentToast({ message: t(err.response.data.error.message ?? err.response.data.message[0].messages[0].message) })
                 }
               }
             })

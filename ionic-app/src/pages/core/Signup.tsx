@@ -34,20 +34,7 @@ const Signup: React.FC<SignupProps> = ({
 }) => {
 
   const {t} = useTranslation()
-
-  const [setToast, dismissToast] = useIonToast()
-
-  const launchToast = async (data: any, setToast: Function) => {
-    let dur = 20000
-    await setToast({
-      message: data.message,
-      duration: dur ?? 1000,
-      position: data.position ?? 'bottom',
-      icon: data.icon ?? globe
-    })
-    setTimeout(()=> dismissToast(), dur + 500)
-    return true
-  }
+  const [presentToast] = useIonToast()
 
   //SMTP code:550 msg:550-5.1.1 The email account that you tried to reach does not exist. Please try 550-5.1.1 double-checking the recipient's email address for typos or 550-5.1.1 unnecessary spaces. Learn more at 550 5.1.1 https://support.google.com/mail/?p=NoSuchUser q16-20020a2e9690000000b0027744b28539si4283378lji.72 - gsmtp 
 
@@ -159,18 +146,11 @@ const Signup: React.FC<SignupProps> = ({
               req: {
                 url: 'api/auth/local/register',
                 method: 'POST',
-                data: testing
-                ? { 
-                    username: random(12),
-                    password: random(12),
-                    email: random(12)+'@gmail.com'
-                  }
-                : { 
-                    username: data.username,
-                    password: data.password,
-                    email: data.email
-                  }
-                ,
+                data: { 
+                  username: testing ? data.username : random(12),
+                  password: testing ? data.password : random(12),
+                  email: testing ? random(12)+'@gmail.com' : data.email
+                }                
               },
               onSuccess: { 
                 default: async (ret: any)=>{
@@ -179,9 +159,9 @@ const Signup: React.FC<SignupProps> = ({
                       switch (ret.status) {
                         case 200:
                           setisLoggedIn(true)
-                          launchToast({ 
+                          presentToast({ 
                             message: t('user-wellcome', { username: ret.data.user.username }) 
-                          }, setToast)
+                          })
                             .then(()=> history.push('/tabs/schedule', { direction: 'none' }))                            
                       }            
                     })
@@ -191,10 +171,10 @@ const Signup: React.FC<SignupProps> = ({
                 default: (err: any)=> {
                   switch(err?.response.status){
                     case 400: 
-                      launchToast({ message: t(err.response.data.error.message) }, setToast)
+                      presentToast({ message: t(err.response.data.error.message) })
                     break
                     default:
-                      launchToast({ message: t(err.response.data.message[0].messages[0].message) }, setToast)
+                      presentToast({ message: t(err.response.data.message[0].messages[0].message) })
                   }
                 }
               }

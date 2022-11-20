@@ -1,7 +1,7 @@
 // Required
-import React from 'react'
+import React, { useEffect } from 'react'
 import { RouteComponentProps } from 'react-router'
-import { IonHeader, IonToolbar, IonTitle, IonButtons, IonMenuButton, useIonToast } from '@ionic/react'
+import { IonButton, IonItem, IonNav, IonNavLink, IonText, useIonToast } from '@ionic/react'
 import '../../pages/Styles.scss'
 
 // Extra required
@@ -22,11 +22,11 @@ import Form from '../../components/core/Form'
 
 // Design Dependencies
 import * as icon from 'ionicons/icons'
-import { ToastOptions } from '@ionic/react/dist/types/components/IonToast'
 import Header from '../../components/core/main/Header'
+import Recover from './Recover'
 
 // Are you testing this tools set && app?
-let testingLogin = true
+let testingLogin = false
 let testing = testingLogin && process.env.REACT_APP_TESTING
 // - The main testing user will be used under testing
 
@@ -44,31 +44,12 @@ const Login: React.FC<LoginProps> = ({
   setData
 }) => {
 
-  const { t } = useTranslation();
-
-  const [setToast, dismissToast] = useIonToast()
-  const launchToast = async (data: ToastOptions, setToast: Function) => {
-    let dur = data.duration ?? 2000
-    let toastSettings: ToastOptions = {
-      message: data.message,
-      duration: dur ?? 1000,
-      position: data.position ?? 'bottom',
-      icon: data.icon ?? icon.globe,
-      buttons: [
-        {
-          text: 'Ok',
-          role: 'cancel'
-        }
-      ],
-    }
-    await setToast(toastSettings)
-    setTimeout(()=> dismissToast(), dur + 500)
-    return true
-  }
+  const { t } = useTranslation()
+  const [presentToast] = useIonToast()
 
   const pageSettings: PageProps = {
     id: 'login-page',
-    header: ()=> <Header label={'Login'}/>,
+    header: ()=> <Header label={'Login'} loading={false}/>,
     content: ()=> <Form {...pageSettings.methods.loginForm}/>,
     methods: {
       loginForm: {
@@ -113,12 +94,17 @@ const Login: React.FC<LoginProps> = ({
                 //onChange: (e:any)=> setPassword(e.detail.value)
               }
             ]
-          },
-          /*
+          },          
           {
-            name: 'terms'
-          },
-          */
+            cols:[
+              {
+                name: 'wanna.redirect',
+                component: <IonItem>
+                    <a onClick={()=> history.push('/recover', { direction: 'none' }) }>{t("You don't remember your account?")}</a>
+                </IonItem>
+              }
+            ]
+          },          
           {
             cols: [
               {
@@ -164,11 +150,13 @@ const Login: React.FC<LoginProps> = ({
                   let loginOutput = { 
                     message: t('user-wellcome', { username: ret.data.user.username }),
                     icon: icon.checkmarkCircleOutline,
-                    type: 'success'
+                    duration: 1000,
+                    color: 'success'
                   }
     
-                  launchToast(loginOutput, setToast)
+                  presentToast(loginOutput)
                     .then(()=> history.push('/tabs/schedule', { direction: 'none' }))
+
                   return true
                 }         
               },
@@ -179,7 +167,8 @@ const Login: React.FC<LoginProps> = ({
                   let errorOutput = {
                     icon: icon.closeCircleOutline,
                     message: '',
-                    type: 'warning'
+                    duration: 1000,
+                    color: 'warning'
                   }
 
                   switch(err.response?.status){
@@ -190,7 +179,7 @@ const Login: React.FC<LoginProps> = ({
                       errorOutput.message = t(err.response.data.message[0].messages[0].message)
                   }
 
-                  launchToast(errorOutput, setToast)
+                  presentToast(errorOutput)
                   return false    
                 }      
               }
@@ -204,7 +193,7 @@ const Login: React.FC<LoginProps> = ({
     
         validation: ()=> {
           return yup.object().shape({
-            identifier: yup.string().required().min(3),
+            identifier: yup.string().email().required().min(3),
             password: yup.string().required().min(6).max(64)
           })
         },

@@ -1,5 +1,5 @@
 import React from 'react'
-import { IonHeader, IonToolbar, IonTitle, IonButtons, IonMenuButton, useIonToast } from '@ionic/react'
+import { IonHeader, IonToolbar, IonTitle, IonButtons, IonMenuButton, useIonToast, IonItem } from '@ionic/react'
 import '../../pages/Styles.scss'
 import { setisLoggedIn, setUsername } from '../../data/user/user.actions'
 import { connect } from '../../data/connect'
@@ -31,20 +31,7 @@ const Recover: React.FC<LoginProps> = ({
   history}) => {
 
   const { t } = useTranslation()
-
-  const [setToast, dismissToast] = useIonToast()
-
-  const launchToast = async (data: any, setToast: Function) => {
-    let dur = 20000
-    await setToast({
-      message: data.message,
-      duration: dur ?? 1000,
-      position: data.position ?? 'bottom',
-      icon: data.icon ?? globe
-    })
-    setTimeout(()=> dismissToast(), dur + 500)
-    return true
-  }
+  const [presentToast] = useIonToast()
  
   const pageSettings: PageProps = {
     id: 'recover-page',
@@ -78,6 +65,16 @@ const Recover: React.FC<LoginProps> = ({
                 //value: testing ? process.env.REACT_APP_DEFAULT_USER : undefined,
                 required: true,
                 //onChange: (e:any)=> setValue('identifier',e.detail.value)    
+              }
+            ]
+          },
+          {
+            cols:[
+              {
+                name: 'wanna-login',
+                component: <IonItem>
+                  <a onClick={()=> history.push('/login', { direction: 'none' }) }>{t("Do you remember your password?")}</a>
+                </IonItem>
               }
             ]
           },
@@ -123,18 +120,19 @@ const Recover: React.FC<LoginProps> = ({
                     .then((ret: any)=>{
                       switch (ret.status) {
                         case 200:
-                          /*launchToast({ 
+                          presentToast({ 
                             message: t('user-wellcome', { username: ret.data.user.username }) 
-                          }, setToast)
-                            .then(()=> history.push('/tabs/schedule', { direction: 'none' }))
-                            */
+                          }).then(()=> history.push('/tabs/schedule', { direction: 'none' }))
+                            
                       }            
                     })
                 }
               },
               onError:{
                 default: (err: any)=> {
-                  launchToast({ message: t(err.response.data.error.message) ?? t(err.response.data.message[0].messages[0].message) }, setToast)
+                  presentToast({ 
+                    message: t(err.response.data.error.message) ?? t(err.response.data.message[0].messages[0].message)
+                  })
                 }
               }
             })

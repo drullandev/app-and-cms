@@ -74,7 +74,7 @@ const Form: React.FC<type.FormProps> = (loginForm) => {
               </>
             : field.type === 'button'
               ? <Button {...field}/>
-              : <Spinner name='dots'/>                  
+              : field.component
           }</IonCol>
         )}</IonRow>
       )}</IonGrid>
