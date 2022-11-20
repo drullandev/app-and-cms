@@ -8,7 +8,7 @@ import { IonContent, IonImg, IonList, IonItem, IonAlert, IonLabel } from '@ionic
 import { setUsername, setEmail, } from '../../data/user/user.actions'
 import { connect } from '../../data/connect'
 
-import '../../styles/Account.scss'
+import '../../pages/Styles.scss'
 
 interface OwnProps extends RouteComponentProps { }
 

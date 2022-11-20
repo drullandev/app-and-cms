@@ -2,6 +2,7 @@ import * as AppConst from '../../data/static/constants'
 
 import React from 'react'
 import { Redirect } from 'react-router'
+import '../../pages/Styles.scss'
 
 import { connect } from '../../data/connect'
 

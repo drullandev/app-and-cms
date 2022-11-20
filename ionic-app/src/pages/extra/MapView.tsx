@@ -1,13 +1,10 @@
 import React from 'react'
+import Map from '../../components/Map'
 import { IonHeader, IonToolbar, IonButtons, IonMenuButton, IonTitle, IonContent, IonPage } from '@ionic/react'
-
-import Map from '../../components/core/main/Map'
 import { Location } from '../../models/Location'
 import { connect } from '../../data/connect'
 import * as selectors from '../../data/selectors'
-import Header from '../../components/core/main/ToolBar'
-
-import '../../styles/MapView.scss'
+import '../../pages/Styles.scss'
 
 interface OwnProps { }
 
@@ -22,22 +19,21 @@ interface MapViewProps extends OwnProps, StateProps, DispatchProps { }
 
 const MapView: React.FC<MapViewProps> = ({ locations, mapCenter }) => {
   return (
-    <IonPage id="map-view">
-      <IonHeader>
-        <IonToolbar>
-          <IonButtons slot="start">
-            <IonMenuButton></IonMenuButton>
-          </IonButtons>
-          <IonTitle>Map</IonTitle>
-        </IonToolbar>
-      </IonHeader>
+  <IonPage id="map-view">
+    <IonHeader>
+      <IonToolbar>
+        <IonButtons slot="start">
+          <IonMenuButton></IonMenuButton>
+        </IonButtons>
+        <IonTitle>Map</IonTitle>
+      </IonToolbar>
+    </IonHeader>
 
-      <IonContent class="map-page">
-        <Map locations={locations} mapCenter={mapCenter} />
-      </IonContent>
-    </IonPage>
-  )
-}
+    <IonContent class="map-page">
+      <Map locations={locations} mapCenter={mapCenter} />
+    </IonContent>
+  </IonPage>
+)}
 
 export default connect<OwnProps, StateProps, DispatchProps>({
   mapStateToProps: (state) => ({

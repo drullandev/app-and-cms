@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import { IonHeader, IonToolbar, IonContent, IonPage, IonButtons, IonMenuButton, IonButton, IonIcon, IonDatetime, IonSelectOption, IonList, IonItem, IonLabel, IonSelect, IonPopover, IonText } from '@ionic/react'
-import './About.scss'
+import './Styles.scss'
 import { ellipsisHorizontal, ellipsisVertical } from 'ionicons/icons'
-import AboutPopover from '../components/AboutPopover'
+import AboutPopover from '../../components/AboutPopover'
 import { format, parseISO } from 'date-fns'
 
 interface AboutProps { }

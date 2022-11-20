@@ -1,21 +1,22 @@
-import React from 'react'
-import { IonHeader, IonToolbar, IonTitle, IonButtons, IonMenuButton, useIonToast } from '@ionic/react'
-import './Login.scss'
-import { setisLoggedIn, setUsername } from '../data/user/user.actions'
-import { connect } from '../data/connect'
+import React, { useState } from 'react'
+import { IonHeader, IonToolbar, IonTitle, IonContent, IonPage, IonButtons, IonMenuButton, IonRow, IonCol, IonButton, IonList, IonItem, IonLabel, IonInput, IonText, useIonToast } from '@ionic/react'
+import '../../pages/Styles.scss'
+
+import { setisLoggedIn, setUsername } from '../../data/user/user.actions'
+import { connect } from '../../data/connect'
 import { RouteComponentProps } from 'react-router'
-import { restCallAsync } from '../classes/core/axios'
+import { restCallAsync } from '../../classes/core/axios'
+import { random } from '../../classes/common'
 import { globe } from 'ionicons/icons'
 import { useTranslation } from 'react-i18next'
-import { PageProps } from './core/Page/types'
-
-import Form from '../components/core/Form'
+import { PageProps } from './Page/types'
+import Page from './Page'
+import Form from '../../components/core/Form'
 import * as yup from 'yup'
-import Page from './core/Page'
 
-let testingRecover = true
-let testing = testingRecover && process.env.REACT_APP_TESTING
 
+let testingSignup = true
+let testing = testingSignup && process.env.REACT_APP_TESTING
 
 interface OwnProps extends RouteComponentProps {}
 
@@ -24,11 +25,17 @@ interface DispatchProps {
   setUsername: typeof setUsername
 }
 
-interface LoginProps extends OwnProps,  DispatchProps { }
+interface LoginProps extends OwnProps, DispatchProps {}
 
-const Recover: React.FC<LoginProps> = ({
+const ResetPassword: React.FC<LoginProps> = ({
   setisLoggedIn,
-  history}) => {
+  history,
+  setUsername: setUsernameAction
+}) => {
+
+  const [email, setEmail] = useState('')
+  const [formSubmitted, setFormSubmitted] = useState(false)
+  const [emailError, setEmailError] = useState(false)
 
   const { t } = useTranslation()
 
@@ -45,9 +52,10 @@ const Recover: React.FC<LoginProps> = ({
     setTimeout(()=> dismissToast(), dur + 500)
     return true
   }
- 
+
+
   const pageSettings: PageProps = {
-    id: 'recover-page',
+    id: 'reset-page',
     header: ()=>
       <IonHeader>
         <IonToolbar>
@@ -57,14 +65,14 @@ const Recover: React.FC<LoginProps> = ({
           <IonTitle>Recover</IonTitle>
         </IonToolbar>    
       </IonHeader>,
-    content: ()=> <Form {...pageSettings.methods.recoverForm}/>,
+    content: ()=> <Form {...pageSettings.methods.resetForm}/>,
     methods: {
-      recoverForm: {
+      resetForm: {
 
-        id: 'recover-form',
+        id: 'reset-form',
     
         title: {
-          label: t('Recover your account...')
+          label: t('Reset your account...')
         },
     
         rows: [
@@ -84,17 +92,17 @@ const Recover: React.FC<LoginProps> = ({
           {
             cols: [
               {
-                name: 'recover-submit',
+                name: 'reset-submit',
                 type: 'button',
                 fieldType: 'submit',
-                label: t('Recover'),
+                label: t('Reset'),
               },
               {
-                name: 'recover-cancel',
+                name: 'reset-cancel',
                 type: 'button',
                 fieldType: 'link',
                 label: t('Cancel'),
-                onClick: () : any=> pageSettings.methods.recoverForm.methods.onCancel()
+                onClick: () : any=> pageSettings.methods.resetForm.methods.onCancel()
               }
             ],
           },
@@ -104,7 +112,7 @@ const Recover: React.FC<LoginProps> = ({
     
           onSubmit: async (data: any) => {
 
-            const onRecoverSuccess = async (ret: any) => {
+            const onResetSuccess = async (ret: any) => {
               let user = ret.user
               user.jwt = ret.jwt // Attaching the JWT to the user level and state...
               await setisLoggedIn(true)
@@ -113,16 +121,24 @@ const Recover: React.FC<LoginProps> = ({
       
             await restCallAsync({
               req: {
-                url: 'api/auth/forgot-password',
+                url: 'api/auth/reset-password',
                 method: 'POST',
-                data: { email: testing ? process.env.REACT_APP_DEFAULT_EMAIL : data.email }
+                data: testing
+                ? { 
+                    email: random(12)+'@gmail.com'
+                  }
+                : { 
+                    email: data.email
+                  }
+                ,
               },
               onSuccess: {
                 default: async (ret: any)=>{
-                  await onRecoverSuccess(ret.data)
+                  await onResetSuccess(ret.data)
                     .then((ret: any)=>{
                       switch (ret.status) {
                         case 200:
+                          //setisLoggedIn(true)
                           /*launchToast({ 
                             message: t('user-wellcome', { username: ret.data.user.username }) 
                           }, setToast)
@@ -132,13 +148,13 @@ const Recover: React.FC<LoginProps> = ({
                     })
                 }
               },
-              onError:{
-                default: (err: any)=> {
-                  launchToast({ message: t(err.response.data.error.message) ?? t(err.response.data.message[0].messages[0].message) }, setToast)
+              onError: {
+                default: (err: any)=> { 
+                  launchToast({ message: t(err.response.data.error.message ?? err.response.data.message[0].messages[0].message) }, setToast)
                 }
               }
             })
-            
+                        
           },
     
           onCancel: ()=> history.push('/home', { direction: 'none' })      
@@ -156,7 +172,7 @@ const Recover: React.FC<LoginProps> = ({
   }
 
   return <Page {...pageSettings}/>
-
+    
 }
 
 export default connect<OwnProps, {}, DispatchProps>({
@@ -164,5 +180,5 @@ export default connect<OwnProps, {}, DispatchProps>({
     setisLoggedIn,
     setUsername
   },
-  component: Recover
+  component: ResetPassword
 })

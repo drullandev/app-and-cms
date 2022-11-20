@@ -2,27 +2,33 @@
 import React from 'react'
 import { RouteComponentProps } from 'react-router'
 import { IonHeader, IonToolbar, IonTitle, IonButtons, IonMenuButton, useIonToast } from '@ionic/react'
+import '../../pages/Styles.scss'
 
 // Extra required
 import { useTranslation } from 'react-i18next'
 
 // Reducer settings
-import { connect } from '../data/connect'
-import { restCallAsync } from '../classes/core/axios'
-import { setData } from '../data/user/user.actions'
+import { connect } from '../../data/connect'
+import { restCallAsync } from '../../classes/core/axios'
+import { setData } from '../../data/user/user.actions'
+
+// Page dependencies
+import Page from './Page'
+import { PageProps } from './Page/types'
 
 // Form settings
 import * as yup from 'yup'
-import Form from '../components/core/Form'
-import Page from './core/Page'
-import { PageProps } from './core/Page/types'
+import Form from '../../components/core/Form'
 
 // Design Dependencies
 import * as icon from 'ionicons/icons'
+import { ToastOptions } from '@ionic/react/dist/types/components/IonToast'
+import Header from '../../components/core/main/Header'
 
 // Are you testing this tools set && app?
 let testingLogin = true
 let testing = testingLogin && process.env.REACT_APP_TESTING
+// - The main testing user will be used under testing
 
 // Component Dependencies
 interface OwnProps extends RouteComponentProps {}
@@ -41,29 +47,28 @@ const Login: React.FC<LoginProps> = ({
   const { t } = useTranslation();
 
   const [setToast, dismissToast] = useIonToast()
-  const launchToast = async (data: any, setToast: Function) => {
+  const launchToast = async (data: ToastOptions, setToast: Function) => {
     let dur = data.duration ?? 2000
-    await setToast({
+    let toastSettings: ToastOptions = {
       message: data.message,
       duration: dur ?? 1000,
       position: data.position ?? 'bottom',
-      icon: data.icon ?? icon.globe
-    })
+      icon: data.icon ?? icon.globe,
+      buttons: [
+        {
+          text: 'Ok',
+          role: 'cancel'
+        }
+      ],
+    }
+    await setToast(toastSettings)
     setTimeout(()=> dismissToast(), dur + 500)
     return true
   }
 
   const pageSettings: PageProps = {
     id: 'login-page',
-    header: ()=>
-      <IonHeader>
-        <IonToolbar>
-          <IonButtons slot="start">
-            <IonMenuButton></IonMenuButton>
-          </IonButtons>
-          <IonTitle>Login</IonTitle>
-        </IonToolbar>    
-      </IonHeader>,
+    header: ()=> <Header label={'Login'}/>,
     content: ()=> <Form {...pageSettings.methods.loginForm}/>,
     methods: {
       loginForm: {
@@ -71,7 +76,7 @@ const Login: React.FC<LoginProps> = ({
         id: 'login-form',
     
         title: {
-          label: t('Login form')
+          label: t('Login to your account...')
         },
     
         rows: [
@@ -155,23 +160,37 @@ const Login: React.FC<LoginProps> = ({
                   user.jwt = ret.jwt // Attaching the JWT to the user level and state...
                   user.isLoggedIn = true
                   await setData(user)
+
+                  let loginOutput = { 
+                    message: t('user-wellcome', { username: ret.data.user.username }),
+                    icon: icon.checkmarkCircleOutline,
+                    type: 'success'
+                  }
     
-                  launchToast({ 
-                    message: t('user-wellcome', { username: ret.data.user.username }) 
-                  }, setToast)
-                  .then(()=>
-                    history.push('/tabs/schedule', { direction: 'none' }
-                  ))
+                  launchToast(loginOutput, setToast)
+                    .then(()=> history.push('/tabs/schedule', { direction: 'none' }))
                   return true
                 }         
               },
               onError: {
   
                 default: (err: any)=> {
-                  let message = err?.response.status 
-                    ? t(err.response.data.error.message)
-                    : t(err.response.data.message[0].messages[0].message)
-                  //launchToast({ message: message }, setToast)
+
+                  let errorOutput = {
+                    icon: icon.closeCircleOutline,
+                    message: '',
+                    type: 'warning'
+                  }
+
+                  switch(err.response?.status){
+                    case 400:
+                      errorOutput.message = t(err.response.data.error.message)
+                    break
+                    default:
+                      errorOutput.message = t(err.response.data.message[0].messages[0].message)
+                  }
+
+                  launchToast(errorOutput, setToast)
                   return false    
                 }      
               }

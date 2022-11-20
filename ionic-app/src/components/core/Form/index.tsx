@@ -6,7 +6,7 @@ import * as type from './types'
 import Error from './Error'
 import Button from './Button'
 import Spinner from '../main/Spinner'
-import './styles.scss'
+import '../../../pages/Styles.scss'
 
 /**
  * This component allows to create a form with validations ;)
@@ -29,7 +29,11 @@ const Form: React.FC<type.FormProps> = (loginForm) => {
 
   return <CreateAnimation {...formAnimation}>
     <form noValidate id={loginForm.id} onSubmit={onSubmit}>
-      <IonGrid>{ loginForm.title.label && <IonRow><IonCol><IonText>{loginForm.title.label}</IonText></IonCol></IonRow>}
+      <IonGrid>{ loginForm.title.label && <IonRow>
+          <IonCol>
+            <IonText>{loginForm.title.label}</IonText>
+          </IonCol>
+        </IonRow>}
         {Object.keys(loginForm.rows).map((row: any, key: number)=>        
         <IonRow key={'row-'+key}>{loginForm.rows[key].cols.map((field: type.FieldProps, i: number) =>
           <IonCol key={'col-'+field.name+i}>

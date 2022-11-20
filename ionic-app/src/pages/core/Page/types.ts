@@ -4,5 +4,5 @@ export interface PageProps {
   content: any
   footer?: any
   sidenavs?: any[]
-  methods?: any 
+  methods: any 
 }

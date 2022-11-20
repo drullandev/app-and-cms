@@ -1,18 +1,18 @@
 import React from 'react'
 import { IonHeader, IonToolbar, IonTitle, IonButtons, IonMenuButton, useIonToast } from '@ionic/react'
-import './Login.scss'
-import { setisLoggedIn, setUsername } from '../data/user/user.actions'
-import { connect } from '../data/connect'
+import '../../pages/Styles.scss'
+import { setisLoggedIn, setUsername } from '../../data/user/user.actions'
+import { connect } from '../../data/connect'
 import { RouteComponentProps } from 'react-router'
-import { restCallAsync } from '../classes/core/axios'
-import { random } from '../classes/common'
+import { restCallAsync } from '../../classes/core/axios'
+import { random } from '../../classes/common'
 import { globe } from 'ionicons/icons'
 import { useTranslation } from 'react-i18next'
-import { PageProps } from './core/Page/types'
+import { PageProps } from './Page/types'
 
 import * as yup from 'yup'
-import Form from '../components/core/Form'
-import Page from './core/Page'
+import Form from '../../components/core/Form'
+import Page from './Page'
 
 // Testing this module?
 let testingSignup = true
@@ -69,7 +69,7 @@ const Signup: React.FC<SignupProps> = ({
         id: 'signup-form',
     
         title: {
-          label: t('Signup form')
+          label: t('Add your data in the form...')
         },
     
         rows: [

@@ -5,7 +5,7 @@ import { ellipsisHorizontal, ellipsisVertical } from 'ionicons/icons'
 import Popover from '../../components/extra/Popover'
 //import Header from '../../components/core/main/Header'
 
-import './About.scss'
+import '../../pages/Styles.scss'
 
 interface AboutProps { }
 

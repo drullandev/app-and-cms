@@ -5,7 +5,7 @@ import { options, search } from 'ionicons/icons'
 
 import SessionList from '../../components/SessionList'
 import SessionListFilter from '../../components/SessionListFilter'
-import './SchedulePage.scss'
+import '../../pages/Styles.scss'
 
 import ShareSocialFab from '../../components/ShareSocialFab'
 

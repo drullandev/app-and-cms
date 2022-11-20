@@ -4,12 +4,12 @@ import React, {
 import { IonTabs, IonRouterOutlet, IonTabBar, IonTabButton, //IonIcon, 
 IonLabel } from '@ionic/react'
 import { Route, Redirect } from 'react-router'
-import SchedulePage from '../../../pages/SchedulePage'
-import SpeakerList from '../../../pages/SpeakerList'
-import SpeakerDetail from '../../../pages/SpeakerDetail'
-import SessionDetail from '../../../pages/SessionDetail'
-import MapView from '../../../pages/MapView'
-import About from '../../../pages/About'
+import SchedulePage from '../../../pages/extra/SchedulePage'
+import SpeakerList from '../../../pages/extra/SpeakerList'
+import SpeakerDetail from '../../../pages/extra/SpeakerDetail'
+import SessionDetail from '../../../pages/extra/SessionDetail'
+import MapView from '../../../pages/extra/MapView'
+import About from '../../../pages/core/About'
 
 import { MainMenu, TabProps } from '../../../data/static/mainMenu'
 
