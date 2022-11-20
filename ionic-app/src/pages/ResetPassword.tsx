@@ -8,6 +8,10 @@ import { restCallAsync } from '../classes/core/axios'
 import { random } from '../classes/common'
 import { globe } from 'ionicons/icons'
 import { useTranslation } from 'react-i18next'
+import { PageProps } from './core/Page/types'
+import Page from './core/Page'
+import Form from '../components/core/Form'
+import * as yup from 'yup'
 
 
 let testingSignup = true
@@ -48,112 +52,126 @@ const ResetPassword: React.FC<LoginProps> = ({
     return true
   }
 
-  //SMTP code:550 msg:550-5.1.1 The email account that you tried to reach does not exist. Please try 550-5.1.1 double-checking the recipient's email address for typos or 550-5.1.1 unnecessary spaces. Learn more at 550 5.1.1 https://support.google.com/mail/?p=NoSuchUser q16-20020a2e9690000000b0027744b28539si4283378lji.72 - gsmtp 
 
-  const submitReset = async (e: React.FormEvent) => {
-
-    e.preventDefault()
-    setFormSubmitted(true)
-
-    if(!email) setEmailError(true)
-
-    if(email ) {
-
-      const onResetSuccess = async (ret: any) => {
-        let user = ret.user
-        user.jwt = ret.jwt // Attaching the JWT to the user level and state...
-        await setisLoggedIn(true)
-        return user
-      }  
-
-      await restCallAsync({
-        req: {
-          url: 'api/auth/reset-password',
-          method: 'POST',
-          data: testing
-          ? { 
-              email: random(12)+'@gmail.com'
-            }
-          : { 
-              email: email
-            }
-          ,
-        },
-        onSuccess: {
-          default: async (ret: any)=>{
-            await onResetSuccess(ret.data)
-              .then((ret: any)=>{
-                switch (ret.status) {
-                  case 200:
-                    //setisLoggedIn(true)
-                    /*launchToast({ 
-                      message: t('user-wellcome', { username: ret.data.user.username }) 
-                    }, setToast)
-                      .then(()=> history.push('/tabs/schedule', { direction: 'none' }))
-                      */
-                }            
-              })
-          }
-        },
-        onError: {
-          default: (err: any)=> { 
-            launchToast({ message: t(err.response.data.error.message ?? err.response.data.message[0].messages[0].message) }, setToast)
-          }
-        }
-      })
-    
-    }
-
-  }
-
-  return <IonPage id="signup-page">
-
+  const pageSettings: PageProps = {
+    id: 'reset-page',
+    header: ()=>
       <IonHeader>
         <IonToolbar>
           <IonButtons slot="start">
             <IonMenuButton></IonMenuButton>
           </IonButtons>
-          <IonTitle>Reset Password</IonTitle>
-        </IonToolbar>
-      </IonHeader>
+          <IonTitle>Recover</IonTitle>
+        </IonToolbar>    
+      </IonHeader>,
+    content: ()=> <Form {...pageSettings.methods.resetForm}/>,
+    methods: {
+      resetForm: {
 
-      <IonContent>
+        id: 'reset-form',
+    
+        title: {
+          label: t('Reset your account...')
+        },
+    
+        rows: [
+          {
+            cols: [
+              {
+                type: 'input',
+                name: 'email',
+                fieldType: 'email',// TODO: Liberate for email and also nickname
+                label: t('Email'),
+                //value: testing ? process.env.REACT_APP_DEFAULT_USER : undefined,
+                required: true,
+                //onChange: (e:any)=> setValue('identifier',e.detail.value)    
+              }
+            ]
+          },
+          {
+            cols: [
+              {
+                name: 'reset-submit',
+                type: 'button',
+                fieldType: 'submit',
+                label: t('Reset'),
+              },
+              {
+                name: 'reset-cancel',
+                type: 'button',
+                fieldType: 'link',
+                label: t('Cancel'),
+                onClick: () : any=> pageSettings.methods.resetForm.methods.onCancel()
+              }
+            ],
+          },
+        ],
+    
+        methods:{
+    
+          onSubmit: async (data: any) => {
 
-        <div className="login-logo">
-          <img src="assets/img/appicon.svg" alt="Ionic logo" />
-        </div>
+            const onResetSuccess = async (ret: any) => {
+              let user = ret.user
+              user.jwt = ret.jwt // Attaching the JWT to the user level and state...
+              await setisLoggedIn(true)
+              return user
+            }  
+      
+            await restCallAsync({
+              req: {
+                url: 'api/auth/reset-password',
+                method: 'POST',
+                data: testing
+                ? { 
+                    email: random(12)+'@gmail.com'
+                  }
+                : { 
+                    email: data.email
+                  }
+                ,
+              },
+              onSuccess: {
+                default: async (ret: any)=>{
+                  await onResetSuccess(ret.data)
+                    .then((ret: any)=>{
+                      switch (ret.status) {
+                        case 200:
+                          //setisLoggedIn(true)
+                          /*launchToast({ 
+                            message: t('user-wellcome', { username: ret.data.user.username }) 
+                          }, setToast)
+                            .then(()=> history.push('/tabs/schedule', { direction: 'none' }))
+                            */
+                      }            
+                    })
+                }
+              },
+              onError: {
+                default: (err: any)=> { 
+                  launchToast({ message: t(err.response.data.error.message ?? err.response.data.message[0].messages[0].message) }, setToast)
+                }
+              }
+            })
+                        
+          },
+    
+          onCancel: ()=> history.push('/home', { direction: 'none' })      
+    
+        },
+    
+        validation: ()=> {
+          return yup.object().shape({
+            email: yup.string().required().email().min(8),
+          })
+        },
+    
+      }
+    }
+  }
 
-        <form noValidate onSubmit={submitReset}>
-          <IonList>
-
-            <IonItem>
-              <IonLabel position="stacked" color="primary">Email</IonLabel>
-              <IonInput name="email" type="email" value={email} onIonChange={e => {
-                setEmail(e.detail.value!)
-                setEmailError(false)
-              }}>
-              </IonInput>
-            </IonItem>
-
-            {formSubmitted && emailError && <IonText color="danger">
-              <p className="ion-padding-start">
-                Email is required
-              </p>
-            </IonText>}
-
-          </IonList>
-
-          <IonRow>
-            <IonCol>
-              <IonButton type="submit" expand="block">Create</IonButton>
-            </IonCol>
-          </IonRow>
-        </form>
-
-      </IonContent>
-
-    </IonPage>
-  
+  return <Page {...pageSettings}/>
+    
 }
 
 export default connect<OwnProps, {}, DispatchProps>({

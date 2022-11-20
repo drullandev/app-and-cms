@@ -28,7 +28,6 @@ const Form: React.FC<type.FormProps> = (loginForm) => {
   }
 
   return <CreateAnimation {...formAnimation}>
-
     <form noValidate id={loginForm.id} onSubmit={onSubmit}>
       <IonGrid>{ loginForm.title.label && <IonRow><IonCol><IonText>{loginForm.title.label}</IonText></IonCol></IonRow>}
         {Object.keys(loginForm.rows).map((row: any, key: number)=>        
