@@ -214,7 +214,7 @@ const Login: React.FC<LoginProps> = ({
             <IonMenuButton></IonMenuButton>
           </IonButtons>
           <IonTitle>Login</IonTitle>
-        </IonToolbar>
+        </IonToolbar> 
       </IonHeader>
 
       <IonContent>

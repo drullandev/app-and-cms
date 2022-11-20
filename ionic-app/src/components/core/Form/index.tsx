@@ -11,14 +11,14 @@ import './styles.scss'
 /**
  * This component allows to create a form with validations ;)
  * David Rullán Díaz - 19-11-2022
- * @param formData 
+ * @param loginForm 
  * @returns 
  */
-const Form: React.FC<type.FormProps> = (formData) => {
+const Form: React.FC<type.FormProps> = (loginForm) => {
 
-  const validationSchema = formData.validation()  
+  const validationSchema = loginForm.validation()  
   const { control, handleSubmit, errors } = useForm<any>({validationSchema})
-  const onSubmit = handleSubmit(formData.methods.onSubmit)
+  const onSubmit = handleSubmit(loginForm.methods.onSubmit)
 
   const formAnimation = {
     delay: 1000,
@@ -28,17 +28,14 @@ const Form: React.FC<type.FormProps> = (formData) => {
   }
 
   return <CreateAnimation {...formAnimation}>
-    <form noValidate id={formData.id} onSubmit={onSubmit}>
-      <IonGrid>
-        {formData.title.label && <IonRow>
-          <IonCol>
-            <IonText>{formData.title.label}</IonText>
-          </IonCol>
-        </IonRow>}
-        {Object.keys(formData.rows).map((row: any, key: number)=>        
-        <IonRow key={'row-'+key}>{formData.rows[key].cols.map((field: type.FieldProps, i: number) =>
-          {field.type === 'input' 
-            ? <IonCol key={'col-'+field.name+i}>
+
+    <form noValidate id={loginForm.id} onSubmit={onSubmit}>
+      <IonGrid>{ loginForm.title.label && <IonRow><IonCol><IonText>{loginForm.title.label}</IonText></IonCol></IonRow>}
+        {Object.keys(loginForm.rows).map((row: any, key: number)=>        
+        <IonRow key={'row-'+key}>{loginForm.rows[key].cols.map((field: type.FieldProps, i: number) =>
+          <IonCol key={'col-'+field.name+i}>
+            {field.type === 'input' 
+            ? <>
                 <IonItem>
                   {field.type === 'input' 
                     ? <>
@@ -71,11 +68,11 @@ const Form: React.FC<type.FormProps> = (formData) => {
                   />
                 </IonItem>
                 <Error name={field.name} label={field.label} errors={errors}/>
-              </IonCol>
+              </>
             : field.type === 'button'
-              ? <IonCol key={'col-'+field.name+i}><Button {...field}/></IonCol>
-              : <IonCol key={'col-'+field.name+i}><Spinner name='dots'/></IonCol>              
-          }
+              ? <Button {...field}/>
+              : <Spinner name='dots'/>                  
+          }</IonCol>
         )}</IonRow>
       )}</IonGrid>
     </form>
