@@ -35,7 +35,7 @@ import Account from './pages/core/Account'
 import Support from './pages/core/Support'
 import MainTabs from './components/core/main/MainTabs'
 import Tutorial from './pages/extra/Tutorial'
-import ResetPassword from './pages/core/ResetPassword'
+import ResetPassword from './pages/core/ChangePassword'
 import Recover from './pages/core/Recover'
 
 import Page from './pages/core/Page'

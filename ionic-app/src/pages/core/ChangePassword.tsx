@@ -26,7 +26,7 @@ interface DispatchProps {
 
 interface LoginProps extends OwnProps, DispatchProps {}
 
-const ResetPassword: React.FC<LoginProps> = ({
+const ChangePassword: React.FC<LoginProps> = ({
   setisLoggedIn,
   history,
   setUsername: setUsernameAction
@@ -47,6 +47,7 @@ const ResetPassword: React.FC<LoginProps> = ({
         </IonToolbar>    
       </IonHeader>,
     content: ()=> <Form {...pageSettings.methods.resetForm}/>,
+    footer: <></>,
     methods: {
       resetForm: {
 
@@ -156,5 +157,5 @@ export default connect<OwnProps, {}, DispatchProps>({
     setisLoggedIn,
     setUsername
   },
-  component: ResetPassword
+  component: ChangePassword
 })

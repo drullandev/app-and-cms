@@ -16,7 +16,6 @@ import Page from './Page'
 let testingRecover = true
 let testing = testingRecover && process.env.REACT_APP_TESTING
 
-
 interface OwnProps extends RouteComponentProps {}
 
 interface DispatchProps {
@@ -54,7 +53,16 @@ const Recover: React.FC<LoginProps> = ({
           label: t('Recover your account...')
         },
     
-        rows: [
+        rows: [ 
+          {
+            cols:[
+              {
+                component: <div className="login-logo">
+                  <img src="assets/img/appicon.svg" alt="Ionic logo" />
+                </div>
+              }
+            ]
+          }, 
           {
             cols: [
               {

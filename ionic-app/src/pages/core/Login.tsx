@@ -23,10 +23,9 @@ import Form from '../../components/core/Form'
 // Design Dependencies
 import * as icon from 'ionicons/icons'
 import Header from '../../components/core/main/Header'
-import Recover from './Recover'
 
 // Are you testing this tools set && app?
-let testingLogin = false
+let testingLogin = true
 let testing = testingLogin && process.env.REACT_APP_TESTING
 // - The main testing user will be used under testing
 
@@ -61,14 +60,15 @@ const Login: React.FC<LoginProps> = ({
         },
     
         rows: [
-          /*{
-            name: 'login-header',          
-            type: 'component',
-            //component: ()=>  <Header/>
-          },
           {
-            name: 'app-icon',
-          },*/
+            cols:[
+              {
+                component: <div className="login-logo">
+                  <img src="assets/img/appicon.svg" alt="Ionic logo" />
+                </div>
+              }
+            ]
+          },
           {
             cols: [
               {
@@ -98,7 +98,7 @@ const Login: React.FC<LoginProps> = ({
           {
             cols:[
               {
-                name: 'wanna.redirect',
+                name: 'wanna-redirect',
                 component: <IonItem>
                     <a onClick={()=> history.push('/recover', { direction: 'none' }) }>{t("You don't remember your account?")}</a>
                 </IonItem>

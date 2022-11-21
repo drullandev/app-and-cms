@@ -1,5 +1,5 @@
 import React from 'react'
-import { IonHeader, IonToolbar, IonTitle, IonButtons, IonMenuButton, useIonToast } from '@ionic/react'
+import { IonHeader, IonToolbar, IonTitle, IonButtons, IonMenuButton, useIonToast, IonItem } from '@ionic/react'
 import '../../pages/Styles.scss'
 import { setisLoggedIn, setUsername } from '../../data/user/user.actions'
 import { connect } from '../../data/connect'
@@ -60,14 +60,15 @@ const Signup: React.FC<SignupProps> = ({
         },
     
         rows: [
-          /*{
-            name: 'login-header',          
-            type: 'component',
-            //component: ()=>  <Header/>
-          },
           {
-            name: 'app-icon',
-          },*/
+            cols:[
+              {
+                component: <div className="login-logo">
+                  <img src="assets/img/appicon.svg" alt="Ionic logo" />
+                </div>
+              }
+            ]
+          }, 
           {
             cols: [
               {
@@ -107,11 +108,16 @@ const Signup: React.FC<SignupProps> = ({
               }
             ]
           },
-          /*
           {
-            name: 'terms'
-          },
-          */
+            cols:[
+              {
+                name: 'wanna-login',
+                component: <IonItem>
+                    <a onClick={()=> history.push('/login', { direction: 'none' }) }>{t("Do you have an account?")}</a>
+                </IonItem>
+              }
+            ]
+          },     
           {
             cols: [
               {

@@ -37,9 +37,8 @@ const setCall = (call:CallProps) =>{
         return call.onError.default(err) //TODO
       } else {
         // Anything else
-        //return call.onError(err) //TODO finally for error
+        //return call.onError(err)
       }
-
     })
     .finally(()=>{
       return (call.onFinally !== undefined) ? call.onFinally() : null

@@ -3,10 +3,11 @@ import React, { useEffect, useState } from 'react'
 import { RouteComponentProps } from 'react-router'
 //import { restGet, setImage } from '../../data/utils/rest/rest.utils'
 //import { editUserValue } from '../../data/user/user.calls'
-import { IonContent, IonImg, IonList, IonItem, IonAlert, IonLabel } from '@ionic/react'
+import { IonContent, IonImg, IonList, IonItem, IonAlert, IonLabel, IonAccordion, IonAccordionGroup } from '@ionic/react'
 
 import { setUsername, setEmail, } from '../../data/user/user.actions'
 import { connect } from '../../data/connect'
+import * as icon from 'ionicons/icons'
 
 import '../../pages/Styles.scss'
 
@@ -129,6 +130,40 @@ const Account: React.FC<AccountProps> = ({ setNickname, nickname, setUserEmail, 
     }
   }
 
+  let editOptions =[
+    {
+      name: 'personal-data',
+      label: 'Personal data',
+      icon: icon.accessibility,
+      content: <>
+        <IonItem>
+          <IonLabel color='primary'>Change Nickname</IonLabel>
+        </IonItem>
+
+        <IonItem>
+          <IonLabel color='primary'>Change Email</IonLabel>
+        </IonItem>
+
+        <IonItem>
+          <IonLabel color='primary'>Change Password</IonLabel>
+        </IonItem>
+
+        <IonItem routerLink='/logout' routerDirection='none'>
+          <IonLabel color='primary'>Logout</IonLabel>
+        </IonItem>
+      </>
+    },
+    {
+      name: 'app-settings',
+      label: 'App Settings',
+      icon: icon.accessibility,
+      content: <>
+        <IonItem routerLink='/support' routerDirection='none'>
+          <IonLabel color='primary'>Support</IonLabel>
+        </IonItem>
+      </>
+    }
+  ]
 
 
   return (
@@ -166,6 +201,20 @@ const Account: React.FC<AccountProps> = ({ setNickname, nickname, setUserEmail, 
           <IonLabel color='primary'>Logout</IonLabel>
         </IonItem>
         */}
+
+        <IonAccordionGroup>
+          {Object.keys(editOptions).map((row: any, key: number)=>{
+            let a = editOptions[key]
+            return <IonAccordion  key={key} value={a.name}>
+              <IonItem slot="header" color="light">
+                <IonLabel>{a.label}</IonLabel>
+              </IonItem>
+              <div className="ion-padding" slot="content">
+                {a.content}
+              </div>
+            </IonAccordion>
+          })}
+        </IonAccordionGroup>
 
       </IonList>
 
