@@ -39,7 +39,11 @@ export interface FieldProps {
   onClick?: any
   onSubmit?: any
   routerLink?: string
-  color?: string
+  color?: "danger" | "dark" | "light" | "medium" | "primary" | "secondary" | "success" | "tertiary" | "warning" | string & Record<never, never> | undefined
+  fill?: 'solid' | 'clear' | 'outline'
+  size?: 'small' | 'default' | 'large'
+  slot?: 'end' | 'start' | 'icon-only'
+  icon?: any,
 }
 
 /////////////////////// mmmm espera!

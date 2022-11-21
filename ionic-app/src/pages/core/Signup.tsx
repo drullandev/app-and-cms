@@ -11,6 +11,7 @@ import { useTranslation } from 'react-i18next'
 import { PageProps } from './Page/types'
 
 import * as yup from 'yup'
+import * as icon from 'ionicons/icons'
 import Form from '../../components/core/Form'
 import Page from './Page'
 
@@ -118,13 +119,16 @@ const Signup: React.FC<SignupProps> = ({
                 name: 'login-submit',
                 type: 'button',
                 fieldType: 'submit',
-                label: t('Login'),
+                label: t('Signup'),
+                icon: icon.personAdd
               },
               {
                 name: 'login-cancel',
                 type: 'button',
                 fieldType: 'link',
                 label: t('Cancel'),
+                fill: 'outline',
+                icon: icon.close,
                 onClick: () : any=> pageSettings.methods.loginForm.methods.onCancel()
               }
             ],

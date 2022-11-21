@@ -83,6 +83,7 @@ const ResetPassword: React.FC<LoginProps> = ({
                 type: 'button',
                 fieldType: 'link',
                 label: t('Cancel'),
+                fill: 'outline',
                 onClick: () : any=> pageSettings.methods.resetForm.methods.onCancel()
               }
             ],

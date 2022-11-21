@@ -1,16 +1,17 @@
 import React from 'react'
 import { IonHeader, IonToolbar, IonTitle, IonButtons, IonMenuButton, useIonToast, IonItem } from '@ionic/react'
-import '../../pages/Styles.scss'
+import { RouteComponentProps } from 'react-router'
+import { useTranslation } from 'react-i18next'
+import * as yup from 'yup'
+import * as icon from 'ionicons/icons'
+
 import { setisLoggedIn, setUsername } from '../../data/user/user.actions'
 import { connect } from '../../data/connect'
-import { RouteComponentProps } from 'react-router'
-import { restCallAsync } from '../../classes/core/axios'
-import { globe } from 'ionicons/icons'
-import { useTranslation } from 'react-i18next'
-import { PageProps } from './Page/types'
 
+import '../../pages/Styles.scss'
+import { restCallAsync } from '../../classes/core/axios'
+import { PageProps } from './Page/types'
 import Form from '../../components/core/Form'
-import * as yup from 'yup'
 import Page from './Page'
 
 let testingRecover = true
@@ -85,12 +86,15 @@ const Recover: React.FC<LoginProps> = ({
                 type: 'button',
                 fieldType: 'submit',
                 label: t('Recover'),
+                icon: icon.person
               },
               {
                 name: 'recover-cancel',
                 type: 'button',
                 fieldType: 'link',
                 label: t('Cancel'),
+                fill: 'outline',
+                icon: icon.close,
                 onClick: () : any=> pageSettings.methods.recoverForm.methods.onCancel()
               }
             ],

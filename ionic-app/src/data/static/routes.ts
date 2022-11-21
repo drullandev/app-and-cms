@@ -1,10 +1,4 @@
-import {
-  //informationCircleOutline,
-  logIn,
-  logOut,
-  person,
-  personAdd
-} from 'ionicons/icons'
+import * as icon from 'ionicons/icons'
 
 export const routes = {    
     appPages: [
@@ -14,15 +8,15 @@ export const routes = {
       //{ title: 'About', path: '/tabs/about', icon: informationCircleOutline }
     ],
     loggedInPages: [
-      { title: 'Account', path: '/account', icon: person },
-      { title: 'Reset Pass', path: '/reset', icon: person },
+      { title: 'Account', path: '/account', icon: icon.person },
+      { title: 'Reset Pass', path: '/reset', icon: icon.person },
       //{ title: 'Support', path: '/support', icon: help },
-      { title: 'Logout', path: '/logout', icon: logOut }
+      { title: 'Logout', path: '/logout', icon: icon.logOut }
     ],
     loggedOutPages: [
-      { title: 'Login', path: '/login', icon: logIn },
-      { title: 'Recover', path: '/recover', icon: person },
+      { title: 'Login', path: '/login', icon: icon.logIn },
+      { title: 'Recover', path: '/recover', icon: icon.person },
       //{ title: 'Support', path: '/support', icon: help }, // I will move to account
-      { title: 'Signup', path: '/signup', icon: personAdd }
+      { title: 'Signup', path: '/signup', icon: icon.personAdd }
     ]
   }

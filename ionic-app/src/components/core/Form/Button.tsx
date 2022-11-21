@@ -1,8 +1,10 @@
 import * as AppConst from '../../../data/static/constants'
 
 import React, { FC ,useState } from 'react'
-import { IonLabel, IonButton, IonSpinner, IonItem, IonSkeletonText } from '@ionic/react'
+import { IonLabel, IonButton, IonSpinner, IonItem, IonSkeletonText, IonIcon, IonGrid, IonRow, IonCol } from '@ionic/react'
 import { FieldProps } from './types'
+import Icon from '../main/Icon'
+import * as icon from 'ionicons/icons'
 
 const style = { marginTop: '20px' }
 
@@ -33,12 +35,12 @@ const Button: FC<FieldProps> = (field) => {
     },timeout)
   }
 
-  const buttonContent = (label: string, spinner: any) => (
+  const buttonContent = (field: FieldProps, spinner: any) => (
     <>
-      <IonSpinner style={{display: display}}
-        name={spinner.type}
-      />
-      <IonLabel>{field.label}</IonLabel>
+      {!display
+      ? <IonSpinner name={spinner.type}/>
+      : <IonIcon slot="start" icon={field.icon ? field.icon : icon.star}/>}
+        <IonLabel>{field.label}</IonLabel>
     </>
   )
 
@@ -51,16 +53,21 @@ const Button: FC<FieldProps> = (field) => {
           style={style}
           expand='block'
           color={field.color}
+          fill={field.fill ?? 'solid'}
+          size={field.size ?? 'default'}
           onClick={(e:any)=>{setActive(1000, field.onClick)}}>
-          {buttonContent(field.label, spinner)}
+          {buttonContent(field, spinner)}
         </IonButton>
   
-      : <IonButton style={style} expand='block' 
-          color={field.color} 
-          routerDirection={'root'} 
-          type={field.fieldType}
+      : <IonButton style={style} 
+          expand='block' 
+          color={field.color}          
+          fill={field.fill ?? 'solid'}
+          size={field.size ?? 'default'}
+            routerDirection={'root'} 
+            type={field.fieldType}
           onClick={(e:any)=>{setActive(10000)}}>
-          {buttonContent(field.label, spinner)}
+          {buttonContent(field, spinner)}
         </IonButton>
   
     : <IonItem lines='none'>

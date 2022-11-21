@@ -100,7 +100,7 @@ const Login: React.FC<LoginProps> = ({
               {
                 name: 'wanna.redirect',
                 component: <IonItem>
-                    <a onClick={()=> history.push('/recover', { direction: 'none' }) }>{t("You don't remember your account?")}</a>
+                  <a onClick={()=> history.push('/recover', { direction: 'none' }) }>{t("You don't remember your account?")}</a>
                 </IonItem>
               }
             ]
@@ -112,12 +112,15 @@ const Login: React.FC<LoginProps> = ({
                 type: 'button',
                 fieldType: 'submit',
                 label: t('Login'),
+                icon: icon.logIn
               },
               {
                 name: 'login-cancel',
                 type: 'button',
                 fieldType: 'link',
                 label: t('Cancel'),
+                fill: 'outline',
+                icon: icon.close,
                 onClick: () : any=> pageSettings.methods.loginForm.methods.onCancel()
               }
             ],
