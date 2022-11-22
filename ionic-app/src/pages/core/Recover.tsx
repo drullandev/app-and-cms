@@ -1,5 +1,5 @@
 import React from 'react'
-import { IonHeader, IonToolbar, IonTitle, IonButtons, IonMenuButton, useIonToast, IonItem } from '@ionic/react'
+import { IonHeader, IonToolbar, IonTitle, IonButtons, IonMenuButton, useIonToast } from '@ionic/react'
 import { RouteComponentProps } from 'react-router'
 import { useTranslation } from 'react-i18next'
 import * as yup from 'yup'
@@ -13,6 +13,7 @@ import { restCallAsync } from '../../classes/core/axios'
 import { PageProps } from './Page/types'
 import Form from '../../components/core/Form'
 import Page from './Page'
+import Header from '../../components/core/main/Header'
 
 let testingRecover = true
 let testing = testingRecover && process.env.REACT_APP_TESTING
@@ -35,15 +36,7 @@ const Recover: React.FC<LoginProps> = ({
  
   const pageSettings: PageProps = {
     id: 'recover-page',
-    header: ()=>
-      <IonHeader>
-        <IonToolbar>
-          <IonButtons slot="start">
-            <IonMenuButton></IonMenuButton>
-          </IonButtons>
-          <IonTitle>Recover</IonTitle>
-        </IonToolbar>    
-      </IonHeader>,
+    header: ()=> <Header label={"Recover"} slot="start"/>,
     content: ()=> <Form {...pageSettings.methods.recoverForm}/>,
     methods: {
       recoverForm: {
@@ -101,7 +94,6 @@ const Recover: React.FC<LoginProps> = ({
               {
                 name: 'recover-cancel',
                 type: 'button',
-                fieldType: 'link',
                 label: t('Cancel'),
                 fill: 'outline',
                 icon: icon.close,

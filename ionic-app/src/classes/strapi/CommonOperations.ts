@@ -64,10 +64,10 @@ const onSubmit = async (form: any) => {
 
 }
 
-const output = (err: any, errorDesign:any) => {
+export const output = (err: any, errorDesign?: ErrorDesignProps) => {
 
   let errorOutput = {
-    message: '',
+    message: 'Error calling Strapi service...',
     duration: errorDesign?.duration ?? 1500,
     color: errorDesign?.color ?? 'warning',
     icon: errorDesign?.icon ?? icon.closeCircleOutline,
@@ -94,12 +94,16 @@ const output = (err: any, errorDesign:any) => {
 
   } else if (err.request) {
     // The client never received a response, and the request was never left
-    //return call.onError.default(err) //TODO
+    errorOutput.color = 'error'
+    errorOutput.icon = icon.skullOutline
     errorOutput.message = 'Sorry What???'
+
   } else {
     // Anything else
-    //return call.onError(err)
+    errorOutput.color = 'error'
+    errorOutput.icon = icon.skullOutline
     errorOutput.message = 'Anithing else??? o.o'
+    
   }
 
   return errorOutput

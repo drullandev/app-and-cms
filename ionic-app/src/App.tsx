@@ -97,12 +97,13 @@ const IonicApp: React.FC<IonicAppProps> = ({
           <Route path='/:slug' component={Page} />
           <Route path='/tabs/home/:id' render={() => <MainTabs />} />
           <Route path='/tabs/:slug' render={() => <MainTabs />} />
+          <Route path='/tutorial' component={Tutorial} />
+
           <Route path='/login' component={Login} />
           <Route path='/sign-up' component={Signup} />
           <Route path='/reset' component={ResetPassword} />
           <Route path='/recover' component={Recover} />
           <Route path='/support' component={Support} />
-          <Route path='/tutorial' component={Tutorial} />
           <Route path='/account' component={Account} />
           <Route path='/change-password' component={ChangePassword} />
           <Route path='/logout' render={() =>

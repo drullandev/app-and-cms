@@ -14,6 +14,7 @@ import * as yup from 'yup'
 import * as icon from 'ionicons/icons'
 import Form from '../../components/core/Form'
 import Page from './Page'
+import Header from '../../components/core/main/Header'
 
 // Testing this module?
 let testingSignup = true
@@ -41,15 +42,7 @@ const Signup: React.FC<SignupProps> = ({
 
   const pageSettings: PageProps = {
     id: 'signup-page',
-    header: ()=>
-      <IonHeader>
-        <IonToolbar>
-          <IonButtons slot="start">
-            <IonMenuButton></IonMenuButton>
-          </IonButtons>
-          <IonTitle>Signup</IonTitle>
-        </IonToolbar>    
-      </IonHeader>,
+    header: ()=> <Header label={"Sign up"} slot="start"/>,
     content: ()=> <Form {...pageSettings.methods.signupForm}/>,
     methods: {
       signupForm: {

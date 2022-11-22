@@ -18,11 +18,8 @@ const HomeOrWelcome: React.FC<StateProps> = ({ hasSeenTutorial }) => (
 
 
 export default connect<{}, StateProps, {}>({
-
   mapStateToProps: (state) => ({
     hasSeenTutorial: state.user.hasSeenTutorial
   }),
-
   component: HomeOrWelcome
-  
 })
