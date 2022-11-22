@@ -1,7 +1,7 @@
 // Required
-import React, { useEffect } from 'react'
+import React from 'react'
 import { RouteComponentProps } from 'react-router'
-import { IonButton, IonItem, IonNav, IonNavLink, IonText, useIonToast } from '@ionic/react'
+import { useIonToast } from '@ionic/react'
 import '../../pages/Styles.scss'
 
 // Extra required
@@ -23,7 +23,6 @@ import Form from '../../components/core/Form'
 // Design Dependencies
 import * as icon from 'ionicons/icons'
 import Header from '../../components/core/main/Header'
-import Recover from './Recover'
 
 // Are you testing this tools set && app?
 let testingLogin = false
@@ -61,14 +60,15 @@ const Login: React.FC<LoginProps> = ({
         },
     
         rows: [
-          /*{
-            name: 'login-header',          
-            type: 'component',
-            //component: ()=>  <Header/>
-          },
           {
-            name: 'app-icon',
-          },*/
+            cols:[
+              {
+                component: <div className="login-logo">
+                  <img src="assets/img/appicon.svg" alt="Ionic logo" />
+                </div>
+              }
+            ]
+          },
           {
             cols: [
               {
@@ -98,11 +98,21 @@ const Login: React.FC<LoginProps> = ({
           {
             cols:[
               {
-                name: 'wanna.redirect',
-                component: <IonItem>
-                  <a onClick={()=> history.push('/recover', { direction: 'none' }) }>{t("You don't remember your account?")}</a>
-                </IonItem>
-              }
+                name: 'wanna-reset',
+                type: 'button',
+                label: t("You don't remember your account?"),
+                color: 'clear',
+                icon: icon.logIn,
+                onClick: ()=>history.push('/change-password', { direction: 'none' })
+              },
+              {
+                name: 'wanna-signin',
+                type: 'button',
+                label: t("Wanna Sign In?"),
+                color: 'clear',
+                icon: icon.logIn,
+                onClick: ()=>history.push('/sign-up', { direction: 'none' })
+              },
             ]
           },          
           {
@@ -158,33 +168,15 @@ const Login: React.FC<LoginProps> = ({
                   }
     
                   presentToast(loginOutput)
-                    .then(()=> history.push('/tabs/schedule', { direction: 'none' }))
+                    .then(()=> history.push('/tabs/schedule', {
+                      direction: 'none'
+                    }))
 
                   return true
                 }         
               },
-              onError: {
-  
-                default: (err: any)=> {
-
-                  let errorOutput = {
-                    icon: icon.closeCircleOutline,
-                    message: '',
-                    duration: 1000,
-                    color: 'warning'
-                  }
-
-                  switch(err.response?.status){
-                    case 400:
-                      errorOutput.message = t(err.response.data.error.message)
-                    break
-                    default:
-                      errorOutput.message = t(err.response.data.message[0].messages[0].message)
-                  }
-
-                  presentToast(errorOutput)
-                  return false    
-                }      
+              onError: {  
+                default: presentToast                     
               }
             })
 

@@ -1,5 +1,10 @@
-import axios from 'axios'
-import * as AppConst from '../../data/static/constants'
+import * as icon from 'ionicons/icons'
+
+interface ErrorDesignProps {
+  duration?: number
+  icon?: any
+  color?: string
+}
 
 const onSubmit = async (form: any) => {
 
@@ -59,6 +64,44 @@ const onSubmit = async (form: any) => {
 
 }
 
-const output = (err:any) =>{
+const output = (err: any, errorDesign:any) => {
+
+  let errorOutput = {
+    message: '',
+    duration: errorDesign?.duration ?? 1500,
+    color: errorDesign?.color ?? 'warning',
+    icon: errorDesign?.icon ?? icon.closeCircleOutline,
+  }
+
+  if (err.response) {
+    // The client was given an error response (5xx, 4xx)
+    //return call.onError.default(err) 
+
+    switch(err.response?.status){
+      case 400:
+        errorOutput.message = err.response.data.error.message
+      break
+      case 500:
+        if(err.search('SMTP')){
+          errorOutput.color = 'error'
+          errorOutput.message = 'Something is wrong with the email...'
+        }
+  
+        break;
+      default:
+        errorOutput.message = err.response.data.message[0].messages[0].message
+    }
+
+  } else if (err.request) {
+    // The client never received a response, and the request was never left
+    //return call.onError.default(err) //TODO
+    errorOutput.message = 'Sorry What???'
+  } else {
+    // Anything else
+    //return call.onError(err)
+    errorOutput.message = 'Anithing else??? o.o'
+  }
+
+  return errorOutput
 
 } 

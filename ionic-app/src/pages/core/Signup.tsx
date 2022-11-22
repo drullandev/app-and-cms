@@ -1,5 +1,5 @@
 import React from 'react'
-import { IonHeader, IonToolbar, IonTitle, IonButtons, IonMenuButton, useIonToast } from '@ionic/react'
+import { IonHeader, IonToolbar, IonTitle, IonButtons, IonMenuButton, useIonToast, IonItem } from '@ionic/react'
 import '../../pages/Styles.scss'
 import { setisLoggedIn, setUsername } from '../../data/user/user.actions'
 import { connect } from '../../data/connect'
@@ -61,14 +61,15 @@ const Signup: React.FC<SignupProps> = ({
         },
     
         rows: [
-          /*{
-            name: 'login-header',          
-            type: 'component',
-            //component: ()=>  <Header/>
-          },
           {
-            name: 'app-icon',
-          },*/
+            cols:[
+              {
+                component: <div className="login-logo">
+                  <img src="assets/img/appicon.svg" alt="Ionic logo" />
+                </div>
+              }
+            ]
+          }, 
           {
             cols: [
               {
@@ -108,11 +109,17 @@ const Signup: React.FC<SignupProps> = ({
               }
             ]
           },
-          /*
           {
-            name: 'terms'
-          },
-          */
+            cols:[
+              {
+                name: 'wanna-reset',
+                type: 'button',
+                label: t("You don't remember your account?"),
+                color: 'clear',
+                icon: icon.logIn
+              },
+            ]
+          },    
           {
             cols: [
               {
@@ -150,7 +157,8 @@ const Signup: React.FC<SignupProps> = ({
               req: {
                 url: 'api/auth/local/register',
                 method: 'POST',
-                data: { 
+                data: {
+                  // BE AWARE OF TESTING PARAMS... Anyway, in production will be banned but yeah... 
                   username: testing ? data.username : random(12),
                   password: testing ? data.password : random(12),
                   email: testing ? random(12)+'@gmail.com' : data.email

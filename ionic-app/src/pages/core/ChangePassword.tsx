@@ -12,6 +12,8 @@ import { PageProps } from './Page/types'
 import Page from './Page'
 import Form from '../../components/core/Form'
 import * as yup from 'yup'
+import * as icon from 'ionicons/icons'
+import Icon from '../../components/core/main/Icon'
 
 
 let testingSignup = true
@@ -26,7 +28,7 @@ interface DispatchProps {
 
 interface LoginProps extends OwnProps, DispatchProps {}
 
-const ResetPassword: React.FC<LoginProps> = ({
+const ChangePassword: React.FC<LoginProps> = ({
   setisLoggedIn,
   history,
   setUsername: setUsernameAction
@@ -43,10 +45,11 @@ const ResetPassword: React.FC<LoginProps> = ({
           <IonButtons slot="start">
             <IonMenuButton></IonMenuButton>
           </IonButtons>
-          <IonTitle>Recover</IonTitle>
+          <IonTitle>{t('Reset account')}</IonTitle>
         </IonToolbar>    
       </IonHeader>,
     content: ()=> <Form {...pageSettings.methods.resetForm}/>,
+    footer: ()=> <></>,
     methods: {
       resetForm: {
 
@@ -73,10 +76,23 @@ const ResetPassword: React.FC<LoginProps> = ({
           {
             cols: [
               {
+                name: 'wanna-reset',
+                type: 'button',
+                label: t("Do you remember your account?"),
+                color: 'clear',
+                icon: icon.logIn,
+                onClick: ()=>history.push('/login', { direction: 'none' })
+              },
+            ]
+          },    
+          {
+            cols: [
+              {
                 name: 'reset-submit',
                 type: 'button',
                 fieldType: 'submit',
                 label: t('Reset'),
+                icon: icon.person,
               },
               {
                 name: 'reset-cancel',
@@ -84,6 +100,7 @@ const ResetPassword: React.FC<LoginProps> = ({
                 fieldType: 'link',
                 label: t('Cancel'),
                 fill: 'outline',
+                icon: icon.close,
                 onClick: () : any=> pageSettings.methods.resetForm.methods.onCancel()
               }
             ],
@@ -157,5 +174,5 @@ export default connect<OwnProps, {}, DispatchProps>({
     setisLoggedIn,
     setUsername
   },
-  component: ResetPassword
+  component: ChangePassword
 })

@@ -17,7 +17,6 @@ import Page from './Page'
 let testingRecover = true
 let testing = testingRecover && process.env.REACT_APP_TESTING
 
-
 interface OwnProps extends RouteComponentProps {}
 
 interface DispatchProps {
@@ -55,7 +54,16 @@ const Recover: React.FC<LoginProps> = ({
           label: t('Recover your account...')
         },
     
-        rows: [
+        rows: [ 
+          {
+            cols:[
+              {
+                component: <div className="login-logo">
+                  <img src="assets/img/appicon.svg" alt="Ionic logo" />
+                </div>
+              }
+            ]
+          }, 
           {
             cols: [
               {
@@ -72,13 +80,15 @@ const Recover: React.FC<LoginProps> = ({
           {
             cols:[
               {
-                name: 'wanna-login',
-                component: <IonItem>
-                  <a onClick={()=> history.push('/login', { direction: 'none' }) }>{t("Do you remember your password?")}</a>
-                </IonItem>
-              }
+                name: 'login-submit',
+                type: 'button',
+                label: t("Do you remember your account?"),
+                color: 'clear',
+                icon: icon.logIn,
+                onClick: ()=>history.push('/login', { direction: 'none' })
+              },
             ]
-          },
+          },   
           {
             cols: [
               {

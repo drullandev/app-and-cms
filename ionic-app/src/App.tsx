@@ -32,10 +32,11 @@ import { loadUserData, setData } from './data/user/user.actions'
 import Login from './pages/core/Login'
 import Signup from './pages/core/Signup'
 import Account from './pages/core/Account'
+import ChangePassword from './pages/core/ChangePassword'
 import Support from './pages/core/Support'
 import MainTabs from './components/core/main/MainTabs'
 import Tutorial from './pages/extra/Tutorial'
-import ResetPassword from './pages/core/ResetPassword'
+import ResetPassword from './pages/core/ChangePassword'
 import Recover from './pages/core/Recover'
 
 import Page from './pages/core/Page'
@@ -97,12 +98,13 @@ const IonicApp: React.FC<IonicAppProps> = ({
           <Route path='/tabs/home/:id' render={() => <MainTabs />} />
           <Route path='/tabs/:slug' render={() => <MainTabs />} />
           <Route path='/login' component={Login} />
-          <Route path='/signup' component={Signup} />
+          <Route path='/sign-up' component={Signup} />
           <Route path='/reset' component={ResetPassword} />
           <Route path='/recover' component={Recover} />
           <Route path='/support' component={Support} />
           <Route path='/tutorial' component={Tutorial} />
           <Route path='/account' component={Account} />
+          <Route path='/change-password' component={ChangePassword} />
           <Route path='/logout' render={() =>
             <RedirectToLogin setData={setData}/>
           } />
