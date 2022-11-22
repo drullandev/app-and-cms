@@ -58,7 +58,7 @@ const Form: React.FC<type.FormProps> = (loginForm) => {
                           ? <IonTextarea {...field}/>                                
                           : field.fieldType === 'spinner'
                             ? <Spinner name='dots'/>
-                            : <IonInput 
+                            : <IonInput autofocus
                                 aria-invalid={errors && errors[field.name] ? 'true' : 'false'}
                                 aria-describedby={`${field.name}Error`}
                                 type={field.fieldType}               

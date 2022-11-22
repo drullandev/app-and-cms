@@ -25,8 +25,8 @@ import * as icon from 'ionicons/icons'
 import Header from '../../components/core/main/Header'
 
 // Are you testing this tools set && app?
-let testingLogin = false
-let testing = testingLogin && process.env.REACT_APP_TESTING
+let testingFeature = true
+let testing = testingFeature && process.env.REACT_APP_TESTING
 // - The main testing user will be used under testing
 
 // Component Dependencies
@@ -94,27 +94,7 @@ const Login: React.FC<LoginProps> = ({
                 //onChange: (e:any)=> setPassword(e.detail.value)
               }
             ]
-          },          
-          {
-            cols:[
-              {
-                name: 'wanna-reset',
-                type: 'button',
-                label: t("You don't remember your account?"),
-                color: 'clear',
-                icon: icon.logIn,
-                onClick: ()=>history.push('/change-password', { direction: 'none' })
-              },
-              {
-                name: 'wanna-signin',
-                type: 'button',
-                label: t("Wanna Sign In?"),
-                color: 'clear',
-                icon: icon.logIn,
-                onClick: ()=>history.push('/sign-up', { direction: 'none' })
-              },
-            ]
-          },          
+          }, 
           {
             cols: [
               {
@@ -134,6 +114,26 @@ const Login: React.FC<LoginProps> = ({
                 onClick: () : any=> pageSettings.methods.loginForm.methods.onCancel()
               }
             ],
+          },         
+          {
+            cols:[
+              {
+                name: 'wanna-reset',
+                type: 'button',
+                label: t("You don't remember your account?"),
+                color: 'clear',
+                icon: icon.logIn,
+                onClick: ()=>history.push('/change-password', { direction: 'none' })
+              },
+              {
+                name: 'wanna-signin',
+                type: 'button',
+                label: t("Wanna Sign In?"),
+                color: 'clear',
+                icon: icon.logIn,
+                onClick: ()=>history.push('/sign-up', { direction: 'none' })
+              },
+            ]
           },
         ],
     

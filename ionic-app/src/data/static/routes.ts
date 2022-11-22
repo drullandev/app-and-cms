@@ -17,6 +17,6 @@ export const routes = {
       { title: 'Login', path: '/login', icon: icon.logIn },
       { title: 'Recover', path: '/recover', icon: icon.person },
       //{ title: 'Support', path: '/support', icon: help }, // I will move to account
-      { title: 'Signup', path: '/signup', icon: icon.personAdd }
+      { title: 'Signup', path: '/sign-up', icon: icon.personAdd }
     ]
   }

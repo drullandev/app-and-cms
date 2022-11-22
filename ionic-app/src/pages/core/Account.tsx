@@ -1,15 +1,21 @@
 
 import React, { useEffect, useState } from 'react'
 import { RouteComponentProps } from 'react-router'
-//import { restGet, setImage } from '../../data/utils/rest/rest.utils'
-//import { editUserValue } from '../../data/user/user.calls'
-import { IonContent, IonImg, IonList, IonItem, IonAlert, IonLabel, IonAccordion, IonAccordionGroup } from '@ionic/react'
+import { IonContent, IonImg, IonList, IonItem, IonLabel, IonAccordion, IonAccordionGroup, useIonToast } from '@ionic/react'
 
 import { setUsername, setEmail, } from '../../data/user/user.actions'
 import { connect } from '../../data/connect'
 import * as icon from 'ionicons/icons'
 
+// Extra required
+import { useTranslation } from 'react-i18next'
+
 import '../../pages/Styles.scss'
+import { restCall } from '../../classes/core/axios'
+
+// Are you testing this tools set && app?
+let testingFeature = true
+let testing = testingFeature && process.env.REACT_APP_TESTING
 
 interface OwnProps extends RouteComponentProps { }
 
@@ -23,112 +29,43 @@ interface DispatchProps {
   setUserEmail: typeof setEmail
 }
 
-interface AccountProps extends OwnProps, StateProps, DispatchProps { }
+interface AccountProps extends OwnProps, StateProps, DispatchProps {}
 
-const Account: React.FC<AccountProps> = ({ setNickname, nickname, setUserEmail, userEmail }) => {
+const Account: React.FC<AccountProps> = ({
+  setNickname,
+  nickname,
+  setUserEmail,
+  userEmail
+}) => {
 
-  const user_id = 1
-
-  const [showAlert, setShowAlert] = useState(false)
+  const { t } = useTranslation()
+  const [presentToast] = useIonToast()
   const [userData, setUserData] = useState()
 
-  const [avatar, setAvatar] = useState('https://www.gravatar.com/avatar?d=mm&s=140')
-
-  const [alertButtons, setAlertButtons] = useState([])
-  const [alertInputs, setAlertInputs] = useState([])
-  const [alertHeader, setAlertHeader] = useState('Edition form')
-
-  useEffect(() => {
-    /*
-    restGet('users', { id: user_id }) //TODO: Change with user/me when I i'm secure Bearer token is sending on each call ^_^
-      .then(res => {
-        console.log(res.data[0])
-        setUserData(res.data[0])
-        setAvatar(setImage(res.data[0].avatar.url))
-      })
-    */
-  }, [])
-
-  const [file, setFile] = useState([])
-
-  /*
-  useEffect(() => {
-    if (!file[0]) return
-    console.log('setting avatar!!', file[0].name)
-    setAvatar(file[0].name)
-  }, [file])
-
-  const launchAlert = (title: string, slug: string, value: string = '') => {
-    setAlertHeader(title)
-    switch (slug) {
-
-      case 'change-nickname':
-        setAlertInputs([{
-          type: 'text',
-          name: 'nickname',
-          value: value,
-          placeholder: 'nickname'
-        }])
-        break;
-
-      case 'change-email':
-        setAlertInputs([{
-          type: 'email',
-          name: 'email',
-          value: value,
-          placeholder: 'email'
-        }])
-        break;
-
-      case 'change-password':
-        setAlertInputs([{
-          type: 'password',
-          name: 'password',
-          value: value,
-          placeholder: 'Please, put your password...'
-        }, {
-          type: 'password',
-          name: 'password',
-          value: value,
-          placeholder: 'Set new password...'
+  useEffect(()=>{
+    if(testing){
+      restCall({
+        req: {
+          url: 'api/users/'+process.env.REACT_APP_DEFAULT_ID+'?populate=*',
+          method: 'GET',
         },
-        {
-          type: 'password2',
-          name: 'password2',
-          value: value,
-          placeholder: 'Repeat new password...'
-        }])
-        break;
+        onSuccess: {
 
-    }
-    setAlertButtons([
-      'Cancel',
-      {
-        text: 'Ok',
-        handler: (data: any) => {
-          setAction(slug, data)
+          default: async (ret:any)=> {
+            console.log('I did!', ret)    
+            setUserData(ret)
+          }
+
+        },
+        onError: {
+          default: presentToast
         }
-      }
-    ])
-    setShowAlert(true)
 
-  }
-
-  */
-
-  const setAction = (slug: string, param: any) => {
-    switch (slug) {
-      case 'change-nickname':
-        //editUserValue(user_id, 'username', param)
-        break;
-      case 'change-email':
-        //editUserValue(user_id, 'email', param)
-        break;
-      case 'change-password':
-        //editUserValue(user_id, 'passsword', param)
-        break;
+      })
     }
-  }
+  },[])
+
+  const [avatar, setAvatar] = useState('https://www.gravatar.com/avatar?d=mm&s=140') 
 
   let editOptions =[
     {
@@ -137,19 +74,19 @@ const Account: React.FC<AccountProps> = ({ setNickname, nickname, setUserEmail, 
       icon: icon.accessibility,
       content: <>
         <IonItem>
-          <IonLabel color='primary'>Change Nickname</IonLabel>
+          <IonLabel color='primary'>{t("Change Nickname")}</IonLabel>
         </IonItem>
 
         <IonItem>
-          <IonLabel color='primary'>Change Email</IonLabel>
+          <IonLabel color='primary'>{t("Change Email")}</IonLabel>
         </IonItem>
 
         <IonItem>
-          <IonLabel color='primary'>Change Password</IonLabel>
+          <IonLabel color='primary'>{t("Change Password")}</IonLabel>
         </IonItem>
 
         <IonItem routerLink='/logout' routerDirection='none'>
-          <IonLabel color='primary'>Logout</IonLabel>
+          <IonLabel color='primary'>{t("Logout")}</IonLabel>
         </IonItem>
       </>
     },
@@ -167,7 +104,9 @@ const Account: React.FC<AccountProps> = ({ setNickname, nickname, setUserEmail, 
 
 
   return (
-    <IonContent className='ion-padding-top ion-text-center'>
+    <>{userData &&
+
+      <IonContent className='ion-padding-top ion-text-center'>
 
       <h2>{nickname}</h2>
 
@@ -218,15 +157,10 @@ const Account: React.FC<AccountProps> = ({ setNickname, nickname, setUserEmail, 
 
       </IonList>
 
-      <IonAlert
-        isOpen={showAlert}
-        header={alertHeader}
-        buttons={alertButtons}
-        inputs={alertInputs}
-        onDidDismiss={() => setShowAlert(false)}
-      />
-
     </IonContent>
+
+    }</>
+
 
   )
 

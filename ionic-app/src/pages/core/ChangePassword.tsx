@@ -76,18 +76,6 @@ const ChangePassword: React.FC<LoginProps> = ({
           {
             cols: [
               {
-                name: 'wanna-reset',
-                type: 'button',
-                label: t("Do you remember your account?"),
-                color: 'clear',
-                icon: icon.logIn,
-                onClick: ()=>history.push('/login', { direction: 'none' })
-              },
-            ]
-          },    
-          {
-            cols: [
-              {
                 name: 'reset-submit',
                 type: 'button',
                 fieldType: 'submit',
@@ -105,6 +93,18 @@ const ChangePassword: React.FC<LoginProps> = ({
               }
             ],
           },
+          {
+            cols: [
+              {
+                name: 'wanna-reset',
+                type: 'button',
+                label: t("Do you remember your account?"),
+                color: 'clear',
+                icon: icon.logIn,
+                onClick: ()=>history.push('/login', { direction: 'none' })
+              },
+            ]
+          },    
         ],
     
         methods:{
