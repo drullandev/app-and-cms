@@ -2,13 +2,24 @@ import React from 'react'
 import { IonToolbar, IonButtons, IonMenuButton, IonTitle, IonProgressBar, IonHeader } from '@ionic/react'
 import { connect } from '../../../data/connect'
 
-import { HeaderProps } from './interfaces/HeaderProps'
 
-interface StateProps {}
+import { RouteComponentProps } from 'react-router'
+
+// Component Dependencies
+interface OwnProps {
+  label: string,
+  slot: string
+}
+
+interface StateProps {
+  loading?: boolean
+}
+
 interface DispatchProps {}
-interface Header extends HeaderProps, StateProps, DispatchProps {}
 
-const Header: React.FC<Header> = ({
+interface HeaderProps extends OwnProps, StateProps, DispatchProps {}
+
+const Header: React.FC<HeaderProps> = ({
   label,
   slot,
   loading
@@ -23,14 +34,10 @@ const Header: React.FC<Header> = ({
     </IonToolbar>  
   </IonHeader>
 
-export default connect<Header>({
-
+export default connect<HeaderProps>({
   mapStateToProps: (state) => ({
     loading: state.user.loading,
   }),
-
   mapDispatchToProps: {},
-
   component: Header
-
 })

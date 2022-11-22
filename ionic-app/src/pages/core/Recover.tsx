@@ -29,7 +29,8 @@ interface LoginProps extends OwnProps,  DispatchProps { }
 
 const Recover: React.FC<LoginProps> = ({
   setisLoggedIn,
-  history}) => {
+  history
+}) => {
 
   const { t } = useTranslation()
   const [presentToast] = useIonToast()

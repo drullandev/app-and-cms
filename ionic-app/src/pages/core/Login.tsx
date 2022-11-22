@@ -10,7 +10,7 @@ import { useTranslation } from 'react-i18next'
 // Reducer settings
 import { connect } from '../../data/connect'
 import { restCallAsync } from '../../classes/core/axios'
-import { setData } from '../../data/user/user.actions'
+import { setData, setLoading } from '../../data/user/user.actions'
 
 // Page dependencies
 import Page from './Page'
@@ -32,15 +32,21 @@ let testing = testingLogin && process.env.REACT_APP_TESTING
 // Component Dependencies
 interface OwnProps extends RouteComponentProps {}
 
-interface DispatchProps {
-  setData: typeof setData
+interface StateProps {
+  loading: boolean
 }
 
-interface LoginProps extends OwnProps, DispatchProps {}
+interface DispatchProps {
+  setData: typeof setData
+  setLoading: typeof setLoading
+}
+
+interface LoginProps extends OwnProps, StateProps, DispatchProps {}
 
 const Login: React.FC<LoginProps> = ({
   history,
-  setData
+  setData,
+  setLoading
 }) => {
 
   const { t } = useTranslation()
@@ -48,7 +54,7 @@ const Login: React.FC<LoginProps> = ({
 
   const pageSettings: PageProps = {
     id: 'login-page',
-    header: ()=> <Header label={'Login'} loading={false}/>,
+    header: ()=> <Header label={t('Login')} slot={'start'}/>,
     content: ()=> <Form {...pageSettings.methods.loginForm}/>,
     methods: {
       loginForm: {
@@ -140,7 +146,7 @@ const Login: React.FC<LoginProps> = ({
         methods:{
     
           onSubmit: async (data: any) => {
-
+            setLoading(true)
             await restCallAsync({
               req: {
                 url: 'api/auth/local',
@@ -201,9 +207,13 @@ const Login: React.FC<LoginProps> = ({
   
 }
 
-export default connect<OwnProps, {}, DispatchProps>({
+export default connect<StateProps,{}, DispatchProps>({
+  mapStateToProps: (state) => ({
+    loading: state.user.loading,
+  }),
   mapDispatchToProps: {
-    setData
+    setData,
+    setLoading
   },
   component: Login
 })
