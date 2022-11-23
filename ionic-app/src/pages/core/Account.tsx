@@ -46,6 +46,8 @@ const Account: React.FC<AccountProps> = ({
   const [userData, setUserData] = useState<UserState>()
   const [avatar, setAvatar] = useState('https://www.gravatar.com/avatar?d=mm&s=140') 
 
+  const [showAlert, setShowAlert] = useState(false)
+
   useEffect(()=>{
     restCallAsync({
       req: {
@@ -66,6 +68,10 @@ const Account: React.FC<AccountProps> = ({
     })
   },[])
 
+
+  const openAlert=()=>{
+    setShowAlert(true)
+  }
 
   let editOptions = [
     {
@@ -95,7 +101,7 @@ const Account: React.FC<AccountProps> = ({
           <IonLabel color='primary'>{t("Logout")}</IonLabel>
         </IonItem>
 
-        <IonItem onClick={()=> console.log('on click')}>
+        <IonItem onClick={()=> openAlert()}>
           <IonIcon icon={icon.arrowUndo}/>
           <IonLabel color='primary'>{t("TestClick")}</IonLabel>
         </IonItem>
@@ -146,6 +152,8 @@ const Account: React.FC<AccountProps> = ({
         </IonAccordionGroup>
 
       </IonList>
+
+      <Alert show={showAlert} style={''} header={''} message={''} buttons={[]} timestamp={''} />
 
     </IonContent>
 

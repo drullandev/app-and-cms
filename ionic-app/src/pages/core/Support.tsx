@@ -7,11 +7,11 @@ import { RouteComponentProps } from 'react-router'
 import { restCallAsync } from '../../classes/core/axios'
 import { globe } from 'ionicons/icons'
 import { useTranslation } from 'react-i18next'
-import { PageProps } from './Page/types'
+import { PageProps } from '../../components/core/Page/types'
 
 import Form from '../../components/core/Form'
 import * as yup from 'yup'
-import Page from './Page'
+import Page from '../../components/core/Page'
 import Icon from '../../components/core/main/Icon'
 
 let testingRecover = true

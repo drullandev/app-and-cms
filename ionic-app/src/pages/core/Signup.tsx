@@ -8,12 +8,12 @@ import { restCallAsync } from '../../classes/core/axios'
 import { random } from '../../classes/common'
 import { globe } from 'ionicons/icons'
 import { useTranslation } from 'react-i18next'
-import { PageProps } from './Page/types'
+import { PageProps } from '../../components/core/Page/types'
 
 import * as yup from 'yup'
 import * as icon from 'ionicons/icons'
 import Form from '../../components/core/Form'
-import Page from './Page'
+import Page from '../../components/core/Page'
 import Header from '../../components/core/main/Header'
 
 // Testing this module?

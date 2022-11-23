@@ -10,9 +10,9 @@ import { connect } from '../../data/connect'
 
 import '../../pages/Styles.scss'
 import { restCallAsync } from '../../classes/core/axios'
-import { PageProps } from './Page/types'
+import { PageProps } from '../../components/core/Page/types'
 import Form from '../../components/core/Form'
-import Page from './Page'
+import Page from '../../components/core/Page'
 import Header from '../../components/core/main/Header'
 
 let testingRecover = true

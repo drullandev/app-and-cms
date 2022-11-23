@@ -2,7 +2,7 @@ import React from 'react'
 import { IonSpinner } from '@ionic/react'
 
 //import Header from './Header'
-import Page from '../../../pages/core/Page'
+import Page from '../Page'
 
 import About from '../../../pages/core/About'
 //import Account from '../../../pages/core/Account'

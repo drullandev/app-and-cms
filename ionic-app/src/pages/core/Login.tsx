@@ -13,8 +13,8 @@ import { restCallAsync } from '../../classes/core/axios'
 import { setData } from '../../data/user/user.actions'
 
 // Page dependencies
-import Page from './Page'
-import { PageProps } from './Page/types'
+import Page from '../../components/core/Page'
+import { PageProps } from '../../components/core/Page/types'
 
 // Form settings
 import * as yup from 'yup'
