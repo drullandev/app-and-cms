@@ -12,7 +12,8 @@ import {
   setHasSeenTutorialData,
   setisLoggedInData,
   getUserData,
-  setUserData
+  setUserData,
+  setCaretData
 } from '../dataApi'
 
 import { ActionType } from '../../util/types'
@@ -127,6 +128,11 @@ export const setLoading = (isLoading: boolean) => {
   return { type: 'set-user-loading',  isLoading } as const
 }
 
+export const setCaret = (caret: object) => {
+  setTesting(setLoading, caret)
+  return { type: 'set-caret',  caret } as const
+}
+
 const setTesting = (func: Function, data: any = undefined, schema: string = 'user') => {
   if(testing) console.log(schema+'.action::'+func.name, data)
 }
@@ -144,5 +150,6 @@ export type UserActions =
 | ActionType<typeof setDarkMode>
 | ActionType<typeof setHasSeenTutorial>
 | ActionType<typeof setLoading>
+| ActionType<typeof setCaret>
 | ActionType<typeof setData>
 | ActionType<typeof setisLoggedIn>
