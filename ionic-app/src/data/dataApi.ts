@@ -1,7 +1,5 @@
 import { Plugins } from '@capacitor/core'
-import { Schedule, 
-  //Session
-} from '../models/Schedule'
+import { Schedule, Session } from '../models/Schedule'
 import { Speaker } from '../models/Speaker'
 import { Location } from '../models/Location'
 import { setOrRemove, parseSessions, toogleBool } from './reducer.utils'
@@ -23,8 +21,8 @@ const UPDATED_AT = 'updatedAt'
 const PROVIDER = 'provider'
 const DARK_MODE = 'darkMode'
 const HAS_SEEN_TUTORIAL = 'hasSeenTutorial'
-
 const HAS_LOGGED_IN = 'hasLoggedIn'
+const CARET = 'caret'
 
 export const getConfData = async () => {
 
@@ -71,6 +69,7 @@ export const getUserData = async () => {
     Storage.get({ key: DARK_MODE }),
     Storage.get({ key: HAS_SEEN_TUTORIAL }),
     Storage.get({ key: HAS_LOGGED_IN }),
+    Storage.get({ key: CARET }),
   ])
 
   const id          = response[0].value || '0'
@@ -83,8 +82,9 @@ export const getUserData = async () => {
   const updated_at  = response[7].value || undefined
   const provider    = response[8].value || undefined
   const darkMode    = response[9].value  === 'true'
-  const hasSeenTutorial = response[11].value === 'true'
-  const isLoggedIn      = response[10].value === 'true'
+  const hasSeenTutorial = response[10].value === 'true'
+  const isLoggedIn      = response[11].value === 'true'
+  const caret       = response[12].value === undefined
 
   return {
     id,
@@ -99,6 +99,7 @@ export const getUserData = async () => {
     darkMode,
     hasSeenTutorial,
     isLoggedIn,
+    caret
   }
 
 }
@@ -116,6 +117,7 @@ export const setProviderData = async (provider2?: string) => setOrRemove(UPDATED
 export const setDarkModeData = async (darkMode?: boolean) => toogleBool(DARK_MODE, darkMode, initialUser.darkMode)
 export const setHasSeenTutorialData = async (hasSeenTutorial?: boolean) => toogleBool(HAS_SEEN_TUTORIAL, hasSeenTutorial, initialUser.hasSeenTutorial)
 export const setisLoggedInData = async (isLoggedIn?: boolean) => toogleBool(HAS_LOGGED_IN, isLoggedIn, initialUser.isLoggedIn)
+export const setCaretData = async (caret?: object) => setOrRemove(CARET, caret, initialUser.caret)
 
 // EXTRA
 export const setUserData = async (data: Partial<UserState>) => {
@@ -131,4 +133,5 @@ export const setUserData = async (data: Partial<UserState>) => {
   setDarkModeData(data.darkMode !== null ? data.darkMode : initialUser.darkMode)
   setHasSeenTutorialData(data.hasSeenTutorial)
   setisLoggedInData(data.isLoggedIn)
+  setCaretData(data.caret)
 }

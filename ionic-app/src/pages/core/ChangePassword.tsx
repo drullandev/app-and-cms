@@ -8,8 +8,8 @@ import { RouteComponentProps } from 'react-router'
 import { restCallAsync } from '../../classes/core/axios'
 import { random } from '../../classes/common'
 import { useTranslation } from 'react-i18next'
-import { PageProps } from './Page/types'
-import Page from './Page'
+import { PageProps } from '../../components/core/Page/types'
+import Page from '../../components/core/Page'
 import Form from '../../components/core/Form'
 import * as yup from 'yup'
 import * as icon from 'ionicons/icons'
@@ -76,18 +76,6 @@ const ChangePassword: React.FC<LoginProps> = ({
           {
             cols: [
               {
-                name: 'wanna-reset',
-                type: 'button',
-                label: t("Do you remember your account?"),
-                color: 'clear',
-                icon: icon.logIn,
-                onClick: ()=>history.push('/login', { direction: 'none' })
-              },
-            ]
-          },    
-          {
-            cols: [
-              {
                 name: 'reset-submit',
                 type: 'button',
                 fieldType: 'submit',
@@ -105,6 +93,18 @@ const ChangePassword: React.FC<LoginProps> = ({
               }
             ],
           },
+          {
+            cols: [
+              {
+                name: 'wanna-reset',
+                type: 'button',
+                label: t("Do you remember your account?"),
+                color: 'clear',
+                icon: icon.logIn,
+                onClick: ()=>history.push('/login', { direction: 'none' })
+              },
+            ]
+          },    
         ],
     
         methods:{

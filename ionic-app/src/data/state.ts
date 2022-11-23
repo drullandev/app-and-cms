@@ -29,6 +29,7 @@ export const initialUser = {
   hasSeenTutorial: false,
   loading: false,
   isLoggedIn: false,
+  caret: undefined
 }
 
 export const initialState: AppState = {

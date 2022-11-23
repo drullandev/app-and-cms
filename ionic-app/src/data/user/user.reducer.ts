@@ -20,6 +20,8 @@ export function userReducer(state: UserState, action: UserActions): UserState {
     case 'set-has-seen-tutorial': return { ...state, hasSeenTutorial:   action.hasSeenTutorial }
     case 'set-is-loggedin':       return { ...state, isLoggedIn:        action.loggedIn }
     case 'set-user-loading':      return { ...state, loading:           action.isLoading }
+    case 'set-caret':             return { ...state, caret:             action.caret }
     case 'set-user-data':         return { ...state,                    ...action.data }
+    
   }
 }

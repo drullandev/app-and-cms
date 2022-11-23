@@ -34,18 +34,22 @@ import Signup from './pages/core/Signup'
 import Account from './pages/core/Account'
 import ChangePassword from './pages/core/ChangePassword'
 import Support from './pages/core/Support'
-import MainTabs from './components/core/main/MainTabs'
-import Tutorial from './pages/extra/Tutorial'
 import ResetPassword from './pages/core/ChangePassword'
 import Recover from './pages/core/Recover'
 
-import Page from './pages/core/Page'
+import Tutorial from './pages/extra/Tutorial'
 
-import { Schedule } from './models/Schedule'
-
+import Page from './components/core/Page'
+import MainTabs from './components/core/main/MainTabs'
 import HomeOrTutorial from './components/HomeOrTutorial'
 import RedirectToLogin from './components/RedirectToLogin'
+
+import { Schedule } from './models/Schedule'
 import { initialUser } from './data/state'
+
+// Are you testing this tools set && app?
+let testingFeature = true
+let testing = testingFeature && process.env.REACT_APP_TESTING
 
 // https://ionicframework.com/docs/react/config#global-config
 setupIonicReact({
@@ -92,7 +96,7 @@ const IonicApp: React.FC<IonicAppProps> = ({
             We use IonRoute here to keep the tabs state intact,
             which makes transitions between tabs and non tab pages smooth
           */}          
-
+          {testing && <Route path='/' component={Account} />}
           <Route path='/tabs' render={() => <MainTabs />} />
           <Route path='/:slug' component={Page} />
           <Route path='/tabs/home/:id' render={() => <MainTabs />} />
@@ -109,7 +113,7 @@ const IonicApp: React.FC<IonicAppProps> = ({
           <Route path='/logout' render={() =>
             <RedirectToLogin setData={setData}/>
           } />
-          <Route path='/' component={HomeOrTutorial} exact />
+          {/*<Route path='/' component={HomeOrTutorial} exact />*/}
         </IonRouterOutlet>
       </IonSplitPane>
     </IonReactRouter>

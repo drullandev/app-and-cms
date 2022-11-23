@@ -1,8 +1,8 @@
 export interface PageProps {
   id: string
-  header?: Function
-  content: Function
-  footer?: Function
+  header?: any
+  content: any
+  footer?: any
   sidenavs?: any[]
   methods: any
 }

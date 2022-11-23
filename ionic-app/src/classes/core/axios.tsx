@@ -1,6 +1,5 @@
 import axios, { AxiosRequestConfig } from 'axios'
 import { output } from '../strapi/CommonOperations'
-import * as icon from 'ionicons/icons'
 
 export interface CallProps {
   req: AxiosRequestConfig,
@@ -19,21 +18,25 @@ interface ErrorDesignProps {
   color?: string
 }
 
-const common = (call:any) => {
+const commonCall = (call:any) => {
   if (call.req.method === null) call.req.method = 'get'
-  call.req.url = (call.req.url) ? process.env.REACT_APP_HOST+call.req.url : undefined
+  call.req.url = (call.req.url) ? process.env.REACT_APP_HOST+'/'+call.req.url : undefined
+  // Yeah... '?populate=* ... The testing API requires this to show you all or only basic elements...
+  // Is not the time to stay working under this constraints
+  // I'growing faster this way ;)
+  if(call.req.method.toLowerCase() === 'get') call.req.url=call.req.url+'?populate=*'
   return call
 }
 
 export const restCallAsync = async (call: CallProps) => {
-  return setCall(common(call))
+  return setCall(commonCall(call))
 }
 
 export const restCall = (call: CallProps) => {
-  return setCall(common(call))
+  return setCall(commonCall(call))
 }
 
-const setCall = (call: CallProps, errorDesign?: ErrorDesignProps) =>{
+const setCall = (call: CallProps) =>{
 
   axios(call.req)
     .then((res: any)=> {

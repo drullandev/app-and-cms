@@ -10,9 +10,9 @@ import { connect } from '../../data/connect'
 
 import '../../pages/Styles.scss'
 import { restCallAsync } from '../../classes/core/axios'
-import { PageProps } from './Page/types'
+import { PageProps } from '../../components/core/Page/types'
 import Form from '../../components/core/Form'
-import Page from './Page'
+import Page from '../../components/core/Page'
 import Header from '../../components/core/main/Header'
 
 let testingRecover = true
@@ -72,18 +72,6 @@ const Recover: React.FC<LoginProps> = ({
             ]
           },
           {
-            cols:[
-              {
-                name: 'login-submit',
-                type: 'button',
-                label: t("Do you remember your account?"),
-                color: 'clear',
-                icon: icon.logIn,
-                onClick: ()=>history.push('/login', { direction: 'none' })
-              },
-            ]
-          },   
-          {
             cols: [
               {
                 name: 'recover-submit',
@@ -102,6 +90,18 @@ const Recover: React.FC<LoginProps> = ({
               }
             ],
           },
+          {
+            cols:[
+              {
+                name: 'login-submit',
+                type: 'button',
+                label: t("Do you remember your account?"),
+                color: 'clear',
+                icon: icon.logIn,
+                onClick: ()=>history.push('/login', { direction: 'none' })
+              },
+            ]
+          },   
         ],
     
         methods:{

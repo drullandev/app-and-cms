@@ -1,18 +1,15 @@
 import React, { useEffect } from 'react'
 import { IonHeader, IonToolbar, IonTitle, IonButtons, IonMenuButton, useIonToast } from '@ionic/react'
 import { RouteComponentProps } from 'react-router'
-import { useTranslation } from 'react-i18next'
-import * as yup from 'yup'
-
-import { connect } from '../../data/connect'
-import { setisLoggedIn, setUsername, setLoading } from '../../data/user/user.actions'
 import { restCallAsync } from '../../classes/core/axios'
-
+import { globe } from 'ionicons/icons'
+import { useTranslation } from 'react-i18next'
 import { PageProps } from './Page/types'
-import Form from '../../components/core/Form'
-import Page from './Page'
 
-import '../../pages/Styles.scss'
+import Form from '../../components/core/Form'
+import * as yup from 'yup'
+import Page from './Page'
+import Icon from '../../components/core/main/Icon'
 
 let testingRecover = true
 let testing = testingRecover && process.env.REACT_APP_TESTING
