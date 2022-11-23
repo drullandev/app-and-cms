@@ -32,9 +32,7 @@ let testing = testingLogin && process.env.REACT_APP_TESTING
 // Component Dependencies
 interface OwnProps extends RouteComponentProps {}
 
-interface StateProps {
-  loading: boolean
-}
+interface StateProps {}
 
 interface DispatchProps {
   setData: typeof setData
@@ -46,7 +44,7 @@ interface LoginProps extends OwnProps, StateProps, DispatchProps {}
 const Login: React.FC<LoginProps> = ({
   history,
   setData,
-  setLoading
+  setLoading,
 }) => {
 
   const { t } = useTranslation()
@@ -185,7 +183,7 @@ const Login: React.FC<LoginProps> = ({
                 default: presentToast                     
               }
             })
-
+            setLoading(false)
           },
     
           onCancel: ()=> history.push('/home', { direction: 'none' })      
@@ -208,9 +206,7 @@ const Login: React.FC<LoginProps> = ({
 }
 
 export default connect<StateProps,{}, DispatchProps>({
-  mapStateToProps: (state) => ({
-    loading: state.user.loading,
-  }),
+  mapStateToProps: (state) => ({}),
   mapDispatchToProps: {
     setData,
     setLoading

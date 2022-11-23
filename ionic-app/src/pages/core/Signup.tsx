@@ -1,12 +1,11 @@
-import React from 'react'
-import { IonHeader, IonToolbar, IonTitle, IonButtons, IonMenuButton, useIonToast, IonItem } from '@ionic/react'
+import React, { useEffect } from 'react'
+import { useIonToast } from '@ionic/react'
 import '../../pages/Styles.scss'
-import { setisLoggedIn, setUsername } from '../../data/user/user.actions'
+import { setisLoggedIn, setUsername, setLoading } from '../../data/user/user.actions'
 import { connect } from '../../data/connect'
 import { RouteComponentProps } from 'react-router'
 import { restCallAsync } from '../../classes/core/axios'
 import { random } from '../../classes/common'
-import { globe } from 'ionicons/icons'
 import { useTranslation } from 'react-i18next'
 import { PageProps } from './Page/types'
 
@@ -25,14 +24,16 @@ interface OwnProps extends RouteComponentProps {}
 interface DispatchProps {
   setisLoggedIn: typeof setisLoggedIn
   setUsername: typeof setUsername
+  setLoading: typeof setLoading
 }
 
 interface SignupProps extends OwnProps,  DispatchProps { }
 
 const Signup: React.FC<SignupProps> = ({
-  setisLoggedIn,
   history,
-  setUsername: setUsernameAction
+  setUsername: setUsernameAction,
+  setisLoggedIn,
+  setLoading,
 }) => {
 
   const {t} = useTranslation()
@@ -45,6 +46,9 @@ const Signup: React.FC<SignupProps> = ({
     header: ()=> <Header label={"Sign up"} slot="start"/>,
     content: ()=> <Form {...pageSettings.methods.signupForm}/>,
     methods: {
+      onLoad: ()=>{
+        setLoading(false)
+      },
       signupForm: {
 
         id: 'signup-form',
@@ -138,7 +142,7 @@ const Signup: React.FC<SignupProps> = ({
         methods:{
     
           onSubmit: async (data: any) => {
-        
+            setLoading(true)
             const onSignupSuccess = async (ret: any) => {
               let user = ret.user
               user.jwt = ret.jwt // Attaching the JWT to the user level and state...
@@ -185,7 +189,7 @@ const Signup: React.FC<SignupProps> = ({
               }
               
             })
-        
+            setLoading(false)
           },
     
           onCancel: ()=> history.push('/home', { direction: 'none' })      
@@ -204,6 +208,10 @@ const Signup: React.FC<SignupProps> = ({
     }
   }
 
+  useEffect(()=>{
+    pageSettings.methods.onLoad()
+  },[])
+
   return <Page {...pageSettings}/>
   
 }
@@ -211,7 +219,8 @@ const Signup: React.FC<SignupProps> = ({
 export default connect<OwnProps, {}, DispatchProps>({
   mapDispatchToProps: {
     setisLoggedIn,
-    setUsername
+    setUsername,
+    setLoading
   },
   component: Signup
 })

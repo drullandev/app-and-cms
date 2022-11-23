@@ -1,18 +1,18 @@
-import React from 'react'
-import { IonHeader, IonToolbar, IonTitle, IonButtons, IonMenuButton, useIonToast, IonItem } from '@ionic/react'
-import '../../pages/Styles.scss'
-import { setisLoggedIn, setUsername } from '../../data/user/user.actions'
-import { connect } from '../../data/connect'
+import React, { useEffect } from 'react'
+import { IonHeader, IonToolbar, IonTitle, IonButtons, IonMenuButton, useIonToast } from '@ionic/react'
 import { RouteComponentProps } from 'react-router'
-import { restCallAsync } from '../../classes/core/axios'
-import { globe } from 'ionicons/icons'
 import { useTranslation } from 'react-i18next'
-import { PageProps } from './Page/types'
-
-import Form from '../../components/core/Form'
 import * as yup from 'yup'
+
+import { connect } from '../../data/connect'
+import { setisLoggedIn, setUsername, setLoading } from '../../data/user/user.actions'
+import { restCallAsync } from '../../classes/core/axios'
+
+import { PageProps } from './Page/types'
+import Form from '../../components/core/Form'
 import Page from './Page'
-import Icon from '../../components/core/main/Icon'
+
+import '../../pages/Styles.scss'
 
 let testingRecover = true
 let testing = testingRecover && process.env.REACT_APP_TESTING
@@ -22,14 +22,16 @@ interface OwnProps extends RouteComponentProps {}
 
 interface DispatchProps {
   setisLoggedIn: typeof setisLoggedIn
-  setUsername: typeof setUsername
+  setLoading: typeof setLoading
 }
 
 interface LoginProps extends OwnProps,  DispatchProps { }
 
 const Support: React.FC<LoginProps> = ({
   setisLoggedIn,
-  history}) => {
+  setLoading,
+  history
+}) => {
 
   const { t } = useTranslation()
   const [presentToast] = useIonToast()
@@ -102,9 +104,11 @@ const Support: React.FC<LoginProps> = ({
         ],
     
         methods:{
-    
+          onLoad: ()=>{
+            setLoading(false)
+          },
           onSubmit: async (data: any) => {
-
+            setLoading(true)
             const onRecoverSuccess = async (ret: any) => {
               let user = ret.user
               user.jwt = ret.jwt // Attaching the JWT to the user level and state...
@@ -140,7 +144,7 @@ const Support: React.FC<LoginProps> = ({
                 }
               }
             })
-            
+            setLoading(false)
           },
     
           onCancel: ()=> historyPush(process.env.REACT_APP_HOME_PATH)     
@@ -161,6 +165,10 @@ const Support: React.FC<LoginProps> = ({
     if(par) history.push(par, { direction: 'none' }) 
   }
 
+  useEffect(()=>{
+    pageSettings.methods.onLoad()
+  },[])
+
   return <Page {...pageSettings}/>
 
 }
@@ -168,7 +176,7 @@ const Support: React.FC<LoginProps> = ({
 export default connect<OwnProps, {}, DispatchProps>({
   mapDispatchToProps: {
     setisLoggedIn,
-    setUsername
+    setLoading
   },
   component: Support
 })  
