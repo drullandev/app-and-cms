@@ -64,6 +64,22 @@ const onSubmit = async (form: any) => {
 
 }
 
+interface OutputType {
+  message: string
+  duration: number
+  color: string
+  icon: any
+}
+
+export const initialOutput = (output: OutputType) =>{
+  return {
+    message: output.message,
+    duration: output?.duration ?? 1500,
+    color: output?.color ?? 'warning',
+    icon: output?.icon ?? icon.closeCircleOutline,
+  }
+}
+
 export const output = (err: any, errorDesign?: ErrorDesignProps) => {
 
   let errorOutput = {

@@ -14,6 +14,7 @@ import * as icon from 'ionicons/icons'
 import Form from '../../components/core/Form'
 import Page from '../../components/core/Page'
 import Header from '../../components/core/main/Header'
+import { output } from '../../classes/strapi/CommonOperations'
 
 // Testing this module?
 let testingSignup = true
@@ -107,6 +108,19 @@ const Signup: React.FC<SignupProps> = ({
             ]
           },
           {
+            cols: [
+              {
+                type: 'input',
+                name: 'repeatPassword',
+                fieldType: 'password',
+                label: t('Repeat the password'),
+                //value: testing ? process.env.REACT_APP_DEFAULT_PASS : undefined,
+                required: true,
+                //onChange: (e:any)=> setPassword(e.detail.value)
+              }
+            ]
+          },
+          {
             cols:[
               {
                 name: 'wanna-reset',
@@ -142,6 +156,13 @@ const Signup: React.FC<SignupProps> = ({
         methods:{
     
           onSubmit: async (data: any) => {
+
+            setLoading(true)
+            if(data.password !== data.repeatPassword){
+              presentToast(output())
+              setLoading(false)
+            }
+
             setLoading(true)
             const onSignupSuccess = async (ret: any) => {
               let user = ret.user
@@ -201,6 +222,7 @@ const Signup: React.FC<SignupProps> = ({
             username: yup.string().required().min(3),
             email: yup.string().email().min(8),
             password: yup.string().required().min(6).max(64),//64 was arbitrary...
+            repeatPassword: yup.string().required().min(6).max(64),//64 was arbitrary...
           })
         },
     
