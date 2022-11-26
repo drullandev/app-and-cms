@@ -1,5 +1,5 @@
 export interface HeaderProps {
-  label?: string
+  label?: any
   slot?: string
   loading?:boolean
 }

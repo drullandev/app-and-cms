@@ -2,30 +2,36 @@ import React, { useEffect } from 'react'
 import { IonHeader, IonToolbar, IonTitle, IonButtons, IonMenuButton, useIonToast } from '@ionic/react'
 import { RouteComponentProps } from 'react-router'
 import { restCallAsync } from '../../classes/core/axios'
-import { globe } from 'ionicons/icons'
 import { useTranslation } from 'react-i18next'
-import { PageProps } from './Page/types'
+import * as yup from 'yup'
+
+import { setLoading } from '../../data/sessions/sessions.actions'
+import { connect } from '../../data/connect'
 
 import Form from '../../components/core/Form'
-import * as yup from 'yup'
-import Page from './Page'
-import Icon from '../../components/core/main/Icon'
-
-let testingRecover = true
-let testing = testingRecover && process.env.REACT_APP_TESTING
+import Page from '../../components/core/Page'
+import { PageProps } from '../../components/core/Page/types'
+import * as icon from 'ionicons/icons'
 
 
-interface OwnProps extends RouteComponentProps {}
+let testingFeature = true
+let testing = testingFeature && process.env.REACT_APP_TESTING
+
+interface StateProps {
+  
+}
+
+interface OwnProps extends RouteComponentProps {
+
+}
 
 interface DispatchProps {
-  setisLoggedIn: typeof setisLoggedIn
   setLoading: typeof setLoading
 }
 
 interface LoginProps extends OwnProps,  DispatchProps { }
 
 const Support: React.FC<LoginProps> = ({
-  setisLoggedIn,
   setLoading,
   history
 }) => {
@@ -34,25 +40,25 @@ const Support: React.FC<LoginProps> = ({
   const [presentToast] = useIonToast()
  
   const pageSettings: PageProps = {
-    id: 'recover-page',
+    id: 'support-page',
     header: ()=>
       <IonHeader>
         <IonToolbar>
           <IonButtons slot="start">
             <IonMenuButton></IonMenuButton>
           </IonButtons>
-          <IonTitle>Recover</IonTitle>
+          <IonTitle>{t('Support')}</IonTitle>
         </IonToolbar>    
       </IonHeader>,
-    content: ()=> <Form {...pageSettings.methods.recoverForm}/>,
+    content: ()=> <Form {...pageSettings.methods.supportForm}/>,
     footer: ()=> <></>,
     methods: {
-      recoverForm: {
+      supportForm: {
 
-        id: 'recover-form',
+        id: 'support-form',
     
         title: {
-          label: t('Recover your account...')
+          label: t('Ask for support...')
         },
     
         rows: [
@@ -60,7 +66,7 @@ const Support: React.FC<LoginProps> = ({
             cols:[
               {
                 component: <div className="login-logo">
-                  <img src="assets/img/appicon.svg" alt="Ionic logo" />
+                  <img src="assets/img/appicon.svg" alt="Ionic logo"/>
                 </div>
               }
             ]
@@ -69,11 +75,11 @@ const Support: React.FC<LoginProps> = ({
             cols: [
               {
                 type: 'input',
-                name: 'email',
+                name: 'complaint',
                 fieldType: 'textarea',// TODO: Liberate for email and also nickname
                 label: t('Set your question'),
-                //value: testing ? process.env.REACT_APP_DEFAULT_USER : undefined,
                 required: true,
+                //value: testing ? process.env.REACT_APP_DEFAULT_USER : undefined,
                 //onChange: (e:any)=> setValue('identifier',e.detail.value)    
               }
             ]
@@ -82,19 +88,20 @@ const Support: React.FC<LoginProps> = ({
           {
             cols: [
               {
-                name: 'recover-submit',
+                name: 'support-submit',
                 type: 'button',
                 fieldType: 'submit',
-                label: t('Recover'),
+                label: t('Send'),
+                icon: icon.shuffle
               },
               {
-                name: 'recover-cancel',
+                name: 'support-cancel',
                 type: 'button',
                 fieldType: 'link',
                 label: t('Cancel'),
-                fill: 'outline',
-                
-                onClick: () : any=> pageSettings.methods.recoverForm.methods.onCancel()
+                fill: 'outline',               
+                icon: icon.close, 
+                onClick: () : any=> pageSettings.methods.supportForm.methods.onCancel()
               }
             ],
           },
@@ -106,11 +113,8 @@ const Support: React.FC<LoginProps> = ({
           },
           onSubmit: async (data: any) => {
             setLoading(true)
-            const onRecoverSuccess = async (ret: any) => {
-              let user = ret.user
-              user.jwt = ret.jwt // Attaching the JWT to the user level and state...
-              await setisLoggedIn(true)
-              return user
+            const onSupportSuccess = async (ret: any) => {
+
             }  
       
             await restCallAsync({
@@ -121,7 +125,7 @@ const Support: React.FC<LoginProps> = ({
               },
               onSuccess: {
                 default: async (ret: any)=>{
-                  await onRecoverSuccess(ret.data)
+                  /*await onSupportSuccess(ret.data)
                     .then((ret: any)=>{
                       switch (ret.status) {
                         case 200:
@@ -130,15 +134,11 @@ const Support: React.FC<LoginProps> = ({
                           }).then(()=> history.push('/tabs/schedule', { direction: 'none' }))
                             
                       }            
-                    })
+                    })*/
                 }
               },
-              onError:{
-                default: (err: any)=> {
-                  presentToast({ 
-                    message: t(err.response.data.error.message) ?? t(err.response.data.message[0].messages[0].message)
-                  })
-                }
+              onError: {
+                default: presentToast                
               }
             })
             setLoading(false)
@@ -162,17 +162,13 @@ const Support: React.FC<LoginProps> = ({
     if(par) history.push(par, { direction: 'none' }) 
   }
 
-  useEffect(()=>{
-    pageSettings.methods.onLoad()
-  },[])
-
+  useEffect(()=> pageSettings.methods.onLoad,[])
   return <Page {...pageSettings}/>
 
 }
 
 export default connect<OwnProps, {}, DispatchProps>({
   mapDispatchToProps: {
-    setisLoggedIn,
     setLoading
   },
   component: Support

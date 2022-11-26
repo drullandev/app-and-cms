@@ -1,4 +1,5 @@
 import * as icon from 'ionicons/icons'
+import { setOutput } from '../../classes/core/output'
 
 interface ErrorDesignProps {
   duration?: number
@@ -64,30 +65,9 @@ const onSubmit = async (form: any) => {
 
 }
 
-interface OutputType {
-  message: string
-  duration: number
-  color: string
-  icon: any
-}
-
-export const initialOutput = (output: OutputType) =>{
-  return {
-    message: output.message,
-    duration: output?.duration ?? 1500,
-    color: output?.color ?? 'warning',
-    icon: output?.icon ?? icon.closeCircleOutline,
-  }
-}
-
 export const output = (err: any, errorDesign?: ErrorDesignProps) => {
 
-  let errorOutput = {
-    message: 'Error calling Strapi service...',
-    duration: errorDesign?.duration ?? 1500,
-    color: errorDesign?.color ?? 'warning',
-    icon: errorDesign?.icon ?? icon.closeCircleOutline,
-  }
+  let errorOutput = setOutput({ message: 'Error calling Strapi service' })
 
   if (err.response) {
     // The client was given an error response (5xx, 4xx)

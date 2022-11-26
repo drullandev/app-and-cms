@@ -1,24 +1,32 @@
 import React, { useEffect } from 'react'
 import { useIonToast } from '@ionic/react'
-import '../../pages/Styles.scss'
-import { setisLoggedIn, setUsername, setLoading } from '../../data/user/user.actions'
-import { connect } from '../../data/connect'
 import { RouteComponentProps } from 'react-router'
-import { restCallAsync } from '../../classes/core/axios'
-import { random } from '../../classes/common'
 import { useTranslation } from 'react-i18next'
-import { PageProps } from '../../components/core/Page/types'
 
 import * as yup from 'yup'
 import * as icon from 'ionicons/icons'
+
+import { connect } from '../../data/connect'
+import { setisLoggedIn, setUsername, setLoading } from '../../data/user/user.actions'
+import { restCallAsync } from '../../classes/core/axios'
+import { random } from '../../classes/common'
+
+import { setOutput } from '../../classes/core/output'
+import Header from '../../components/core/main/Header'
 import Form from '../../components/core/Form'
 import Page from '../../components/core/Page'
-import Header from '../../components/core/main/Header'
-import { output } from '../../classes/strapi/CommonOperations'
+import { PageProps } from '../../components/core/Page/types'
+
+import '../../pages/Styles.scss'
+
 
 // Testing this module?
 let testingSignup = true
 let testing = testingSignup && process.env.REACT_APP_TESTING
+
+interface StateProps {
+  
+}
 
 interface OwnProps extends RouteComponentProps {}
 
@@ -159,7 +167,7 @@ const Signup: React.FC<SignupProps> = ({
 
             setLoading(true)
             if(data.password !== data.repeatPassword){
-              presentToast(output())
+              presentToast(setOutput({message:''}))
               setLoading(false)
             }
 
@@ -198,15 +206,7 @@ const Signup: React.FC<SignupProps> = ({
                 }
               },
               onError: {
-                default: (err: any)=> {
-                  switch(err?.response.status){
-                    case 400: 
-                      presentToast({ message: t(err.response.data.error.message) })
-                    break
-                    default:
-                      presentToast({ message: t(err.response.data.message[0].messages[0].message) })
-                  }
-                }
+                default: presentToast
               }
               
             })
@@ -220,7 +220,7 @@ const Signup: React.FC<SignupProps> = ({
         validation: ()=> {
           return yup.object().shape({
             username: yup.string().required().min(3),
-            email: yup.string().email().min(8),
+            email: yup.string().required().email().min(8),
             password: yup.string().required().min(6).max(64),//64 was arbitrary...
             repeatPassword: yup.string().required().min(6).max(64),//64 was arbitrary...
           })

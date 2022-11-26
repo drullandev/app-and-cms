@@ -25,6 +25,7 @@ interface OwnProps extends RouteComponentProps { }
 interface StateProps {
   nickname?: string
   userEmail?: string
+  caret?: any
 }
 
 interface DispatchProps {
@@ -135,7 +136,7 @@ const Account: React.FC<AccountProps> = ({
 
       <IonList inset>
 
-        <IonItem><IonImg src={process.env.REACT_APP_HOST+userData?.caret?.formats?.medium?.url} alt='avatar' /></IonItem>
+        <IonItem><IonImg src={process.env.REACT_APP_HOST+userData?.caret?.formats?.medium?.url} alt={userData.username}/></IonItem>
 
         <IonAccordionGroup>
           {Object.keys(editOptions).map((row: any, key: number)=>{
@@ -167,7 +168,8 @@ const Account: React.FC<AccountProps> = ({
 export default connect<OwnProps, {}, DispatchProps>({
 
   mapStateToProps: (state) => ({
-    nickname: state.user.nickname
+    nickname: state.user.nickname,
+    caret: state.user.caret
   }),
 
   //mapDispatchToProps: {
