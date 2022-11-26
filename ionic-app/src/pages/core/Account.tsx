@@ -1,20 +1,21 @@
 
 import React, { useEffect, useState } from 'react'
+import { IonContent, IonImg, IonList, IonItem, IonLabel, IonAccordion, IonAccordionGroup, useIonToast, IonIcon, IonAlert } from '@ionic/react'
+import { ReactControllerProps } from '@ionic/react/dist/types/components/createControllerComponent'
 import { RouteComponentProps } from 'react-router'
-import { IonContent, IonImg, IonList, IonItem, IonLabel, IonAccordion, IonAccordionGroup, useIonToast, IonIcon } from '@ionic/react'
 
-import { setUsername, setEmail, } from '../../data/user/user.actions'
+import { setUsername, setLoading } from '../../data/user/user.actions'
 import { connect } from '../../data/connect'
 import * as icon from 'ionicons/icons'
 
 // Extra required
 import { useTranslation } from 'react-i18next'
 
-import '../../pages/Styles.scss'
 import { restCallAsync } from '../../classes/core/axios'
 import { UserState } from '../../data/user/user.state'
 import Alert from '../../components/core/Alert'
-
+import '../../pages/Styles.scss'
+import { messages } from '../../../../ionic-for-strapi/src/static/constants';
 
 // Are you testing this tools set && app?
 let testingFeature = true
@@ -22,33 +23,26 @@ let testing = testingFeature && process.env.REACT_APP_TESTING
 
 interface OwnProps extends RouteComponentProps { }
 
-interface StateProps {
-  nickname?: string
-  userEmail?: string
-}
+interface StateProps {}
 
 interface DispatchProps {
-  setNickname: typeof setUsername
-  setUserEmail: typeof setEmail
+  setLoading: typeof setLoading
 }
 
 interface AccountProps extends OwnProps, StateProps, DispatchProps {}
 
 const Account: React.FC<AccountProps> = ({
-  setNickname,
-  nickname,
-  setUserEmail,
-  userEmail
+  setLoading,
 }) => {
 
   const { t } = useTranslation()
   const [presentToast] = useIonToast()
   const [userData, setUserData] = useState<UserState>()
   const [avatar, setAvatar] = useState('https://www.gravatar.com/avatar?d=mm&s=140') 
-
   const [showAlert, setShowAlert] = useState(false)
+  const [alert, setAlert] = useState<ReactControllerProps>({isOpen: false})
 
-  useEffect(()=>{
+  const onLoad = () => {
     restCallAsync({
       req: {
         url: 'api/users/1',
@@ -64,9 +58,10 @@ const Account: React.FC<AccountProps> = ({
       onError: {
         default: presentToast
       }
-
     })
-  },[])
+  }
+
+  useEffect(onLoad,[])
 
 
   const openAlert=()=>{
@@ -117,6 +112,7 @@ const Account: React.FC<AccountProps> = ({
           <IonIcon icon={icon.helpBuoy}/>
           <IonLabel color='primary'>Support</IonLabel>
         </IonItem>
+
         <IonItem>
           <IonIcon icon={icon.contrast}/>
           <IonLabel color='primary'>DarkMode</IonLabel>
@@ -126,16 +122,15 @@ const Account: React.FC<AccountProps> = ({
     }
   ]
 
-  return (
-    <>{userData &&
-
-      <IonContent className='ion-padding-top ion-text-center'>
-
+  return <IonContent className='ion-padding-top ion-text-center'>{userData &&
+    <>
       <h2>{userData.username}</h2>
 
       <IonList inset>
 
-        <IonItem><IonImg src={process.env.REACT_APP_HOST+userData?.caret?.formats?.medium?.url} alt='avatar' /></IonItem>
+        <IonItem>
+          <IonImg src={process.env.REACT_APP_HOST+userData?.caret?.formats?.medium?.url ?? avatar} alt='avatar' />
+        </IonItem>
 
         <IonAccordionGroup>
           {Object.keys(editOptions).map((row: any, key: number)=>{
@@ -153,28 +148,18 @@ const Account: React.FC<AccountProps> = ({
 
       </IonList>
 
-      <Alert show={showAlert} style={''} header={''} message={''} buttons={[]} timestamp={''} />
-
-    </IonContent>
-
-  }</>
-
-
-  )
+      <Alert {...alert}/>
+      <IonAlert {...alert}></IonAlert>
+    </>
+  }</IonContent>
 
 }
 
-export default connect<OwnProps, {}, DispatchProps>({
-
+export default connect<OwnProps, StateProps, DispatchProps>({
   mapStateToProps: (state) => ({
-    nickname: state.user.nickname
   }),
-
-  //mapDispatchToProps: {
-  //  setNickname,
-  //},
-  
-
+  mapDispatchToProps: {
+    setLoading
+  },
   component: Account
-
 })

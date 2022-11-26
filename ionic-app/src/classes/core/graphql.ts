@@ -1,6 +1,6 @@
 import { restCall, restCallAsync } from './axios'
 import { AxiosRequestConfig } from 'axios'
-import { empty, camelCase } from '../common'
+import { empty, camelCase } from './string'
 import { useTranslation } from 'react-i18next'
 
 export interface WhereProps {

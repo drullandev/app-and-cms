@@ -1,28 +1,33 @@
 import React, { useEffect } from 'react'
 import { IonHeader, IonToolbar, IonTitle, IonButtons, IonMenuButton, useIonToast } from '@ionic/react'
 import { RouteComponentProps } from 'react-router'
-import { restCallAsync } from '../../classes/core/axios'
-import { globe } from 'ionicons/icons'
+
 import { useTranslation } from 'react-i18next'
-import { PageProps } from './Page/types'
-
-import Form from '../../components/core/Form'
+import * as icon from 'ionicons/icons'
 import * as yup from 'yup'
-import Page from './Page'
-import Icon from '../../components/core/main/Icon'
 
-let testingRecover = true
-let testing = testingRecover && process.env.REACT_APP_TESTING
+import { restCallAsync } from '../../classes/core/axios'
 
+import { connect } from '../../data/connect'
+import { setisLoggedIn, setLoading } from '../../data/user/user.actions'
+
+import Page from '../../components/core/Page'
+import { PageProps } from '../../components/core/Page/types'
+import Form from '../../components/core/Form'
+
+let testingFeature = true
+let testing = testingFeature && process.env.REACT_APP_TESTING
 
 interface OwnProps extends RouteComponentProps {}
 
+interface StateProps {}
+
 interface DispatchProps {
-  setisLoggedIn: typeof setisLoggedIn
   setLoading: typeof setLoading
+  setisLoggedIn: typeof setisLoggedIn
 }
 
-interface LoginProps extends OwnProps,  DispatchProps { }
+interface LoginProps extends OwnProps, StateProps, DispatchProps {}
 
 const Support: React.FC<LoginProps> = ({
   setisLoggedIn,
@@ -85,6 +90,7 @@ const Support: React.FC<LoginProps> = ({
                 name: 'recover-submit',
                 type: 'button',
                 fieldType: 'submit',
+                icon: icon.scan,
                 label: t('Recover'),
               },
               {
@@ -93,7 +99,7 @@ const Support: React.FC<LoginProps> = ({
                 fieldType: 'link',
                 label: t('Cancel'),
                 fill: 'outline',
-                
+                icon: icon.close,
                 onClick: () : any=> pageSettings.methods.recoverForm.methods.onCancel()
               }
             ],
@@ -134,11 +140,7 @@ const Support: React.FC<LoginProps> = ({
                 }
               },
               onError:{
-                default: (err: any)=> {
-                  presentToast({ 
-                    message: t(err.response.data.error.message) ?? t(err.response.data.message[0].messages[0].message)
-                  })
-                }
+                default: presentToast
               }
             })
             setLoading(false)
@@ -162,15 +164,13 @@ const Support: React.FC<LoginProps> = ({
     if(par) history.push(par, { direction: 'none' }) 
   }
 
-  useEffect(()=>{
-    pageSettings.methods.onLoad()
-  },[])
-
+  useEffect(pageSettings.methods.onLoad,[])
   return <Page {...pageSettings}/>
 
 }
 
-export default connect<OwnProps, {}, DispatchProps>({
+export default connect<StateProps,{}, DispatchProps>({
+  mapStateToProps: (state) => ({}),
   mapDispatchToProps: {
     setisLoggedIn,
     setLoading

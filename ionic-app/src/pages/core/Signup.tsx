@@ -5,7 +5,7 @@ import { setisLoggedIn, setUsername, setLoading } from '../../data/user/user.act
 import { connect } from '../../data/connect'
 import { RouteComponentProps } from 'react-router'
 import { restCallAsync } from '../../classes/core/axios'
-import { random } from '../../classes/common'
+import { random } from '../../classes/core/string'
 import { useTranslation } from 'react-i18next'
 import { PageProps } from '../../components/core/Page/types'
 
