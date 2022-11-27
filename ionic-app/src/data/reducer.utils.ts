@@ -15,7 +15,7 @@ export const setOrRemove = async (key: string, value: any, string: boolean = tru
   if(testing) console.log('dataApi::setOrRemove', {key: key, value: value, string: string})
   return (!value)
     ? await Storage.remove({ key: key })
-    : await Storage.set({ key: key, value: string ? value : JSON.stringify(value) })
+    : await Storage.set({ key: key, value: string ? value : value.toString() })
 }
 
 export const toogleBool = async (key: string, value: any, def: boolean = true) => {

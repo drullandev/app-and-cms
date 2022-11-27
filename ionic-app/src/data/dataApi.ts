@@ -23,6 +23,7 @@ const DARK_MODE = 'darkMode'
 const HAS_SEEN_TUTORIAL = 'hasSeenTutorial'
 const HAS_LOGGED_IN = 'hasLoggedIn'
 const CARET = 'caret'
+const ROLE = 'role'
 
 export const getConfData = async () => {
 
@@ -70,6 +71,7 @@ export const getUserData = async () => {
     Storage.get({ key: HAS_SEEN_TUTORIAL }),
     Storage.get({ key: HAS_LOGGED_IN }),
     Storage.get({ key: CARET }),
+    Storage.get({ key: ROLE }),
   ])
 
   const id          = response[0].value || '0'
@@ -85,6 +87,7 @@ export const getUserData = async () => {
   const hasSeenTutorial = response[10].value === 'true'
   const isLoggedIn      = response[11].value === 'true'
   const caret       = response[12].value === undefined
+  const role        = response[13].value === undefined
 
   return {
     id,
@@ -99,7 +102,8 @@ export const getUserData = async () => {
     darkMode,
     hasSeenTutorial,
     isLoggedIn,
-    caret
+    caret,
+    role
   }
 
 }
@@ -117,7 +121,8 @@ export const setProviderData = async (provider2?: string) => setOrRemove(UPDATED
 export const setDarkModeData = async (darkMode?: boolean) => toogleBool(DARK_MODE, darkMode, initialUser.darkMode)
 export const setHasSeenTutorialData = async (hasSeenTutorial?: boolean) => toogleBool(HAS_SEEN_TUTORIAL, hasSeenTutorial, initialUser.hasSeenTutorial)
 export const setisLoggedInData = async (isLoggedIn?: boolean) => toogleBool(HAS_LOGGED_IN, isLoggedIn, initialUser.isLoggedIn)
-export const setCaretData = async (caret?: object) => setOrRemove(CARET, caret, initialUser.caret)
+export const setCaretData = async (caret?: object) => setOrRemove(CARET, caret, true)
+export const setRoleData = async (role?: object) => setOrRemove(ROLE, role, true)
 
 // EXTRA
 export const setUserData = async (data: Partial<UserState>) => {
@@ -134,4 +139,5 @@ export const setUserData = async (data: Partial<UserState>) => {
   setHasSeenTutorialData(data.hasSeenTutorial)
   setisLoggedInData(data.isLoggedIn)
   setCaretData(data.caret)
+  setRoleData(data.role)
 }

@@ -170,9 +170,10 @@ const Login: React.FC<LoginProps> = ({
 
                         // Set user state
                         let user = ret2.data
-                        user.jwt = ret2.jwt // Attaching the JWT to the user level and state...
+                        console.log(user)
+                        user.jwt = ret.jwt // Attaching the JWT to the user level and state...
                         user.isLoggedIn = true
-                        user.caret = JSON.stringify(user.caret)
+                        user.caret = user.caret
                         console.log('user', user)
                         setData(user)
 

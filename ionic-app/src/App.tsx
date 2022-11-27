@@ -112,7 +112,7 @@ const IonicApp: React.FC<IonicAppProps> = ({
           <Route path='/logout' render={() =>
             <RedirectToLogin setData={setData}/>
           } />
-          {/*<Route path='/' component={HomeOrTutorial} exact />*/}
+          <Route path='/' component={HomeOrTutorial} exact />
         </IonRouterOutlet>
       </IonSplitPane>
     </IonReactRouter>

@@ -25,7 +25,7 @@ let testingSignup = true
 let testing = testingSignup && process.env.REACT_APP_TESTING
 
 interface StateProps {
-  
+
 }
 
 interface OwnProps extends RouteComponentProps {}
@@ -230,10 +230,7 @@ const Signup: React.FC<SignupProps> = ({
     }
   }
 
-  useEffect(()=>{
-    pageSettings.methods.onLoad()
-  },[])
-
+  useEffect(pageSettings.methods.onLoad,[])
   return <Page {...pageSettings}/>
   
 }

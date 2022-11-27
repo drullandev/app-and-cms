@@ -31,7 +31,7 @@ let testing = testingUserActions && process.env.REACT_APP_TESTING
 export const loadUserData = () => async (dispatch: React.Dispatch<any>) => {
   setTesting(loadUserData)
   dispatch(setLoading(true))
-  const data = await getUserData()
+  let data = await getUserData()
   dispatch(setData(data))
   dispatch(setLoading(false))
 }

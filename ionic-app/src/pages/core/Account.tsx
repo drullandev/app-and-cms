@@ -1,7 +1,7 @@
 
 import React, { useEffect, useState } from 'react'
 import { RouteComponentProps } from 'react-router'
-import { IonContent, IonImg, IonList, IonItem, IonLabel, IonAccordion, IonAccordionGroup, useIonToast, IonIcon } from '@ionic/react'
+import { IonContent, IonList, IonItem, IonLabel, IonAccordion, IonAccordionGroup, useIonToast, IonIcon, IonAvatar, IonGrid, IonCol, IonRow } from '@ionic/react'
 
 import { setUsername, setEmail, } from '../../data/user/user.actions'
 import { connect } from '../../data/connect'
@@ -45,7 +45,6 @@ const Account: React.FC<AccountProps> = ({
   const { t } = useTranslation()
   const [presentToast] = useIonToast()
   const [userData, setUserData] = useState<UserState>()
-  const [avatar, setAvatar] = useState('https://www.gravatar.com/avatar?d=mm&s=140') 
 
   const [showAlert, setShowAlert] = useState(false)
 
@@ -79,8 +78,10 @@ const Account: React.FC<AccountProps> = ({
       name: 'personal-data',
       label: 'Personal data',
       icon: icon.accessibility,
-      content: <>
-        <IonItem>
+      content: <IonGrid>
+        <IonRow>
+          <IonCol>
+          <IonItem>
           <IonIcon icon={icon.happy}/>
           <IonLabel color='primary'>{t("Change Nickname")}</IonLabel>
         </IonItem>
@@ -106,8 +107,10 @@ const Account: React.FC<AccountProps> = ({
           <IonIcon icon={icon.arrowUndo}/>
           <IonLabel color='primary'>{t("TestClick")}</IonLabel>
         </IonItem>
+          </IonCol>
+        </IonRow>
 
-      </>      
+      </IonGrid>      
     },
     {
       name: 'app-settings',
@@ -127,16 +130,13 @@ const Account: React.FC<AccountProps> = ({
     }
   ]
 
-  return (
-    <>{userData &&
-
-      <IonContent className='ion-padding-top ion-text-center'>
-
-      <h2>{userData.username}</h2>
+  return <IonContent className='ion-padding-top ion-text-center'>{userData &&
+    <>    
+      <IonAvatar>
+        <img src={process.env.REACT_APP_HOST+userData?.caret?.formats?.medium?.url} alt={userData.username}/>
+      </IonAvatar>
 
       <IonList inset>
-
-        <IonItem><IonImg src={process.env.REACT_APP_HOST+userData?.caret?.formats?.medium?.url} alt={userData.username}/></IonItem>
 
         <IonAccordionGroup>
           {Object.keys(editOptions).map((row: any, key: number)=>{
@@ -154,29 +154,19 @@ const Account: React.FC<AccountProps> = ({
 
       </IonList>
 
-      <Alert show={showAlert} style={''} header={''} message={''} buttons={[]} timestamp={''} />
-
-    </IonContent>
-
-  }</>
-
-
-  )
+      <Alert show={showAlert} style={''} header={''} message={''} buttons={[]} timestamp={''} />    
+    </>
+  }</IonContent>
 
 }
 
 export default connect<OwnProps, {}, DispatchProps>({
-
   mapStateToProps: (state) => ({
     nickname: state.user.nickname,
     caret: state.user.caret
   }),
-
   //mapDispatchToProps: {
   //  setNickname,
-  //},
-  
-
+  //}, 
   component: Account
-
 })

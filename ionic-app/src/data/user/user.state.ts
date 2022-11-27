@@ -10,9 +10,10 @@ export interface UserState {
   updatedAt?: string // Convert the correct type of data required here
   provider?: string
   darkMode?: boolean
-  caret: any
+  caret?: any
   // Extra
   isLoggedIn: boolean
   hasSeenTutorial: boolean
   loading: boolean
+  role?: any
 }
