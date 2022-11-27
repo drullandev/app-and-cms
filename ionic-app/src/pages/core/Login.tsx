@@ -23,6 +23,7 @@ import Form from '../../components/core/Form'
 // Design Dependencies
 import * as icon from 'ionicons/icons'
 import Header from '../../components/core/main/Header'
+import { UserState } from '../../data/user/user.state'
 
 // Are you testing this tools set && app?
 let testingLogin = false
@@ -157,24 +158,45 @@ const Login: React.FC<LoginProps> = ({
               onSuccess: {
     
                 default: async (ret:any)=>{
-      
-                  // Set user state
-                  let user = ret.data.user
-                  user.jwt = ret.jwt // Attaching the JWT to the user level and state...
-                  user.isLoggedIn = true
-                  await setData(user)
 
-                  let loginOutput = { 
-                    message: t('user-wellcome', { username: ret.data.user.username }),
-                    icon: icon.checkmarkCircleOutline,
-                    duration: 1000,
-                    color: 'success'
-                  }
-    
-                  presentToast(loginOutput)
-                    .then(()=> history.push('/tabs/schedule', {
-                      direction: 'none'
-                    }))
+                  await restCallAsync({
+                    req: {
+                      url: 'api/users/'+ret.data.user.id,
+                      method: 'GET'
+                    },
+                    onSuccess: {
+
+                      default: (ret2: any)=>{
+
+                        // Set user state
+                        let user = ret2.data
+                        user.jwt = ret2.jwt // Attaching the JWT to the user level and state...
+                        user.isLoggedIn = true
+                        user.caret = JSON.stringify(user.caret)
+                        console.log('user', user)
+                        setData(user)
+
+                        let loginOutput = { 
+                          message: t('user-wellcome', { username: ret2.data.username }),
+                          icon: icon.checkmarkCircleOutline,
+                          duration: 1000,
+                          color: 'success'
+                        }
+          
+                        presentToast(loginOutput)
+                          .then(()=> history.push('/tabs/schedule', {
+                            direction: 'none'
+                          }))
+
+                      }
+
+                    },
+                    onError: {
+                      default: presentToast
+                    }
+                  })
+      
+
 
                   return true
                 }         

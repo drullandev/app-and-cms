@@ -96,7 +96,6 @@ const IonicApp: React.FC<IonicAppProps> = ({
             We use IonRoute here to keep the tabs state intact,
             which makes transitions between tabs and non tab pages smooth
           */}          
-          {testing && <Route path='/' component={Account} />}
           <Route path='/tabs' render={() => <MainTabs />} />
           <Route path='/:slug' component={Page} />
           <Route path='/tabs/home/:id' render={() => <MainTabs />} />

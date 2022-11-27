@@ -128,8 +128,9 @@ export const setLoading = (isLoading: boolean) => {
   return { type: 'set-user-loading',  isLoading } as const
 }
 
-export const setCaret = (caret: object) => {
+export const setCaret = (caret: object) => async (dispatch: React.Dispatch<any>) => {
   setTesting(setLoading, caret)
+  await setCaretData(caret)
   return { type: 'set-caret',  caret } as const
 }
 
