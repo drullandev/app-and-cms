@@ -26,8 +26,8 @@ import Header from '../../components/core/main/Header'
 import { UserState } from '../../data/user/user.state'
 
 // Are you testing this tools set && app?
-let testingFeature = true
-let testing = testingFeature && process.env.REACT_APP_TESTING
+let testingLogin = false
+let testing = testingLogin && process.env.REACT_APP_TESTING
 // - The main testing user will be used under testing
 
 // Component Dependencies
@@ -99,27 +99,7 @@ const Login: React.FC<LoginProps> = ({
                 //onChange: (e:any)=> setPassword(e.detail.value)
               }
             ]
-          }, 
-          {
-            cols: [
-              {
-                name: 'login-submit',
-                type: 'button',
-                fieldType: 'submit',
-                label: t('Login'),
-                icon: icon.logIn
-              },
-              {
-                name: 'login-cancel',
-                type: 'button',
-                fieldType: 'link',
-                label: t('Cancel'),
-                fill: 'outline',
-                icon: icon.close,
-                onClick: () : any=> pageSettings.methods.loginForm.methods.onCancel()
-              }
-            ],
-          },         
+          },          
           {
             cols:[
               {
@@ -139,6 +119,26 @@ const Login: React.FC<LoginProps> = ({
                 onClick: ()=>history.push('/sign-up', { direction: 'none' })
               },
             ]
+          },          
+          {
+            cols: [
+              {
+                name: 'login-submit',
+                type: 'button',
+                fieldType: 'submit',
+                label: t('Login'),
+                icon: icon.logIn
+              },
+              {
+                name: 'login-cancel',
+                type: 'button',
+                fieldType: 'link',
+                label: t('Cancel'),
+                fill: 'outline',
+                icon: icon.close,
+                onClick: () : any=> pageSettings.methods.loginForm.methods.onCancel()
+              }
+            ],
           },
         ],
     

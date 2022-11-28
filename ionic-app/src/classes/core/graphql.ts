@@ -1,6 +1,6 @@
 import { restCall, restCallAsync } from './axios'
 import { AxiosRequestConfig } from 'axios'
-import { empty, camelCase } from '../common'
+import { empty, camelCase } from './string'
 import { useTranslation } from 'react-i18next'
 
 export interface WhereProps {
@@ -28,13 +28,9 @@ export interface GqlMutationModel {
   }
 }
 
-export const getMutation = (p: GqlMutationModel) => {
-  return graphqlCall(setMutation(p))
-}
+export const getMutation = (p: GqlMutationModel) => graphqlCall(setMutation(p))
 
-export const getMutationAsync = async (p: GqlMutationModel) => {
-  return await graphqlCallAsync(setMutation(p))
-}
+export const getMutationAsync = async (p: GqlMutationModel) => await graphqlCallAsync(setMutation(p))
 
 const setMutation = (p: GqlMutationModel) => {
 
@@ -187,37 +183,35 @@ export interface CallProps {
   onFinally?: Function
 }
 
-const graphqlCall = (call: string): any => {
-  return restCall({
-    req: {
-      method: 'POST',
-      url: 'graphql',
-      data: { query: `${call}` }      
-    },
-    onSuccess: {
-      default: ()=>{}
-    },//
-    onError: {
-      default: ()=>{}//
-    }
-  })
-}
+const graphqlCall = (call: string): any => restCall({
+  req: {
+    method: 'POST',
+    url: 'graphql',
+    data: { query: `${call}` }      
+  },
+  onSuccess: {
+    default: ()=>{}
+  },//
+  onError: {
+    default: ()=>{}//
+  }
+})
 
-const graphqlCallAsync = async (call: string) => {
-  return await restCallAsync({
-    req: {
-      method: 'POST',
-      url: 'graphql',
-      data: { query: `${call}` }
-    },
-    onSuccess: {
-      default: ()=>{}
-    },//
-    onError: {
-      default: ()=>{}//
-    }
-  })
-}
+
+const graphqlCallAsync = async (call: string) => await restCallAsync({
+  req: {
+    method: 'POST',
+    url: 'graphql',
+    data: { query: `${call}` }
+  },
+  onSuccess: {
+    default: ()=>{}
+  },//
+  onError: {
+    default: ()=>{}//
+  }
+})
+
 
 export const filter = () => {
   const {t} = useTranslation()
@@ -328,4 +322,3 @@ export const filter = () => {
     }
   }
 }
-

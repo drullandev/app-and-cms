@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import { IonHeader, IonToolbar, IonTitle, IonButtons, IonMenuButton, useIonToast } from '@ionic/react'
 import { RouteComponentProps } from 'react-router'
+
 import { restCallAsync } from '../../classes/core/axios'
 import { useTranslation } from 'react-i18next'
 import * as yup from 'yup'
@@ -12,7 +13,7 @@ import Form from '../../components/core/Form'
 import Page from '../../components/core/Page'
 import { PageProps } from '../../components/core/Page/types'
 import * as icon from 'ionicons/icons'
-
+import { setisLoggedIn } from '../../data/user/user.actions'
 
 let testingFeature = true
 let testing = testingFeature && process.env.REACT_APP_TESTING
@@ -25,11 +26,14 @@ interface OwnProps extends RouteComponentProps {
 
 }
 
+interface StateProps {}
+
 interface DispatchProps {
   setLoading: typeof setLoading
+  setisLoggedIn: typeof setisLoggedIn
 }
 
-interface LoginProps extends OwnProps,  DispatchProps { }
+interface LoginProps extends OwnProps, StateProps, DispatchProps {}
 
 const Support: React.FC<LoginProps> = ({
   setLoading,
@@ -137,8 +141,8 @@ const Support: React.FC<LoginProps> = ({
                     })*/
                 }
               },
-              onError: {
-                default: presentToast                
+              onError:{
+                default: presentToast
               }
             })
             setLoading(false)
@@ -162,14 +166,16 @@ const Support: React.FC<LoginProps> = ({
     if(par) history.push(par, { direction: 'none' }) 
   }
 
-  useEffect(()=> pageSettings.methods.onLoad,[])
+  useEffect(pageSettings.methods.onLoad,[])
   return <Page {...pageSettings}/>
 
 }
 
-export default connect<OwnProps, {}, DispatchProps>({
+export default connect<StateProps,{}, DispatchProps>({
+  mapStateToProps: (state) => ({}),
   mapDispatchToProps: {
-    setLoading
+    setLoading,
+    setisLoggedIn
   },
   component: Support
 })  

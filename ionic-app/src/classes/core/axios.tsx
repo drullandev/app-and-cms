@@ -12,11 +12,8 @@ export interface CallProps {
   onFinally?: Function
 }
 
-interface ErrorDesignProps {
-  duration?: number
-  icon?: any
-  color?: string
-}
+export const restCall = (call: CallProps) => setCall(commonCall(call))
+export const restCallAsync = async (call: CallProps) => setCall(commonCall(call))
 
 const commonCall = (call:any) => {
   if (call.req.method === null) call.req.method = 'get'
@@ -24,16 +21,8 @@ const commonCall = (call:any) => {
   // Yeah... '?populate=* ... The testing API requires this to show you all or only basic elements...
   // Is not the time to stay working under this constraints
   // I'growing faster this way ;)
-  if(call.req.method.toLowerCase() === 'get') call.req.url=call.req.url+'?populate=*'
+  if(call.req.method.toLowerCase() === 'get') call.req.url = call.req.url+'?populate=*'
   return call
-}
-
-export const restCallAsync = async (call: CallProps) => {
-  return setCall(commonCall(call))
-}
-
-export const restCall = (call: CallProps) => {
-  return setCall(commonCall(call))
 }
 
 const setCall = (call: CallProps) =>{

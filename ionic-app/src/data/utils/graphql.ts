@@ -97,7 +97,7 @@ export const setQuery = (params: GqlModel) =>{
   }
 
   queryString += `\n}`
-console.log(queryString)
+  console.log(queryString)
   return queryString
 
 }
