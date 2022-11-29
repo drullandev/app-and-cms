@@ -1,14 +1,10 @@
 
 import React, { useEffect, useState } from 'react'
-import { IonContent, IonImg, IonList, IonItem, IonLabel, IonAccordion, IonAccordionGroup, useIonToast, IonIcon, IonAlert } from '@ionic/react'
+import { IonContent, IonList, IonItem, IonLabel, IonAccordion, IonAccordionGroup, useIonToast, IonIcon, IonAvatar, IonCol, IonGrid, IonRow, IonToggle } from '@ionic/react'
 import { ReactControllerProps } from '@ionic/react/dist/types/components/createControllerComponent'
 import { RouteComponentProps } from 'react-router'
-<<<<<<< HEAD
-import { IonContent, IonList, IonItem, IonLabel, IonAccordion, IonAccordionGroup, useIonToast, IonIcon, IonAvatar, IonGrid, IonCol, IonRow } from '@ionic/react'
-=======
->>>>>>> f8e60e9f112f2029aaec0ac63e1e1397462d8db0
 
-import { setUsername, setLoading } from '../../data/user/user.actions'
+import { setLoading, setDarkMode } from '../../data/user/user.actions'
 import { connect } from '../../data/connect'
 import * as icon from 'ionicons/icons'
 
@@ -17,9 +13,7 @@ import { useTranslation } from 'react-i18next'
 
 import { restCallAsync } from '../../classes/core/axios'
 import { UserState } from '../../data/user/user.state'
-import Alert from '../../components/core/Alert'
 import '../../pages/Styles.scss'
-import { messages } from '../../../../ionic-for-strapi/src/static/constants';
 
 // Are you testing this tools set && app?
 let testingFeature = true
@@ -29,28 +23,25 @@ interface OwnProps extends RouteComponentProps { }
 
 
 interface StateProps {
-  nickname?: string
-  userEmail?: string
-  caret?: any
+  darkMode: boolean
 }
 interface DispatchProps {
   setLoading: typeof setLoading
+  setDarkMode: typeof setDarkMode
 }
 
 interface AccountProps extends OwnProps, StateProps, DispatchProps {}
 
 const Account: React.FC<AccountProps> = ({
   setLoading,
+  darkMode,
+  setDarkMode
 }) => {
 
   const { t } = useTranslation()
   const [presentToast] = useIonToast()
   const [userData, setUserData] = useState<UserState>()
-<<<<<<< HEAD
-
-=======
   const [avatar, setAvatar] = useState('https://www.gravatar.com/avatar?d=mm&s=140') 
->>>>>>> f8e60e9f112f2029aaec0ac63e1e1397462d8db0
   const [showAlert, setShowAlert] = useState(false)
   const [alert, setAlert] = useState<ReactControllerProps>({isOpen: false})
 
@@ -132,6 +123,7 @@ const Account: React.FC<AccountProps> = ({
         <IonItem>
           <IonIcon icon={icon.contrast}/>
           <IonLabel color='primary'>DarkMode</IonLabel>
+          <IonToggle checked={darkMode} onClick={() => setDarkMode(!darkMode)} />
           <IonLabel>{userData?.darkMode}</IonLabel>
         </IonItem>
       </>
@@ -139,15 +131,10 @@ const Account: React.FC<AccountProps> = ({
   ]
 
   return <IonContent className='ion-padding-top ion-text-center'>{userData &&
-<<<<<<< HEAD
     <>    
       <IonAvatar>
         <img src={process.env.REACT_APP_HOST+userData?.caret?.formats?.medium?.url} alt={userData.username}/>
       </IonAvatar>
-=======
-    <>
-      <h2>{userData.username}</h2>
->>>>>>> f8e60e9f112f2029aaec0ac63e1e1397462d8db0
 
       <IonList inset>
 
@@ -166,35 +153,20 @@ const Account: React.FC<AccountProps> = ({
         </IonAccordionGroup>
 
       </IonList>
-
-<<<<<<< HEAD
-      <Alert show={showAlert} style={''} header={''} message={''} buttons={[]} timestamp={''} />    
-=======
-      <Alert {...alert}/>
-      <IonAlert {...alert}></IonAlert>
->>>>>>> f8e60e9f112f2029aaec0ac63e1e1397462d8db0
     </>
   }</IonContent>
 
 }
 
-<<<<<<< HEAD
-export default connect<OwnProps, {}, DispatchProps>({
-=======
 export default connect<OwnProps, StateProps, DispatchProps>({
->>>>>>> f8e60e9f112f2029aaec0ac63e1e1397462d8db0
   mapStateToProps: (state) => ({
     nickname: state.user.nickname,
-    caret: state.user.caret
+    caret: state.user.caret,
+    darkMode: state.user.darkMode
   }),
-<<<<<<< HEAD
-  //mapDispatchToProps: {
-  //  setNickname,
-  //}, 
-=======
   mapDispatchToProps: {
-    setLoading
+    setLoading,
+    setDarkMode
   },
->>>>>>> f8e60e9f112f2029aaec0ac63e1e1397462d8db0
   component: Account
 })
