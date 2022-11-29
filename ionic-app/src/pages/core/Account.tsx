@@ -1,12 +1,8 @@
 
 import React, { useEffect, useState } from 'react'
-import { IonContent, IonImg, IonList, IonItem, IonLabel, IonAccordion, IonAccordionGroup, useIonToast, IonIcon, IonAlert } from '@ionic/react'
+import { IonContent, IonImg, IonList, IonItem, IonLabel, IonAccordion, IonAccordionGroup, useIonToast, IonIcon, IonAlert, IonAvatar, IonCol, IonGrid, IonRow, IonToggle } from '@ionic/react'
 import { ReactControllerProps } from '@ionic/react/dist/types/components/createControllerComponent'
 import { RouteComponentProps } from 'react-router'
-<<<<<<< HEAD
-import { IonContent, IonList, IonItem, IonLabel, IonAccordion, IonAccordionGroup, useIonToast, IonIcon, IonAvatar, IonGrid, IonCol, IonRow } from '@ionic/react'
-=======
->>>>>>> f8e60e9f112f2029aaec0ac63e1e1397462d8db0
 
 import { setLoading, setDarkMode } from '../../data/user/user.actions'
 import { connect } from '../../data/connect'
@@ -18,6 +14,7 @@ import { useTranslation } from 'react-i18next'
 import { restCallAsync } from '../../classes/core/axios'
 import { UserState } from '../../data/user/user.state'
 import '../../pages/Styles.scss'
+import Alert from '../../components/core/Alert'
 
 // Are you testing this tools set && app?
 let testingFeature = true
@@ -45,11 +42,6 @@ const Account: React.FC<AccountProps> = ({
   const { t } = useTranslation()
   const [presentToast] = useIonToast()
   const [userData, setUserData] = useState<UserState>()
-<<<<<<< HEAD
-
-=======
-  const [avatar, setAvatar] = useState('https://www.gravatar.com/avatar?d=mm&s=140')
->>>>>>> f8e60e9f112f2029aaec0ac63e1e1397462d8db0
   const [showAlert, setShowAlert] = useState(false)
   const [alert, setAlert] = useState<ReactControllerProps>({isOpen: false})
 
@@ -162,36 +154,20 @@ const Account: React.FC<AccountProps> = ({
 
       </IonList>
 
-<<<<<<< HEAD
-      <Alert show={showAlert} style={''} header={''} message={''} buttons={[]} timestamp={''} />
-=======
-      <Alert {...alert}/>
-      <IonAlert {...alert}></IonAlert>
->>>>>>> f8e60e9f112f2029aaec0ac63e1e1397462d8db0
     </>
   }</IonContent>
 
 }
 
-<<<<<<< HEAD
-export default connect<OwnProps, {}, DispatchProps>({
-=======
 export default connect<OwnProps, StateProps, DispatchProps>({
->>>>>>> f8e60e9f112f2029aaec0ac63e1e1397462d8db0
   mapStateToProps: (state) => ({
     nickname: state.user.nickname,
     caret: state.user.caret,
     darkMode: state.user.darkMode
   }),
-<<<<<<< HEAD
-  //mapDispatchToProps: {
-  //  setNickname,
-  //},
-=======
   mapDispatchToProps: {
     setLoading,
     setDarkMode
   },
->>>>>>> f8e60e9f112f2029aaec0ac63e1e1397462d8db0
   component: Account
 })
