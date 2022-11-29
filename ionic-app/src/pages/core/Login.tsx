@@ -26,7 +26,7 @@ import Header from '../../components/core/main/Header'
 import { UserState } from '../../data/user/user.state'
 
 // Are you testing this tools set && app?
-let testingLogin = false
+let testingLogin = true
 let testing = testingLogin && process.env.REACT_APP_TESTING
 // - The main testing user will be used under testing
 
@@ -171,7 +171,7 @@ const Login: React.FC<LoginProps> = ({
                         // Set user state
                         let user = ret2.data
                         console.log(user)
-                        user.jwt = ret.jwt // Attaching the JWT to the user level and state...
+                        user.jwt = ret.data.jwt // Attaching the JWT to the user level and state...
                         user.isLoggedIn = true
                         user.caret = user.caret
                         console.log('user', user)

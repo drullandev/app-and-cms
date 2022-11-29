@@ -9,7 +9,7 @@ import * as icon from 'ionicons/icons'
 import { connect } from '../../data/connect'
 import { setisLoggedIn, setUsername, setLoading } from '../../data/user/user.actions'
 import { restCallAsync } from '../../classes/core/axios'
-import { random } from '../../classes/common'
+import { random } from '../../data/utils/common'
 
 import { setOutput } from '../../classes/core/output'
 import Header from '../../components/core/main/Header'

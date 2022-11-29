@@ -57,6 +57,9 @@ const Support: React.FC<LoginProps> = ({
     content: ()=> <Form {...pageSettings.methods.supportForm}/>,
     footer: ()=> <></>,
     methods: {
+      onLoad: ()=>{
+        
+      },
       supportForm: {
 
         id: 'support-form',
