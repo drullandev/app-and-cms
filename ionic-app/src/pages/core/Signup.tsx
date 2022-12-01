@@ -21,7 +21,7 @@ import '../../pages/Styles.scss'
 
 
 // Testing this module?
-let testingSignup = true
+let testingSignup = false
 let testing = testingSignup && process.env.REACT_APP_TESTING
 
 interface StateProps {
@@ -187,7 +187,7 @@ const Signup: React.FC<SignupProps> = ({
                   // BE AWARE OF TESTING PARAMS... Anyway, in production will be banned but yeah... 
                   username: testing ? data.username : random(12),
                   password: testing ? data.password : random(12),
-                  email: testing ? random(12)+'@gmail.com' : data.email
+                  email: testing ? data.email : random(12)+'@gmail.com'
                 }                
               },
               onSuccess: { 

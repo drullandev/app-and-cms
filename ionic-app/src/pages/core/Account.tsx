@@ -158,7 +158,7 @@ const Account: React.FC<AccountProps> = ({
 
 }
 
-export default connect<OwnProps, StateProps, DispatchProps>({
+export default connect<{}, StateProps, {}>({
   mapStateToProps: (state) => ({
     nickname: state.user.nickname,
     caret: state.user.caret,
