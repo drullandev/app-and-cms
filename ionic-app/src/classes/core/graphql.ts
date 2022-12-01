@@ -91,13 +91,9 @@ export interface GqlQueryModel {
   direction: string
 }
 
-export const setQuery = (p: GqlQueryModel) => {
-  return graphqlCall(getQuery(p))
-}
+export const setQuery = (p: GqlQueryModel) => graphqlCall(getQuery(p))
 
 const getQuery = (p: GqlQueryModel) =>{
-  
-  console.log(p.orderField)
 
   let qs = `query `
 
@@ -145,8 +141,6 @@ const getQuery = (p: GqlQueryModel) =>{
     })
   }
 
-  console.log(p)
-
   if(p.filterField !== undefined){
     if(p.filterCondition !== undefined && typeof p.searchString !== undefined){
       where.push(p.filterField+'_'+p.filterCondition+' : '+p.searchString)
@@ -170,8 +164,6 @@ const getQuery = (p: GqlQueryModel) =>{
 
   qs +=`\n}`
 
-  console.log(qs)
-  
   return qs
 
 }

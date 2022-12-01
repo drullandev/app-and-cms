@@ -121,6 +121,7 @@ const IonicApp: React.FC<IonicAppProps> = ({
 }
 
 const App: React.FC = () => <AppContextProvider>
+  
     <IonicAppConnected />
   </AppContextProvider>
 

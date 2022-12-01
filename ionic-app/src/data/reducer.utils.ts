@@ -11,7 +11,7 @@ export const parseSessions = (schedule: Schedule)=>{
   return sessions
 }
 
-export const setOrRemove = async (key: string, value: any, string: boolean = true) => {
+export const setOrRemove = async (key: string, value: any, def: any, string: boolean = true) => {
   if(testing) console.log('dataApi::setOrRemove', {key: key, value: value, string: string})
   return (!value)
     ? await Storage.remove({ key: key })

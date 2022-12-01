@@ -25,17 +25,13 @@ const commonCall = (call:any) => {
   return call
 }
 
-const setCall = (call: CallProps) =>{
-
-  axios(call.req)
-    .then((res: any)=> {
-      return call.onSuccess.default(res) 
-    })
-    .catch((err: any)=> {
-      return call.onError.default(output(err))
-    })
-    .finally(()=>{
-      return (call.onFinally !== undefined) ? call.onFinally() : null
-    })
-
-}
+const setCall = (call: CallProps) => axios(call.req)
+  .then((res: any)=> {
+    return call.onSuccess.default(res) 
+  })
+  .catch((err: any)=> {
+    return call.onError.default(output(err))
+  })
+  .finally(()=>{
+    return (call.onFinally !== undefined) ? call.onFinally() : null
+  })
