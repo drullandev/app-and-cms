@@ -50,10 +50,7 @@ export const setUserData = (userData: any) => async (
 
   dispatch(setNickname(userData.username))
   dispatch(setUserEmail(userData.email))
-
-  //dispatch(setData(userData))
-  //setUserData()
-  /*
+  UserState
   {
     'jwt': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjEsImlhdCI6MTYzNTExMTM0MCwiZXhwIjoxNjM3NzAzMzQwfQ.Z9hoSs-EgQV4IXDn_KhppRaDIeKD4PFtAlX6TaUzP-M',
     'user': {
@@ -104,18 +101,18 @@ export const setLoading = (loading: boolean) =>  {
 export const setDarkMode = (userDarkMode: boolean) => {
   return { type: 'set-user-darkmode', userDarkMode } as const
 }
-
-export const setUserJwt = (userJwt?: string) => {
-  return { type: 'set-userJwt', userJwt } as const
-}
-
-export const setUserId = (userId?: number) => {
+UserState
   return { type: 'set-user-id', userId } as const
 }
 
 export const setUserAvatar = (avatar: any) => {
   return { type: 'set-user-avatar', avatar } as const
 }
+
+export const setUserRole = (avatar: any) => {
+  return { type: 'set-user-avatar', avatar } as const
+}
+
 
 export type UserActions =
   | ActionType<typeof setData>
@@ -128,3 +125,4 @@ export type UserActions =
   | ActionType<typeof setUserJwt>
   | ActionType<typeof setUserId>
   | ActionType<typeof setUserAvatar>
+  | ActionType<typeof setUserRole>

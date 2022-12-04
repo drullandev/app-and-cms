@@ -21,6 +21,7 @@ export function userReducer(state: UserState, action: UserActions): UserState {
     case 'set-is-loggedin':       return { ...state, isLoggedIn:        action.loggedIn }
     case 'set-user-loading':      return { ...state, loading:           action.isLoading }
     case 'set-caret':             return { ...state, caret:             action.caret }
+    case 'set-role':              return { ...state, role:               action.role }
     case 'set-user-data':         return { ...state,                    ...action.data }
     
   }

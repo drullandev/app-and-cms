@@ -16,7 +16,7 @@ export const initialData = {
 }
 
 export const initialUser = {
-  id: '',
+  id: '0',
   jwt: '',
   username: '',
   email: '',
@@ -29,59 +29,8 @@ export const initialUser = {
   hasSeenTutorial: false,
   loading: false,
   isLoggedIn: false,
-  caret: {
-    "id": 3,
-    "name": "20994063_10212694604776796_9209620538560239229_n.jpeg",
-    "alternativeText": "20994063_10212694604776796_9209620538560239229_n.jpeg",
-    "caption": "20994063_10212694604776796_9209620538560239229_n.jpeg",
-    "width": 816,
-    "height": 816,
-    "formats": {
-      "thumbnail": {
-        "name": "thumbnail_20994063_10212694604776796_9209620538560239229_n.jpeg",
-        "hash": "thumbnail_20994063_10212694604776796_9209620538560239229_n_070aab4e6d",
-        "ext": ".jpeg",
-        "mime": "image/jpeg",
-        "path": null,
-        "width": 156,
-        "height": 156,
-        "size": 7.95,
-        "url": "/uploads/thumbnail_20994063_10212694604776796_9209620538560239229_n_070aab4e6d.jpeg"
-      },
-      "small": {
-        "name": "small_20994063_10212694604776796_9209620538560239229_n.jpeg",
-        "hash": "small_20994063_10212694604776796_9209620538560239229_n_070aab4e6d",
-        "ext": ".jpeg",
-        "mime": "image/jpeg",
-        "path": null,
-        "width": 500,
-        "height": 500,
-        "size": 65.81,
-        "url": "/uploads/small_20994063_10212694604776796_9209620538560239229_n_070aab4e6d.jpeg"
-      },
-      "medium": {
-        "name": "medium_20994063_10212694604776796_9209620538560239229_n.jpeg",
-        "hash": "medium_20994063_10212694604776796_9209620538560239229_n_070aab4e6d",
-        "ext": ".jpeg",
-        "mime": "image/jpeg",
-        "path": null,
-        "width": 750,
-        "height": 750,
-        "size": 138.88,
-        "url": "/uploads/medium_20994063_10212694604776796_9209620538560239229_n_070aab4e6d.jpeg"
-      }
-    },
-    "hash": "20994063_10212694604776796_9209620538560239229_n_070aab4e6d",
-    "ext": ".jpeg",
-    "mime": "image/jpeg",
-    "size": 128,
-    "url": "/uploads/20994063_10212694604776796_9209620538560239229_n_070aab4e6d.jpeg",
-    "previewUrl": null,
-    "provider": "local",
-    "provider_metadata": null,
-    "createdAt": "2022-11-23T23:15:18.530Z",
-    "updatedAt": "2022-11-23T23:15:18.530Z"
-  }
+  caret: undefined,
+  role:undefined
 }
 
 export const initialState: AppState = {

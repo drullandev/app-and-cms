@@ -6,6 +6,7 @@ import { Location } from '../models/Location'
 
 import { getStorage, setStorage, removeStorage } from './utils/storage'
 import { restGet } from './utils/rest/rest.utils'
+import { initialState } from './state'
 
 //----------------------------------------------------------------
 
@@ -60,6 +61,8 @@ export const getUserData = async () => {
     getStorage(Stored.IS_LOGGED_IN),
     getStorage(Stored.HAS_SEEN_TUTORIAL),
     getStorage(Stored.USER_DARK_MODE),    
+    getStorage(Stored.CARET),    
+    getStorage(Stored.ROLE),    
   ])
 
   //
@@ -71,6 +74,8 @@ export const getUserData = async () => {
   const isLoggedIn      = response[4] === 'true'
   const hasSeenTutorial = response[5] === 'true'
   const userDarkMode    = response[6] === 'false'
+  const userCaret       = response[7] === undefined
+  const userRole        = response[8] === undefined
 
   return {
     nickname,
@@ -84,7 +89,7 @@ export const getUserData = async () => {
 
 }
 
-function parseSessions(schedule: Home) {
+const parseSessions = (schedule: Home)=>{
   const sessions: Session[] = []
   schedule.groups.forEach((g) => {
     g.sessions.forEach((s) => sessions.push(s))
@@ -92,39 +97,14 @@ function parseSessions(schedule: Home) {
   return sessions
 }
 
+export const setIsLoggedInData = async (isLoggedIn: boolean) => setStorage(Stored.IS_LOGGED_IN, isLoggedIn)
+export const setLoading = async (loading: boolean) => setStorage(Stored.IS_LOADING, loading)
+export const setHasSeenTutorialData = async (hasSeenTutorial: boolean) => setStorage(Stored.HAS_SEEN_TUTORIAL, hasSeenTutorial)
+export const setNicknameData = async (nickname?: string) => setOrRemove(Stored.NICKNAME, nickname)
+export const setUserEmailData = async (useremail?: string) => setOrRemove(Stored.USEREMAIL, useremail)
+export const setUserJwtData = async (userJwt?: string) => setOrRemove(Stored.USERJWT, userJwt)
+export const setUserIdData = async (userId?: string) => setOrRemove(Stored.USERID, userId)
+export const setCaretData = async (caret?: string) => setOrRemove(Stored.CARET, caret)
+export const setRoleData = async (role?: string) => setOrRemove(Stored.ROLE, role)
 
-export const setIsLoggedInData = async (isLoggedIn: boolean) => {
-  setStorage(Stored.IS_LOGGED_IN, isLoggedIn)
-}
-
-export const setLoading = async (loading: boolean) => {
-  setStorage(Stored.IS_LOADING, loading)
-}
-
-export const setHasSeenTutorialData = async (hasSeenTutorial: boolean) => {
-  setStorage(Stored.HAS_SEEN_TUTORIAL, hasSeenTutorial)
-}
-
-export const setNicknameData = async (nickname?: string) => {
-  setOrRemove(Stored.NICKNAME, nickname)
-}
-
-export const setUserEmailData = async (useremail?: string) => {
-  setOrRemove(Stored.USEREMAIL, useremail)
-}
-
-export const setUserJwtData = async (userJwt?: string) => {
-  setOrRemove(Stored.USERJWT, userJwt)
-}
-
-export const setUserIdData = async (userId?: string) => {
-  setOrRemove(Stored.USERID, userId)
-}
-
-export const setOrRemove = async (key: string, value: any = null)=>{
-  if(value){
-    setStorage(key, value)
-  }else{
-    removeStorage(key)
-  }
-}
+export const setOrRemove = async (key: string, value: any = null)=> value ? setStorage(key, value) : removeStorage(key)

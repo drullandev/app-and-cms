@@ -15,7 +15,7 @@ export function setUserReducer(
   switch (action.type) {
     //
     case 'set-user-data':         return { ...state, ...action.data }    
-    case 'set-user-loading':      return { ...state, loading:         action.isLoading }
+    case 'set-user-loading':      return { ...state, loading:         action.loading }
 
     case 'set-user-id':           return { ...state, userId:          action.userId }
     case 'set-nickname':          return { ...state, nickname:        action.nickname }
@@ -25,6 +25,7 @@ export function setUserReducer(
     case 'set-user-darkmode':     return { ...state, userDarkMode:    action.userDarkMode }
     //
     case 'set-has-seen-tutorial': return { ...state, hasSeenTutorial: action.hasSeenTutorial }
+    case 'set-role':              return { ...state, role:            action.role }
   }
 
 }

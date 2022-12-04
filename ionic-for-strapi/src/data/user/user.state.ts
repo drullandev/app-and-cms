@@ -7,4 +7,6 @@ export interface UserState {
   isLoggedIn: boolean
   hasSeenTutorial?: boolean
   loading?: boolean
+  role?: any
+  caret?: any
 }

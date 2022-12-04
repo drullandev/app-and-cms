@@ -11,9 +11,10 @@ import {
   setDarkModeData,
   setHasSeenTutorialData,
   setisLoggedInData,
-  getUserData,
   setUserData,
-  setCaretData
+  setCaretData,
+  setRoleData,
+  getUserData,
 } from '../dataApi'
 
 import { ActionType } from '../../util/types'
@@ -32,6 +33,7 @@ export const loadUserData = () => async (dispatch: React.Dispatch<any>) => {
   setTesting(loadUserData)
   dispatch(setLoading(true))
   let data = await getUserData()
+  console.log('ladarta',data)
   dispatch(setData(data))
   dispatch(setLoading(false))
 }
@@ -129,9 +131,15 @@ export const setLoading = (isLoading: boolean) => {
 }
 
 export const setCaret = (caret: object) => async (dispatch: React.Dispatch<any>) => {
-  setTesting(setLoading, caret)
+  setTesting(setCaret, caret)
   await setCaretData(caret)
   return { type: 'set-caret',  caret } as const
+}
+
+export const setRole = (role: object) => async (dispatch: React.Dispatch<any>) => {
+  setTesting(setRole, role)
+  await setRoleData(role)
+  return { type: 'set-role',  role } as const
 }
 
 const setTesting = (func: Function, data: any = undefined, schema: string = 'user') => {
@@ -152,5 +160,6 @@ export type UserActions =
 | ActionType<typeof setHasSeenTutorial>
 | ActionType<typeof setLoading>
 | ActionType<typeof setCaret>
+| ActionType<typeof setRole>
 | ActionType<typeof setData>
 | ActionType<typeof setisLoggedIn>

@@ -14,6 +14,7 @@ export const initialState: AppState = {
     mapCenterId: 0,
     menuEnabled: true,
     loading: false,
+    filter: []
   },
   user: {
     id: 0,
@@ -23,6 +24,8 @@ export const initialState: AppState = {
     hasSeenTutorial: false,
     loading: false,    
     userJwt: '',
+    caret: undefined,
+    role: undefined
   }
 }
 
