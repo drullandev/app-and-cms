@@ -185,9 +185,9 @@ const Signup: React.FC<SignupProps> = ({
                 method: 'POST',
                 data: {
                   // BE AWARE OF TESTING PARAMS... Anyway, in production will be banned but yeah... 
-                  username: testing ? data.username : random(12),
-                  password: testing ? data.password : random(12),
-                  email: testing ? data.email : random(12)+'@gmail.com'
+                  username: testing ? random(12) : data.username,
+                  password: testing ? random(12) : data.password,  
+                  email: testing ? random(12)+'@gmail.com' : data.email
                 }                
               },
               onSuccess: { 
