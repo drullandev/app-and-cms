@@ -2,6 +2,9 @@
 import React from 'react'
 import { RouteComponentProps } from 'react-router'
 import { useIonToast } from '@ionic/react'
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+//https://firebase.google.com/docs/auth/web/start#web-version-9
+
 import '../../pages/Styles.scss'
 
 // Extra required
@@ -50,6 +53,7 @@ const Login: React.FC<LoginProps> = ({
 
   const { t } = useTranslation()
   const [presentToast] = useIonToast()
+  const auth = getAuth()
 
   const pageSettings: PageProps = {
     id: 'login-page',
