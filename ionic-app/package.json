@@ -15,6 +15,7 @@
     "@types/react-router-dom": "^5.1.5",
     "axios": "^1.1.3",
     "date-fns": "^2.25.0",
+    "firebase": "^9.14.0",
     "i18n-react": "^0.7.0",
     "i18next": "^22.0.4",
     "i18next-browser-languagedetector": "^7.0.1",

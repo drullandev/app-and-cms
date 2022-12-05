@@ -47,6 +47,12 @@ import RedirectToLogin from './components/RedirectToLogin'
 import { Schedule } from './models/Schedule'
 import { initialUser } from './data/state'
 
+// Import the functions you need from the SDKs you need
+
+import { initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
+import { firebaseConfig } from './data/firebase'
+
 // Are you testing this tools set && app?
 let testingFeature = true
 let testing = testingFeature && process.env.REACT_APP_TESTING
@@ -80,10 +86,16 @@ const IonicApp: React.FC<IonicAppProps> = ({
   loadUserData
 }) => {
   
+  // Initialize Firebase
+
+  const app = initializeApp(firebaseConfig)
+  const analytics = getAnalytics(app)
+
   useEffect(() => {
     loadUserData()
     loadConfData()
     setData(initialUser)
+    
     // eslint-disable-next-line
   }, [])
 
