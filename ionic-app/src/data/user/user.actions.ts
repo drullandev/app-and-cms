@@ -33,7 +33,6 @@ export const loadUserData = () => async (dispatch: React.Dispatch<any>) => {
   setTesting(loadUserData)
   dispatch(setLoading(true))
   let data = await getUserData()
-  console.log('ladarta',data)
   dispatch(setData(data))
   dispatch(setLoading(false))
 }

@@ -2,8 +2,9 @@
 import React from 'react'
 import { RouteComponentProps } from 'react-router'
 import { useIonToast } from '@ionic/react'
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
-//https://firebase.google.com/docs/auth/web/start#web-version-9
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+// https://firebase.google.com/docs/auth/web/start#web-version-9
+// https://github.com/aaronksaunders/ionic-react-auth-firebase
 
 import '../../pages/Styles.scss'
 
@@ -31,6 +32,7 @@ import { UserState } from '../../data/user/user.state'
 // Are you testing this tools set && app?
 let testingLogin = true
 let testing = testingLogin && process.env.REACT_APP_TESTING
+let useFirebase = false
 // - The main testing user will be used under testing
 
 // Component Dependencies
@@ -82,7 +84,7 @@ const Login: React.FC<LoginProps> = ({
             cols: [
               {
                 type: 'input',
-                name: 'identifier',
+                name: useFirebase ? 'email' : 'identifier',
                 fieldType: 'email',// TODO: Liberate for email and also nickname
                 label: t('User or email'),
                 //value: testing ? process.env.REACT_APP_DEFAULT_USER : undefined,
@@ -149,67 +151,74 @@ const Login: React.FC<LoginProps> = ({
         methods:{
     
           onSubmit: async (data: any) => {
-            setLoading(true)
-            await restCallAsync({
-              req: {
-                url: 'api/auth/local',
-                method: 'POST',
-                data: { 
-                  identifier: testing ? process.env.REACT_APP_DEFAULT_USER : data.identifier,
-                  password: testing ? process.env.REACT_APP_DEFAULT_PASS : data.password,
+
+            const onSubmitSuccess = async (ret:any)=>{
+  
+              await restCallAsync({
+                req: {
+                  url: 'api/users/'+ret.data.user.id,
+                  method: 'GET'
                 },
-              },
-              onSuccess: {
-    
-                default: async (ret:any)=>{
-
-                  await restCallAsync({
-                    req: {
-                      url: 'api/users/'+ret.data.user.id,
-                      method: 'GET'
-                    },
-                    onSuccess: {
-
-                      default: (ret2: any)=>{
-
-                        // Set user state
-                        let user = ret2.data
-                        console.log(user)
-                        user.jwt = ret.data.jwt // Attaching the JWT to the user level and state...
-                        user.isLoggedIn = true
-                        user.caret = user.caret
-                        console.log('user', user)
-                        setData(user)
-
-                        let loginOutput = { 
-                          message: t('user-wellcome', { username: ret2.data.username }),
-                          icon: icon.checkmarkCircleOutline,
-                          duration: 1000,
-                          color: 'success'
-                        }
-          
-                        presentToast(loginOutput)
-                          .then(()=> history.push('/tabs/schedule', {
-                            direction: 'none'
-                          }))
-
-                      }
-
-                    },
-                    onError: {
-                      default: presentToast
+                onSuccess: {
+  
+                  default: (ret2: any)=>{
+  
+                    // Set user state
+                    let user = ret2.data
+                    console.log(user)
+                    user.jwt = ret.data.jwt // Attaching the JWT to the user level and state...
+                    user.isLoggedIn = true
+                    user.caret = user.caret
+                    console.log('user', user)
+                    setData(user)
+  
+                    let loginOutput = { 
+                      message: t('user-wellcome', { username: ret2.data.username }),
+                      icon: icon.checkmarkCircleOutline,
+                      duration: 1000,
+                      color: 'success'
                     }
-                  })
       
+                    presentToast(loginOutput)
+                      .then(()=> history.push('/tabs/schedule', {
+                        direction: 'none'
+                      }))
+  
+                  }
+  
+                },
+                onError: {
+                  default: presentToast
+                }
+              })
+  
+  
+  
+              return true
+            }
 
-
-                  return true
-                }         
-              },
-              onError: {  
-                default: presentToast                     
-              }
-            })
+            setLoading(true)
+            if(useFirebase){
+              signInWithEmailAndPassword(auth, data.email, data.password)
+                .then(onSubmitSuccess)
+            }else{
+              await restCallAsync({
+                req: {
+                  url: 'api/auth/local',
+                  method: 'POST',
+                  data: { 
+                    identifier: testing ? process.env.REACT_APP_DEFAULT_USER : data.identifier,
+                    password: testing ? process.env.REACT_APP_DEFAULT_PASS : data.password,
+                  },
+                },
+                onSuccess: {      
+                  default: onSubmitSuccess         
+                },
+                onError: {  
+                  default: presentToast                     
+                }
+              })
+            }
             setLoading(false)
           },
     
