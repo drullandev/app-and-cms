@@ -16,7 +16,7 @@
     "@strapi/plugin-graphql": "^4.4.1",
     "@strapi/plugin-i18n": "4.4.1",
     "@strapi/plugin-users-permissions": "4.4.1",
-    "@strapi/strapi": "4.4.1",
+    "@strapi/strapi": "4.10.8",
     "sqlite3": "^5.0.2",
     "strapi-google-auth": "^0.1.2",
     "strapi-plugin-custom-links": "^0.2.1",
