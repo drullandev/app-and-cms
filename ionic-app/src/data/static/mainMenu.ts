@@ -1,27 +1,33 @@
 export const MainMenu = [
     {
-      name: 'schedule', 
+      name: 'schedule',
       href: '/tabs/schedule',
       icon: 'calendar',
       label: 'Schedule'
     },
     {
-      name: 'speakers', 
+      name: 'speakers',
       href: '/tabs/speakers',
       icon: 'people',
       label: 'Speakers'
     },
     /*{
-      name: 'map', 
+      name: 'map',
       href: '/tabs/map',
       icon: 'location',
       label: 'Map'
     },*/
     {
-      name: 'about', 
+      name: 'about',
       href: '/tabs/about',
       icon: 'informationCircle',
-      label: 'Speakers'
+      label: 'About'
+    },
+    {
+      name: 'lister',
+      href: '/tabs/list',
+      icon: 'informationCircle',
+      label: 'List'
     }
   ]
 

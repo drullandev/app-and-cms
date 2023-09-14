@@ -41,7 +41,7 @@ const Menu: React.FC<MenuProps> = ({
   const location = useLocation()
   const { t } = useTranslation()
 
-  const renderlistItems = (list: Pages[]) => {    
+  const renderlistItems = (list: Pages[]) => {
     return list
       .filter(route => !!route.path)
       .map(p => (
@@ -62,7 +62,6 @@ const Menu: React.FC<MenuProps> = ({
   return (
     <IonMenu  type="overlay" disabled={!menuEnabled} contentId="main">
       <IonContent forceOverscroll={false}>
-
         <IonList lines="none">
           <IonListHeader>{t('Account')}</IonListHeader>
           {isLoggedIn
@@ -70,16 +69,6 @@ const Menu: React.FC<MenuProps> = ({
             : renderlistItems(routes.loggedOutPages)
           }
           {renderlistItems(routes.appPages)}
-        </IonList>
-
-        <IonList lines="none">
-          {/*<IonListHeader>Tutorial</IonListHeader>
-          <IonItem button onClick={() => {
-            history.push('/tutorial')
-          }}>
-            <IonIcon slot="start" icon={hammer} />
-            Show Tutorial
-          </IonItem>*/}
         </IonList>
       </IonContent>
     </IonMenu>
