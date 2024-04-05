@@ -1,0 +1,7 @@
+{
+  "name": "last-ionic",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react-vite"
+}
