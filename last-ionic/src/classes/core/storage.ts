@@ -1,20 +1,19 @@
-import { Plugins } from '@capacitor/core'
-const { Storage } = Plugins
+import { Preferences } from '@capacitor/preferences';
 
 export const setStorage = async (key: string, value:any) => {
     var json = getType(value) === 'object'
     var res = json ? JSON.stringify(value) : value
-    await Storage.set({ key : key, value : res })
+    await Preferences.set({ key : key, value : res })
 }
   
 export const getStorage = async (key: string) => {
-  const { value } = await Storage.get({ key: key })
+  const { value } = await Preferences.get({ key: key })
   var json = getType(value) === 'object'
   return value ? ( json ? JSON.parse(value) : value ) : false
 }
   
 export const removeStorage = async (key: string) => {
-    await Storage.remove({ key : key })
+    await Preferences.remove({ key : key })
 }
 
 export const switchStorage = async (key: string, value: any) => {

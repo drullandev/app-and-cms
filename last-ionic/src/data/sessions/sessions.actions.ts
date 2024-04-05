@@ -12,7 +12,6 @@ export const loadConfData = () =>
     dispatch(setLoading(false))
   }
 
-
 // ACTIONS
 export const setLoading = (isLoading: boolean) => ({ type: 'set-conf-loading', isLoading } as const)
 export const setData = (data: Partial<ConfState>) => ({ type: 'set-conf-data', data } as const)

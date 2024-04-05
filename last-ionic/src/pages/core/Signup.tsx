@@ -231,6 +231,7 @@ const Signup: React.FC<SignupProps> = ({
   }
 
   useEffect(pageSettings.methods.onLoad,[])
+  
   return <Page {...pageSettings}/>
   
 }

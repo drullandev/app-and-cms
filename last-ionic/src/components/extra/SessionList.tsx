@@ -3,7 +3,7 @@ import * as AppConst from '../../data/static/constants'
 import { IonItemDivider, IonItemGroup, IonLabel, IonList, IonListHeader, IonAlert, AlertButton } from '@ionic/react'
 import React, { useState, useCallback } from 'react'
 
-import { Home, Session } from '../../models/Schedule'
+import { Home, Session } from '../../interfaces/Schedule'
 import SessionListItem from './SessionListItem'
 
 import { connect } from '../../data/connect'

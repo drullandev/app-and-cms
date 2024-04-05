@@ -10,7 +10,7 @@ import { callOutline, callSharp, logoTwitter, logoGithub, logoInstagram, shareOu
 import { connect } from '../../data/connect'
 import * as selectors from '../../data/selectors'
 
-import { Speaker } from '../../models/Speaker'
+import { Speaker } from '../../interfaces/Speaker'
 
 
 interface OwnProps extends RouteComponentProps {

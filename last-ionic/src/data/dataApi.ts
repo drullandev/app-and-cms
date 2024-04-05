@@ -1,11 +1,10 @@
-import { Plugins } from '@capacitor/core'
-import { Schedule, Session } from '../models/Schedule'
-import { Speaker } from '../models/Speaker'
-import { Location } from '../models/Location'
+import { Preferences } from '@capacitor/preferences';
+import { Schedule, Session } from '../interfaces/Schedule'
+import { Speaker } from '../interfaces/Speaker'
+import { Location } from '../interfaces/Location'
 import { setOrRemove, parseSessions, toogleBool } from './reducer.utils'
 import { UserState } from './user/user.state'
 import { initialUser } from './state'
-const { Storage } = Plugins
 
 const dataUrl = '/assets/data/data.json'
 const locationsUrl = '/assets/data/locations.json'
@@ -58,20 +57,20 @@ export const getConfData = async () => {
 export const getUserData = async () => {
 
   const response = await Promise.all([
-    Storage.get({ key: ID }),
-    Storage.get({ key: JWT }),
-    Storage.get({ key: USERNAME }),
-    Storage.get({ key: EMAIL }),
-    Storage.get({ key: BLOCKED }),
-    Storage.get({ key: CONFIRMED }),
-    Storage.get({ key: CREATED_AT }),
-    Storage.get({ key: UPDATED_AT }),
-    Storage.get({ key: PROVIDER }),
-    Storage.get({ key: DARK_MODE }),
-    Storage.get({ key: HAS_SEEN_TUTORIAL }),
-    Storage.get({ key: HAS_LOGGED_IN }),
-    Storage.get({ key: CARET }),
-    Storage.get({ key: ROLE }),
+    Preferences.get({ key: ID }),
+    Preferences.get({ key: JWT }),
+    Preferences.get({ key: USERNAME }),
+    Preferences.get({ key: EMAIL }),
+    Preferences.get({ key: BLOCKED }),
+    Preferences.get({ key: CONFIRMED }),
+    Preferences.get({ key: CREATED_AT }),
+    Preferences.get({ key: UPDATED_AT }),
+    Preferences.get({ key: PROVIDER }),
+    Preferences.get({ key: DARK_MODE }),
+    Preferences.get({ key: HAS_SEEN_TUTORIAL }),
+    Preferences.get({ key: HAS_LOGGED_IN }),
+    Preferences.get({ key: CARET }),
+    Preferences.get({ key: ROLE }),
   ])
 
   const id          = response[0].value || '0'

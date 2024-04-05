@@ -1,7 +1,7 @@
 import * as AppConst from '../../../data/static/constants'
 import React, { useRef } from 'react'
 import { IonItemSliding, IonItem, IonLabel, IonItemOptions, IonItemOption, AlertButton } from '@ionic/react'
-import { Session } from '../../../models/Schedule'
+import { Session } from '../../../interfaces/Schedule'
 
 interface SessionListItemProps {
   session: Session;
