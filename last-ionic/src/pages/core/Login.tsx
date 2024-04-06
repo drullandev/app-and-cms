@@ -80,7 +80,7 @@ const Login: React.FC<LoginProps> = ({
               }
             ]
           },
-          {
+          /*{
             cols: [
               {
                 type: 'input',
@@ -92,17 +92,21 @@ const Login: React.FC<LoginProps> = ({
                 //onChange: (e:any)=> setValue('identifier',e.detail.value)    
               }
             ]
-          },
+          },*/
           {
             cols: [
               {
-                type: 'input',
-                name: 'password',
-                fieldType: 'password',
-                label: t('Password'),
-                //value: testing ? import.meta.env.REACT_APP_DEFAULT_PASS : undefined,
-                required: true,
-                //onChange: (e:any)=> setPassword(e.detail.value)
+                fields: [
+                  {
+                    type: 'input',
+                    fieldType: 'password',
+                    name: 'password',
+                    label: t('Password'),
+                    //value: testing ? import.meta.env.REACT_APP_DEFAULT_PASS : undefined,
+                    required: true,
+                    //onChange: (e:any)=> setPassword(e.detail.value)
+                  }
+                ]
               }
             ]
           },          
@@ -225,14 +229,14 @@ const Login: React.FC<LoginProps> = ({
           onCancel: ()=> history.push('/home', { direction: 'none' })      
     
         },
-    /*
+
         validation: ()=> {
           return yup.object().shape({
             identifier: yup.string().email().required().min(3),
             password: yup.string().required().min(6).max(64)
           })
         },
-    */
+
       }
     }
   }

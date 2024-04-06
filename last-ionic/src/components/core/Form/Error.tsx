@@ -1,11 +1,11 @@
 import React, { FC } from 'react'
-import { NestDataObject, FieldError } from "react-hook-form"
+import { DeepMap, FieldError } from "react-hook-form"
 import { IonText } from '@ionic/react'
 
 export interface ErrorProps {
   name: string,
   label: string,
-  errors?: NestDataObject<Record<string, any>, FieldError>
+  errors?: DeepMap<Record<string, any>, FieldError>
 }
 
 /**

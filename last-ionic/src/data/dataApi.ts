@@ -1,7 +1,7 @@
 import { Preferences } from '@capacitor/preferences';
-import { Schedule, Session } from '../interfaces/Schedule'
-import { Speaker } from '../interfaces/Speaker'
-import { Location } from '../interfaces/Location'
+import { Schedule, Session } from '../models/Schedule'
+import { Speaker } from '../models/Speaker'
+import { Location } from '../models/Location'
 import { setOrRemove, parseSessions, toogleBool } from './reducer.utils'
 import { UserState } from './user/user.state'
 import { initialUser } from './state'

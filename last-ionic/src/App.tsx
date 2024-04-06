@@ -44,7 +44,7 @@ import MainTabs from './components/core/main/MainTabs'
 import HomeOrTutorial from './components/HomeOrTutorial'
 import RedirectToLogin from './components/RedirectToLogin'
 
-import { Schedule } from './interfaces/Schedule'
+import { Schedule } from './models/Schedule'
 import { initialUser } from './data/state'
 
 // Import the functions you need from the SDKs you need

@@ -6,7 +6,7 @@ import { connect } from '../../../data/connect'
 //import { restGet } from '../../../data/utils/rest/rest.utils'
 
 import Icon from './Icon'
-import { ListRowProps } from '../../../interfaces/ListRowProps'
+import { ListRowProps } from '../../../models/ListRowProps'
  
 interface LineProps {
   id: string,

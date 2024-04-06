@@ -1,4 +1,4 @@
-import { Schedule, Session } from '../interfaces/Schedule'
+import { Schedule, Session } from '../models/Schedule'
 import { Preferences } from '@capacitor/preferences';
 
 let testingReducer = false

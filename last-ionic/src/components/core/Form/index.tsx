@@ -1,83 +1,112 @@
 import * as React from 'react'
 import { Controller, useForm } from 'react-hook-form'
-import { CreateAnimation, IonGrid, IonRow, IonCol, IonLabel, IonCheckbox, IonInput, IonItem, IonTextarea, IonText } from '@ionic/react'
+import { CreateAnimation, IonGrid, IonRow, IonCol, IonLabel, IonCheckbox, IonInput, IonItem, IonTextarea, IonText, IonSpinner, IonDatetime, IonRadio, IonSelect } from '@ionic/react'
 import * as type from './types'
 
 import Error from './Error'
 import Button from './Button'
 import Spinner from '../main/Spinner'
 import '../../../pages/Styles.scss'
+import { ErrorProps } from './Error';
 
 /**
  * This component allows to create a form with validations ;)
  * David Rullán Díaz - 19-11-2022
- * @param loginForm 
+ * @param formData 
  * @returns 
  */
-const Form: React.FC<type.FormProps> = (loginForm) => {
+const Form: React.FC<type.FormProps> = (formData) => {
 
-  //const validationSchema = loginForm.validation()  
+  const validationSchema = formData.validation
   const { control, handleSubmit } = useForm<any>()
-  const onSubmit = handleSubmit(loginForm.methods.onSubmit)
+  const onSubmit = handleSubmit(formData.methods.onSubmit)
 
   const formAnimation = {
     delay: 1000,
-    duration: 1000,
+    duration: 1000,    
     iterations: 1,
     fromTo: { property: 'opacity', fromValue: 0, toValue: 1 }
   }
 
+
+
+  const renderLabel = (field: type.FieldProps) => {
+    if (!field.label) return null;
+    return (
+      <>
+        <IonLabel color={ field.color ? field.color : 'primary' } position={(field.fieldType !== 'check' || ! field.position) ? 'floating' : field.position}>
+          {field.label}
+          {field.fieldType === 'check' && field.required && <IonLabel slot='end' position='stacked'>*</IonLabel>}
+        </IonLabel>
+        {field.fieldType !== 'check' && field.required && <IonLabel slot='end' position='stacked'>*</IonLabel>}
+      </>
+    )
+  }
+
+  // Función que renderiza el componente basado en el tipo de campo y los props asociados
+  const renderField = (field: type.FieldProps) => {
+    
+    // Define un objeto de configuración que mapea los tipos de campos a los componentes correspondientes y los props necesarios
+    const componentMap: type.ComponentProps = {
+      check: { component: <IonCheckbox />, props: {} },
+      textarea: { component: <IonTextarea />, props: {} },
+      spinner: { component: <IonSpinner />, props: {} },
+      input: { component: <IonInput />, props: {} },
+      select: { component: <IonSelect />, props: {} }, // Ejemplo de componente select
+      radio: { component: <IonRadio />, props: {} }, // Ejemplo de componente radio
+      datetime: { component: <IonDatetime />, props: {} }, // Ejemplo de componente datetime
+    }
+
+    // Si el tipo de campo está en el mapeo, renderiza el componente correspondiente con los props
+    // De lo contrario, renderiza el componente por defecto con los props
+    const { component, props } = componentMap[ field.fieldType || 'input']
+
+    return React.cloneElement(component, { ...field, ...props })
+
+  }
+
+
   return <CreateAnimation {...formAnimation}>
-    <form noValidate id={loginForm.id} onSubmit={onSubmit}>
-      <IonGrid>{ loginForm.title.label && <IonRow>
-          <IonCol>
-            <IonText>{loginForm.title.label}</IonText>
-          </IonCol>
-        </IonRow>}
-        {loginForm.rows && Object.keys(loginForm.rows).map((row: any, key: number)=>        
-        <IonRow key={'row-'+key}>{loginForm.rows[key].cols.map((field: type.FieldProps, i: number) =>
-          <IonCol key={'col-'+field.name+i}>
-            {field.type === 'input' 
-            ? <>
-                <IonItem>
-                  {field.type === 'input' 
-                    ? <>
-                        <IonLabel position='floating' color='primary'>{field.label}</IonLabel>     
-                        {field.required === true && <IonLabel slot='end' position='stacked' color='primary'>*</IonLabel>}               
-                      </>
-                    : field.type === 'check' 
-                      ? field.label !== undefined 
-                        ? <IonLabel color='primary'>{field.label}</IonLabel>
-                        : <></>
-                      : <></>
-                  }                                     
-                  {/*<Controller
-                    as={ field.fieldType === 'check'
-                        ? <IonCheckbox slot='end' {...field}/>                             
-                        : field.fieldType === 'textarea'
-                          ? <IonTextarea {...field}/>                                
-                          : field.fieldType === 'spinner'
-                            ? <Spinner name='dots'/>
-                            : <IonInput autofocus
-                                aria-invalid={errors && errors[field.name] ? 'true' : 'false'}
-                                aria-describedby={`${field.name}Error`}
-                                type={field.fieldType}               
-                              />                                   
-                    }
-                    name={field.name}
-                    control={control}
-                    onChangeName='onIonChange'
-                    onBlurName='onIonBlur'
-                  />*/}
-                </IonItem>
-                {/*<Error name={field.name} label={field.label} errors={errors}/>*/}
-              </>
-            : field.type === 'button'
-              ? <Button {...field}/>
-              : field.component
-          }</IonCol>
-        )}</IonRow>
-      )}</IonGrid>
+    <form noValidate id={formData.id} onSubmit={onSubmit}>
+      <IonGrid>
+        {
+          formData.title.label &&
+            <IonRow>
+              <IonCol>
+                <IonText>{formData.title.label}</IonText>
+              </IonCol>
+            </IonRow>
+        }
+        {
+          formData.rows && Object.keys(formData.rows).map(
+            (row: any, rowkey: number)=>        
+              <IonRow key={'row-'+rowkey}>
+                {row.cols && Object.keys(row.cols).map(
+                  (col: any, colkey: number)=>  {
+                    <IonCol key={'col-'+ colkey}>
+                      {col.fields && Object.keys(col.fields).map(
+                        (field: any, fieldkey: number)=>  {
+                          <>
+                            <IonItem>
+                              {renderLabel(field)}                                     
+                              <Controller
+                                name={field.name}
+                                control={control}
+                                defaultValue={field.value} // Agrega defaultValue si es necesario
+                                render={({ field }) => <>{renderField(field)}</>}
+                              />
+                            </IonItem>
+                            <Error name={field.name} label={field.label} errors={errors}/>
+                          </> 
+                        }
+                      )} 
+                    </IonCol>
+                  }
+                )}
+              </IonRow>
+          )
+        }
+      </IonGrid>
     </form>
   </CreateAnimation>
 

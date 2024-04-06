@@ -217,21 +217,20 @@ const Signup: React.FC<SignupProps> = ({
     
         },
     
-        validation: ()=> {
-          return yup.object().shape({
+        validation: yup.object().shape({
             username: yup.string().required().min(3),
             email: yup.string().required().email().min(8),
             password: yup.string().required().min(6).max(64),//64 was arbitrary...
             repeatPassword: yup.string().required().min(6).max(64),//64 was arbitrary...
           })
-        },
+        ,
     
       }
     }
   }
 
   useEffect(pageSettings.methods.onLoad,[])
-  
+
   return <Page {...pageSettings}/>
   
 }

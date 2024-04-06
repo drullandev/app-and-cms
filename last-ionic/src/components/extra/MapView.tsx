@@ -3,7 +3,7 @@ import { IonContent } from '@ionic/react'
 
 import Map from '../core/main/Map'
 
-import { Location } from '../../interfaces/Location'
+import { Location } from '../../models/Location'
 
 import { connect } from '../../data/connect'
 import * as selectors from '../../data/selectors'

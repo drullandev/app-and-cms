@@ -12,7 +12,7 @@ import ShareSocialFab from '../../components/ShareSocialFab'
 import * as selectors from '../../data/selectors'
 import { connect } from '../../data/connect'
 import { setSearchText } from '../../data/sessions/sessions.actions'
-import { Schedule } from '../../interfaces/Schedule'
+import { Schedule } from '../../models/Schedule'
 
 interface OwnProps { }
 

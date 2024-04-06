@@ -1,5 +1,5 @@
 
-import { Control, NestDataObject, FieldError, FieldValues, OnSubmit } from 'react-hook-form'
+import { Control, FieldError, FieldValues } from 'react-hook-form'
 
 // This is the required form settings interfaces and classes
 
@@ -25,10 +25,14 @@ interface FormMethods {
 
 export interface FieldProps {
   name: string
-  type: any
-  fieldType: any
-  label: string
+  type?: 'input' | 'button' | 'password' | 'text' | 'email'
+  fieldType?: 'input' | 'check' | 'textarea' | 'button' | 'label'
+  position?: 'floating' | any
+  label?: string
   required?: boolean
+  pattern?: any
+  minLength?: number
+  maxLength?: number
   value?: any
   columns?: any[]
   component?: JSX.Element
@@ -39,11 +43,19 @@ export interface FieldProps {
   onClick?: any
   onSubmit?: any
   routerLink?: string
-  color?: "danger" | "dark" | "light" | "medium" | "primary" | "secondary" | "success" | "tertiary" | "warning" | string & Record<never, never> | undefined
+  color?: 'danger' | 'dark' | 'light' | 'medium' | 'primary' | 'secondary' | 'success' | 'tertiary' | 'warning'
   fill?: 'solid' | 'clear' | 'outline'
   size?: 'small' | 'default' | 'large'
   slot?: 'end' | 'start' | 'icon-only'
   icon?: any,
+}
+
+// Define los tipos para los componentes y los props asociados
+export interface ComponentProps {
+  [key: string]: {
+    component: React.ReactElement<any, string | React.JSXElementConstructor<any>>;
+    props: any;
+  }
 }
 
 /////////////////////// mmmm espera!
@@ -70,4 +82,15 @@ interface StrapiAuthProps {
     darkMode?: boolean
   },
   jwt?: string
+}
+
+export interface TabMenuButtonProps {
+  tab:{
+    path: {
+      slug: string
+      value: string
+    }
+    icon: string
+    label: string
+  }
 }
