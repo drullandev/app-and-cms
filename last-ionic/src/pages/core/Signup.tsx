@@ -8,12 +8,12 @@ import * as icon from 'ionicons/icons'
 
 import { connect } from '../../data/connect'
 import { setisLoggedIn, setUsername, setLoading } from '../../data/user/user.actions'
-import { restCallAsync } from '../../classes/core/axios'
+import RestAPI from '../../classes/core/axios'
 import { random } from '../../data/utils/common'
 
 import { setOutput } from '../../classes/core/output'
 import Header from '../../components/core/main/Header'
-import Form from '../../components/core/Form'
+import Form from '../../components/core/Form/Form'
 import Page from '../../components/core/Page'
 import { PageProps } from '../../components/core/Page/types'
 
@@ -179,7 +179,7 @@ const Signup: React.FC<SignupProps> = ({
               return user
             }  
       
-            await restCallAsync({
+            await RestAPI.restCallAsync({
               req: {
                 url: 'api/auth/local/register',
                 method: 'POST',

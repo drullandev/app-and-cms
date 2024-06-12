@@ -5,12 +5,12 @@ import '../../pages/Styles.scss'
 import { setisLoggedIn, setUsername } from '../../data/user/user.actions'
 import { connect } from '../../data/connect'
 import { RouteComponentProps } from 'react-router'
-import { restCallAsync } from '../../classes/core/axios'
-import { random } from '../../classes/core/string'
+import RestAPI from '../../classes/core/axios'
+import StringUtil from '../../classes/core/string'
 import { useTranslation } from 'react-i18next'
 import { PageProps } from '../../components/core/Page/types'
 import Page from '../../components/core/Page'
-import Form from '../../components/core/Form'
+import Form from '../../components/core/Form/Form'
 import * as yup from 'yup'
 import * as icon from 'ionicons/icons'
 import Icon from '../../components/core/main/Icon'
@@ -118,12 +118,12 @@ const ChangePassword: React.FC<LoginProps> = ({
               return user
             }  
       
-            await restCallAsync({
+            await RestAPI.restCallAsync({
               req: {
                 url: 'api/auth/reset-password',
                 method: 'POST',
                 data: { 
-                  email: testing ? random(12)+'@gmail.com' :  data.email
+                  email: testing ? StringUtil.random(12)+'@gmail.com' :  data.email
                 }
               },
               onSuccess: {

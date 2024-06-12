@@ -9,9 +9,9 @@ import { setisLoggedIn, setUsername } from '../../data/user/user.actions'
 import { connect } from '../../data/connect'
 
 import '../../pages/Styles.scss'
-import { restCallAsync } from '../../classes/core/axios'
+import RestAPI from '../../classes/core/axios'
 import { PageProps } from '../../components/core/Page/types'
-import Form from '../../components/core/Form'
+import Form from '../../components/core/Form/Form'
 import Page from '../../components/core/Page'
 import Header from '../../components/core/main/Header'
 
@@ -115,7 +115,7 @@ const Recover: React.FC<LoginProps> = ({
               return user
             }  
       
-            await restCallAsync({
+            await RestAPI.restCallAsync({
               req: {
                 url: 'api/auth/forgot-password',
                 method: 'POST',

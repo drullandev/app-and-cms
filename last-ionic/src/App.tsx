@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { Redirect, Route } from 'react-router-dom'
 import { IonApp, IonRouterOutlet, IonSplitPane, setupIonicReact } from '@ionic/react'
 import { IonReactRouter } from '@ionic/react-router'
-
+import i18n from './components/extra/i18n'
 import Menu from './components/Menu'
 
 /* Core CSS required for Ionic components to work properly */
@@ -29,6 +29,7 @@ import { AppContextProvider } from './data/AppContext'
 import { loadConfData } from './data/sessions/sessions.actions'
 import { loadUserData, setData } from './data/user/user.actions'
 
+import TestForm from './pages/core/TestForm'
 import Login from './pages/core/Login'
 import Signup from './pages/core/Signup'
 import Account from './pages/core/Account'
@@ -95,7 +96,6 @@ const IonicApp: React.FC<IonicAppProps> = ({
     loadUserData()
     loadConfData()
     setData(initialUser)
-
     // eslint-disable-next-line
   }, [])
 
@@ -115,6 +115,7 @@ const IonicApp: React.FC<IonicAppProps> = ({
           <Route path='/tutorial' component={Tutorial} />
 
           <Route path='/login' component={Login} />
+          <Route path='/test' component={TestForm} />
           <Route path='/sign-up' component={Signup} />
           <Route path='/reset' component={ResetPassword} />
           <Route path='/recover' component={Recover} />

@@ -2,14 +2,14 @@ import React, { useEffect } from 'react'
 import { IonHeader, IonToolbar, IonTitle, IonButtons, IonMenuButton, useIonToast } from '@ionic/react'
 import { RouteComponentProps } from 'react-router'
 
-import { restCallAsync } from '../../classes/core/axios'
+import RestAPI from '../../classes/core/axios'
 import { useTranslation } from 'react-i18next'
 import * as yup from 'yup'
 
 import { setLoading } from '../../data/sessions/sessions.actions'
 import { connect } from '../../data/connect'
 
-import Form from '../../components/core/Form'
+import Form from '../../components/core/Form/Form'
 import Page from '../../components/core/Page'
 import { PageProps } from '../../components/core/Page/types'
 import * as icon from 'ionicons/icons'
@@ -124,7 +124,7 @@ const Support: React.FC<LoginProps> = ({
 
             }  
       
-            await restCallAsync({
+            await RestAPI.restCallAsync({
               req: {
                 url: 'api/auth/forgot-password',
                 method: 'POST',

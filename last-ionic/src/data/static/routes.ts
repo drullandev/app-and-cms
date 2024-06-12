@@ -11,15 +11,15 @@ export const routes = {
     //{ title: 'About', path: '/tabs/about', icon: informationCircleOutline }
   ],
   loggedInPages: [
-    { title: 'Account', path: '/account', icon: icon.person },
-    { title: 'Reset Pass', path: '/reset', icon: icon.person },
+    //{ title: 'Account', path: '/account', icon: icon.person },
+    //{ title: 'Reset Pass', path: '/reset', icon: icon.person },
     //{ title: 'Support', path: '/support', icon: help },
-    { title: 'Logout', path: '/logout', icon: icon.logOut }
+    //{ title: 'Logout', path: '/logout', icon: icon.logOut }
   ],
   loggedOutPages: [
     { title: 'Login', path: '/login', icon: icon.logIn },
-    { title: 'Recover', path: '/recover', icon: icon.person },
-    { title: 'Support', path: '/support', icon: icon.help },
-    { title: 'Signup', path: '/sign-up', icon: icon.personAdd }
+    //{ title: 'Recover', path: '/recover', icon: icon.person },
+    //{ title: 'Support', path: '/support', icon: icon.help },
+    //{ title: 'Signup', path: '/sign-up', icon: icon.personAdd }
   ]
 }

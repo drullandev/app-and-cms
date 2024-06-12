@@ -2,7 +2,7 @@ import React from 'react'
 import { IonSpinner } from '@ionic/react'
 
 import Menu from './Menu'
-import Form from '../../core/Form'
+import Form from '../Form/Form'
 import MyComponent from './MyComponent'
 
 import { PageRowProps } from './interfaces/PageRowProps'

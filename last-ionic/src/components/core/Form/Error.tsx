@@ -1,12 +1,6 @@
-import React, { FC } from 'react'
-import { DeepMap, FieldError } from "react-hook-form"
-import { IonText } from '@ionic/react'
-
-export interface ErrorProps {
-  name: string,
-  label: string,
-  errors?: DeepMap<Record<string, any>, FieldError>
-}
+import React from 'react'
+import { IonNote } from '@ionic/react'
+import { ErrorProps } from './types';
 
 /**
  * Universal error case for the
@@ -14,18 +8,17 @@ export interface ErrorProps {
  * @param ErrorProps  
  * @returns 
  */
-const Error: FC<ErrorProps> = ({ name, label, errors }) => {
-  return  <>
-    {errors && errors[name] && (
-      <IonText color='danger' className='ion-padding-start'>
-        <small>
-          <span role='alert' id={`error-${name}`}>
-            {errors[name].message.replace(name, label)}
-          </span>
+ const Error: React.FC<ErrorProps> = ({ name, label, errors }) => {
+  if (errors && errors[name ?? 'input']) {
+    return (
+      <IonNote color="danger" className="ion-custom-error ion-padding-start">
+        <small role="alert" id={`error-${name}`}>
+          {errors[name ?? 'input'].message.replace(name ?? 'input', label)}
         </small>
-      </IonText>
-    )}
-  </>
+      </IonNote>
+    );
+  }
+  return <></>
 }
 
 export default Error

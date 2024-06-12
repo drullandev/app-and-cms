@@ -1,37 +1,118 @@
-import axios, { AxiosRequestConfig } from 'axios'
-import { output } from '../strapi/CommonOperations'
+import axios, { AxiosRequestConfig } from 'axios';
+import { output } from '../strapi/CommonOperations';
+
+/**
+ * This module provides a class `RestApi` that encapsulates the functionality for making REST API calls.
+ * It includes methods for performing synchronous and asynchronous calls, setting default request properties,
+ * and handling responses and errors.
+ *
+ * Usage:
+ * - Import the `RestApi` class and call its methods with the appropriate `CallProps`.
+ * - Define success, error, and finally handlers as needed.
+ *
+ * Example:
+ * 
+ * import RestApi, { CallProps } from './path/to/RestApi';
+ *
+ * const callProps: CallProps = {
+ *   req: {
+ *     method: 'get',
+ *     url: 'api/endpoint',
+ *   },
+ *   onSuccess: {
+ *     default: (response) => console.log('Success:', response),
+ *   },
+ *   onError: {
+ *     default: (error) => console.error('Error:', error),
+ *   },
+ *   onFinally: () => console.log('Call finished'),
+ * };
+ *
+ * // Perform a synchronous call
+ * RestApi.restCall(callProps);
+ *
+ * // Perform an asynchronous call
+ * RestApi.restCallAsync(callProps);
+ *
+ * This code is designed to be reusable and maintainable, ensuring default values are set and errors are properly handled.
+ */
 
 export interface CallProps {
-  req: AxiosRequestConfig,
+  req: AxiosRequestConfig;
   onSuccess: {
-    default: any
-  }
+    default: (response: any) => void;
+  };
   onError: {
-    default: any
+    default: (error: any) => void;
+  };
+  onFinally?: () => void;
+}
+
+/**
+ * Class encapsulating operations for making REST calls.
+ */
+class RestApi {
+
+  /**
+   * Performs an asynchronous REST call.
+   * @param call - The properties of the API call.
+   * @returns A promise with the result of the call.
+   */
+  static async restCallAsync(call: CallProps) {
+    return this.setCall(this.commonCall(call));
   }
-  onFinally?: Function
+
+  /**
+   * Performs a REST call.
+   * @param call - The properties of the API call.
+   * @returns A promise with the result of the call.
+   */
+  static restCall(call: CallProps) {
+    return this.setCall(this.commonCall(call));
+  }
+
+  /**
+   * Modifies the API call properties, setting default values.
+   * @param call - The properties of the API call.
+   * @returns The modified call properties.
+   */
+  private static commonCall(call: CallProps): CallProps {
+    // Set 'get' as the default method if not defined
+    if (!call.req.method) {
+      call.req.method = 'get';
+    }
+
+    // Set the base URL from environment variables
+    call.req.url = call.req.url ? `${import.meta.env.REACT_APP_HOST}/${call.req.url}` : undefined;
+
+    // Add the '?populate=*' parameter if the method is 'get'
+    if (call.req.method.toLowerCase() === 'get') {
+      call.req.url = `${call.req.url}?populate=*`;
+    }
+
+    return call;
+  }
+
+  /**
+   * Executes the API call using Axios and handles the responses.
+   * @param call - The properties of the API call.
+   * @returns A promise with the result of the Axios call.
+   */
+  private static setCall(call: CallProps) {
+    return axios(call.req)
+      .then((res: any) => {
+        return call.onSuccess.default(res);
+      })
+      .catch((err: any) => {
+        return call.onError.default(output(err));
+      })
+      .finally(() => {
+        if (call.onFinally) {
+          return call.onFinally();
+        }
+      });
+  }
+
 }
 
-export const restCall = (call: CallProps) => setCall(commonCall(call))
-export const restCallAsync = async (call: CallProps) => setCall(commonCall(call))
-
-const commonCall = (call:any) => {
-  if (call.req.method === null) call.req.method = 'get'
-  call.req.url = (call.req.url) ? import.meta.env.REACT_APP_HOST+'/'+call.req.url : undefined
-  // Yeah... '?populate=* ... The testing API requires this to show you all or only basic elements...
-  // Is not the time to stay working under this constraints
-  // I'growing faster this way ;)
-  if(call.req.method.toLowerCase() === 'get') call.req.url = call.req.url+'?populate=*'
-  return call
-}
-
-const setCall = (call: CallProps) => axios(call.req)
-  .then((res: any)=> {
-    return call.onSuccess.default(res) 
-  })
-  .catch((err: any)=> {
-    return call.onError.default(output(err))
-  })
-  .finally(()=>{
-    return (call.onFinally !== undefined) ? call.onFinally() : null
-  })
+export default RestApi;

@@ -1,48 +1,25 @@
-// Required
-import React from 'react'
-import { RouteComponentProps } from 'react-router'
-import { useIonToast } from '@ionic/react'
-//import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
-// https://firebase.google.com/docs/auth/web/start#web-version-9
-// https://github.com/aaronksaunders/ionic-react-auth-firebase
+import React from 'react';
+import { RouteComponentProps } from 'react-router';
+import { useIonToast } from '@ionic/react';
+import { useTranslation } from 'react-i18next';
+import { connect } from '../../data/connect';
+import RestAPI from '../../classes/core/axios';
+import { setData, setLoading } from '../../data/user/user.actions';
+import Page from '../../components/core/Page';
+import { PageProps } from '../../components/core/Page/types';
+import * as yup from 'yup';
+import Form from '../../components/core/Form/Form';
+import { FormProps } from '../../components/core/Form/types';
+import Header from '../../components/core/main/Header';
+import { DeepMap, FieldError } from 'react-hook-form';
 
-import '../../pages/Styles.scss'
-
-// Extra required
-import { useTranslation } from 'react-i18next'
-
-// Reducer settings
-import { connect } from '../../data/connect'
-import { restCallAsync } from '../../classes/core/axios'
-import { setData, setLoading } from '../../data/user/user.actions'
-
-// Page dependencies
-import Page from '../../components/core/Page'
-import { PageProps } from '../../components/core/Page/types'
-
-// Form settings
-import * as yup from 'yup'
-import Form from '../../components/core/Form'
-
-// Design Dependencies
-import * as icon from 'ionicons/icons'
-import Header from '../../components/core/main/Header'
-import { UserState } from '../../data/user/user.state'
-
-// Are you testing this tools set && app?
-let testingLogin = true
-let testing = testingLogin && import.meta.env.REACT_APP_TESTING
-let useFirebase = false
-// - The main testing user will be used under testing
-
-// Component Dependencies
 interface OwnProps extends RouteComponentProps {}
 
 interface StateProps {}
 
 interface DispatchProps {
-  setData: typeof setData
-  setLoading: typeof setLoading
+  setData: typeof setData;
+  setLoading: typeof setLoading;
 }
 
 interface LoginProps extends OwnProps, StateProps, DispatchProps {}
@@ -53,203 +30,128 @@ const Login: React.FC<LoginProps> = ({
   setLoading,
 }) => {
 
-  const { t } = useTranslation()
-  const [presentToast] = useIonToast()
-  //const auth = getAuth()
+  const { t } = useTranslation();
+  const [presentToast] = useIonToast();
+
+  const formData: FormProps = {
+    settings: {
+      autoSendIfValid: false //
+    },
+    rows: [
+      {
+        name: 'email',
+        label: 'Email',
+        type: 'email',
+        defaultValue: '',
+        validationSchema: yup.string()
+          .required('Email is required')
+          .email('This email is invalid...')
+      },
+      { 
+        name: 'password',
+        label: 'Password',
+        type: 'password',
+        defaultValue: '', 
+        validationSchema: yup.string()
+          .required('Password is required')
+          .min(8, 'Password must be at least 8 characters')  // Added minimum characters
+          //.matches(/^(?=.*[A-Z])/, 'Password must contain at least one uppercase letter')  // Added at least one uppercase letter
+          //.matches(/^(?=.*[a-z])/, 'Password must contain at least one lowercase letter')  // Added at least one lowercase letter
+          //.matches(/^(?=.*[0-9])/, 'Password must contain at least one number')  // Added at least one number
+          //.matches(/^(?=.*[!@#$%^&*])/, 'Password must contain at least one special character'),  // Added at least one special character
+      },
+      {
+        name: 'agreement',
+        label: 'Accept the publicity agreement',
+        type: 'checkbox', defaultValue: false, 
+        validationSchema: yup.boolean().oneOf([true], 'You must accept the terms and conditions')
+      },
+      { name: 'submit', label: 'submit', type: 'submit' },
+      { name: 'register', label: 'Register', type: 'button' },
+    ],
+    onSuccess: async (data: any) => {
+      setLoading(true);
+      await RestAPI.restCallAsync({
+        req: {
+          method: 'POST',
+          url: `${import.meta.env.VITE_API_URL}/auth/local`,
+          data: {
+            identifier: data.email,
+            password: data.password,
+          },
+        },
+        onSuccess: {
+          default: (response:any)=>{
+            if (response.status === 200) {
+              setData(response.data.user);
+              history.push('/home');
+              presentToast({
+                message: 'Login successful!',
+                duration: 2000,
+                color: 'success',
+              });
+            } else {
+              presentToast({
+                message: 'Login failed, please try again.',
+                duration: 2000,
+                color: 'danger',
+              });
+            }
+          }
+        },//
+        onError: {
+          default: (error: any)=>{
+            presentToast({
+              message: 'An error occurred during login, please try again.',
+              duration: 2000,
+              color: 'danger',
+            });
+            console.error('Login error:', error);
+          }//
+        },
+        onFinally: ()=>{
+          setLoading(false);
+        }
+      });
+    },
+    onError: ()=>{
+      presentToast({
+        message: 'Login error!',
+        duration: 2000,
+        color: 'warning',
+      });
+    }
+  };
+
+  const handleError = (errors: DeepMap<Record<string, any>, FieldError>) => {
+    console.error('Error validating the form:', errors);
+    presentToast({
+      message: 'Please correct the errors in the form.',
+      duration: 2000,
+      color: 'danger',
+    });
+  };
 
   const pageSettings: PageProps = {
     id: 'login-page',
-    header: ()=> <Header label={t('Login')} slot={'start'}/>,
-    content: ()=> <Form {...pageSettings.methods.loginForm}/>,
-    methods: {
-      loginForm: {
+    header: () => <Header label={t('Login')} slot={'start'} />,
+    content: () => (
+      <>
+        <Form {...formData} onError={handleError} />
+      </>
+    ),
+    footer: () => null,
+  };
 
-        id: 'login-form',
-    
-        title: {
-          label: t('Login to your account...')
-        },
+  return <Page {...pageSettings} />
 
-        rows: [
-          {
-            cols:[
-              {
-                component: <div className="login-logo">
-                  <img src="assets/img/appicon.svg" alt="Ionic logo" />
-                </div>
-              }
-            ]
-          },
-          /*{
-            cols: [
-              {
-                type: 'input',
-                name: useFirebase ? 'email' : 'identifier',
-                fieldType: 'email',// TODO: Liberate for email and also nickname
-                label: t('User or email'),
-                //value: testing ? import.meta.env.REACT_APP_DEFAULT_USER : undefined,
-                required: true,
-                //onChange: (e:any)=> setValue('identifier',e.detail.value)    
-              }
-            ]
-          },*/
-          {
-            cols: [
-              {
-                fields: [
-                  {
-                    type: 'input',
-                    fieldType: 'password',
-                    name: 'password',
-                    label: t('Password'),
-                    //value: testing ? import.meta.env.REACT_APP_DEFAULT_PASS : undefined,
-                    required: true,
-                    //onChange: (e:any)=> setPassword(e.detail.value)
-                  }
-                ]
-              }
-            ]
-          },          
-          {
-            cols:[
-              {
-                name: 'wanna-reset',
-                type: 'button',
-                label: t("You don't remember your account?"),
-                color: 'clear',
-                icon: icon.logIn,
-                onClick: ()=>history.push('/change-password', { direction: 'none' })
-              },
-              {
-                name: 'wanna-signin',
-                type: 'button',
-                label: t("Wanna Sign In?"),
-                color: 'clear',
-                icon: icon.logIn,
-                onClick: ()=>history.push('/sign-up', { direction: 'none' })
-              },
-            ]
-          },          
-          {
-            cols: [
-              {
-                name: 'login-submit',
-                type: 'button',
-                fieldType: 'submit',
-                label: t('Login'),
-                icon: icon.logIn
-              },
-              {
-                name: 'login-cancel',
-                type: 'button',
-                fieldType: 'link',
-                label: t('Cancel'),
-                fill: 'outline',
-                icon: icon.close,
-                onClick: () : any=> pageSettings.methods.loginForm.methods.onCancel()
-              }
-            ],
-          },
-        ],
+};
 
-        methods:{
-    
-          onSubmit: async (data: any) => {
-
-            const onSubmitSuccess = async (ret:any)=>{
-  
-              await restCallAsync({
-                req: {
-                  url: 'api/users/'+ret.data.user.id,
-                  method: 'GET'
-                },
-                onSuccess: {
-  
-                  default: (ret2: any)=>{
-  
-                    // Set user state
-                    let user = ret2.data
-                    console.log(user)
-                    user.jwt = ret.data.jwt // Attaching the JWT to the user level and state...
-                    user.isLoggedIn = true
-                    user.caret = user.caret
-                    console.log('user', user)
-                    setData(user)
-  
-                    let loginOutput = { 
-                      message: t('user-wellcome', { username: ret2.data.username }),
-                      icon: icon.checkmarkCircleOutline,
-                      duration: 1000,
-                      color: 'success'
-                    }
-      
-                    presentToast(loginOutput)
-                      .then(()=> history.push('/tabs/schedule', {
-                        direction: 'none'
-                      }))
-  
-                  }
-  
-                },
-                onError: {
-                  default: presentToast
-                }
-              })
-  
-  
-  
-              return true
-            }
-
-            setLoading(true)
-            //if(useFirebase){
-            //  signInWithEmailAndPassword(auth, data.email, data.password)
-            //    .then(onSubmitSuccess)
-            //}else{
-              await restCallAsync({
-                req: {
-                  url: 'api/auth/local',
-                  method: 'POST',
-                  data: { 
-                    identifier: testing ? import.meta.env.REACT_APP_DEFAULT_USER : data.identifier,
-                    password: testing ? import.meta.env.REACT_APP_DEFAULT_PASS : data.password,
-                  },
-                },
-                onSuccess: {      
-                  default: onSubmitSuccess         
-                },
-                onError: {  
-                  default: presentToast                     
-                }
-              })
-            //}
-            setLoading(false)
-          },
-    
-          onCancel: ()=> history.push('/home', { direction: 'none' })      
-    
-        },
-
-        validation: ()=> {
-          return yup.object().shape({
-            identifier: yup.string().email().required().min(3),
-            password: yup.string().required().min(6).max(64)
-          })
-        },
-
-      }
-    }
-  }
-
-  return <Page {...pageSettings}/>
-  
-}
-
-export default connect<StateProps,{}, DispatchProps>({
+export default connect<StateProps, {}, DispatchProps>({
   mapStateToProps: (state) => ({}),
   mapDispatchToProps: {
     setData,
-    setLoading
+    setLoading,
   },
-  component: Login
-})
+  component: Login,
+});

@@ -1,32 +1,45 @@
 import { Preferences } from '@capacitor/preferences';
 
-export const setStorage = async (key: string, value:any) => {
-    var json = getType(value) === 'object'
-    var res = json ? JSON.stringify(value) : value
-    await Preferences.set({ key : key, value : res })
-}
+class StorageService {
   
-export const getStorage = async (key: string) => {
-  const { value } = await Preferences.get({ key: key })
-  var json = getType(value) === 'object'
-  return value ? ( json ? JSON.parse(value) : value ) : false
-}
-  
-export const removeStorage = async (key: string) => {
-    await Preferences.remove({ key : key })
+  // Function to set a value in storage
+  public async setStorage(key: string, value: any): Promise<void> {
+    // Check if the value is an object and stringify it if true
+    const json = this.getType(value) === 'object';
+    const res = json ? JSON.stringify(value) : value;
+    await Preferences.set({ key: key, value: res });
+  }
+
+  // Function to get a value from storage
+  public async getStorage(key: string): Promise<any> {
+    const { value } = await Preferences.get({ key: key });
+    // Check if the value is an object and parse it if true
+    const json = this.getType(value) === 'object';
+    return value ? (json ? JSON.parse(value) : value) : false;
+  }
+
+  // Function to remove a value from storage
+  public async removeStorage(key: string): Promise<void> {
+    await Preferences.remove({ key: key });
+  }
+
+  // Function to switch storage value (set or remove)
+  public async switchStorage(key: string, value: any): Promise<void> {
+    // If value is truthy, set it in storage; otherwise, remove it
+    if (value) {
+      await this.setStorage(key, value);
+    } else {
+      await this.removeStorage(key);
+    }
+  }
+
+  // Function to get the type of a variable
+  private getType(p: any): string {
+    if (Array.isArray(p)) return 'array';
+    else if (typeof p == 'string') return 'string';
+    else if (p != null && typeof p == 'object') return 'object';
+    else return 'other';
+  }
 }
 
-export const switchStorage = async (key: string, value: any) => {
-  if (value) {
-    await setStorage(key, value)
-  } else {
-    await removeStorage(key)
-  }  
-}
-
-const getType = (p:any) =>{
-  if (Array.isArray(p)) return 'array'
-  else if (typeof p == 'string') return 'string'
-  else if (p != null && typeof p == 'object') return 'object'
-  else return 'other'
-}
+export default new StorageService();

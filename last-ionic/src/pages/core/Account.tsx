@@ -11,7 +11,7 @@ import * as icon from 'ionicons/icons'
 // Extra required
 import { useTranslation } from 'react-i18next'
 
-import { restCallAsync } from '../../classes/core/axios'
+import RestAPI from '../../classes/core/axios'
 import { UserState } from '../../data/user/user.state'
 import '../../pages/Styles.scss'
 import Alert from '../../components/core/Alert'
@@ -46,7 +46,7 @@ const Account: React.FC<AccountProps> = ({
   const [alert, setAlert] = useState<ReactControllerProps>({isOpen: false})
 
   const onLoad = () => {
-    restCallAsync({
+    RestAPI.restCallAsync({
       req: {
         url: 'api/users/1',
         method: 'GET',

@@ -1,6 +1,6 @@
 import React from 'react'
 import { RouteComponentProps, withRouter, useLocation } from 'react-router'
-
+import i18n from '../components/extra/i18n'
 import { IonContent, IonIcon, IonItem, IonLabel, IonList, IonListHeader, IonMenu, IonMenuToggle } from '@ionic/react'
 
 import { connect } from '../data/connect'
@@ -10,7 +10,6 @@ import '../styles/Menu.css'
 import { useTranslation } from 'react-i18next'
 
 import { routes } from '../data/static/routes'
-
 
 interface Pages {
   title: string,
@@ -39,7 +38,7 @@ const Menu: React.FC<MenuProps> = ({
 }) => {
 
   const location = useLocation()
-  const { t } = useTranslation()
+  //const { t } = useTranslation()
 
   const renderlistItems = (list: Pages[]) => {
     return list
@@ -53,7 +52,7 @@ const Menu: React.FC<MenuProps> = ({
             className={location.pathname.startsWith(p.path) ? 'selected' : undefined}
           >
             <IonIcon slot="start" icon={p.icon} />
-            <IonLabel>{p.title}</IonLabel>
+            <IonLabel>{i18n.t(p.title)}</IonLabel>
           </IonItem>
         </IonMenuToggle>
       ))
@@ -63,7 +62,7 @@ const Menu: React.FC<MenuProps> = ({
     <IonMenu  type="overlay" disabled={!menuEnabled} contentId="main">
       <IonContent forceOverscroll={false}>
         <IonList lines="none">
-          <IonListHeader>{t('Account')}</IonListHeader>
+          <IonListHeader>{'Account'}</IonListHeader>
           {isLoggedIn
             ? renderlistItems(routes.loggedInPages)
             : renderlistItems(routes.loggedOutPages)

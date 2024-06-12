@@ -1,6 +1,6 @@
-import { restCall, restCallAsync } from './axios'
+import RestAPI from './axios'
 import { AxiosRequestConfig } from 'axios'
-import { empty, camelCase } from './string'
+import StringUtil from './string'
 import { useTranslation } from 'react-i18next'
 
 export interface WhereProps {
@@ -37,9 +37,9 @@ const setMutation = (p: GqlMutationModel) => {
   let qs = `mutation {\t`
 
   if( p.model !== undefined && p.action !== undefined ){
-    qs += camelCase(p.action+' '+p.model)
+    qs += StringUtil.camelCase(p.action+' '+p.model)
   }else if( p.action ){
-    qs += camelCase(p.action)
+    qs += StringUtil.camelCase(p.action)
   }else if( p.model ){
     qs += p.model
   }
@@ -72,7 +72,6 @@ const setMutation = (p: GqlMutationModel) => {
   return qs
 
 }
-
 
 // QUERY GENERATOR
 
@@ -109,7 +108,7 @@ const getQuery = (p: GqlQueryModel) =>{
 
   // WHERE
   var where = []
-  if(!empty(p.where)){
+  if(!StringUtil.empty(p.where)){
     p.where.map((row:any)=>{
       if(row.value !== undefined && row.value !== ''){
         var whereType = row.value
@@ -148,7 +147,7 @@ const getQuery = (p: GqlQueryModel) =>{
   }
 
   //https://strapi.io/documentation/developer-docs/latest/development/plugins/graphql.html#query-api
-  if(!empty(where)) qs+=', where: { '+where.join(',')+' }'
+  if(!StringUtil.empty(where)) qs+=', where: { '+where.join(',')+' }'
 
   //ORDER
   qs +=`, sort: "` + p.orderField + `:` + ( p.searchOrder ? p.searchOrder : p.direction ) + `"`
@@ -175,7 +174,7 @@ export interface CallProps {
   onFinally?: Function
 }
 
-const graphqlCall = (call: string): any => restCall({
+const graphqlCall = (call: string): any => RestAPI.restCall({
   req: {
     method: 'POST',
     url: 'graphql',
@@ -189,8 +188,7 @@ const graphqlCall = (call: string): any => restCall({
   }
 })
 
-
-const graphqlCallAsync = async (call: string) => await restCallAsync({
+const graphqlCallAsync = async (call: string) => await RestAPI.restCallAsync({
   req: {
     method: 'POST',
     url: 'graphql',
@@ -203,7 +201,6 @@ const graphqlCallAsync = async (call: string) => await restCallAsync({
     default: ()=>{}//
   }
 })
-
 
 export const filter = () => {
   const {t} = useTranslation()
