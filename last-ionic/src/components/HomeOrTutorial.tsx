@@ -10,8 +10,8 @@ const HomeOrTutorial: React.FC<StateProps> = ({
   hasSeenTutorial = false
 }) => {
   let home = import.meta.env.REACT_APP_HOME_PATH
-  let tutorial = '/tutorial'
-  return hasSeenTutorial ? <Redirect to={`${home}`} /> : <Redirect to={`${tutorial}`} />
+  let tutorial = import.meta.env.REACT_APP_TUTORIAL_PATH
+  return <Redirect to={hasSeenTutorial ? `${home}` : `${tutorial}`} />
 }
 
 export default connect<{}, StateProps, {}>({

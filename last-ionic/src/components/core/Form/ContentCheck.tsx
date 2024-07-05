@@ -10,7 +10,7 @@ export interface ContentCheckProps {
 const ContentCheck: FC<ContentCheckProps> = ({ label, slug }) => {
   const [showModal, setShowModal] = useState(false)
   return <>
-    <IonModal class='content-modal' key={slug + '-modal'} isOpen={showModal}>
+    <IonModal class='content-modal' animated={true} key={slug + '-modal'} isOpen={showModal}>
       <FormPage slug={slug} />
       <IonButton slot='start' onClick={() => setShowModal(false)}>X</IonButton>
     </IonModal>

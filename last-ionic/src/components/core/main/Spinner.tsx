@@ -1,4 +1,4 @@
-//import * as AppConst from '../../../data/static/constants'
+//import * as AppConst from '../../../env'
 import React from 'react'
 import { IonSpinner } from '@ionic/react'
 

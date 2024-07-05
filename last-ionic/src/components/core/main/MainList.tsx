@@ -1,4 +1,4 @@
-import * as AppConst from '../../../data/static/constants'
+import {  } from '../../../env'
 
 import { IonItemDivider, IonItemGroup, IonLabel, IonList, IonListHeader, IonAlert, AlertButton } from '@ionic/react'
 import React, { useState, useCallback } from 'react'
@@ -48,7 +48,7 @@ const SessionList: React.FC<SessionListProps> = ({
   if (schedule.groups.length === 0 && !hide) (
     <IonList>
       <IonListHeader>
-        No Sessions Found
+        No Sessions Groups Found
       </IonListHeader>
     </IonList>
   )

@@ -1,4 +1,4 @@
-import * as AppConst from '../../../data/static/constants'
+import { commonFilter } from '../../../env'
 
 import React, { useState, useEffect } from 'react'
 import { IonToolbar, IonContent, IonButtons, IonMenuButton, IonTitle, IonButton, IonSelect, IonSelectOption, IonSearchbar, IonRefresher, IonRefresherContent, IonToast, IonModal, IonHeader, getConfig, IonGrid, IonCol, IonRow, IonDatetime, IonTextarea, IonLabel, IonItem } from '@ionic/react'
@@ -6,7 +6,6 @@ import { IonToolbar, IonContent, IonButtons, IonMenuButton, IonTitle, IonButton,
 //import { restGet, getGQL } from '../../../data/rest/rest.utils'
 import { setSearchString, setSearchOrder, setOrderField, setFilter } from '../../../data/sessions/sessions.actions'
 //import { SessionState } from '../../../data/sessions/sessions.actions'
-import { empty } from '../../../data/utils/common'
 
 import Icon from './Icon'
 import FilterRow from './FilterRow'
@@ -62,8 +61,8 @@ const Main: React.FC<ThisProps> = ({
 
   useEffect(()=>{
     setSearchString('')
-    setSearchOrder(AppConst.filter.order.default)
-    setOrderField(AppConst.filter.fields.default)
+    setSearchOrder(commonFilter.order.default)
+    setOrderField(commonFilter.fields.default)
     resetFilters()
   },[])
 
@@ -76,7 +75,7 @@ const Main: React.FC<ThisProps> = ({
     newFilter.push({
       key: Date.now(),
       type: 'string',
-      field: AppConst.filter.fields.default,
+      field: commonFilter.fields.default,
       action: 'eq',
       value: ''
     })
@@ -140,7 +139,7 @@ const Main: React.FC<ThisProps> = ({
                     placeholder='Order Field'
                     value={orderField}                  
                     onIonChange={(e: CustomEvent) => setOrderField(e.detail.value)}>
-                    {AppConst.filter.fields.options.map((option: any, index: number) => (
+                    {commonFilter.fields.options.map((option: any, index: number) => (
                       <IonSelectOption key={'order-field-'+index} value={option.value}>
                         {option.label}
                       </IonSelectOption>
@@ -154,7 +153,7 @@ const Main: React.FC<ThisProps> = ({
                     placeholder='Direction'
                     value={searchOrder}    
                     onIonChange={(e: CustomEvent) => setSearchOrder(e.detail.value)}>
-                    {AppConst.filter.order.options.map((option: any, index: number) => (
+                    {commonFilter.order.options.map((option: any, index: number) => (
                       <IonSelectOption key={'order-'+index} value={option.value}>
                         {option.label}
                       </IonSelectOption>

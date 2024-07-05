@@ -1,5 +1,5 @@
 import { getConfData } from '../dataApi'
-import { ActionType } from '../../util/types'
+import { ActionType } from '../../utils/types'
 import { ConfState } from './conf.state'
 
 //import { FilterModel } from '../../components/core/main/Main' 

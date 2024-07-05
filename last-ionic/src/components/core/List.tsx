@@ -1,5 +1,3 @@
-import * as AppConst from '../../data/static/constants'
-
 import React from 'react'
 import { IonMenuToggle, IonIcon, IonItem, IonLabel } from '@ionic/react'
 

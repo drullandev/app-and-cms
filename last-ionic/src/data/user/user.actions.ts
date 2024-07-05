@@ -17,7 +17,7 @@ import {
   getUserData,
 } from '../dataApi'
 
-import { ActionType } from '../../util/types'
+import { ActionType } from '../../utils/types'
 import { UserState } from './user.state'
 import { initialUser } from '../state'
 
@@ -54,7 +54,6 @@ export const setisLoggedIn = (loggedIn: boolean) => async (dispatch: React.Dispa
   await setisLoggedInData(loggedIn)
   return ({ type: 'set-is-loggedin', loggedIn } as const)
 }
-
 
 // COMMON
 
@@ -126,19 +125,19 @@ export const setHasSeenTutorial = (hasSeenTutorial: boolean) => async (dispatch:
 
 export const setLoading = (isLoading: boolean) => {
   setTesting(setLoading, isLoading)
-  return { type: 'set-user-loading',  isLoading } as const
+  return { type: 'set-user-loading', isLoading } as const
 }
 
 export const setCaret = (caret: object) => async (dispatch: React.Dispatch<any>) => {
   setTesting(setCaret, caret)
   await setCaretData(caret)
-  return { type: 'set-caret',  caret } as const
+  return { type: 'set-caret', caret } as const
 }
 
 export const setRole = (role: object) => async (dispatch: React.Dispatch<any>) => {
   setTesting(setRole, role)
   await setRoleData(role)
-  return { type: 'set-role',  role } as const
+  return { type: 'set-role', role } as const
 }
 
 const setTesting = (func: Function, data: any = undefined, schema: string = 'user') => {

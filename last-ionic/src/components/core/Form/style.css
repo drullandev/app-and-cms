@@ -9,6 +9,19 @@
   padding: 0;
 }
 
+.checkbox-color-border {
+  display: flex;
+  align-items: end;
+  /* Esto estiliza el contenedor si es necesario */
+}
+
+/* Aplica el borde rojo al checkbox interno */
+.checkbox-color-border .checkbox-red {
+  --background-checked: transparent;
+  --border-color-checked: transparent;
+  --border-color: red;
+  --checkmark-color: var(--ion-color-primary);
+}
 /* formStyles.css */
 
 .ion-item-custom {

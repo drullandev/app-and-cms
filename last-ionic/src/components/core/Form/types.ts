@@ -1,11 +1,13 @@
+import { CSSProperties } from 'react';
 import { ControllerProps, DeepMap, FieldError } from 'react-hook-form';
 import { Schema } from 'yup';
 
 export interface FormProps {
+  id: string;
   rows: FieldProps[];
-  onSuccess: Function;
-  onError: Function;
-  settings?: any
+  onSuccess: (data: any) => void;
+  onError: (errors: { [key: string]: any }) => void;
+  settings?: any;
 }
 
 export interface FormComponentProps extends FormProps {
@@ -19,9 +21,17 @@ export interface LabelProps {
 }
 
 export interface FieldProps {
+  id?: string | undefined;
   name: string;
   label: string;
   type: string;
+  required?: false | boolean | undefined;
+  validationSchema?: Schema | undefined;
+  className?: string;
+  fill?: "default" | "solid" | "clear" | "outline" | undefined;
+  size?: "default" | "small" | "large" | undefined;
+  fieldType?: "button" | "submit" | "reset" | undefined;
+  style?: any | undefined;
   extra?: {
     type?: string;
     label?: string;
@@ -30,12 +40,12 @@ export interface FieldProps {
   options?: { value: string; label: string }[];
   control?: ControllerProps;
   errors?: any;
-  validationSchema?: Schema;
   min?: any
   max?: any
   color?: string
   icon?: any
-  
+  href?: string 
+  onClick?: Function;
 }
 
 export interface ErrorProps {
@@ -44,6 +54,18 @@ export interface ErrorProps {
   errors?: DeepMap<Record<string, any>, FieldError>
 }
 
+export interface ModalProps {
+  open: boolean
+  showButton?:boolean
+  model: string
+  slug: string
+  contentIn?: any
+}
+
+export interface SkeletonProps {
+  style?: React.CSSProperties;
+  lines?: 'none' | 'inset' | 'full';
+}
 
 /*
 

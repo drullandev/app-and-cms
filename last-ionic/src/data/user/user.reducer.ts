@@ -1,11 +1,11 @@
+import DebugUtil from '../../classes/DebugUtil'
 import { UserActions } from './user.actions'
 import { UserState } from './user.state'
 
-let testingReducer = false
-let testing = testingReducer && import.meta.env.REACT_APP_TESTING
+const debug = DebugUtil.setDebug(true);
 
 export function userReducer(state: UserState, action: UserActions): UserState {
-  if (testing) console.log('userReducer', action.type, action)
+  if (debug) console.log('userReducer', action.type, action)
   switch (action.type) {
     case 'set-id':                return { ...state, id:                action.id }
     case 'set-jwt':               return { ...state, jwt:               action.jwt }
@@ -21,8 +21,7 @@ export function userReducer(state: UserState, action: UserActions): UserState {
     case 'set-is-loggedin':       return { ...state, isLoggedIn:        action.loggedIn }
     case 'set-user-loading':      return { ...state, loading:           action.isLoading }
     case 'set-caret':             return { ...state, caret:             action.caret }
-    case 'set-role':              return { ...state, role:               action.role }
-    case 'set-user-data':         return { ...state,                    ...action.data }
-    
+    case 'set-role':              return { ...state, role:              action.role }
+    case 'set-user-data':         return { ...state, ...action.data }
   }
 }

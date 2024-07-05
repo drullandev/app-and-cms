@@ -1,4 +1,4 @@
-import * as AppConst from '../../../data/static/constants'
+import * as AppConst from '../../../env'
 import React, { useRef } from 'react'
 import { IonItemSliding, IonItem, IonLabel, IonItemOptions, IonItemOption, AlertButton } from '@ionic/react'
 import { Session } from '../../../models/Schedule'

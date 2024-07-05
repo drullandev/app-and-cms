@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { connect } from '../../../data/connect'
-import * as AppConst from '../../../data/static/constants'
+import { commonFilter } from '../../../env'
 import { IonSelect, IonSelectOption, IonCol, IonRow, IonDatetime, IonTextarea, IonItem, IonInput, IonButton } from '@ionic/react'
 import { setFilter } from '../../../data/sessions/sessions.actions'
 import { Filter } from '../../core/main/interfaces/Filter'
@@ -19,8 +19,8 @@ const FilterRow: React.FC<ThisProps> = ({ filter }) => {
 
   const [key, setKey] = useState(Date.now())
 
-  const [filterField, setFilterField] = useState(AppConst.filter.fields.default)
-  const [filterCondition, setFilterCondition] = useState(AppConst.filter.conditions.default)
+  const [filterField, setFilterField] = useState(commonFilter.fields.default)
+  const [filterCondition, setFilterCondition] = useState(commonFilter.conditions.default)
   const [filterType, setFilterType] = useState('date')
   const [filterValue, setFilterValue] = useState('')
 
@@ -34,7 +34,7 @@ const FilterRow: React.FC<ThisProps> = ({ filter }) => {
   }
 
   const resetFilter = (filterField: string) => {
-    AppConst.filter.fields.options.forEach((field: any)=>{
+    commonFilter.fields.options.forEach((field: any)=>{
       if(field.value === filterField ){
         setFilterType(field.type)
       } 
@@ -77,7 +77,7 @@ const FilterRow: React.FC<ThisProps> = ({ filter }) => {
           placeholder='Field'
           value={filterField}
           onIonChange={(e: CustomEvent) => resetFilterField(e.detail.value)}>
-          {AppConst.filter.fields.options.map((option: any, index: number) => (
+          {commonFilter.fields.options.map((option: any, index: number) => (
             <IonSelectOption key={'filter-field-' + index} value={option.value}>
               {option.label}
             </IonSelectOption>
@@ -91,7 +91,7 @@ const FilterRow: React.FC<ThisProps> = ({ filter }) => {
           value={filterCondition}
           placeholder='Condition'
           onIonChange={(e: CustomEvent) => resetFilterCondition(e.detail.value)}>
-          {AppConst.filter.conditions.options.map((option: any, index: number) => (
+          {commonFilter.conditions.options.map((option: any, index: number) => (
             <IonSelectOption key={'filter-field-condition-' + index} value={option.value}>
               {option.label}
             </IonSelectOption>

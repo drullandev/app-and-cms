@@ -1,77 +1,80 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { IonCol, IonGrid, IonRow } from '@ionic/react';
-import { useForm, FieldValues, DeepMap, FieldError } from 'react-hook-form';
+import React, { useRef, useEffect } from 'react';
+import { useForm, FieldValues } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { motion } from 'framer-motion';
+import * as yup from 'yup'
 
-import { FormProps, FormComponentProps } from './types';
+import { debug } from '../../../env'
+import { FormComponentProps, FieldProps } from './types';
+import './style.css'
+
 import Field from './Field';
-import { buildInitialValues, buildValidationSchema } from './src';
-import "./style.css"
 
+const buildValidationSchema = (rows: FieldProps[]) => {
+  const shape = rows.reduce((acc: any, row: FieldProps) => {
+    if (row.validationSchema) {
+      acc[row.name] = row.validationSchema;
+    }
+    return acc;
+  }, {});
+  return yup.object().shape(shape);
+};
 
+const buildInitialValues = (rows: FieldProps[]) => {
+  const initialValues: any = {};
+  rows.forEach(field => {
+    initialValues[field.name] = field.defaultValue || '';
+  });
+  return initialValues;
+};
 
-const Form: React.FC<FormComponentProps> = ({ rows = [], onSuccess = () => {}, onError}) => {
+const Form: React.FC<FormComponentProps> = (form) => {
 
-  const debug = true
-
-  const initialValuesRef = useRef(buildInitialValues(rows));
-
-  const [fieldValues, setFieldValues] = useState(initialValuesRef.current);
+  const initialValuesRef = useRef(buildInitialValues(form.rows));
 
   const { control, handleSubmit, formState: { errors }, reset } = useForm<FieldValues>({
-    resolver: yupResolver(buildValidationSchema(rows)),
+    resolver: yupResolver(buildValidationSchema(form.rows)),
     defaultValues: initialValuesRef.current,
   });
 
   useEffect(() => {
-    const newInitialValues = buildInitialValues(rows);
+    const newInitialValues = buildInitialValues(form.rows);
     initialValuesRef.current = newInitialValues;
     reset(newInitialValues);
-    setFieldValues(newInitialValues);
-  }, [rows, reset]);
+  }, [form.rows, reset]);
 
   const onSubmit = async (data: FieldValues) => {
     try {
       if (debug) console.log(data);
-      onSuccess(data);
-      reset(fieldValues);
+      form.onSuccess(data);
     } catch (error) {
-      console.error('Error al validar los datos del formulario:', error);
+      console.error('- Error validating form!', error);
     }
   };
 
   const handleFieldChange = (fieldName: string, value: any) => {
     if (debug) console.log('- Change', { name: fieldName, value: value} );
-    setFieldValues((prevValues: FieldValues) => ({
-      ...prevValues,
-      [fieldName]: value,
-    }));
   };
 
-  return (
-    <form onSubmit={handleSubmit(onSubmit, onError)}>
-      <IonGrid>
-        <IonCol>
-            {rows.map(field => (
-          <IonRow                key={'row-'+field.name}>
-              <Field
-                key={field.name}
-                field={field}
-                control={control}
-                errors={errors}
-                onFieldChange={handleFieldChange}
-              />
-            {/*Object.keys(errors).length > 0 && (
-              <IonText color="danger">
-                <p>{errors}</p>
-              </IonText>
-            )*/}
-          </IonRow>
-            ))}
-        </IonCol>
-      </IonGrid>
-    </form>
-  );
+  return (<>
+    <motion.div {...form.settings.animation} >
+      <form key={form.id} onSubmit={handleSubmit(onSubmit, form.onError)}>
+        {form.rows.map(field => (
+          <div key={'div-'+field.name ?? 'div-'+field.id}
+            className={`form-field ${field.className ?? 'col-span-12'}`}
+          >
+            <Field
+              key={'field-'+field.name ?? 'field-'+field.id}
+              field={field}
+              control={control}
+              errors={errors}
+              onFieldChange={handleFieldChange}
+            />
+          </div>
+        ))}
+      </form>
+    </motion.div>
+  </>);
 };
 
 export default Form;

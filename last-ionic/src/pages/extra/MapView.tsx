@@ -4,7 +4,7 @@ import { IonHeader, IonToolbar, IonButtons, IonMenuButton, IonTitle, IonContent,
 import { Location } from '../../models/Location'
 import { connect } from '../../data/connect'
 import * as selectors from '../../data/selectors'
-import '../../pages/Styles.scss'
+import '../../styles/index.scss'
 
 interface OwnProps { }
 

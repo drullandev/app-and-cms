@@ -1,6 +1,6 @@
 import React, { useContext, useMemo } from 'react'
 import { AppContext } from './AppContext'
-import { DispatchObject } from '../util/types'
+import { DispatchObject } from '../utils/types'
 import { AppState } from './state'
 
 interface ConnectParams<TOwnProps, TStateProps, TDispatchProps> {
@@ -18,6 +18,7 @@ export function connect<TOwnProps = any, TStateProps = any, TDispatchProps = any
     const dispatchFuncs = useMemo(() => {
 
       const dispatchFuncs: { [key: string]: any } = {}
+      
       Object.keys(mapDispatchToProps).forEach((key) => {
 
         const oldFunc = (mapDispatchToProps as any)[key]

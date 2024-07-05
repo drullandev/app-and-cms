@@ -1,5 +1,5 @@
 import React from 'react'
-import { IonNote } from '@ionic/react'
+import { IonItem, IonNote } from '@ionic/react'
 import { ErrorProps } from './types';
 
 /**
@@ -10,12 +10,13 @@ import { ErrorProps } from './types';
  */
  const Error: React.FC<ErrorProps> = ({ name, label, errors }) => {
   if (errors && errors[name ?? 'input']) {
-    return (
-      <IonNote color="danger" className="ion-custom-error ion-padding-start">
+    return (<IonItem>
+      <IonNote color="danger">
         <small role="alert" id={`error-${name}`}>
           {errors[name ?? 'input'].message.replace(name ?? 'input', label)}
         </small>
       </IonNote>
+    </IonItem>
     );
   }
   return <></>

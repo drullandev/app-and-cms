@@ -1,13 +1,18 @@
 import React, {
   //useEffect
  }  from 'react'
-import { IonTabs, IonRouterOutlet, IonTabBar, IonTabButton, //IonIcon,
-IonLabel } from '@ionic/react'
+import { 
+  IonTabs, 
+  IonRouterOutlet,
+  IonTabBar,
+  IonTabButton, //IonIcon,
+  IonLabel
+} from '@ionic/react'
 import { Route, Redirect } from 'react-router'
-import SchedulePage from '../../../pages/extra/SchedulePage'
-import SpeakerList from '../../../pages/extra/SpeakerList'
-import SpeakerDetail from '../../../pages/extra/SpeakerDetail'
-import SessionDetail from '../../../pages/extra/SessionDetail'
+import SchedulePage from '../../../pages/extra/Schedule/SchedulePage'
+import SpeakerList from '../../../pages/extra/Schedule/SpeakerList'
+import SpeakerDetail from '../../../pages/extra/Schedule/SpeakerDetail'
+import SessionDetail from '../../../pages/extra/Schedule/SessionDetail'
 import MapView from '../../../pages/extra/MapView'
 import About from '../../../pages/core/About'
 
@@ -19,7 +24,6 @@ interface MainTabsProps {}
 
 const MainTabs: React.FC<MainTabsProps> = () => {
 
-  // TODO:: USE THE COMPONENT INSTEAD !!!!
   const TabButton = (tab: TabProps) =>
     <IonTabButton key={tab.href + '-tab'} tab={tab.name} href={tab.href}>
       <Icon name={tab.icon}/>

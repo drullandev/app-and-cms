@@ -1,3 +1,4 @@
+
 import React, { useEffect } from 'react'
 import { Redirect, Route } from 'react-router-dom'
 import { IonApp, IonRouterOutlet, IonSplitPane, setupIonicReact } from '@ionic/react'
@@ -29,7 +30,7 @@ import { AppContextProvider } from './data/AppContext'
 import { loadConfData } from './data/sessions/sessions.actions'
 import { loadUserData, setData } from './data/user/user.actions'
 
-import TestForm from './pages/core/TestForm'
+import TestForm from './pages/extra/TestForm'
 import Login from './pages/core/Login'
 import Signup from './pages/core/Signup'
 import Account from './pages/core/Account'
@@ -38,7 +39,7 @@ import Support from './pages/core/Support'
 import ResetPassword from './pages/core/ChangePassword'
 import Recover from './pages/core/Recover'
 
-import Tutorial from './pages/extra/Tutorial'
+import Tutorial from './pages/core/Tutorial'
 
 import Page from './components/core/Page'
 import MainTabs from './components/core/main/MainTabs'
@@ -113,7 +114,6 @@ const IonicApp: React.FC<IonicAppProps> = ({
           <Route path='/tabs/home/:id' render={() => <MainTabs />} />
           <Route path='/tabs/:slug' render={() => <MainTabs />} />
           <Route path='/tutorial' component={Tutorial} />
-
           <Route path='/login' component={Login} />
           <Route path='/test' component={TestForm} />
           <Route path='/sign-up' component={Signup} />
@@ -133,9 +133,32 @@ const IonicApp: React.FC<IonicAppProps> = ({
 
 }
 
+/*
+const IonicApp: React.FC<IonicAppProps> = ({
+  darkMode,
+  schedule,
+  hasLoggedIn,
+  setData,
+  loadConfData,
+  loadUserData
+}) => {
+
+  useEffect(() => {
+    loadUserData();
+    loadConfData();
+    setData(initialUser);
+    // eslint-disable-next-line
+  }, []);
+
+  return <AppRouter routes={pages} darkMode={darkMode}/>
+  
+}
+
+*/
+
 const App: React.FC = () => <>
-    <IonicAppConnected />
-  </>
+  <IonicAppConnected />
+</>
 
 export default App
 

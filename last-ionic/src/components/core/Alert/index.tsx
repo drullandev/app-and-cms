@@ -9,7 +9,7 @@ import { ReactControllerProps } from '@ionic/react/dist/types/components/createC
  * @params
  * @returns 
  */
-const Alert: React.FC<ReactControllerProps> = (settingAlert) => {
+const Alert: React.FC<AlertOptions> = (settingAlert) => {
   const {t} = useTranslation()
   return <IonAlert {...settingAlert}/>
 }

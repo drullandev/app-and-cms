@@ -1,4 +1,4 @@
-import * as AppConst from '../../data/static/constants'
+import * as AppConst from '../../env'
 import React from 'react'
 import { getMode } from '@ionic/core'
 import { IonHeader, IonToolbar, IonButtons, IonButton, IonTitle, IonContent, IonList, IonListHeader, IonItem, IonLabel, IonCheckbox, IonFooter, IonIcon } from '@ionic/react'

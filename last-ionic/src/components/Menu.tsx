@@ -9,7 +9,7 @@ import { setDarkMode } from '../data/user/user.actions'
 import '../styles/Menu.css'
 import { useTranslation } from 'react-i18next'
 
-import { routes } from '../data/static/routes'
+import { routes } from '../../config/routes'
 
 interface Pages {
   title: string,
