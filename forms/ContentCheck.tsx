@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react'
+import React, { useState } from 'react'
 import { IonLabel, IonButton, IonModal } from '@ionic/react'
 import FormPage from './FormPage'
 
@@ -7,7 +7,7 @@ export interface ContentCheckProps {
   slug: string
 }
 
-const ContentCheck: FC<ContentCheckProps> = ({ label, slug }) => {
+const ContentCheck: React.FC<ContentCheckProps> = ({ label, slug }) => {
   const [showModal, setShowModal] = useState(false)
   return <>
     <IonModal class='content-modal' key={slug + '-modal'} isOpen={showModal}>
