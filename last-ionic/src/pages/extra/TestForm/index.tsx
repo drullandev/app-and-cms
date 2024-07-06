@@ -22,7 +22,7 @@ import { PageProps } from '../../../components/core/Page/types'
 
 // Form settings
 import * as yup from 'yup'
-import Form from '../../../components/core/Form/Form'
+import Form from '../../../components/core/Form'
 import { FormProps } from '../../../components/core/Form/types'
 
 // Design Dependencies

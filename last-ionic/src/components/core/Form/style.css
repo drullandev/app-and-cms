@@ -10,16 +10,31 @@
 }
 
 .checkbox-color-border {
+  --background-checked: transparent;
+  --border-color-checked: transparent;
   display: flex;
   align-items: end;
   /* Esto estiliza el contenedor si es necesario */
 }
 
 /* Aplica el borde rojo al checkbox interno */
-.checkbox-color-border .checkbox-red {
-  --background-checked: transparent;
-  --border-color-checked: transparent;
+.checkbox-color-border .checkbox-danger {
   --border-color: red;
+  --checkmark-color: var(--ion-color-danger);
+}
+
+.checkbox-color-border .checkbox-warning {
+  --border-color: orange;
+  --checkmark-color: var(--ion-color-warning);
+}
+
+.checkbox-color-border .checkbox-success {
+  --border-color: green;
+  --checkmark-color: var(--ion-color-success);
+}
+
+.checkbox-color-border .checkbox-medium {
+  --border-color: grey;
   --checkmark-color: var(--ion-color-primary);
 }
 /* formStyles.css */

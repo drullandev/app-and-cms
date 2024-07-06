@@ -1,6 +1,6 @@
 import React from 'react'
 import { IonItem, IonNote } from '@ionic/react'
-import { ErrorProps } from './types';
+import { ErrorProps } from '../types';
 
 /**
  * Universal error case for the

@@ -9,7 +9,7 @@ import * as yup from 'yup'
 import { setLoading } from '../../../data/sessions/sessions.actions'
 import { connect } from '../../../data/connect'
 
-import Form from '../../../components/core/Form/Form'
+import Form from '../../../components/core/Form'
 import Page from '../../../components/core/Page'
 import { PageProps } from '../../../components/core/Page/types'
 import * as icon from 'ionicons/icons'

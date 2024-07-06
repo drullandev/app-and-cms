@@ -4,11 +4,13 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { motion } from 'framer-motion';
 import * as yup from 'yup'
 
-import { debug } from '../../../env'
 import { FormComponentProps, FieldProps } from './types';
 import './style.css'
 
-import Field from './Field';
+import Field from './components/Field';
+import DebugUtil from '../../../classes/DebugUtil';
+
+const debug = DebugUtil.setDebug(false);
 
 const buildValidationSchema = (rows: FieldProps[]) => {
   const shape = rows.reduce((acc: any, row: FieldProps) => {
@@ -57,7 +59,7 @@ const Form: React.FC<FormComponentProps> = (form) => {
   };
 
   return (<>
-    <motion.div {...form.settings.animation} >
+    <motion.div {...form.settings.animations} >
       <form key={form.id} onSubmit={handleSubmit(onSubmit, form.onError)}>
         {form.rows.map(field => (
           <div key={'div-'+field.name ?? 'div-'+field.id}

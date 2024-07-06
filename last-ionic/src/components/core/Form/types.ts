@@ -23,7 +23,7 @@ export interface LabelProps {
 export interface FieldProps {
   id?: string | undefined;
   name: string;
-  label: string;
+  label: any;
   type: string;
   required?: false | boolean | undefined;
   validationSchema?: Schema | undefined;
@@ -46,6 +46,7 @@ export interface FieldProps {
   icon?: any
   href?: string 
   onClick?: Function;
+  secret?: false | boolean 
 }
 
 export interface ErrorProps {

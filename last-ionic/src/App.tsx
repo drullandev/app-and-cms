@@ -1,9 +1,9 @@
 
 import React, { useEffect } from 'react'
-import { Redirect, Route } from 'react-router-dom'
+import { Route } from 'react-router-dom'
 import { IonApp, IonRouterOutlet, IonSplitPane, setupIonicReact } from '@ionic/react'
 import { IonReactRouter } from '@ionic/react-router'
-import i18n from './components/extra/i18n'
+
 import Menu from './components/Menu'
 
 /* Core CSS required for Ionic components to work properly */
@@ -26,7 +26,6 @@ import '@ionic/react/css/display.css'
 import './theme/variables.css'
 
 import { connect } from './data/connect'
-import { AppContextProvider } from './data/AppContext'
 import { loadConfData } from './data/sessions/sessions.actions'
 import { loadUserData, setData } from './data/user/user.actions'
 
@@ -48,6 +47,7 @@ import RedirectToLogin from './components/RedirectToLogin'
 
 import { Schedule } from './models/Schedule'
 import { initialUser } from './data/state'
+import DebugUtil from './classes/DebugUtil'
 
 // Import the functions you need from the SDKs you need
 
@@ -56,8 +56,8 @@ import { initialUser } from './data/state'
 //import { firebaseConfig } from './data/firebase'
 
 // Are you testing this tools set && app?
-let testingFeature = true
-let testing = testingFeature && import.meta.env.REACT_APP_TESTING
+
+let debug = DebugUtil.setDebug(false);
 
 // https://ionicframework.com/docs/react/config#global-config
 setupIonicReact({
@@ -108,6 +108,7 @@ const IonicApp: React.FC<IonicAppProps> = ({
           {/*
             We use IonRoute here to keep the tabs state intact,
             which makes transitions between tabs and non tab pages smooth
+            * We are not usin redirect itself
           */}
           <Route path='/tabs' render={() => <MainTabs />} />
           <Route path='/:slug' component={Page} />
@@ -132,29 +133,6 @@ const IonicApp: React.FC<IonicAppProps> = ({
   </IonApp>
 
 }
-
-/*
-const IonicApp: React.FC<IonicAppProps> = ({
-  darkMode,
-  schedule,
-  hasLoggedIn,
-  setData,
-  loadConfData,
-  loadUserData
-}) => {
-
-  useEffect(() => {
-    loadUserData();
-    loadConfData();
-    setData(initialUser);
-    // eslint-disable-next-line
-  }, []);
-
-  return <AppRouter routes={pages} darkMode={darkMode}/>
-  
-}
-
-*/
 
 const App: React.FC = () => <>
   <IonicAppConnected />

@@ -20,12 +20,12 @@ import {
 import { ActionType } from '../../utils/types'
 import { UserState } from './user.state'
 import { initialUser } from '../state'
-
-let testingUserActions = true
-let testing = testingUserActions && import.meta.env.REACT_APP_TESTING
+import DebugUtil from '../../classes/DebugUtil'
 
 // !Keep it simple !!!!!!!!!!!
 // !!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+const debug = DebugUtil.setDebug(false);
 
 // EXTRA
 
@@ -141,7 +141,7 @@ export const setRole = (role: object) => async (dispatch: React.Dispatch<any>) =
 }
 
 const setTesting = (func: Function, data: any = undefined, schema: string = 'user') => {
-  if(testing) console.log(schema+'.action::'+func.name, data)
+  if (debug) console.log(schema+'.action::'+func.name, data)
 }
 
 export type UserActions =

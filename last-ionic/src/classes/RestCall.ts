@@ -106,7 +106,7 @@ class RestCall {
         return call.onSuccess.default(res);
       })
       .catch((err: any) => {
-        return call.onError.default(RestOutput.getOutput(err));
+        return call.onError.default(err);
       })
       .finally(() => {
         if (call.onFinally) {

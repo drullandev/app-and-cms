@@ -10,62 +10,79 @@ export interface RestOutputProps {
   duration?: number;
 }
 
+interface errorOutput {
+  err: any;
+  design: string,
+}
+
 class RestOutput {
+
   private err?: any;
+
   private design?: {
     outline?: boolean;
   };
 
   private duration?: number;
 
-  public getOutput(props: RestOutputProps) {
-    
-    this.err = props.err;
-    this.design = props.design;
-    this.duration = props.duration ?? 2000;
+  public getOutput(error: any) {
+    return setOutput({ message: error.response.data.data[0].messages[0].message });
+  }
 
-    let errorOutput = setOutput({ message: 'Error calling Strapi service' });
+  public catchError(error: any) : any {
 
-    errorOutput.color = 'error';
+    var errorOutput = setOutput({ message: error.response.data.data[0].messages[0].message });
+
+    errorOutput.color = 'danger';
     errorOutput.icon = this.design?.outline ? icon.skullOutline : icon.skull;
-    errorOutput.message = i18n.t('Unknown error...');
 
     if (this.err?.response) {
-      switch (this.err.response.status) {
+
+      switch (error.response.status) {
+
         case 400:
+
           errorOutput.color = 'warning';
           errorOutput.icon = this.design?.outline ? icon.warningOutline : icon.warning;
-          errorOutput.message = this.err.response.data.error?.message || errorOutput.message;
+          //errorOutput.message = error.response.data.data[0].messages[0].message || errorOutput.message;
+
           break;
 
         case 500:
-          if (this.err.message.includes('SMTP')) {
+
+          if (error.message.includes('SMTP')) {
+
             errorOutput.color = 'warning';
             errorOutput.icon = this.design?.outline ? icon.warningOutline : icon.warning;
-            errorOutput.message = i18n.t('Something is wrong with the email...');
+            //errorOutput.message = i18n.t('Something is wrong with the email...');
+
           } else {
-            errorOutput.color = 'error';
+
+            errorOutput.color = 'danger';
             errorOutput.icon = this.design?.outline ? icon.skullOutline : icon.skull;
-            errorOutput.message = i18n.t('Internal server error!');
+            //errorOutput.message = i18n.t('Internal server error!');
+            
           }
           break;
 
         default:
-          errorOutput.color = 'error';
+          errorOutput.color = 'danger';
           errorOutput.icon = this.design?.outline ? icon.skullOutline : icon.skull;
-          errorOutput.message = this.err.response.data.message?.[0]?.messages?.[0]?.message || i18n.t('No message...');
+          //errorOutput.message = error.response.data.message?.[0]?.messages?.[0]?.message || i18n.t('No message...');
       }
+
     } else if (this.err?.request) {
-      errorOutput.color = 'error';
+
+      errorOutput.color = 'danger';
       errorOutput.icon = this.design?.outline ? icon.skullOutline : icon.skull;
       errorOutput.message = i18n.t('Sorry, no response received from server u_u!');
-    } else {
-      errorOutput.color = 'error';
-      errorOutput.icon = this.design?.outline ? icon.skullOutline : icon.skull;
-      errorOutput.message = i18n.t('Unexpected error occurred o.o!');
+
     }
-    errorOutput.duration = this.duration
+
     return errorOutput;
+
+
+
   }
 }
 

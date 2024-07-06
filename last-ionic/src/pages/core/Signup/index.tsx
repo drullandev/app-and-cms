@@ -13,7 +13,7 @@ import StringUtil from '../../../classes/StringUtil'
 
 import { setOutput } from '../../../classes/output'
 import Header from '../../../components/core/main/Header'
-import Form from '../../../components/core/Form/Form'
+import Form from '../../../components/core/Form'
 import Page from '../../../components/core/Page'
 import { PageProps } from '../../../components/core/Page/types'
 

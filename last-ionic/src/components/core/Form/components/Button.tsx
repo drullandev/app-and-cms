@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { IonLabel, IonButton, IonSpinner, IonItem, IonSkeletonText, IonIcon } from '@ionic/react';
-import { FieldProps } from './types';
+import { FieldProps } from '../types';
 import * as icon from 'ionicons/icons';
-import { timeout } from '../../../env'; // Importamos solo 'timeout' de AppConst
+import { timeout } from '../../../../env'; // Importamos solo 'timeout' de AppConst
 import Skeleton from './Skeleton';
 
 const Button: React.FC<FieldProps> = (field) => {
