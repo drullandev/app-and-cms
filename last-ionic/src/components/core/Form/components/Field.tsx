@@ -41,7 +41,7 @@ const Field = forwardRef<any, {
   const debouncedHandleFieldChange = useCallback(
     debounce((value: any) => {
       onFieldChange(field.name, value);
-    }, 500),
+    }, 700),
     [field.name, onFieldChange]
   );
 
@@ -65,7 +65,7 @@ const Field = forwardRef<any, {
       ref,
       onIonInput: (e: any) => inputChange(e),
       onIonChange: (e: any) => inputChange(e),
-      value: controller.value || ''
+      value: controller.value || null
     };
 
     const fieldStatusIcon = (controller: any, fieldName: string, errors: any) => {
@@ -211,17 +211,17 @@ const Field = forwardRef<any, {
         
         return (
           <>
-            <IonItem >
+            <IonItem button onClick={() => commonProps.onIonChange({ detail: { checked: !controller.value } })}>
               <IonLabel style={{ display: 'flex', alignItems: 'start', width: '93%' }}>{field.label}</IonLabel>
               <div style={{ display: 'flex', alignItems: 'end' }}
                 className={(errors && errors[field.name] ? 'checkbox-color-border' : '')}>
                 <IonCheckbox
                   {...commonProps}
                   className={'checkbox-' + displayColor}
-                  style={{ width: '7%' }}
+                  style={{ width: '7%', marginRight: '2px' }}
                   label={field.label}
                   color={displayColor}
-                  checked={controller.value || field.defaultValue}
+                  checked={Boolean(controller.value || field.defaultValue)}
                 />
               </div>
             </IonItem>

@@ -33,7 +33,7 @@ const Button: React.FC<FieldProps> = (field) => {
 
   return (
     <IonButton
-      style={field.style || { width: '100%' }}
+      style={field.style || { width: '100%', borderRadius: '20px' }}
       expand="block"
       color={field.color || 'primary'}
       fill={field.fill ?? 'solid'}

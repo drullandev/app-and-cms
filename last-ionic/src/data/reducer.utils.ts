@@ -17,7 +17,7 @@ export const setOrRemove = async (key: string, value: any, def: any, string: boo
     : await Storage.set(key, value)
 }
 
-export const toogleBool = async (key: string, value: any, def: boolean = true) => {
+export const toggleBool = async (key: string, value: any, def: boolean = true) => {
   if(testing) console.log('dataApi::toogleBool', {key: key, value: value})
   await Storage.set(key, value)
 }

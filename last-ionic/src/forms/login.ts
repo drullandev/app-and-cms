@@ -5,15 +5,13 @@ import { useHistory } from 'react-router';
 import { HOME, apiUrl } from '../env';
 import RestAPI from '../classes/RestCall';
 import RestOutput from '../classes/RestOutput';
-import * as icon from 'ionicons/icons';
+import * as icon from 'ionicons/icons'
 import { setData, setLoading, setisLoggedIn } from '../data/user/user.actions';
-import { useIonToast } from '@ionic/react';
-import DebugUtil from '../classes/DebugUtil';
+import { useIonToast } from '@ionic/react'
+import DebugUtil from '../classes/DebugUtil'
+import Logger from '../classes/Logger'
 
 export const login = (
-  setLoading: typeof setLoading,
-  setData: typeof setData,
-  setisLoggedIn: typeof setisLoggedIn,
 ): FormProps => {
 
   const { t } = useTranslation();
@@ -31,6 +29,9 @@ export const login = (
         animate: { opacity: 1, y: 0 },
         transition: { duration: 0.5 },
       },
+      afterLoad: ()=>{
+
+      }
     },
     rows: [
       {
@@ -67,13 +68,13 @@ export const login = (
         name: 'submit',
         label: t('Submit'),
         type: 'submit',
-        style: { width: '50%'}
+        style: { width: '50%', borderRadius: '20px'}
       },
       {
         name: 'register',
         label: t('Register'),
         type: 'button',
-        style: { width: '50%'},
+        style: { width: '50%', borderRadius: '20px' },
         onClick: () => {
           history.push('/register');
         }
@@ -92,28 +93,30 @@ export const login = (
         },
         onSuccess: {
           default: (res: any) => {
+
             if (res.status === 200) {
+
               setData(res.data.user);
               setisLoggedIn(true)
-              presentToast({
-                icon: icon.checkmarkCircle,
-                color: 'success',
-                message: t('Login successfull!'),
-                duration: 2000,
-              }).then(() => {
-                history.push(HOME);
-              });
+
+              presentToast(RestOutput.catchSuccess(res))
+                .then(() => {
+                  history.push(HOME);
+                });
+
             } else {
-              presentToast(RestOutput.getOutput(res));
+
+              presentToast(RestOutput.catchSuccess(res));
+              
             }
+            setLoading(false);
           }
         },
         onError: {
-          default: (errors: any) => {
-            if (debug) console.log('la data', errors.response.data.data[0].messages[0].message)
-            if (debug) console.log('los errores', errors, RestOutput.catchError(errors))
+          default: (error: any) => {
             setisLoggedIn(false)
-            presentToast(RestOutput.catchError(errors));
+            setLoading(false);
+            presentToast(RestOutput.catchDanger(error));
           }
         },
         onFinally: () => {
@@ -121,9 +124,12 @@ export const login = (
         }
       });
     },
-    onError: (errors: { [key: string]: any }) => {
+    onError: (errors: any) => {
       setisLoggedIn(false)
-      presentToast(RestOutput.getOutput(errors));
+      setLoading(false);
+      const output = RestOutput.catchFormError(errors)
+      output.header = 'Login error';
+      presentToast(output);
     }
   };
 };

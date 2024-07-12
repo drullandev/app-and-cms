@@ -16,6 +16,6 @@
     "noEmit": true,
     "jsx": "react-jsx"
   },
-  "include": ["src", "public/assets/data/fonts_list.ts", "public/assets/data/keyTransVar.ts", "config/pages.tsx", "config/routes.ts"],
+  "include": ["src", "assets/data/fonts_list.ts", "assets/data/keyTransVar.ts", "config/pages.tsx", "config/routes.ts"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

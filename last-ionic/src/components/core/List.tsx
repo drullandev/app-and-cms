@@ -5,7 +5,6 @@ import { ListProps } from './main/interfaces/ListProps'
 import { ListRowProps } from '../../models/ListRowProps'
 
 const List: React.FC<ListProps> = (rows) => {
-  console.log(rows)
   return (<></>)// rows.map((row: ListRowProps) => (
   /* <IonMenuToggle key={row.title} auto-hide='false'>
      <IonItem       

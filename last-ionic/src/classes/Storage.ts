@@ -2,9 +2,9 @@ import { Preferences } from '@capacitor/preferences';
 
 class Storage {
 
-  private static instance: Storage;
+  public static instance: Storage;
 
-  private constructor() {}
+  public constructor() {}
 
   public static getInstance(): Storage {
     if (!Storage.instance) {

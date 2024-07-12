@@ -5,7 +5,7 @@ import { Schema } from 'yup';
 export interface FormProps {
   id: string;
   rows: FieldProps[];
-  onSuccess: (data: any) => void;
+  onSuccess:(data: any) => Promise<void>;
   onError: (errors: { [key: string]: any }) => void;
   settings?: any;
 }
