@@ -1,12 +1,12 @@
 import React from 'react';
 import { RouteComponentProps } from 'react-router';
 import { useIonToast, IonContent } from '@ionic/react';
-import { connect } from '../../../data/connect';
+import { connect } from '../../../redux/connect';
 import Page from '../../../components/core/Page';
 import Header from '../../../components/core/main/Header';
 import Form from '../../../components/core/Form';
 import { login } from '../../../forms/login';
-import { setData, setLoading } from '../../../data/user/user.actions';
+import { setData, setLoading } from '../../../redux/data/user/user.actions';
 import './styles.scss';
 
 interface OwnProps extends RouteComponentProps {}

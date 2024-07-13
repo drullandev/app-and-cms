@@ -9,7 +9,10 @@ interface ConnectParams<TOwnProps, TStateProps, TDispatchProps> {
   component: React.ComponentType<any>
 }
 
-export function connect<TOwnProps = any, TStateProps = any, TDispatchProps = any>({ mapStateToProps = () => ({} as TStateProps), mapDispatchToProps = {} as TDispatchProps, component }: ConnectParams<TOwnProps, TStateProps, TDispatchProps>): React.FunctionComponent<TOwnProps> {
+export function connect<TOwnProps = any, TStateProps = any, TDispatchProps = any>({ 
+  mapStateToProps = () => ({} as TStateProps),
+  mapDispatchToProps = {} as TDispatchProps,
+  component }: ConnectParams<TOwnProps, TStateProps, TDispatchProps>): React.FunctionComponent<TOwnProps> {
 
   const Connect = (ownProps: TOwnProps) => {
 
@@ -41,9 +44,12 @@ export function connect<TOwnProps = any, TStateProps = any, TDispatchProps = any
 
         }
         dispatchFuncs[key] = newFunc
+        
       })
+
       return dispatchFuncs
       // eslint-disable-next-line
+
     }, [mapDispatchToProps])
 
     const props = useMemo(() => {

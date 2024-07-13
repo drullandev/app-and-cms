@@ -1,4 +1,4 @@
-import { Schedule, Session } from '../models/Schedule'
+import { Schedule, Session } from './models/Schedule'
 import Storage from '../classes/Storage';
 
 let testingReducer = false

@@ -1,18 +1,22 @@
 import * as yup from 'yup';
-import { FormProps } from '../components/core/Form/types';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router';
-import { HOME, apiUrl } from '../env';
-import RestAPI from '../classes/RestCall';
-import RestOutput from '../classes/RestOutput';
-import * as icon from 'ionicons/icons'
-import { setData, setLoading, setisLoggedIn } from '../data/user/user.actions';
 import { useIonToast } from '@ionic/react'
+import * as icon from 'ionicons/icons'
+
+import { HOME, apiUrl } from '../env';
 import DebugUtil from '../classes/DebugUtil'
 import Logger from '../classes/Logger'
 
-export const login = (
-): FormProps => {
+import { FormProps } from '../components/core/Form/types';
+
+import RestAPI from '../classes/RestCall';
+import RestOutput from '../classes/RestOutput';
+
+import { setData, setLoading, setisLoggedIn } from '../redux/data/user/user.actions';
+
+
+export const login = (): FormProps => {
 
   const { t } = useTranslation();
   const history = useHistory();
@@ -31,6 +35,9 @@ export const login = (
       },
       afterLoad: ()=>{
 
+      },
+      style: {
+        borderRadius: '0%'
       }
     },
     rows: [
@@ -68,13 +75,14 @@ export const login = (
         name: 'submit',
         label: t('Submit'),
         type: 'submit',
-        style: { width: '50%', borderRadius: '20px'}
+        style: { borderRadius: '20px',  float: 'left', width: '46%', margin: '2%' },
+        icon: icon.starOutline
       },
       {
         name: 'register',
         label: t('Register'),
         type: 'button',
-        style: { width: '50%', borderRadius: '20px' },
+        style: { display: 'inline-block', width: '46%', margin: '2%' },
         onClick: () => {
           history.push('/register');
         }

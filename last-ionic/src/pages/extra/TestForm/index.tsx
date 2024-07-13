@@ -12,9 +12,9 @@ import '../../../styles/index.scss'
 import { useTranslation } from 'react-i18next'
 
 // Reducer settings
-import { connect } from '../../../data/connect'
+import { connect } from '../../../redux/connect'
 import RestAPI from '../../../classes/RestCall'
-import { setData, setLoading } from '../../../data/user/user.actions'
+import { setData, setLoading } from '../../../redux/data/user/user.actions'
 
 // Page dependencies
 import Page from '../../../components/core/Page'
@@ -28,7 +28,7 @@ import { FormProps } from '../../../components/core/Form/types'
 // Design Dependencies
 import * as icon from 'ionicons/icons'
 import Header from '../../../components/core/main/Header'
-import { UserState } from '../../../data/user/user.state'
+import { UserState } from '../../../redux/data/user/user.state'
 
 // Are you testing this tools set && app?
 let testingLogin = true

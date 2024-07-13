@@ -1,6 +1,6 @@
 import React from 'react'
 import { IonToolbar, IonButtons, IonMenuButton, IonTitle, IonProgressBar, IonHeader } from '@ionic/react'
-import { connect } from '../../../data/connect'
+import { connect } from '../../../redux/connect'
 
 
 import { RouteComponentProps } from 'react-router'

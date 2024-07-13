@@ -117,3 +117,9 @@
   --color: #f44336;
   --font-size: 14px;
 }
+
+form {
+  background-color: var(--ion-item-background, #f8f8f8); /* color de fondo similar al de IonItem */
+  padding: 8px; /* agrega un padding similar al de IonItem */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* agrega una sombra ligera */
+}

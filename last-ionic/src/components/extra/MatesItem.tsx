@@ -1,6 +1,6 @@
 import React from 'react'
-import { Session } from '../../models/Schedule'
-import { Speaker } from '../../models/Speaker'
+import { Session } from '../../redux/models/Schedule'
+import { Speaker } from '../../redux/models/Speaker'
 import { IonCard, IonCardHeader, IonItem, IonLabel, IonAvatar, IonCardContent, IonList } from '@ionic/react'
 
 interface MatesItemProps {

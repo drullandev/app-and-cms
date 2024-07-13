@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { IonItem, IonLabel, IonSpinner } from '@ionic/react'
-import { connect } from '../../../data/connect'
+import { connect } from '../../../redux/connect'
 import { useLocation } from 'react-router'
 import { useHistory } from 'react-router-dom'
 

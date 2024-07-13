@@ -6,8 +6,8 @@ import { IonContent, IonIcon, IonItem, IonLabel, IonList, IonMenu, IonToggle } f
 import { moonOutline } from 'ionicons/icons'
 
 // Functions
-import { connect } from '../../../data/connect'
-import { setDarkMode } from '../../../data/user/user.actions'
+import { connect } from '../../../redux/connect'
+import { setDarkMode } from '../../../redux/data/user/user.actions'
 //import { restGet } from '../../../data/utils/rest/rest.utils'
 
 // Components

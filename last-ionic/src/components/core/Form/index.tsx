@@ -2,10 +2,9 @@ import React, { useRef, useEffect, useState } from 'react';
 import { useForm, FieldValues } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { motion } from 'framer-motion';
-import * as yup from 'yup'
 
-import { FormComponentProps, FieldProps } from './types';
-import './style.css'
+import { FormComponentProps, FormProps, FieldProps } from './types';
+import './style.css';
 
 import DebugUtil from '../../../classes/DebugUtil';
 import Logger from '../../../classes/Logger';
@@ -13,67 +12,70 @@ import Logger from '../../../classes/Logger';
 import Overlay from './components/Overlay';
 import Field from './components/Field';
 
+import { buildValidationSchema, buildInitialValues } from './src/MyYup';
+
 const debug = DebugUtil.setDebug(false);
 
-const buildValidationSchema = (rows: FieldProps[]) => {
-  const shape = rows.reduce((acc: any, row: FieldProps) => {
-    if (row.validationSchema) {
-      acc[row.name] = row.validationSchema;
-    }
-    return acc;
-  }, {});
-  return yup.object().shape(shape);
-};
-
-const buildInitialValues = (rows: FieldProps[]) => {
-  const initialValues: any = {};
-  rows.forEach(field => {
-    initialValues[field.name] = field.defaultValue || '';
-  });
-  return initialValues;
-};
-
 const Form: React.FC<FormComponentProps> = (form) => {
-  const initialValuesRef = useRef(buildInitialValues(form.rows));
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const firstFieldRef = useRef<HTMLInputElement | null>(null); // Ref for the first field
 
+  // Ref to store the initial values of the form
+  const initialValuesRef = useRef(buildInitialValues(form.rows));
+  
+  // Ref for the first field to set focus on it when the form loads
+  const firstFieldRef = useRef<HTMLInputElement | null>(null);
+  
+  // State to track if the form is being submitted
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // State to track if the form is loading initially
+  const [isLoading, setIsLoading] = useState(true);
+
+  // State to track the inner form structure
+  const [innerForm, setInnerForm] = useState<FormProps>();
+
+  // useForm hook to handle form logic
   const { control, handleSubmit, formState: { errors }, reset } = useForm<FieldValues>({
     resolver: yupResolver(buildValidationSchema(form.rows)),
     defaultValues: initialValuesRef.current,
   });
 
+  // Effect to update initial values, set focus on the first field when form rows change, and manage loading state
   useEffect(() => {
     const newInitialValues = buildInitialValues(form.rows);
     initialValuesRef.current = newInitialValues;
     reset(newInitialValues);
-    if (firstFieldRef.current) {
-      firstFieldRef.current.focus();
-    }
+    firstFieldRef.current?.focus();
+    // Simulate a loading delay for demonstration purposes
+    setTimeout(() =>
+      setIsLoading(false),
+    1000); // Adjust the delay as needed
   }, [form.rows, reset]);
 
+  // Function to handle form submission
   const onSubmit = async (data: FieldValues) => {
     try {
       setIsSubmitting(true);
-      form.onSuccess(data).
-        then(()=>{
-          setIsSubmitting(false)
-        });
+      await form.onSuccess(data);
     } catch (error) {
       if (debug) Logger.error('- Error validating form!', error);
+    } finally {
       setIsSubmitting(false);
     }
   };
 
+  // Function to handle field value changes
   const handleFieldChange = (fieldName: string, value: any) => {
-    if (debug) Logger.log('- Change', { name: fieldName, value: value });
+    if (debug) Logger.log('- Change', { name: fieldName, value });
   };
 
   return (
     <>
       <motion.div {...form.settings.animations}>
-        <Overlay show={isSubmitting} />
-        <form key={form.id} onSubmit={handleSubmit(onSubmit, form.onError)}>
+        <Overlay show={isSubmitting} duration={600} />
+        <form key={form.id}
+          onSubmit={handleSubmit(onSubmit, form.onError)}
+          style={form.settings.style}
+        >
           {form.rows.map((field: FieldProps, index: number) => (
             <div
               key={'div-' + (field.name ?? 'div-' + field.id)}
@@ -86,6 +88,7 @@ const Form: React.FC<FormComponentProps> = (form) => {
                 errors={errors}
                 onFieldChange={handleFieldChange}
                 ref={index === 0 ? firstFieldRef : null} // Assign ref to the first field
+                loading={isLoading}
               />
             </div>
           ))}

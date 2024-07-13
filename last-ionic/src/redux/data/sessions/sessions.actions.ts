@@ -1,6 +1,6 @@
-import { getConfData } from '../dataApi'
-import { ActionType } from '../../utils/types'
-import { ConfState } from './conf.state'
+import { getConfData } from '../../api/dataApi'
+import { ActionType } from '../../../utils/types'
+import { ConfState } from './sessions.state'
 
 //import { FilterModel } from '../../components/core/main/Main' 
 
@@ -21,6 +21,7 @@ export const updateFilteredTracks = (filteredTracks: string[]) => ({ type: 'upda
 export const setSearchText = (searchText?: string) => ({ type: 'set-search-text', searchText } as const)
 export const setSearchString = (searchString: string) => ({ type: 'set-search-string', searchString } as const)
 export const setMenuEnabled = (menuEnabled: boolean) => ({ type: 'set-menu-enabled', menuEnabled } as const)
+// New
 export const setFilter = (filter: string) => ({ type: 'set-filter', filter } as const)
 export const setFilterDate = (filterDate?: string) => ({ type: 'set-filter-date', filterDate } as const)
 export const setOrderField = (orderField: any) => ({ type: 'set-order-field', orderField } as const)
@@ -35,7 +36,7 @@ export type SessionsActions =
   | ActionType<typeof setSearchText>
   | ActionType<typeof setSearchString>
   | ActionType<typeof setMenuEnabled>
-  | ActionType<typeof setFilter>
-  | ActionType<typeof setFilterDate>
-  | ActionType<typeof setOrderField>
-  | ActionType<typeof setSearchOrder>
+  | ActionType<typeof setFilter> // New
+  | ActionType<typeof setFilterDate> // New
+  | ActionType<typeof setOrderField> // New
+  | ActionType<typeof setSearchOrder> // NEw

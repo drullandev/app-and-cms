@@ -1,9 +1,10 @@
+import { UserState } from './../../data/user/user.state';
 import { Preferences } from '@capacitor/preferences';
-import { Schedule, Session } from '../models/Schedule'
+import { Schedule, Session } from './models/Schedule'
 import { Speaker } from '../models/Speaker'
 import { Location } from '../models/Location'
 import { setOrRemove, parseSessions, toggleBool } from './reducer.utils'
-import { UserState } from './user/user.state'
+import { UserState } from '../data/user/user.state'
 import { initialUser } from './state'
 
 const dataUrl = '/assets/data/data.json'

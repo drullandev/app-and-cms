@@ -4,7 +4,7 @@ import React from 'react'
 import { Redirect } from 'react-router'
 import '../../../styles/index.scss'
 
-import { connect } from '../../../data/connect'
+import { connect } from '../../../redux/connect'
 
 interface StateProps {
   hasSeenTutorial: boolean

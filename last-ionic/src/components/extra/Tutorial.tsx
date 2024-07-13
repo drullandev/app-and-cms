@@ -10,10 +10,10 @@ import {
   useIonViewWillEnter,
 } from '@ionic/react';
 import { arrowForward } from 'ionicons/icons';
-import { setMenuEnabled } from '../../data/sessions/sessions.actions';
-import { setHasSeenTutorial } from '../../data/user/user.actions';
+import { setMenuEnabled } from '../../redux/data/sessions/sessions.actions';
+import { setHasSeenTutorial } from '../../redux/data/user/user.actions';
 import './Tutorial.scss';
-import { connect } from '../../data/connect';
+import { connect } from '../../redux/connect';
 import { RouteComponentProps } from 'react-router';
 
 interface OwnProps extends RouteComponentProps {}

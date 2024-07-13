@@ -1,6 +1,6 @@
 import { combineReducers } from './combineReducers'
-import { sessionsReducer } from './sessions/sessions.reducer'
-import { userReducer } from './user/user.reducer'
+import { sessionsReducer } from './data/sessions/sessions.reducer'
+import { userReducer } from './data/user/user.reducer'
 
 export const initialData = {
   schedule: { groups: [] } as any,

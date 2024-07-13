@@ -7,7 +7,7 @@ import { initReactI18next } from 'react-i18next'
 
 import App from '../../../../App'
 
-import resources from '../../../../data/static/i18next/translations.json'
+import resources from '../../../../../public/static/i18next/translations.json'
 import { setLocale } from 'yup'
 
 export function buildYupLocale(_: unknown, t: TFunction): void {

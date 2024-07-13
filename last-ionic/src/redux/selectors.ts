@@ -1,7 +1,7 @@
 import { createSelector } from 'reselect'
-import { Schedule, Session, ScheduleGroup } from '../models/Schedule'
-import { Speaker } from '../models/Speaker'
-import { Location } from '../models/Location'
+import { Schedule, Session, ScheduleGroup } from './models/Schedule'
+import { Speaker } from './models/Speaker'
+import { Location } from './models/Location'
 import { AppState } from './state'
 
 const getSchedule = (state: AppState) => { return state.data.schedule }

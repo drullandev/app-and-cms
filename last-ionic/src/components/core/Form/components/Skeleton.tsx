@@ -1,17 +1,9 @@
 import React from 'react';
-import { IonItem, IonLabel, IonSkeletonText } from '@ionic/react';
-import { SkeletonProps } from './types';
+import { IonSkeletonText } from '@ionic/react';
 
-const Skeleton: React.FC<SkeletonProps> = ({
-  style = {},
-  lines = 'none'
-}) => {
+const Skeleton: React.FC<{ style?: React.CSSProperties, className?: string }> = ({ style, className }) => {
   return (
-    <IonItem lines={lines}>
-      <IonLabel>
-        <IonSkeletonText animated style={{ ...style }} />
-      </IonLabel>
-    </IonItem>
+    <IonSkeletonText animated style={style} className={className} />
   );
 };
 

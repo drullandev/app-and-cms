@@ -3,11 +3,11 @@ import { IonContent, IonGrid, IonRow, IonCol } from '@ionic/react'
 
 import MatesItem from './MatesItem'
 
-import { Speaker } from '../../models/Speaker'
-import { Session } from '../../models/Schedule'
+import { Speaker } from '../../redux/models/Speaker'
+import { Session } from '../../redux/models/Schedule'
 
-import { connect } from '../../data/connect'
-import * as selectors from '../../data/selectors'
+import { connect } from '../../redux/connect'
+import * as selectors from '../../redux/selectors'
 
 interface OwnProps { }
 

@@ -16,7 +16,7 @@ import SessionDetail from '../../../pages/extra/Schedule/SessionDetail'
 import MapView from '../../../pages/extra/MapView'
 import About from '../../../pages/core/About'
 
-import { MainMenu, TabProps } from '../../../data/static/mainMenu'
+import { MainMenu, TabProps } from '../../../../public/static/mainMenu'
 
 import Icon from './Icon'
 

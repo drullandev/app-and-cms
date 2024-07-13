@@ -1,4 +1,4 @@
-import DebugUtil from '../../classes/DebugUtil'
+import DebugUtil from '../../../classes/DebugUtil'
 import { UserActions } from './user.actions'
 import { UserState } from './user.state'
 

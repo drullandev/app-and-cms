@@ -5,9 +5,9 @@ import * as yup from 'yup';
 import * as icon from 'ionicons/icons';
 import { debounce } from 'lodash';
 
-import DebugUtil from '../../../../classes/DebugUtil';
-
 import { FieldProps } from '../types';
+
+import DebugUtil from '../../../../classes/DebugUtil';
 
 import Label from './Label';
 import Skeleton from './Skeleton';
@@ -19,7 +19,8 @@ const Field = forwardRef<any, {
   control: any;
   errors: DeepMap<Record<string, any>, FieldError>;
   onFieldChange: (name: string, value: any) => void;
-}>(({ field, control, errors, onFieldChange }, ref) => {
+  loading: boolean; // Added loading prop
+}>(({ field, control, errors, onFieldChange, loading }, ref) => {
 
   const debug = DebugUtil.setDebug(false);
 
@@ -46,6 +47,15 @@ const Field = forwardRef<any, {
   );
 
   const renderInput = (controller: any, errors: DeepMap<Record<string, any>, FieldError>) => {
+    
+    if (loading) {
+      // Render skeleton if loading is true
+      return (
+        <IonItem style={field.style}>
+          <IonSkeletonText style={{ width: '100%', height: '45px', borderRadius: '15px' }} className={field.className} />
+        </IonItem>
+      );
+    }
 
     const inputChange = (e: any) => {
 
@@ -58,7 +68,7 @@ const Field = forwardRef<any, {
         debouncedHandleFieldChange(value);
       }
 
-    }
+    };
 
     const commonProps = {
       ...controller,
@@ -69,7 +79,7 @@ const Field = forwardRef<any, {
     };
 
     const fieldStatusIcon = (controller: any, fieldName: string, errors: any) => {
-
+      
       let displayColor = 'medium';
 
       if (loadingField[fieldName]) {
@@ -81,23 +91,21 @@ const Field = forwardRef<any, {
       }
 
       const setIcon = (color?: string) => {
-
         return field.secret ? (
           <IonIcon color={color ?? displayColor}
             onClick={() => setShowSecret(!showSecret)}
-            icon={showSecret ? icon.eyeOff : icon.eye}
+            icon={showSecret ? icon.eye : icon.eyeOff}
           />
         ) : fieldName.includes('email') ? (
           <IonIcon icon={icon.at} color={color ?? displayColor} />
         ) : (
           <IonIcon icon={icon.checkmarkCircle} color={color ?? displayColor} />
         )
-
-      }
+      };
 
       const cases = [
         {
-          condition: loadingField[fieldName],
+          condition: loadingField[fieldName] || loading,
           icon: <IonSpinner name="lines" color="medium" />
         },
         {
@@ -132,7 +140,7 @@ const Field = forwardRef<any, {
       } catch (error) {
         return false;
       }
-    }
+    };
 
     switch (field.type) {
       case 'text':
@@ -162,7 +170,7 @@ const Field = forwardRef<any, {
             </IonItem>
             <Error name={field.name} label={field.label} errors={errors} />
           </>
-        )
+        );
 
       case 'textarea':
         return (
@@ -176,7 +184,7 @@ const Field = forwardRef<any, {
             />
             {fieldStatusIcon(controller, field.name, errors)}
           </>
-        )
+        );
 
       case 'select':
         return (
@@ -193,10 +201,9 @@ const Field = forwardRef<any, {
             {fieldStatusIcon(controller, field.name, errors)}
             <Error name={field.name} label={field.label} errors={errors} />
           </>
-        )
+        );
 
       case 'checkbox': {
-
         let displayColor = 'medium';
 
         if (loadingField[field.name]) {
@@ -211,7 +218,10 @@ const Field = forwardRef<any, {
         
         return (
           <>
-            <IonItem button onClick={() => commonProps.onIonChange({ detail: { checked: !controller.value } })}>
+            <IonItem 
+              onClick={() => commonProps.onIonChange({ detail: { checked: !controller.value } })}
+              style={{paddingTop: '8px', paddingBottom: '8px'}}
+            >
               <IonLabel style={{ display: 'flex', alignItems: 'start', width: '93%' }}>{field.label}</IonLabel>
               <div style={{ display: 'flex', alignItems: 'end' }}
                 className={(errors && errors[field.name] ? 'checkbox-color-border' : '')}>
@@ -227,7 +237,7 @@ const Field = forwardRef<any, {
             </IonItem>
             <Error name={field.name} label={field.label} errors={errors} />
           </>
-        )
+        );
       }
 
       case 'date':
@@ -239,21 +249,21 @@ const Field = forwardRef<any, {
             {fieldStatusIcon(controller, field.name, errors)}
             <Error name={field.name} label={field.label} errors={errors} />
           </>
-        )
+        );
 
       case 'button':
       case 'submit':
         return (
-          <IonItem style={field.style || { width: '100%' }}>
-            <Button
-              expand
-              style={{ width: '100%' }}
-              label={field.label}
-              onClick={field.onClick ? field.onClick : undefined}
-              {...commonProps}
-            />
-          </IonItem>
-        )
+          <Button
+            expand
+            style={field.style || { width: '100%' }}
+            label={field.label}
+            onClick={field.onClick ? field.onClick : undefined}
+            icon={field.icon}
+            loading={loading}
+            {...commonProps}
+          />
+        );
 
       case 'range':
         return (
@@ -269,7 +279,7 @@ const Field = forwardRef<any, {
             {fieldStatusIcon(controller, field.name, errors)}
             <Error name={field.name} label={field.label} errors={errors} />
           </>
-        )
+        );
 
       case 'toggle':
         return (
@@ -285,7 +295,7 @@ const Field = forwardRef<any, {
             {fieldStatusIcon(controller, field.name, errors)}
             <Error name={field.name} label={field.label} errors={errors} />
           </>
-        )
+        );
 
       case 'radio':
         return (
@@ -304,14 +314,14 @@ const Field = forwardRef<any, {
             {fieldStatusIcon(controller, field.name, errors)}
             <Error name={field.name} label={field.label} errors={errors} />
           </>
-        )
+        );
 
       case 'skeleton':
         return (
           <IonItem >
             <Skeleton {...field} />
           </IonItem>
-        )
+        );
     }
   };
 

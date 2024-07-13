@@ -1,6 +1,6 @@
 import React, { useEffect, useContext } from 'react'
 import { IonRouterContext } from '@ionic/react'
-import { initialUser } from '../data/state'
+import { initialUser } from '../redux/state'
 
 interface RedirectToLoginProps {
   setData: Function

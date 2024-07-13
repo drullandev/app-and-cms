@@ -6,14 +6,14 @@ import RestAPI from '../../../classes/RestCall'
 import { useTranslation } from 'react-i18next'
 import * as yup from 'yup'
 
-import { setLoading } from '../../../data/sessions/sessions.actions'
-import { connect } from '../../../data/connect'
+import { setLoading } from '../../../redux/data/sessions/sessions.actions'
+import { connect } from '../../../redux/connect'
 
 import Form from '../../../components/core/Form'
 import Page from '../../../components/core/Page'
 import { PageProps } from '../../../components/core/Page/types'
 import * as icon from 'ionicons/icons'
-import { setisLoggedIn } from '../../../data/user/user.actions'
+import { setisLoggedIn } from '../../../redux/data/user/user.actions'
 
 let testingFeature = true
 let testing = testingFeature && import.meta.env.REACT_APP_TESTING

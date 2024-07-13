@@ -3,11 +3,11 @@ import * as AppConst from '../../env'
 import { IonItemDivider, IonItemGroup, IonLabel, IonList, IonListHeader, IonAlert, AlertButton } from '@ionic/react'
 import React, { useState, useCallback } from 'react'
 
-import { Home, Session } from '../../models/Schedule'
+import { Home, Session } from '../../redux/models/Schedule'
 import SessionListItem from './SessionListItem'
 
-import { connect } from '../../data/connect'
-import { addFavorite, removeFavorite } from '../../data/sessions/sessions.actions'
+import { connect } from '../../redux/connect'
+import { addFavorite, removeFavorite } from '../../redux/data/sessions/sessions.actions'
 
 interface OwnProps {
   schedule: Home
@@ -43,6 +43,7 @@ const SessionList: React.FC<SessionListProps> = ({
     setAlertHeader(header)
     setAlertButtons(buttons)
     setShowAlert(true)
+    console.log('is schedule here?', schedule)
   }, [])
 
   if (schedule.groups.length === 0 && !hide) (

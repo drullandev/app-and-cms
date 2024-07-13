@@ -46,7 +46,8 @@ export interface FieldProps {
   icon?: any
   href?: string 
   onClick?: Function;
-  secret?: false | boolean 
+  secret?: false | boolean;
+  loading?: boolean | false;
 }
 
 export interface ErrorProps {
@@ -67,6 +68,12 @@ export interface SkeletonProps {
   style?: React.CSSProperties;
   lines?: 'none' | 'inset' | 'full';
 }
+
+export interface ContentCheckProps {
+  label: string
+  slug: string
+}
+
 
 /*
 

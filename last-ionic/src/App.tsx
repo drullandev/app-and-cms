@@ -22,12 +22,15 @@ import '@ionic/react/css/text-transformation.css'
 import '@ionic/react/css/flex-utils.css'
 import '@ionic/react/css/display.css'
 
+/* Whole app style */
+import './App.scss';
+
 /* Theme variables */
 import './theme/variables.css'
 
-import { connect } from './data/connect'
-import { loadConfData } from './data/sessions/sessions.actions'
-import { loadUserData, setData } from './data/user/user.actions'
+import { connect } from './redux/connect'
+import { loadConfData } from './redux/data/sessions/sessions.actions'
+import { loadUserData, setData } from './redux/data/user/user.actions'
 
 import TestForm from './pages/extra/TestForm'
 import Login from './pages/core/Login'
@@ -45,8 +48,8 @@ import MainTabs from './components/core/main/MainTabs'
 import HomeOrTutorial from './components/HomeOrTutorial'
 import RedirectToLogin from './components/RedirectToLogin'
 
-import { Schedule } from './models/Schedule'
-import { initialUser } from './data/state'
+import { Schedule } from './redux/models/Schedule'
+import { initialUser } from './redux/state'
 import DebugUtil from './classes/DebugUtil'
 
 // Import the functions you need from the SDKs you need

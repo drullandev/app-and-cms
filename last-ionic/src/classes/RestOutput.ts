@@ -97,7 +97,7 @@ class RestOutput {
     if (props?.message) {
       error.message = props.message;
     } else if (props?.setInnerMessage) {
-      error.message = this.findMessage(errors) || this.defaultMessages.formDanger.message;
+      error.message = this.findMessage(errors)
     } else if (errors) {
       Object.keys(errors).forEach((errorKey: string) => {
         if (errors[errorKey]?.message) {
@@ -108,8 +108,6 @@ class RestOutput {
     } else {
       error.message = this.defaultMessages.formDanger.message;
     }
-
-    error.message = error.message || this.defaultMessages.formDanger.message;
 
     return error;
   }

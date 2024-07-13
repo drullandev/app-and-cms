@@ -15,12 +15,12 @@ import {
   setCaretData,
   setRoleData,
   getUserData,
-} from '../dataApi'
+} from '../../dataApi'
 
-import { ActionType } from '../../utils/types'
+import { ActionType } from '../../../utils/types'
 import { UserState } from './user.state'
-import { initialUser } from '../state'
-import DebugUtil from '../../classes/DebugUtil'
+import { initialUser } from '../../state'
+import DebugUtil from '../../../classes/DebugUtil'
 
 // !Keep it simple !!!!!!!!!!!
 // !!!!!!!!!!!!!!!!!!!!!!!!!!!

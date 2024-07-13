@@ -4,15 +4,15 @@ import { IonContent, IonImg, IonList, IonItem, IonLabel, IonAccordion, IonAccord
 import { ReactControllerProps } from '@ionic/react/dist/types/components/createControllerComponent'
 import { RouteComponentProps } from 'react-router'
 
-import { setLoading, setDarkMode } from '../../../data/user/user.actions'
-import { connect } from '../../../data/connect'
+import { setLoading, setDarkMode } from '../../../redux/data/user/user.actions'
+import { connect } from '../../../redux/connect'
 import * as icon from 'ionicons/icons'
 
 // Extra required
 import { useTranslation } from 'react-i18next'
 
 import RestCall from '../../../classes/RestCall'
-import { UserState } from '../../../data/user/user.state'
+import { UserState } from '../../../redux/data/user/user.state'
 import '../../../styles/index.scss'
 import Alert from '../../../components/core/Alert'
 

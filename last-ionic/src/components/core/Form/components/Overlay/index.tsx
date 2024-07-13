@@ -1,11 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import './style.css';
+import { OverlayProps } from './types'
 
-interface OverlayProps {
-  show: boolean;
-}
-
-const Overlay: React.FC<OverlayProps> = ({ show}) => {
+const Overlay: React.FC<OverlayProps> = ({ show, duration = 500}) => {
 
   const [dots, setDots] = useState('.');
 
@@ -15,7 +12,7 @@ const Overlay: React.FC<OverlayProps> = ({ show}) => {
 
     const interval = setInterval(() => {
       setDots((prev) => (prev.length === 3 ? '.' : prev + '.'));
-    }, 500);
+    }, duration);
 
     return ()=> clearInterval(interval);
 

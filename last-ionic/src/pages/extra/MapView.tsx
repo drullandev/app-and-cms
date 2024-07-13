@@ -1,9 +1,9 @@
 import React from 'react'
 import Map from '../../components/Map'
 import { IonHeader, IonToolbar, IonButtons, IonMenuButton, IonTitle, IonContent, IonPage } from '@ionic/react'
-import { Location } from '../../models/Location'
-import { connect } from '../../data/connect'
-import * as selectors from '../../data/selectors'
+import { Location } from '../../redux/models/Location'
+import { connect } from '../../redux/connect'
+import * as selectors from '../../redux/selectors'
 import '../../styles/index.scss'
 
 interface OwnProps { }

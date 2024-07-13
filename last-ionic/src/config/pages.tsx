@@ -1,17 +1,17 @@
 // TODO : MAKE IT WORK SOMEHOW!
 import { RouteProps } from 'react-router-dom';
-import MainTabs from '../src/components/core/main/MainTabs';
-import Page from '../src/components/core/Page';
-import Tutorial from '../src/pages/core/Tutorial';
-import Login from '../src/pages/core/Login';
-import TestForm from '../src/pages/extra/TestForm';
-import Signup from '../src/pages/core/Signup';
-import Recover from '../src/pages/core/Recover';
-import Support from '../src/pages/core/Support';
-import Account from '../src/pages/core/Account';
-import ChangePassword from '../src/pages/core/ChangePassword';
-import RedirectToLogin from '../src/pages/core/RedirectToLogin';
-import HomeOrTutorial from '../src/pages/core/HomeOrTutorial';
+import MainTabs from '../components/core/main/MainTabs';
+import Page from '../components/core/Page';
+import Tutorial from '../pages/core/Tutorial';
+import Login from '../pages/core/Login';
+import TestForm from '../pages/extra/TestForm';
+import Signup from '../pages/core/Signup';
+import Recover from '../pages/core/Recover';
+import Support from '../pages/core/Support';
+import Account from '../pages/core/Account';
+import ChangePassword from '../pages/core/ChangePassword';
+import RedirectToLogin from '../pages/core/RedirectToLogin';
+import HomeOrTutorial from '../pages/core/HomeOrTutorial';
 
 const routes: RouteProps[] = [
   { path: '/tabs', render: () => <MainTabs /> },

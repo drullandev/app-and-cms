@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
-import { connect } from '../../../data/connect'
+import { connect } from '../../../redux/connect'
 import { commonFilter } from '../../../env'
 import { IonSelect, IonSelectOption, IonCol, IonRow, IonDatetime, IonTextarea, IonItem, IonInput, IonButton } from '@ionic/react'
-import { setFilter } from '../../../data/sessions/sessions.actions'
+import { setFilter } from '../../../redux/data/sessions/sessions.actions'
 import { Filter } from '../../core/main/interfaces/Filter'
 
 interface OwnProps { 

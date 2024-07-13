@@ -1,17 +1,12 @@
 import React, { FC, useState } from 'react'
 import { IonLabel, IonButton, IonModal } from '@ionic/react'
-import FormPage from './FormPage'
-
-export interface ContentCheckProps {
-  label: string
-  slug: string
-}
+import { ContentCheckProps} from '../types'
 
 const ContentCheck: FC<ContentCheckProps> = ({ label, slug }) => {
   const [showModal, setShowModal] = useState(false)
   return <>
-    <IonModal class='content-modal' animated={true} key={slug + '-modal'} isOpen={showModal}>
-      <FormPage slug={slug} />
+    <IonModal className='content-modal' animated={true} key={slug + '-modal'} isOpen={showModal}>
+      HERES IS YOR MODAL; AND NOW H¿WHAT? TODO!!
       <IonButton slot='start' onClick={() => setShowModal(false)}>X</IonButton>
     </IonModal>
     <IonButton key={slug} color='light' onClick={(e) => { setShowModal(true) }}>

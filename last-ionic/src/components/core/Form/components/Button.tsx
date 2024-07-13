@@ -1,36 +1,45 @@
-import React, { useState } from 'react';
-import { IonLabel, IonButton, IonSpinner, IonItem, IonSkeletonText, IonIcon } from '@ionic/react';
+import React, { useState, useEffect } from 'react';
+import { IonLabel, IonButton, IonSpinner, IonIcon } from '@ionic/react';
 import { FieldProps } from '../types';
 import * as icon from 'ionicons/icons';
-import { timeout } from '../../../../env'; // Importamos solo 'timeout' de AppConst
-import Skeleton from './Skeleton';
+import Logger from '../../../../classes/Logger';
 
+/**
+ * Button component that handles loadinging a label, an optional icon, and a spinner during loading state.
+ * @param {FieldProps} field - The properties for the button.
+ * @returns {JSX.Element} The rendered button component.
+ */
 const Button: React.FC<FieldProps> = (field) => {
   
-  const [display, setDisplay] = useState<boolean>(false);
+  // State to manage the loading/loading status
+  const [loading, setloading] = useState<boolean>(false);
 
-  const setActive = (timeOut: number = timeout.doneMargin, func?: Function) => {
-    if (func) func();
-    setDisplay(true);
-    setTimeout(() => {
-      setDisplay(false);
-    }, timeOut);
-  };
-
+  /**
+   * Generates the content to be loadinged inside the button.
+   * @param {FieldProps} field - The properties for the button.
+   * @returns {JSX.Element} The content for the button, including the spinner or icon and label.
+   */
   const buttonContent = (field: FieldProps) => (
     <>
-      {display 
-        ? <IonSpinner name="lines-small"/>
-        : ( field.icon ? <IonIcon slot="start" icon={field.icon || icon.star} /> : null )
+      {loading 
+        ? <IonSpinner name="lines-small" />
+        : (field.icon ? <IonIcon slot="start" icon={field.icon || icon.star} /> : null)
       }
       <IonLabel>{field.label}</IonLabel>
     </>
   );
 
-  if (!field) {
-    return <Skeleton style={field.style || { width: '100%' }} />;
-  }
+  useEffect(()=>{
+    setTimeout(()=>{
+      setloading(false)
+    },500)
+  },[loading])
 
+  useEffect(()=>{
+    setloading(!field.loading)
+  },[field.loading])
+
+  // Render the IonButton with the provided properties and handle the onClick event
   return (
     <IonButton
       style={field.style || { width: '100%', borderRadius: '20px' }}
@@ -40,8 +49,8 @@ const Button: React.FC<FieldProps> = (field) => {
       size={field.size ?? 'default'}
       type={field.fieldType}
       routerDirection={field.onClick ? undefined : "root"}
-      onClick={(e: any) => setActive(1000, field.onClick)}
-      disabled={display}
+      onClick={(e: any) => { setloading(true); field.onClick }}
+      disabled={loading}
     >
       {buttonContent(field)}
     </IonButton>

@@ -6,8 +6,8 @@ import { useTranslation } from 'react-i18next'
 import * as yup from 'yup'
 import * as icon from 'ionicons/icons'
 
-import { connect } from '../../../data/connect'
-import { setisLoggedIn, setUsername, setLoading } from '../../../data/user/user.actions'
+import { connect } from '../../../redux/connect'
+import { setisLoggedIn, setUsername, setLoading } from '../../../redux/data/user/user.actions'
 import RestAPI from '../../../classes/RestCall'
 import StringUtil from '../../../classes/StringUtil'
 

@@ -1,16 +1,9 @@
 {
   "name": "last-ionic",
+  "description": "An Ionic drullan.dev project",
   "private": true,
-  "version": "0.0.1",
+  "version": "0.0.2",
   "type": "module",
-  "scripts": {
-    "dev": "vite",
-    "build": "tsc && vite build",
-    "preview": "vite preview",
-    "test.e2e": "cypress run",
-    "test.unit": "vitest",
-    "lint": "eslint"
-  },
   "dependencies": {
     "@capacitor/app": "5.0.6",
     "@capacitor/core": "5.4.0",
@@ -21,6 +14,7 @@
     "@hookform/resolvers": "^3.3.4",
     "@ionic/react": "^7.0.0",
     "@ionic/react-router": "^7.0.0",
+    "@reduxjs/toolkit": "^2.2.6",
     "@types/react-router": "^5.1.20",
     "@types/react-router-dom": "^5.3.3",
     "axios": "^1.5.0",
@@ -33,7 +27,6 @@
     "lodash": "^4.17.21",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-facebook-login": "^4.1.1",
     "react-hook-form": "^7.46.1",
     "react-i18next": "^13.2.2",
     "react-router": "^5.3.4",
@@ -43,6 +36,26 @@
     "vite-plugin-env-compatible": "^1.1.1",
     "yup": "^1.4.0"
   },
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "test.e2e": "cypress run",
+    "test.unit": "vitest",
+    "lint": "eslint",
+    "format": "prettier --write \"src/**/*.{js,jsx,ts,tsx,json,md}\"",
+    "precommit": "npm run format && lint-staged",
+    "prepare": "husky install"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ],
   "devDependencies": {
     "@babel/core": "^7.24.5",
     "@babel/plugin-transform-runtime": "^7.24.3",
@@ -59,11 +72,19 @@
     "cypress": "^13.2.0",
     "eslint": "^8.35.0",
     "eslint-plugin-react": "^7.32.2",
+    "husky": "^8.0.3",
     "jsdom": "^22.1.0",
+    "lint-staged": "^13.2.0",
+    "prettier": "^2.8.6",
     "sass": "^1.67.0",
     "typescript": "^5.1.6",
     "vite": "^4.3.9",
     "vitest": "^0.32.2"
   },
-  "description": "An Ionic project"
+  "lint-staged": {
+    "src/**/*.{js,jsx,ts,tsx,json,md}": [
+      "prettier --write",
+      "git add"
+    ]
+  }
 }
