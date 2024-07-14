@@ -1,7 +1,10 @@
-import RestCall from './RestCall'
+import Rest from './Rest'
 import { AxiosRequestConfig } from 'axios'
 import StringUtil from './StringUtil'
 import { useTranslation } from 'react-i18next'
+import DebugUtil from './DebugUtil'
+
+const debug = DebugUtil.setDebug(false);
 
 export interface WhereProps {
   type: string
@@ -174,7 +177,7 @@ export interface CallProps {
   onFinally?: Function
 }
 
-const graphqlCall = (call: string): any => RestCall.restCall({
+const graphqlCall = (call: string): any => Rest.restCall({
   req: {
     method: 'POST',
     url: 'graphql',
@@ -188,7 +191,7 @@ const graphqlCall = (call: string): any => RestCall.restCall({
   }
 })
 
-const graphqlCallAsync = async (call: string) => await RestCall.restCallAsync({
+const graphqlCallAsync = async (call: string) => await Rest.restCallAsync({
   req: {
     method: 'POST',
     url: 'graphql',

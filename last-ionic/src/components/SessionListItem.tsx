@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import { IonItemSliding, IonItem, IonLabel, IonItemOptions, IonItemOption, AlertButton } from '@ionic/react';
-import { Session } from '../redux/models/Schedule';
+import { Session } from '../reducer/models/Schedule';
 
 interface SessionListItemProps {
   session: Session;

@@ -1,6 +1,6 @@
 //import * as AppConst from '../../../env'
 import React, { useRef, useEffect } from 'react'
-import { Location } from '../../../redux/models/Location'
+import { Location } from '../../../reducer/models/Location'
 
 interface MapProps {
   locations: Location[]

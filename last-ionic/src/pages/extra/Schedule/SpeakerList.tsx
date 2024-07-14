@@ -1,10 +1,10 @@
 import React from 'react'
 import { IonHeader, IonToolbar, IonTitle, IonContent, IonPage, IonButtons, IonMenuButton, IonGrid, IonRow, IonCol } from '@ionic/react'
 import SpeakerItem from '../../../components/SpeakerItem'
-import { Speaker } from '../../../redux/models/Speaker'
-import { Session } from '../../../redux/models/Schedule'
-import { connect } from '../../../redux/connect'
-import * as selectors from '../../../redux/selectors'
+import { Speaker } from '../../../reducer/models/Speaker'
+import { Session } from '../../../reducer/models/Schedule'
+import { connect } from '../../../reducer/src/connect'
+import * as selectors from '../../../reducer/src/selectors'
 import '../../../styles/index.scss'
 
 interface OwnProps { }

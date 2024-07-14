@@ -1,11 +1,10 @@
-import { UserState } from './../../data/user/user.state';
+import { UserState } from './user/user.state';
 import { Preferences } from '@capacitor/preferences';
-import { Schedule, Session } from './models/Schedule'
+import { Schedule, Session } from '../models/Schedule'
 import { Speaker } from '../models/Speaker'
 import { Location } from '../models/Location'
-import { setOrRemove, parseSessions, toggleBool } from './reducer.utils'
-import { UserState } from '../data/user/user.state'
-import { initialUser } from './state'
+import { setOrRemove, parseSessions, toggleBool } from '../src/reducer.utils'
+import { initialUser } from '../state'
 
 const dataUrl = '/assets/data/data.json'
 const locationsUrl = '/assets/data/locations.json'
@@ -39,7 +38,7 @@ export const getConfData = async () => {
 
   const allTracks = sessions
     .reduce((all, session) => all.concat(session.tracks), [] as string[])
-    .filter((trackName, index, array) => array.indexOf(trackName) === index)
+    .filter((trackName: string, index: number, array: any[]) => array.indexOf(trackName) === index)
     .sort()
 
   const data = {

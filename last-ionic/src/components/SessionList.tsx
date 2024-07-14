@@ -1,9 +1,9 @@
 import { IonItemDivider, IonItemGroup, IonLabel, IonList, IonListHeader, IonAlert, AlertButton } from '@ionic/react';
 import React, { useState, useCallback } from 'react';
-import { Schedule, Session } from '../redux/models/Schedule';
+import { Schedule, Session } from '../reducer/models/Schedule';
 import SessionListItem from './SessionListItem';
-import { connect } from '../redux/connect';
-import { addFavorite, removeFavorite } from '../redux/data/sessions/sessions.actions';
+import { connect } from '../reducer/src/connect';
+import { addFavorite, removeFavorite } from '../reducer/data/sessions/sessions.actions';
 
 interface OwnProps {
   schedule: Schedule;

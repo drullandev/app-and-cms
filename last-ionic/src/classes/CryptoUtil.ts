@@ -1,9 +1,14 @@
+import DebugUtil from "./DebugUtil";
+
 /**
  * Utility class for cryptographic operations such as encryption and decryption.
  * This class provides methods to encrypt and decrypt text using a XOR operation
  * with a salt value.
  */
  class CryptoUtil {
+
+  private debug = DebugUtil.setDebug(false);
+
   /**
    * Converts a text string to an array of character codes.
    * 

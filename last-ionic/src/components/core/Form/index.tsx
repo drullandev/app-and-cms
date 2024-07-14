@@ -19,7 +19,7 @@ const debug = DebugUtil.setDebug(false);
 const Form: React.FC<FormComponentProps> = (form) => {
 
   // Ref to store the initial values of the form
-  const initialValuesRef = useRef(buildInitialValues(form.rows));
+  const initialValuesRef = useRef(buildInitialValues(form.fields));
   
   // Ref for the first field to set focus on it when the form loads
   const firstFieldRef = useRef<HTMLInputElement | null>(null);
@@ -35,13 +35,13 @@ const Form: React.FC<FormComponentProps> = (form) => {
 
   // useForm hook to handle form logic
   const { control, handleSubmit, formState: { errors }, reset } = useForm<FieldValues>({
-    resolver: yupResolver(buildValidationSchema(form.rows)),
+    resolver: yupResolver(buildValidationSchema(form.fields)),
     defaultValues: initialValuesRef.current,
   });
 
-  // Effect to update initial values, set focus on the first field when form rows change, and manage loading state
+  // Effect to update initial values, set focus on the first field when form fields change, and manage loading state
   useEffect(() => {
-    const newInitialValues = buildInitialValues(form.rows);
+    const newInitialValues = buildInitialValues(form.fields);
     initialValuesRef.current = newInitialValues;
     reset(newInitialValues);
     firstFieldRef.current?.focus();
@@ -49,7 +49,7 @@ const Form: React.FC<FormComponentProps> = (form) => {
     setTimeout(() =>
       setIsLoading(false),
     1000); // Adjust the delay as needed
-  }, [form.rows, reset]);
+  }, [form.fields, reset]);
 
   // Function to handle form submission
   const onSubmit = async (data: FieldValues) => {
@@ -76,7 +76,7 @@ const Form: React.FC<FormComponentProps> = (form) => {
           onSubmit={handleSubmit(onSubmit, form.onError)}
           style={form.settings.style}
         >
-          {form.rows.map((field: FieldProps, index: number) => (
+          {form.fields.map((field: FieldProps, index: number) => (
             <div
               key={'div-' + (field.name ?? 'div-' + field.id)}
               className={`form-field ${field.className ?? 'col-span-12'}`}
@@ -92,6 +92,24 @@ const Form: React.FC<FormComponentProps> = (form) => {
               />
             </div>
           ))}
+          <div>
+            {form.buttons.map((button: FieldProps, index: number) => (
+              <div
+                key={'div-' + (button.name ?? 'div-' + button.id)}
+                className={`form-button ${button.className ?? 'col-span-12'}`}
+              >
+                <Field
+                  key={'button-' + (button.name ?? 'button-' + button.id)}
+                  field={button}
+                  control={control}
+                  errors={errors}
+                  onFieldChange={handleFieldChange}
+                  ref={index === 0 ? firstFieldRef : null} // Assign ref to the first field
+                  loading={isLoading}
+                />
+              </div>
+            ))}
+          </div>
           {debug && errors && JSON.stringify(errors)}
         </form>
       </motion.div>

@@ -13,7 +13,18 @@ import Label from './Label';
 import Skeleton from './Skeleton';
 import Error from './Error';
 import Button from './Button';
+import ReCAPTCHA from 'react-google-recaptcha';
 
+/**
+ * Field component that handles various types of form fields with validation, loading states, and error handling.
+ * @param {object} props - The props for the Field component.
+ * @param {FieldProps} props.field - The properties for the field.
+ * @param {any} props.control - Control object from react-hook-form.
+ * @param {DeepMap<Record<string, any>, FieldError>} props.errors - Errors object from react-hook-form.
+ * @param {Function} props.onFieldChange - Callback function to handle field change.
+ * @param {boolean} props.loading - Loading state for the field.
+ * @returns {JSX.Element} The rendered Field component.
+ */
 const Field = forwardRef<any, {
   field: FieldProps;
   control: any;
@@ -24,11 +35,13 @@ const Field = forwardRef<any, {
 
   const debug = DebugUtil.setDebug(false);
 
+  // State to manage the loading status of the field
   const [loadingField, setLoadingField] = useState<{ [key: string]: boolean }>({});
   const [showSecret, setShowSecret] = useState(false);
 
-  const buildValidationSchema = (rows: FieldProps[]) => {
-    const shape = rows.reduce((acc: any, row: FieldProps) => {
+  // Builds the validation schema for the fields using Yup
+  const buildValidationSchema = (fields: FieldProps[]) => {
+    const shape = fields.reduce((acc: any, row: FieldProps) => {
       if (row.validationSchema) {
         acc[row.name] = row.validationSchema;
       }
@@ -39,6 +52,7 @@ const Field = forwardRef<any, {
 
   const validationSchema = buildValidationSchema([field]);
 
+  // Debounces the field change handler to optimize performance
   const debouncedHandleFieldChange = useCallback(
     debounce((value: any) => {
       onFieldChange(field.name, value);
@@ -46,10 +60,16 @@ const Field = forwardRef<any, {
     [field.name, onFieldChange]
   );
 
+  /**
+   * Renders the appropriate input based on the field type and handles validation and error display.
+   * @param {any} controller - Controller object from react-hook-form.
+   * @param {DeepMap<Record<string, any>, FieldError>} errors - Errors object from react-hook-form.
+   * @returns {JSX.Element} The rendered input component.
+   */
   const renderInput = (controller: any, errors: DeepMap<Record<string, any>, FieldError>) => {
     
+    // Render skeleton if loading is true
     if (loading) {
-      // Render skeleton if loading is true
       return (
         <IonItem style={field.style}>
           <IonSkeletonText style={{ width: '100%', height: '45px', borderRadius: '15px' }} className={field.className} />
@@ -57,8 +77,8 @@ const Field = forwardRef<any, {
       );
     }
 
+    // Handle input change events
     const inputChange = (e: any) => {
-
       if (field.type === 'button' || field.type === 'submit') return;
 
       const value = (field.type === 'checkbox') ? (e.detail.checked ?? false) : e.detail.value;
@@ -67,9 +87,9 @@ const Field = forwardRef<any, {
         controller.onChange(value);
         debouncedHandleFieldChange(value);
       }
-
     };
 
+    // Common properties for input elements
     const commonProps = {
       ...controller,
       ref,
@@ -78,32 +98,71 @@ const Field = forwardRef<any, {
       value: controller.value || null
     };
 
-    const fieldStatusIcon = (controller: any, fieldName: string, errors: any) => {
-      
-      let displayColor = 'medium';
+    // Properties for reCAPTCHA
+    const recaptchaProps = {
+      ...controller,
+      ref,
+      onChange: (e: any) => inputChange(e),
+    };
 
-      if (loadingField[fieldName]) {
-        displayColor = 'medium';
-      } else if (errors && errors[fieldName]) {
-        displayColor = 'danger';
-      } else if (!controller.value) {
-        displayColor = 'medium';
+    /**
+     * Renders the status icon for the field based on validation and error state.
+     * @param {any} controller - Controller object from react-hook-form.
+     * @param {string} fieldName - The name of the field.
+     * @param {any} errors - Errors object from react-hook-form.
+     * @returns {JSX.Element} The status icon component.
+     */
+    const fieldStatusIcon = (controller: any, fieldName: string, errors: any) => {
+
+      const setColor = ()=>{
+        let displayColor = 'medium';
+
+        if (loadingField[fieldName]) {
+          displayColor = 'medium';
+        } else if (errors && errors[fieldName]) {
+          displayColor = 'danger';
+        } else if (!controller.value) {
+          displayColor = 'medium';
+        }
+        return displayColor
       }
 
       const setIcon = (color?: string) => {
-        return field.secret ? (
-          <IonIcon color={color ?? displayColor}
-            onClick={() => setShowSecret(!showSecret)}
-            icon={showSecret ? icon.eye : icon.eyeOff}
-          />
-        ) : fieldName.includes('email') ? (
-          <IonIcon icon={icon.at} color={color ?? displayColor} />
-        ) : (
-          <IonIcon icon={icon.checkmarkCircle} color={color ?? displayColor} />
-        )
+        if (field.secret) {
+          return (
+            <IonIcon color={color ?? setColor()}
+              onClick={() => setShowSecret(!showSecret)}
+              icon={showSecret ? icon.eye : icon.eyeOff}
+            />
+          );
+        }
+        switch (field.type) {
+          case 'email':
+            return <IonIcon icon={icon.at} color={color ?? setColor()} />;
+          case 'date':
+          case 'datetime':
+          case 'datetime-local':
+            return <IonIcon icon={icon.calendar} color={color ?? setColor()} />;
+          case 'url':
+            return <IonIcon icon={icon.link} color={color ?? setColor()} />;
+          case 'tel':
+            return <IonIcon icon={icon.call} color={color ?? setColor()} />;
+          case 'password':
+            return (
+              <IonIcon
+                color={color ?? setColor()}
+                onClick={() => setShowSecret(!showSecret)}
+                icon={showSecret ? icon.eye : icon.eyeOff}
+              />
+            );
+          case 'number':
+            return <IonIcon icon={icon.calculator} color={color ?? setColor()} />;
+          default:
+            return <IonIcon icon={icon.checkmarkCircle} color={color ?? setColor()} />;
+        }
       };
 
-      const cases = [
+      const setCases = [
         {
           condition: loadingField[fieldName] || loading,
           icon: <IonSpinner name="lines" color="medium" />
@@ -129,10 +188,11 @@ const Field = forwardRef<any, {
         }
       ];
 
-      const matchingCase = cases.find(c => c.condition);
+      const matchingCase = setCases.find(c => c.condition);
       return matchingCase ? matchingCase.icon : null;
     };
 
+    // Checks if a field is required based on the validation schema
     const checkIfFieldIsRequired = (fieldName: string) => {
       try {
         validationSchema.validateSyncAt(fieldName, { [fieldName]: 'test' });
@@ -165,6 +225,11 @@ const Field = forwardRef<any, {
                 value={controller.value}
                 aria-invalid={errors && errors[field.name ?? field.id ?? 'input'] ? 'true' : 'false'}
                 {...commonProps}
+                onBlur={() => { // Add onBlur to force validation when the field loses focus
+                  validationSchema && validationSchema.validateAt(field.name, { [field.name]: controller.value })
+                    .then(() => {})
+                    .catch(() => {});
+                }}
               />
               {fieldStatusIcon(controller, field.name, errors)}
             </IonItem>
@@ -322,9 +387,21 @@ const Field = forwardRef<any, {
             <Skeleton {...field} />
           </IonItem>
         );
+
+      /*  
+      case 'recaptcha':
+        return (process.env.NODE_ENV == 'production') ? (<>
+          <ReCAPTCHA 
+            {...recaptchaProps}
+            sitekey={'asdfasdf'}
+            onChange={()=> field.onChange }
+          />
+        </>
+        ):<IonInput {...commonProps}></IonInput>;*/
     }
   };
 
+  // Effect to reset the loading state for the field
   useEffect(() => {
     setLoadingField((prevLoadingField) => ({
       ...prevLoadingField,

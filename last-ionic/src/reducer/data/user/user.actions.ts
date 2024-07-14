@@ -15,19 +15,15 @@ import {
   setCaretData,
   setRoleData,
   getUserData,
-} from '../../dataApi'
+} from '../dataApi'
 
 import { ActionType } from '../../../utils/types'
 import { UserState } from './user.state'
 import { initialUser } from '../../state'
 import DebugUtil from '../../../classes/DebugUtil'
-
-// !Keep it simple !!!!!!!!!!!
-// !!!!!!!!!!!!!!!!!!!!!!!!!!!
+import Logger from '../../../../src/classes/Logger';
 
 const debug = DebugUtil.setDebug(false);
-
-// EXTRA
 
 export const loadUserData = () => async (dispatch: React.Dispatch<any>) => {
   setTesting(loadUserData)
@@ -43,19 +39,19 @@ export const logoutUser = () => async (dispatch: React.Dispatch<any>) => {
   await setUserData(initialUser)
 }
 
-export const setData = (data: Partial<UserState>) => async (dispatch: React.Dispatch<any>) => {
+// COMMON
+
+export const setData = async (data: Partial<UserState>) => async (dispatch: React.Dispatch<any>) => {
   setTesting(setData, data)
   await setUserData(data)
   return ({ type: 'set-user-data', data} as const)
 }
 
-export const setisLoggedIn = (loggedIn: boolean) => async (dispatch: React.Dispatch<any>) => {
+export const setisLoggedIn = async (loggedIn: boolean) => async (dispatch: React.Dispatch<any>) => {
   setTesting(setisLoggedIn, loggedIn)
   await setisLoggedInData(loggedIn)
   return ({ type: 'set-is-loggedin', loggedIn } as const)
 }
-
-// COMMON
 
 export const setId = (id?: string) => async (dispatch: React.Dispatch<any>) => {
   setTesting(setId, id)
@@ -141,7 +137,7 @@ export const setRole = (role: object) => async (dispatch: React.Dispatch<any>) =
 }
 
 const setTesting = (func: Function, data: any = undefined, schema: string = 'user') => {
-  if (debug) console.log(schema+'.action::'+func.name, data)
+  if (debug) Logger.log(schema+'.action::'+func.name, data)
 }
 
 export type UserActions =

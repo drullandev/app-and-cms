@@ -10,8 +10,8 @@ import Recover from '../pages/core/Recover';
 import Support from '../pages/core/Support';
 import Account from '../pages/core/Account';
 import ChangePassword from '../pages/core/ChangePassword';
-import RedirectToLogin from '../pages/core/RedirectToLogin';
-import HomeOrTutorial from '../pages/core/HomeOrTutorial';
+import Logout from '../pages/core/Logout';
+import Home from '../pages/core/Home';
 
 const routes: RouteProps[] = [
   { path: '/tabs', render: () => <MainTabs /> },
@@ -26,8 +26,8 @@ const routes: RouteProps[] = [
   { path: '/support', component: Support },
   { path: '/account', component: Account },
   { path: '/change-password', component: ChangePassword },
-  { path: '/logout', render: () => <RedirectToLogin setisLoggedIn={()=>{}}  setNickname={()=>{}}   setisLoggedIn={()=>{}}  /> },
-  { path: '/', component: HomeOrTutorial, exact: true }
+  { path: '/logout', render: () => <Logout setisLoggedIn={()=>{}}  setNickname={()=>{}}   setisLoggedIn={()=>{}}  /> },
+  { path: '/', component: Home, exact: true }
 ];
 
 export default routes;

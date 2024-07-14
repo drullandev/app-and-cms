@@ -4,15 +4,15 @@ import { IonContent, IonImg, IonList, IonItem, IonLabel, IonAccordion, IonAccord
 import { ReactControllerProps } from '@ionic/react/dist/types/components/createControllerComponent'
 import { RouteComponentProps } from 'react-router'
 
-import { setLoading, setDarkMode } from '../../../redux/data/user/user.actions'
-import { connect } from '../../../redux/connect'
+import { setLoading, setDarkMode } from '../../../reducer/data/user/user.actions'
+import { connect } from '../../../reducer/src/connect'
 import * as icon from 'ionicons/icons'
 
 // Extra required
 import { useTranslation } from 'react-i18next'
 
-import RestCall from '../../../classes/RestCall'
-import { UserState } from '../../../redux/data/user/user.state'
+import Rest from '../../../classes/Rest'
+import { UserState } from '../../../reducer/data/user/user.state'
 import '../../../styles/index.scss'
 import Alert from '../../../components/core/Alert'
 
@@ -46,7 +46,7 @@ const Account: React.FC<AccountProps> = ({
   const [alert, setAlert] = useState<ReactControllerProps>({isOpen: false})
 /*
   const onLoad = () => {
-    RestCall.restCallAsync({
+    Rest.restCallAsync({
       req: {
         url: 'api/users/1',
         method: 'GET',

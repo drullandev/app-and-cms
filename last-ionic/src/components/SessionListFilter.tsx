@@ -6,8 +6,8 @@ import { logoAngular, call, document, logoIonic, hammer, restaurant, cog, colorP
 
 import '../styles/SessionListFilter.css'
 
-import { connect } from '../redux/connect'
-import { updateFilteredTracks } from '../redux/data/sessions/sessions.actions'
+import { connect } from '../reducer/src/connect'
+import { updateFilteredTracks } from '../reducer/data/sessions/sessions.actions'
 
 interface OwnProps {
   onDismissModal: () => void

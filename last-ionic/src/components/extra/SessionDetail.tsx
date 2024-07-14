@@ -1,12 +1,12 @@
 import React from 'react'
 import { IonHeader, IonToolbar, IonContent, IonPage, IonButtons, IonBackButton, IonButton, IonIcon, IonText, IonList, IonItem, IonLabel } from '@ionic/react'
-import { connect } from '../../redux/connect'
+import { connect } from '../../reducer/src/connect'
 import { withRouter, RouteComponentProps } from 'react-router'
-import * as selectors from '../../redux/selectors'
+import * as selectors from '../../reducer/src/selectors'
 import { starOutline, star, share, cloudDownload } from 'ionicons/icons'
 import '../../styles/SessionDetail.scss'
-import { addFavorite, removeFavorite } from '../../redux/data/sessions/sessions.actions'
-import { Session } from '../../redux/models/Schedule'
+import { addFavorite, removeFavorite } from '../../reducer/data/sessions/sessions.actions'
+import { Session } from '../../reducer/models/Schedule'
 
 interface OwnProps extends RouteComponentProps { };
 

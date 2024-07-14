@@ -9,10 +9,10 @@ import '../../../styles/index.scss'
 
 import ShareSocialFab from '../../../components/ShareSocialFab'
 
-import * as selectors from '../../../redux/selectors'
-import { connect } from '../../../redux/connect'
-import { setSearchText } from '../../../redux/data/sessions/sessions.actions'
-import { Schedule } from '../../../redux/models/Schedule'
+import * as selectors from '../../../reducer/src/selectors'
+import { connect } from '../../../reducer/src/connect'
+import { setSearchText } from '../../../reducer/data/sessions/sessions.actions'
+import { Schedule } from '../../../reducer/models/Schedule'
 
 interface OwnProps {}
 

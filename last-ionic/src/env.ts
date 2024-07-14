@@ -173,11 +173,12 @@ export const menusOrigin = RestAPI + '/menus?slug='
 
 // OVERRIDE FROM THE CMS!!!! TODO TODO TODO TODO
 
-export const HOME = '/tabs/schedule'
+export const HOME_PATH = '/tabs/schedule'
 export const ADD_DATA = '/add-user-data'
 export const APP_ICON = '/add-user-data'
+
 export const TUTORIAL = '/tutorial'
-export const LOGIN = '/login'
+export const LOGIN_PATH = '/login'
 
 export const timeout = {
   buttonSpinner : 123,

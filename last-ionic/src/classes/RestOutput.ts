@@ -3,9 +3,11 @@ import i18n from 'i18next';
 import { MyExtraOutputOptions } from '../components/core/main/interfaces/ModalToastProps';
 import Logger from './Logger';
 import { AxiosError, AxiosResponse } from 'axios';
-import { I18nContext } from 'react-i18next';
+import DebugUtil from './DebugUtil';
 
 class RestOutput {
+
+  private debug = DebugUtil.setDebug(false);
 
   private defaultMessages = {
     success: {
@@ -47,12 +49,14 @@ class RestOutput {
    * @param props Optional custom properties to override the default output.
    * @returns Structured output options for displaying success.
    */
-  public catchSuccess(response: AxiosResponse, props?: MyExtraOutputOptions): MyExtraOutputOptions {
-    return this.setOutputMessage(
+  public catchSuccess(response: AxiosResponse, props?: MyExtraOutputOptions, debug? :boolean): MyExtraOutputOptions {
+    const output = this.setOutputMessage(
       response,
       this.setOutput(props, this.defaultMessages.success as MyExtraOutputOptions),
       props
     );
+    if (this.debug || debug) Logger.log('catchWarning::error::output', response, output)
+    return output
   }
 
   /**
@@ -61,12 +65,14 @@ class RestOutput {
    * @param props Optional custom properties to override the default output.
    * @returns Structured output options for displaying warnings.
    */
-  public catchWarning(error: AxiosError, props?: MyExtraOutputOptions): MyExtraOutputOptions {
-    return this.setOutputMessage(
+  public catchWarning(error: AxiosError, props?: MyExtraOutputOptions, debug?: boolean): MyExtraOutputOptions {
+    const output = this.setOutputMessage(
       error,
       this.setOutput(props, this.defaultMessages.warning as MyExtraOutputOptions),
       props
     );
+    if (this.debug || debug) Logger.log('catchWarning::error::output', error, output)
+    return output;
   }
 
   /**
@@ -75,12 +81,14 @@ class RestOutput {
    * @param props Optional custom properties to override the default output.
    * @returns Structured output options for displaying errors.
    */
-  public catchDanger(error: AxiosError, props?: MyExtraOutputOptions): MyExtraOutputOptions {
-    return this.setOutputMessage(
+  public catchDanger(error: AxiosError, props?: MyExtraOutputOptions, debug?: boolean): MyExtraOutputOptions {
+    const output = this.setOutputMessage(
       error,
       this.setOutput(props, this.defaultMessages.danger as MyExtraOutputOptions),
       props
     );
+    if (this.debug || debug) Logger.log('catchDanger::error::output', error, output)
+    return output
   }
 
   /**
@@ -89,27 +97,45 @@ class RestOutput {
    * @param props Optional custom properties to override the default output.
    * @returns Structured output options for displaying form errors.
    */
-  public catchFormError(errors: any, props?: MyExtraOutputOptions): MyExtraOutputOptions {
-    const error = this.catchDanger(errors, this.defaultMessages.formDanger as MyExtraOutputOptions);
+  public catchFormError(errors: any, props?: MyExtraOutputOptions, debug?: boolean): MyExtraOutputOptions {
 
-    error.header = error.header ?? i18n.t('Form error!');
+    let error = this.catchDanger(errors, this.defaultMessages.formDanger as MyExtraOutputOptions);
+
+    error.header = props?.header || this.defaultMessages.formDanger.header;
+
+    error = this.setMessage(errors, error, props)
+    
+    if (this.debug || debug) Logger.log('catchWarning::error::output', errors, error)
+
+    return error;
+  }
+
+  private setMessage( errors: any, error: any, props?: MyExtraOutputOptions){
 
     if (props?.message) {
+
       error.message = props.message;
     } else if (props?.setInnerMessage) {
+
       error.message = this.findMessage(errors)
     } else if (errors) {
+
       Object.keys(errors).forEach((errorKey: string) => {
         if (errors[errorKey]?.message) {
           let errorMessage = errors[errorKey].message || '';
           error.message += (errorMessage ? `\n- ${errorMessage}` : '');
         }
       });
+
     } else {
       error.message = this.defaultMessages.formDanger.message;
     }
 
     return error;
+  }
+
+  private setHEader(){
+
   }
 
   /**

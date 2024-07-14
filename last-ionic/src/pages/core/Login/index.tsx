@@ -1,13 +1,20 @@
+// Global imports
 import React from 'react';
 import { RouteComponentProps } from 'react-router';
-import { useIonToast, IonContent } from '@ionic/react';
-import { connect } from '../../../redux/connect';
+import { IonContent } from '@ionic/react';
+// Component imports
+import './styles.scss';
+
+// Used Components
 import Page from '../../../components/core/Page';
 import Header from '../../../components/core/main/Header';
 import Form from '../../../components/core/Form';
-import { login } from '../../../forms/login';
-import { setData, setLoading } from '../../../redux/data/user/user.actions';
-import './styles.scss';
+// Used Source
+import { loginForm } from './source';
+// Used Reducers
+import { connect } from '../../../reducer/src/connect';
+import { setData, setLoading, setisLoggedIn } from '../../../reducer/data/user/user.actions';
+import { PageProps } from '../../../components/core/Page/types';
 
 interface OwnProps extends RouteComponentProps {}
 
@@ -16,49 +23,36 @@ interface StateProps {}
 interface DispatchProps {
   setData: typeof setData;
   setLoading: typeof setLoading;
+  setisLoggedIn: typeof setisLoggedIn;
 }
 
 interface LoginProps extends OwnProps, StateProps, DispatchProps {}
 
 const Login: React.FC<LoginProps> = ({
-  history,
   setData,
   setLoading,
+  setisLoggedIn
 }) => {
 
-  const pageSettings = {
+  const loginPageSettings : PageProps = {
     id: 'login-page',
-    header: () => <Header label={'Login'} slot={'start'} />,
+    settings: {
+      
+    },
     content: () => {
-      const formData = login(setLoading, setData);
       return (
-        <IonContent id={pageSettings.id}>
-          <Form {...formData} />
-        </IonContent>
+        <>
+          <Header label={'Login'} slot={'start'} />
+          <Form {...loginForm({ setLoading, setData, setisLoggedIn })} />
+        </>
       );
     },
     footer: () => null,
-  }
+  };
 
-  return <Page {...{
-        id: 'login-page',
-        header: () => { 
-          return <Header label={'Login'} slot={'start'} />
-        },
-        content: () => {
-          const formData = login(setLoading, setData);
-          return (
-            <IonContent id={pageSettings.id}>
-              <Form {...formData} />
-            </IonContent>
-          );
-        },
-        footer: () => {
-          return <></>
-        },
-      }}
-    />
-
+  return (
+    <Page {...loginPageSettings} />
+  );
 };
 
 export default connect<StateProps, {}, DispatchProps>({
@@ -66,6 +60,7 @@ export default connect<StateProps, {}, DispatchProps>({
   mapDispatchToProps: {
     setData,
     setLoading,
+    setisLoggedIn,
   },
   component: Login,
 });

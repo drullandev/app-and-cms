@@ -3,14 +3,14 @@ import { IonContent, IonPage, IonHeader, IonToolbar, IonButtons, IonButton, IonI
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Swiper as SwiperCore } from 'swiper'
 import { arrowForward } from 'ionicons/icons'
-import { setData, setMenuEnabled } from '../../../redux/data/sessions/sessions.actions'
-import { setHasSeenTutorial } from '../../../redux/data/user/user.actions'
+import { setData, setMenuEnabled } from '../../../reducer/data/sessions/sessions.actions'
+import { setHasSeenTutorial } from '../../../reducer/data/user/user.actions'
 import '../../../styles/index.scss'
 //import 'swiper/swiper.min.css'
 import '@ionic/react/css/ionic-swiper.css'
-import { connect } from '../../../redux/connect'
+import { connect } from '../../../reducer/src/connect'
 import { RouteComponentProps } from 'react-router'
-import { initialUser } from '../../../redux/state'
+import { initialUser } from '../../../reducer/state'
 
 interface OwnProps extends RouteComponentProps {}
 

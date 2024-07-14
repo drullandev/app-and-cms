@@ -3,17 +3,17 @@ import RestOutput from './RestOutput';
 //import * as AppConst from '../env'
 
 /**
- * This module provides a class `RestCall` that encapsulates the functionality for making REST API calls.
+ * This module provides a class `Rest` that encapsulates the functionality for making REST API calls.
  * It includes methods for performing synchronous and asynchronous calls, setting default request properties,
  * and handling responses and errors.
  *
  * Usage:
- * - Import the `RestCall` class and call its methods with the appropriate `CallProps`.
+ * - Import the `Rest` class and call its methods with the appropriate `CallProps`.
  * - Define success, error, and finally handlers as needed.
  *
  * Example:
  * 
- * import RestCall, { CallProps } from './path/to/RestCall';
+ * import Rest, { CallProps } from './path/to/Rest';
  *
  * const callProps: CallProps = {
  *   req: {
@@ -30,10 +30,10 @@ import RestOutput from './RestOutput';
  * };
  *
  * // Perform a synchronous call
- * RestCall.restCall(callProps);
+ * Rest.restCall(callProps);
  *
  * // Perform an asynchronous call
- * RestCall.restCallAsync(callProps);
+ * Rest.restCallAsync(callProps);
  *
  * This code is designed to be reusable and maintainable, ensuring default values are set and errors are properly handled.
  */
@@ -52,7 +52,7 @@ export interface CallProps {
 /**
  * Class encapsulating operations for making REST calls.
  */
-class RestCall {
+class Rest {
 
   /**
    * Performs an asynchronous REST call.
@@ -117,4 +117,4 @@ class RestCall {
 
 }
 
-export default RestCall;
+export default Rest;

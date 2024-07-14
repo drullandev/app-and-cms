@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, forwardRef } from 'react';
 import { IonLabel, IonButton, IonSpinner, IonIcon } from '@ionic/react';
 import { FieldProps } from '../types';
 import * as icon from 'ionicons/icons';
@@ -9,8 +9,8 @@ import Logger from '../../../../classes/Logger';
  * @param {FieldProps} field - The properties for the button.
  * @returns {JSX.Element} The rendered button component.
  */
-const Button: React.FC<FieldProps> = (field) => {
-  
+const Button = forwardRef<HTMLIonButtonElement, FieldProps>((field, ref) => {
+
   // State to manage the loading/loading status
   const [loading, setloading] = useState<boolean>(false);
 
@@ -29,19 +29,20 @@ const Button: React.FC<FieldProps> = (field) => {
     </>
   );
 
-  useEffect(()=>{
-    setTimeout(()=>{
-      setloading(false)
-    },500)
-  },[loading])
+  useEffect(() => {
+    setTimeout(() => {
+      setloading(false);
+    }, 500);
+  }, [loading]);
 
-  useEffect(()=>{
-    setloading(!field.loading)
-  },[field.loading])
+  useEffect(() => {
+    setloading(field.loading ?? false);
+  }, [field.loading]);
 
   // Render the IonButton with the provided properties and handle the onClick event
   return (
     <IonButton
+      ref={ref}
       style={field.style || { width: '100%', borderRadius: '20px' }}
       expand="block"
       color={field.color || 'primary'}
@@ -49,12 +50,12 @@ const Button: React.FC<FieldProps> = (field) => {
       size={field.size ?? 'default'}
       type={field.fieldType}
       routerDirection={field.onClick ? undefined : "root"}
-      onClick={(e: any) => { setloading(true); field.onClick }}
+      onClick={(e: any) => { setloading(true); field.onClick && field.onClick(e); }}
       disabled={loading}
     >
       {buttonContent(field)}
     </IonButton>
   );
-};
+});
 
 export default Button;

@@ -1,8 +1,9 @@
 export interface PageProps {
-  id: string
-  header?: any
-  content: any
-  footer?: any
-  sidenavs?: any[]
-  methods?: any
+  id: string;
+  header?: Function | undefined;
+  content: Function;
+  footer?: Function | undefined;
+  sidenavs?: any[];
+  methods?: any;
+  settings: 
 }

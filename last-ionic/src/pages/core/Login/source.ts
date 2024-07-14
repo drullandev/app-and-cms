@@ -2,21 +2,25 @@ import * as yup from 'yup';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router';
 import { useIonToast } from '@ionic/react'
-import * as icon from 'ionicons/icons'
+import * as icon from 'ionicons/icons';
 
-import { HOME, apiUrl } from '../env';
-import DebugUtil from '../classes/DebugUtil'
-import Logger from '../classes/Logger'
+import { HOME_PATH, apiUrl } from '../../../env';
+import DebugUtil from '../../../classes/DebugUtil';
+import RestAPI from '../../../classes/Rest';
+import RestOutput from '../../../classes/RestOutput';
 
-import { FormProps } from '../components/core/Form/types';
+import { FormProps } from '../../../components/core/Form/types';
 
-import RestAPI from '../classes/RestCall';
-import RestOutput from '../classes/RestOutput';
+import { setData, setLoading, setisLoggedIn } from '../../../reducer/data/user/user.actions';
+import Logger from '../../../classes/Logger';
 
-import { setData, setLoading, setisLoggedIn } from '../redux/data/user/user.actions';
-
-
-export const login = (): FormProps => {
+export const loginForm = ({
+  setisLoggedIn
+}: {
+  setLoading: (loading: boolean) => void;
+  setData: (data: any) => void;
+  setisLoggedIn: (isLoggedIn: boolean) => void;
+}): FormProps => {
 
   const { t } = useTranslation();
   const history = useHistory();
@@ -33,14 +37,12 @@ export const login = (): FormProps => {
         animate: { opacity: 1, y: 0 },
         transition: { duration: 0.5 },
       },
-      afterLoad: ()=>{
-
-      },
+      afterLoad: () => {},
       style: {
         borderRadius: '0%'
       }
     },
-    rows: [
+    fields: [
       {
         name: 'email',
         label: t('Email'),
@@ -67,15 +69,28 @@ export const login = (): FormProps => {
         name: 'agreement',
         label: t('Accept the publicity agreement'),
         type: 'checkbox',
-        defaultValue: false, 
+        defaultValue: false,
+        className: 'col-span-12',
         validationSchema: yup.boolean()
+        .required(t('Accept agreement is required'))
           .oneOf([true], t('You must accept the terms and conditions'))
       },
+      /*{
+        name: 'recaptcha',
+        label: t('Please, can you complete the captcha?'),
+        type: 'recaptcha',
+        siteKey: 'pinga',
+        onClick: ()=>{
+          Logger.log('Done recaptcha!')
+        }
+      }*/
+    ],
+    buttons:[      
       { 
         name: 'submit',
         label: t('Submit'),
         type: 'submit',
-        style: { borderRadius: '20px',  float: 'left', width: '46%', margin: '2%' },
+        style: { borderRadius: '20px', float: 'left', width: '46%', margin: '2%' },
         icon: icon.starOutline
       },
       {
@@ -86,7 +101,7 @@ export const login = (): FormProps => {
         onClick: () => {
           history.push('/register');
         }
-      },
+      }
     ],
     onSuccess: async (data: any) => {
       setLoading(true);
@@ -103,27 +118,27 @@ export const login = (): FormProps => {
           default: (res: any) => {
 
             if (res.status === 200) {
-
               setData(res.data.user);
-              setisLoggedIn(true)
+              setisLoggedIn(true);
 
               presentToast(RestOutput.catchSuccess(res))
                 .then(() => {
-                  history.push(HOME);
+                  history.push(HOME_PATH);
                 });
 
             } else {
-
               presentToast(RestOutput.catchSuccess(res));
-              
             }
             setLoading(false);
           }
         },
         onError: {
           default: (error: any) => {
-            setisLoggedIn(false)
+            setisLoggedIn(false);
             setLoading(false);
+
+            RestOutput.catchDanger(error)
+
             presentToast(RestOutput.catchDanger(error));
           }
         },
@@ -133,9 +148,11 @@ export const login = (): FormProps => {
       });
     },
     onError: (errors: any) => {
-      setisLoggedIn(false)
+
+      setisLoggedIn(false);
       setLoading(false);
-      const output = RestOutput.catchFormError(errors)
+      
+      const output = RestOutput.catchFormError(errors);
       output.header = 'Login error';
       presentToast(output);
     }

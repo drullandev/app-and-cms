@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react'
 import { IonToolbar, IonContent, IonButtons, IonMenuButton, IonTitle, IonButton, IonSelect, IonSelectOption, IonSearchbar, IonRefresher, IonRefresherContent, IonToast, IonModal, IonHeader, getConfig, IonGrid, IonCol, IonRow, IonDatetime, IonTextarea, IonLabel, IonItem } from '@ionic/react'
 
 //import { restGet, getGQL } from '../../../data/rest/rest.utils'
-import { setSearchString, setSearchOrder, setOrderField, setFilter } from '../../../redux/data/sessions/sessions.actions'
+import { setSearchString, setSearchOrder, setOrderField, setFilter } from '../../../reducer/data/sessions/sessions.actions'
 //import { SessionState } from '../../../data/sessions/sessions.actions'
 
 import Icon from './Icon'
@@ -12,7 +12,7 @@ import FilterRow from './FilterRow'
 
 import MainList from './MainList2'
 
-import { connect } from '../../../redux/connect'
+import { connect } from '../../../reducer/src/connect'
 
 import { Filter } from './interfaces/Filter'
 

@@ -1,4 +1,5 @@
 import { keyTransVar } from '../../public/assets/data/keyTransVar';
+import DebugUtil from './DebugUtil'
 
 export interface KeyTranslations {
   [key: string]: string;
@@ -7,6 +8,8 @@ export interface KeyTranslations {
 class i18nextClass {
 
   private myTranslations: KeyTranslations | null = null;
+
+  private debug = DebugUtil.setDebug(true)
 
   getInstance = () => {
     if (!this.myTranslations) {

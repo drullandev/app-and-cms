@@ -4,11 +4,11 @@ import { IonList, IonInfiniteScroll, IonInfiniteScrollContent, IonItem, IonLabel
 import React, { useState, useEffect, useRef } from 'react'
 //import { restGet, getGQL } from '../../../data/utils/rest/rest.utils'
 
-import { connect } from '../../../redux/connect'
+import { connect } from '../../../reducer/src/connect'
 
-import { toCamelCase } from '../../../redux/utils/common'
+import { toCamelCase } from '../../../reducer/utils/common'
 
-import { setSearchString, setSearchOrder, setOrderField, setFilter } from '../../../redux/data/sessions/sessions.actions';
+import { setSearchString, setSearchOrder, setOrderField, setFilter } from '../../../reducer/data/sessions/sessions.actions';
 import Spinner from './Spinner'
 
 interface OwnProps { }

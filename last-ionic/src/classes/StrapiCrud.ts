@@ -1,4 +1,4 @@
-import RestCall, { CallProps } from './RestCall'
+import Rest, { CallProps } from './Rest'
 
 /**
  * FOS TRAPI PURPOSES, PRIMARY
@@ -56,6 +56,6 @@ export const StrapiCrud = ( operation: string, model: string, data?: any, onSucc
     delete call.req.data
   }
 
-  return RestCall.restCall(call)
+  return Rest.restCall(call)
    
 };

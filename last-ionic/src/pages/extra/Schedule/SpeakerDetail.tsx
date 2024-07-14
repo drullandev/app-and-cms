@@ -7,10 +7,10 @@ import { ActionSheetButton } from '@ionic/core'
 import { IonActionSheet, IonChip, IonIcon, IonHeader, IonLabel, IonToolbar, IonButtons, IonContent, IonButton, IonBackButton, IonPage } from '@ionic/react'
 import { callOutline, callSharp, logoTwitter, logoGithub, logoInstagram, shareOutline, shareSharp } from 'ionicons/icons'
 
-import { connect } from '../../../redux/connect'
-import * as selectors from '../../../redux/selectors'
+import { connect } from '../../../reducer/src/connect'
+import * as selectors from '../../../reducer/src/selectors'
 
-import { Speaker } from '../../../redux/models/Speaker'
+import { Speaker } from '../../../reducer/models/Speaker'
 
 
 interface OwnProps extends RouteComponentProps {

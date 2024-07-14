@@ -28,9 +28,9 @@ import './App.scss';
 /* Theme variables */
 import './theme/variables.css'
 
-import { connect } from './redux/connect'
-import { loadConfData } from './redux/data/sessions/sessions.actions'
-import { loadUserData, setData } from './redux/data/user/user.actions'
+import { connect } from './reducer/src/connect'
+import { loadConfData } from './reducer/data/sessions/sessions.actions'
+import { loadUserData, setData } from './reducer/data/user/user.actions'
 
 import TestForm from './pages/extra/TestForm'
 import Login from './pages/core/Login'
@@ -45,11 +45,11 @@ import Tutorial from './pages/core/Tutorial'
 
 import Page from './components/core/Page'
 import MainTabs from './components/core/main/MainTabs'
-import HomeOrTutorial from './components/HomeOrTutorial'
-import RedirectToLogin from './components/RedirectToLogin'
+import Home from './components/Home'
+import Logout from './components/Logout'
 
-import { Schedule } from './redux/models/Schedule'
-import { initialUser } from './redux/state'
+import { Schedule } from './reducer/models/Schedule'
+import { initialUser } from './reducer/state'
 import DebugUtil from './classes/DebugUtil'
 
 // Import the functions you need from the SDKs you need
@@ -84,11 +84,8 @@ interface IonicAppProps extends StateProps, DispatchProps { }
 
 const IonicApp: React.FC<IonicAppProps> = ({
   darkMode,
-  schedule,
-  hasLoggedIn,
   setData,
   loadConfData,
-  loadUserData
 }) => {
 
   // Initialize Firebase
@@ -97,10 +94,9 @@ const IonicApp: React.FC<IonicAppProps> = ({
   //const analytics = getAnalytics(app)
 
   useEffect(() => {
-    loadUserData()
     loadConfData()
-    setData(initialUser)
-    // eslint-disable-next-line
+    //loadUserData()
+    //setData(initialUser)
   }, [])
 
   return <IonApp className={`${darkMode ? 'dark-theme' : ''}`}>
@@ -108,11 +104,6 @@ const IonicApp: React.FC<IonicAppProps> = ({
       <IonSplitPane contentId='main'>
         <Menu />
         <IonRouterOutlet id='main'>
-          {/*
-            We use IonRoute here to keep the tabs state intact,
-            which makes transitions between tabs and non tab pages smooth
-            * We are not usin redirect itself
-          */}
           <Route path='/tabs' render={() => <MainTabs />} />
           <Route path='/:slug' component={Page} />
           <Route path='/tabs/home/:id' render={() => <MainTabs />} />
@@ -126,10 +117,8 @@ const IonicApp: React.FC<IonicAppProps> = ({
           <Route path='/support' component={Support} />
           <Route path='/account' component={Account} />
           <Route path='/change-password' component={ChangePassword} />
-          <Route path='/logout' render={() =>
-            <RedirectToLogin setData={setData}/>
-          } />
-          <Route path='/' component={HomeOrTutorial} exact />
+          <Route path='/logout' render={() => <Logout/>} />
+          <Route path='/' component={Home} exact />
         </IonRouterOutlet>
       </IonSplitPane>
     </IonReactRouter>

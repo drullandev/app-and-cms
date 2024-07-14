@@ -6,18 +6,20 @@ import { useTranslation } from 'react-i18next'
 import * as yup from 'yup'
 import * as icon from 'ionicons/icons'
 
-import { connect } from '../../../redux/connect'
-import { setisLoggedIn, setUsername, setLoading } from '../../../redux/data/user/user.actions'
-import RestAPI from '../../../classes/RestCall'
+import { connect } from '../../../reducer/src/connect'
+import { setisLoggedIn, setUsername, setLoading } from '../../../reducer/data/user/user.actions'
+import RestAPI from '../../../classes/Rest'
 import StringUtil from '../../../classes/StringUtil'
 
-import { setOutput } from '../../../classes/output'
+
 import Header from '../../../components/core/main/Header'
 import Form from '../../../components/core/Form'
 import Page from '../../../components/core/Page'
 import { PageProps } from '../../../components/core/Page/types'
 
 import '../../../styles/index.scss'
+import RestOutput from '../../../classes/RestOutput'
+import { MyExtraOutputOptions } from '../../../../src/components/core/main/interfaces/ModalToastProps';
 
 
 // Testing this module?
@@ -175,7 +177,7 @@ const Signup: React.FC<SignupProps> = ({
 
             setLoading(true)
             if(data.password !== data.repeatPassword){
-              presentToast(setOutput({message:''}))
+              //presentToast(RestOutput.setOutput({message:''} as MyExtraOutputOptions))
               setLoading(false)
             }
 

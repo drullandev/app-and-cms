@@ -2,11 +2,11 @@
 
 import React, { useRef, useEffect, useState } from 'react'
 import { IonItemSliding, IonItem, IonLabel, IonItemOptions, IonItemOption, IonSkeletonText, IonThumbnail } from '@ionic/react'
-import { connect } from '../../../redux/connect'
+import { connect } from '../../../reducer/src/connect'
 //import { restGet } from '../../../data/utils/rest/rest.utils'
 
 import Icon from './Icon'
-import { ListRowProps } from '../../../redux/models/ListRowProps'
+import { ListRowProps } from '../../../reducer/models/ListRowProps'
  
 interface LineProps {
   id: string,

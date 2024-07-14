@@ -3,8 +3,8 @@ import { RouteComponentProps, withRouter, useLocation } from 'react-router'
 import i18n from '../components/extra/i18n'
 import { IonContent, IonIcon, IonItem, IonLabel, IonList, IonListHeader, IonMenu, IonMenuToggle, IonToggle } from '@ionic/react'
 
-import { connect } from '../redux/connect'
-import { setDarkMode } from '../redux/data/user/user.actions'
+import { connect } from '../reducer/src/connect'
+import { setDarkMode } from '../reducer/data/user/user.actions'
 
 import '../styles/Menu.css'
 import { useTranslation } from 'react-i18next'

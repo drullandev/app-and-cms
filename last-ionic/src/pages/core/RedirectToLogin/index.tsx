@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react';
 import { Redirect } from 'react-router-dom';
 
-interface RedirectToLoginProps {
+interface LogoutProps {
   setData: (data: any) => void;
 }
 
-const RedirectToLogin: React.FC<RedirectToLoginProps> = ({ setData }) => {
+const Logout: React.FC<LogoutProps> = ({ setData }) => {
   useEffect(() => {
     setData(null);
     // eslint-disable-next-line
@@ -14,4 +14,4 @@ const RedirectToLogin: React.FC<RedirectToLoginProps> = ({ setData }) => {
   return <Redirect to="/login" />;
 }
 
-export default RedirectToLogin;
+export default Logout;

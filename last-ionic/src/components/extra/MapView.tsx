@@ -3,10 +3,10 @@ import { IonContent } from '@ionic/react'
 
 import Map from '../core/main/Map'
 
-import { Location } from '../../redux/models/Location'
+import { Location } from '../../reducer/models/Location'
 
-import { connect } from '../../redux/connect'
-import * as selectors from '../../redux/selectors'
+import { connect } from '../../reducer/src/connect'
+import * as selectors from '../../reducer/src/selectors'
 
 
 interface OwnProps { }
