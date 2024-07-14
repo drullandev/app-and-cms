@@ -1,6 +1,6 @@
 import * as icon from 'ionicons/icons';
 import i18n from 'i18next';
-import { MyExtraOutputOptions } from '../components/core/main/interfaces/ModalToastProps';
+import { MyExtraOutputOptions } from '../components/main/interfaces/ModalToastProps';
 import Logger from './Logger';
 import { AxiosError, AxiosResponse } from 'axios';
 import DebugUtil from './DebugUtil';

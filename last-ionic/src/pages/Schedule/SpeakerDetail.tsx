@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { RouteComponentProps } from 'react-router'
 
-import './styles/MateDetail.scss'
+import '../../styles/index.scss'
 
 import { ActionSheetButton } from '@ionic/core'
 import { IonActionSheet, IonChip, IonIcon, IonHeader, IonLabel, IonToolbar, IonButtons, IonContent, IonButton, IonBackButton, IonPage } from '@ionic/react'
@@ -9,7 +9,7 @@ import { callOutline, callSharp, logoTwitter, logoGithub, logoInstagram, shareOu
 
 import { connect } from '../../reducer/src/connect'
 import * as selectors from '../../reducer/src/selectors'
-//import Header from '../../components/Header'
+
 import { Speaker } from '../../reducer/models/Speaker'
 
 
@@ -17,13 +17,16 @@ interface OwnProps extends RouteComponentProps {
   speaker?: Speaker
 }
 
-interface StateProps { }
+interface StateProps {}
 
-interface DispatchProps { }
+interface DispatchProps {}
 
-interface MateDetailProps extends OwnProps, StateProps, DispatchProps { }
+interface SpeakerDetailProps extends OwnProps, StateProps, DispatchProps {}
 
-const MateDetail: React.FC<MateDetailProps> = ({ speaker }) => {
+const SpeakerDetail: React.FC<SpeakerDetailProps> = ({
+  speaker
+}) => {
+
   const [showActionSheet, setShowActionSheet] = useState(false)
   const [actionSheetButtons, setActionSheetButtons] = useState<ActionSheetButton[]>([])
   const [actionSheetHeader, setActionSheetHeader] = useState('')
@@ -82,73 +85,57 @@ const MateDetail: React.FC<MateDetailProps> = ({ speaker }) => {
   }
 
   return (
-    <IonPage id='mate-detail'>
-
+    <IonPage id="speaker-detail">
       <IonContent>
-
-        <IonHeader className='ion-no-border'>
-
+        <IonHeader className="ion-no-border">
           <IonToolbar>
-
-            <IonButtons slot='start'>
-              <IonBackButton defaultHref='/tabs/speakers' />
+            <IonButtons slot="start">
+              <IonBackButton defaultHref="/tabs/speakers" />
             </IonButtons>
-
-            <IonButtons slot='end'>
-
+            <IonButtons slot="end">
               <IonButton onClick={() => openContact(speaker)}>
-                <IonIcon slot='icon-only' ios={callOutline} md={callSharp}></IonIcon>
+                <IonIcon slot="icon-only" ios={callOutline} md={callSharp}></IonIcon>
               </IonButton>
-
               <IonButton onClick={() => openSpeakerShare(speaker)}>
-                <IonIcon slot='icon-only' ios={shareOutline} md={shareSharp}></IonIcon>
+                <IonIcon slot="icon-only" ios={shareOutline} md={shareSharp}></IonIcon>
               </IonButton>
-
             </IonButtons>
-
           </IonToolbar>
-          
         </IonHeader>
 
-        <div className='mate-background'>
-          <img src={speaker.profilePic} alt={speaker.name} />
+        <div className="speaker-background">
+          <img src={speaker.profilePic} alt={speaker.name}/>
           <h2>{speaker.name}</h2>
         </div>
 
-        <div className='ion-padding mate-detail'>
-
+        <div className="ion-padding speaker-detail">
           <p>{speaker.about} Say hello on social media!</p>
 
-          <hr />
+          <hr/>
 
-          <IonChip color='twitter' onClick={() => openExternalUrl(`https://twitter.com/${speaker.twitter}`)}>
+          <IonChip color="twitter" onClick={() => openExternalUrl(`https://twitter.com/${speaker.twitter}`)}>
             <IonIcon icon={logoTwitter}></IonIcon>
             <IonLabel>Twitter</IonLabel>
           </IonChip>
 
-          <IonChip color='dark' onClick={() => openExternalUrl('https://github.com/ionic-team/ionic')}>
+          <IonChip color="dark" onClick={() => openExternalUrl('https://github.com/ionic-team/ionic')}>
             <IonIcon icon={logoGithub}></IonIcon>
             <IonLabel>GitHub</IonLabel>
           </IonChip>
 
-          <IonChip color='instagram' onClick={() => openExternalUrl('https://instagram.com/ionicframework')}>
+          <IonChip color="instagram" onClick={() => openExternalUrl('https://instagram.com/ionicframework')}>
             <IonIcon icon={logoInstagram}></IonIcon>
             <IonLabel>Instagram</IonLabel>
           </IonChip>
-
         </div>
-
       </IonContent>
-
       <IonActionSheet
         isOpen={showActionSheet}
         header={actionSheetHeader}
         onDidDismiss={() => setShowActionSheet(false)}
         buttons={actionSheetButtons}
       />
-
     </IonPage>
-
   )
 }
 
@@ -157,5 +144,5 @@ export default connect({
   mapStateToProps: (state, ownProps) => ({
     speaker: selectors.getSpeaker(state, ownProps)
   }),
-  component: MateDetail
+  component: SpeakerDetail
 })

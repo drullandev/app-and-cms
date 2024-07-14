@@ -10,7 +10,7 @@ import {
   setProviderData,
   setDarkModeData,
   setHasSeenTutorialData,
-  setisLoggedInData,
+  setisLoggedData,
   setUserData,
   setCaretData,
   setRoleData,
@@ -35,7 +35,7 @@ export const loadUserData = () => async (dispatch: React.Dispatch<any>) => {
 
 export const logoutUser = () => async (dispatch: React.Dispatch<any>) => {
   setTesting(logoutUser)
-  await setisLoggedInData(false)
+  await setisLoggedData(false)
   await setUserData(initialUser)
 }
 
@@ -47,9 +47,9 @@ export const setData = async (data: Partial<UserState>) => async (dispatch: Reac
   return ({ type: 'set-user-data', data} as const)
 }
 
-export const setisLoggedIn = async (loggedIn: boolean) => async (dispatch: React.Dispatch<any>) => {
-  setTesting(setisLoggedIn, loggedIn)
-  await setisLoggedInData(loggedIn)
+export const setisLogged = async (loggedIn: boolean) => async (dispatch: React.Dispatch<any>) => {
+  setTesting(setisLogged, loggedIn)
+  await setisLoggedData(loggedIn)
   return ({ type: 'set-is-loggedin', loggedIn } as const)
 }
 
@@ -156,4 +156,4 @@ export type UserActions =
 | ActionType<typeof setCaret>
 | ActionType<typeof setRole>
 | ActionType<typeof setData>
-| ActionType<typeof setisLoggedIn>
+| ActionType<typeof setisLogged>

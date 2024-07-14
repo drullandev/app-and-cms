@@ -1,17 +1,17 @@
 // TODO : MAKE IT WORK SOMEHOW!
 import { RouteProps } from 'react-router-dom';
-import MainTabs from '../components/core/main/MainTabs';
-import Page from '../components/core/Page';
-import Tutorial from '../pages/core/Tutorial';
-import Login from '../pages/core/Login';
-import TestForm from '../pages/extra/TestForm';
-import Signup from '../pages/core/Signup';
-import Recover from '../pages/core/Recover';
-import Support from '../pages/core/Support';
-import Account from '../pages/core/Account';
-import ChangePassword from '../pages/core/ChangePassword';
-import Logout from '../pages/core/Logout';
-import Home from '../pages/core/Home';
+import MainTabs from '../components/main/MainTabs';
+import Page from '../components/Page';
+import Tutorial from '../pages/Tutorial';
+import Login from '../pages/Login';
+import TestForm from '../pages/TestForm';
+import Signup from '../pages/Signup';
+import Recover from '../pages/Recover';
+import Support from '../pages/Support';
+import Account from '../pages/Account';
+import ChangePassword from '../pages/ChangePassword';
+import Logout from '../pages/Logout';
+import Home from '../pages/Home';
 
 const routes: RouteProps[] = [
   { path: '/tabs', render: () => <MainTabs /> },
@@ -26,7 +26,7 @@ const routes: RouteProps[] = [
   { path: '/support', component: Support },
   { path: '/account', component: Account },
   { path: '/change-password', component: ChangePassword },
-  { path: '/logout', render: () => <Logout setisLoggedIn={()=>{}}  setNickname={()=>{}}   setisLoggedIn={()=>{}}  /> },
+  { path: '/logout', render: () => <Logout setisLogged={()=>{}}  setNickname={()=>{}}   setisLogged={()=>{}}  /> },
   { path: '/', component: Home, exact: true }
 ];
 

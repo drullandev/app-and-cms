@@ -119,7 +119,7 @@ export const setUpdatedAtData = async (updatedAt?: string) => setOrRemove(UPDATE
 export const setProviderData = async (provider2?: string) => setOrRemove(UPDATED_AT, provider2, initialUser.provider)
 export const setDarkModeData = async (darkMode?: boolean) => toggleBool(DARK_MODE, darkMode, initialUser.darkMode)
 export const setHasSeenTutorialData = async (hasSeenTutorial?: boolean) => toggleBool(HAS_SEEN_TUTORIAL, hasSeenTutorial, initialUser.hasSeenTutorial)
-export const setisLoggedInData = async (isLoggedIn?: boolean) => toggleBool(HAS_LOGGED_IN, isLoggedIn, initialUser.isLoggedIn)
+export const setisLoggedData = async (isLoggedIn?: boolean) => toggleBool(HAS_LOGGED_IN, isLoggedIn, initialUser.isLoggedIn)
 export const setCaretData = async (caret?: object) => setOrRemove(CARET, caret, initialUser.caret)
 export const setRoleData = async (role?: object) => setOrRemove(ROLE, role, initialUser.role)
 
@@ -136,7 +136,7 @@ export const setUserData = async (data: Partial<UserState>) => {
   setProviderData(data.provider)
   setDarkModeData(data.darkMode)
   setHasSeenTutorialData(data.hasSeenTutorial)
-  setisLoggedInData(data.isLoggedIn)
+  setisLoggedData(data.isLoggedIn)
   setCaretData(data.caret)
   setRoleData(data.role)
 }
