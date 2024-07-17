@@ -53,6 +53,7 @@ export interface FieldProps {
   siteKey?: string | 'sdfasdfdas';
   csrfToken?: string;
   hidden?: boolean | false;
+  captcha?: string;
 } 
 
 export interface ErrorProps {

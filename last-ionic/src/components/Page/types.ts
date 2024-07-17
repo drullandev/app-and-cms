@@ -1,5 +1,3 @@
-import { HeaderProps } from "../main/interfaces/HeaderProps";
-
 export interface inputGa4 {
   action: string;
   data: {
@@ -28,7 +26,7 @@ export interface IonPageProps {
 export interface PageProps {
   settings: IonPageProps;
   loadingGa4?: inputGa4;
-  header?: Function | HeaderProps | undefined;
+  header?: Function | undefined;
   content: Function;
   footer?: Function | undefined;
   sidenavs?: Function[];

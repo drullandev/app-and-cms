@@ -401,22 +401,35 @@ const Field = forwardRef<any, {
           </IonItem>
         );
       
-        case 'hidden':
-          return (
-            <IonInput type="hidden" name={field.name} value={field.csrfToken}
-              {...commonProps}
-            ></IonInput>
-            );
+      case 'hidden':
+        return (
+          <IonInput type="hidden" name={field.name} value={field.csrfToken}
+            {...commonProps}
+          ></IonInput>
+        );
   
       case 'recaptcha':
-        return (process.env.NODE_ENV == 'production') ? (<>
-          <ReCAPTCHA 
-            {...recaptchaProps}
-            sitekey={'asdfasdf'}
-            onChange={()=> field.onChange }
-          />
-        </>
-        ):<IonInput {...commonProps}></IonInput>;
+        return (
+          <div style={{ margin: '4%' }}>
+            <IonLabel>{field.label}</IonLabel>
+            {process.env.NODE_ENV === 'production' ? (
+              <ReCAPTCHA 
+                {...recaptchaProps}
+                sitekey={'asdfasdf'}
+                onChange={(value) => controller.onChange(value)}
+              />
+            ) : (
+              <>
+                <IonLabel>Write this: {'asdfads'}</IonLabel>
+                <IonInput {...commonProps}
+                  validationSchema={yup.string()
+                    .required()
+                    .oneOf(['asdfads'])}
+                />
+              </>
+            )}
+          </div>
+        );
     }
   };
 
