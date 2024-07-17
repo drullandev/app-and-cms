@@ -27,7 +27,7 @@ export interface IonPageProps {
 
 export interface PageProps {
   settings: IonPageProps;
-  ga4?: inputGa4[];
+  loadingGa4?: inputGa4;
   header?: Function | HeaderProps | undefined;
   content: Function;
   footer?: Function | undefined;

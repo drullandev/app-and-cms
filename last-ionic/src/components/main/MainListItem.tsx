@@ -1,4 +1,4 @@
-import * as AppConst from '../../.env'
+import * as AppConst from '../../env'
 import React, { useRef } from 'react'
 import { IonItemSliding, IonItem, IonLabel, IonItemOptions, IonItemOption, AlertButton } from '@ionic/react'
 import { Session } from '../../../reducer/models/Schedule'

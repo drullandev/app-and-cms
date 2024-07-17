@@ -1,4 +1,4 @@
-import {  } from '../../.env'
+import {  } from '../../env'
 
 import { IonItemDivider, IonItemGroup, IonLabel, IonList, IonListHeader, IonAlert, AlertButton } from '@ionic/react'
 import React, { useState, useCallback } from 'react'

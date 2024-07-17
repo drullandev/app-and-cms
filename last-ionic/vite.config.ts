@@ -1,14 +1,24 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
 
-// https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react()],
+  plugins: [
+    react(),
+  ],
   server: {
     port: 3000
   },
   define: {
     'process.env': process.env
-  }
-})
-
+  },
+  optimizeDeps: {
+    exclude: ['stuff/*'], // Excluir la carpeta 'stuff' de la optimización de dependencias
+  },
+  rollupInputOptions: {
+    // Opciones de Rollup (opcional)
+    input: {
+      include: ['src/**'],
+      exclude: ['stuff/**'] // Excluir la carpeta 'stuff' de la entrada de Rollup
+    },
+  },
+});

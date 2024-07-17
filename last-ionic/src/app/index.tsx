@@ -23,7 +23,7 @@ import '@ionic/react/css/flex-utils.css'
 import '@ionic/react/css/display.css'
 
 /* Whole app style */
-import './App.scss';
+import './style.scss';
 
 /* Theme variables */
 import './../theme/variables.css'
@@ -74,7 +74,7 @@ ReactGA.initialize('UA-XXXXXXXXX-X');// TODO: Move param to environment!!
 
 interface IonicAppProps extends StateProps, DispatchProps { }
 
-const IonicApp: React.FC<IonicAppProps> = ({
+const App: React.FC<IonicAppProps> = ({
   darkMode,
   setData,
   loadConfData,
@@ -125,10 +125,8 @@ const IonicApp: React.FC<IonicAppProps> = ({
 
 }
 
-const App: React.FC = () => <>
-  <IonicAppConnected />
-</>
+const ConnectedApp: React.FC = () => <IonicAppConnected />
 
-export default App
+export default ConnectedApp
 
-const IonicAppConnected = connect<OwnProps, StateProps, DispatchProps>({ mapStateToProps, mapDispatchToProps, component: IonicApp });
+const IonicAppConnected = connect<OwnProps, StateProps, DispatchProps>({ mapStateToProps, mapDispatchToProps, component: App });

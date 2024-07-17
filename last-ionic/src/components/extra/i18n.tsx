@@ -1,11 +1,10 @@
 import i18n, { TFunction } from 'i18next'
-import { initReactI18next } from 'react-i18next'
-import { useTranslation } from 'react-i18next'
-
-import detector from 'i18next-browser-languagedetector'
+import { initReactI18next, useTranslation } from 'react-i18next'
 import { setLocale } from 'yup'
 
 import App from '../../app'
+
+import detector from 'i18next-browser-languagedetector'
 import resources from '../../../public/static/i18next/translations.json'
 
 export function buildYupLocale(_: unknown, t: TFunction): void {

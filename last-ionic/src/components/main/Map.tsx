@@ -1,4 +1,4 @@
-//import * as AppConst from '../../.env'
+//import * as AppConst from '../../env'
 import React, { useRef, useEffect } from 'react'
 import { Location } from '../../../reducer/models/Location'
 

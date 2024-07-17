@@ -1,7 +1,7 @@
 import React from 'react'
 import { IonContent } from '@ionic/react'
 
-import Map from '../core/main/Map'
+import Map from '../Map'
 
 import { Location } from '../../reducer/models/Location'
 

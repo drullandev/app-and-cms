@@ -21,10 +21,10 @@ import { PageProps } from '../../components/Page/types';
 import { OwnProps, ComponentProps, StateProps, DispatchProps, mapStateToProps, mapDispatchToProps } from './reducer'
 import i18n from '../../components/extra/i18n';
 import { IonFab, IonFabButton, IonIcon } from '@ionic/react';
-import { add } from 'lodash';
+//import { add } from 'lodash';
 import { checkboxOutline } from 'ionicons/icons';
 
-const Login: React.FC<ComponentProps> = (pageProps) => {
+const Login: React.FC<ComponentProps> = (pageParams) => {
 
   const pageSettings : PageProps = {
     settings: {
@@ -32,28 +32,26 @@ const Login: React.FC<ComponentProps> = (pageProps) => {
       //skeleton: true
       //animated: "true"
     },
-    ga4: [
-      {
-        action: 'onLoad',
-        data: {
-          category: 'auth', // Categoría del evento (puede ser cualquier nombre relevante)
-          action: 'load', // Acción realizada (por ejemplo, 'Clic en botón')
-          label: 'login-landing', // Etiqueta opcional para detalles adicionales
-        }
+    loadingGa4: {
+      action: 'onLoad',
+      data: {
+        category: 'auth', // Categoría del evento (puede ser cualquier nombre relevante)
+        action: 'load', // Acción realizada (por ejemplo, 'Clic en botón')
+        label: 'login-landing', // Etiqueta opcional para detalles adicionales
       }
-    ],
+    },
     header: ()=> {
       const headerProps = {
         label: i18n.t('Login'),
         slot: 'start',
-        loading: pageProps.loading || false
+        loading: pageParams.loading || false
       }
       return <Header {...headerProps} />
     },
     content: () => {
       return (
         <>
-          <Form {...loginForm(pageProps)} />
+          <Form {...loginForm(pageParams)} />
           <IonFab>
           <IonFabButton>
             <IonIcon icon={checkboxOutline}></IonIcon>

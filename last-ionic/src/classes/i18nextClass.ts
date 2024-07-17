@@ -1,6 +1,6 @@
 import { keyTransVar } from '../../public/assets/data/keyTransVar';
 import DebugUtil from './DebugUtil'
-
+import i18n from 'i18next';
 export interface KeyTranslations {
   [key: string]: string;
 }
@@ -17,6 +17,10 @@ class i18nextClass {
       this.myTranslations = keyTransVar
     }
     return this.myTranslations;
+  }
+
+  private translate(key: string): string {
+    return i18n.t(key);
   }
 
 }

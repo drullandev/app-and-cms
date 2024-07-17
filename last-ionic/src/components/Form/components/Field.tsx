@@ -66,7 +66,7 @@ const Field = forwardRef<any, {
    * @param {DeepMap<Record<string, any>, FieldError>} errors - Errors object from react-hook-form.
    * @returns {JSX.Element} The rendered input component.
    */
-  const renderInput = (controller: any, errors: DeepMap<Record<string, any>, FieldError>) => {
+  const renderInput = (controller: any, errors: DeepMap<Record<string, any>, FieldError>): JSX.Element => {
     
     // Render skeleton if loading is true
     if (loading && field?.type != 'hidden') {
@@ -113,7 +113,7 @@ const Field = forwardRef<any, {
      * @param {any} errors - Errors object from react-hook-form.
      * @returns {JSX.Element} The status icon component.
      */
-    const fieldStatusIcon = (controller: any, fieldName: string, errors: any) => {
+    const fieldStatusIcon = (controller: any, fieldName: string, errors: any): JSX.Element => {
 
       const setColor = ()=>{
         let displayColor = 'medium';

@@ -1,0 +1,289 @@
+{
+    "IonicComponents": {
+      "BasicComponents": [
+        {
+          "name": "IonButton",
+          "description": "Button that can be styled in various ways",
+          "interface": "IonButtonProps"
+        },
+        {
+          "name": "IonCard",
+          "description": "Card that can contain various content",
+          "interface": "IonCardProps"
+        },
+        {
+          "name": "IonCheckbox",
+          "description": "Checkbox",
+          "interface": "IonCheckboxProps"
+        },
+        {
+          "name": "IonContent",
+          "description": "Main content container of the application",
+          "interface": "IonContentProps"
+        },
+        {
+          "name": "IonDatetime",
+          "description": "Date and time picker",
+          "interface": "IonDatetimeProps"
+        },
+        {
+          "name": "IonFab",
+          "description": "Floating action button",
+          "interface": "IonFabProps"
+        },
+        {
+          "name": "IonIcon",
+          "description": "Customizable icons",
+          "interface": "IonIconProps"
+        },
+        {
+          "name": "IonImg",
+          "description": "Image optimized for performance",
+          "interface": "IonImgProps"
+        },
+        {
+          "name": "IonInput",
+          "description": "Text input field",
+          "interface": "IonInputProps"
+        },
+        {
+          "name": "IonItem",
+          "description": "List item container",
+          "interface": "IonItemProps"
+        },
+        {
+          "name": "IonLabel",
+          "description": "Text label",
+          "interface": "IonLabelProps"
+        },
+        {
+          "name": "IonList",
+          "description": "List of items",
+          "interface": "IonListProps"
+        },
+        {
+          "name": "IonLoading",
+          "description": "Loading indicator",
+          "interface": "IonLoadingProps"
+        },
+        {
+          "name": "IonModal",
+          "description": "Modal window",
+          "interface": "IonModalProps"
+        },
+        {
+          "name": "IonProgressBar",
+          "description": "Progress bar",
+          "interface": "IonProgressBarProps"
+        },
+        {
+          "name": "IonRadio",
+          "description": "Radio button",
+          "interface": "IonRadioProps"
+        },
+        {
+          "name": "IonRadioGroup",
+          "description": "Radio button group",
+          "interface": "IonRadioGroupProps"
+        },
+        {
+          "name": "IonRange",
+          "description": "Range slider",
+          "interface": "IonRangeProps"
+        },
+        {
+          "name": "IonRefresher",
+          "description": "Control to refresh content",
+          "interface": "IonRefresherProps"
+        },
+        {
+          "name": "IonSearchbar",
+          "description": "Search bar",
+          "interface": "IonSearchbarProps"
+        },
+        {
+          "name": "IonSegment",
+          "description": "Segmented control",
+          "interface": "IonSegmentProps"
+        },
+        {
+          "name": "IonSelect",
+          "description": "Dropdown menu",
+          "interface": "IonSelectProps"
+        },
+        {
+          "name": "IonSkeletonText",
+          "description": "Skeleton text for loading",
+          "interface": "IonSkeletonTextProps"
+        },
+        {
+          "name": "IonSlide",
+          "description": "Slide",
+          "interface": "IonSlideProps"
+        },
+        {
+          "name": "IonSlides",
+          "description": "Slide container",
+          "interface": "IonSlidesProps"
+        },
+        {
+          "name": "IonSpinner",
+          "description": "Loading spinner",
+          "interface": "IonSpinnerProps"
+        },
+        {
+          "name": "IonTextarea",
+          "description": "Text area",
+          "interface": "IonTextareaProps"
+        },
+        {
+          "name": "IonToast",
+          "description": "Toast message notification",
+          "interface": "IonToastProps"
+        },
+        {
+          "name": "IonToggle",
+          "description": "Toggle switch",
+          "interface": "IonToggleProps"
+        }
+      ],
+      "StructuralComponents": [
+        {
+          "name": "IonHeader",
+          "description": "Application header",
+          "interface": "IonHeaderProps"
+        },
+        {
+          "name": "IonFooter",
+          "description": "Application footer",
+          "interface": "IonFooterProps"
+        },
+        {
+          "name": "IonToolbar",
+          "description": "Toolbar",
+          "interface": "IonToolbarProps"
+        },
+        {
+          "name": "IonTitle",
+          "description": "Title",
+          "interface": "IonTitleProps"
+        },
+        {
+          "name": "IonPage",
+          "description": "Page container",
+          "interface": "IonPageProps"
+        },
+        {
+          "name": "IonRouterOutlet",
+          "description": "Router outlet",
+          "interface": "IonRouterOutletProps"
+        },
+        {
+          "name": "IonNav",
+          "description": "Navigator",
+          "interface": "IonNavProps"
+        },
+        {
+          "name": "IonTabs",
+          "description": "Tabs container",
+          "interface": "IonTabsProps"
+        },
+        {
+          "name": "IonTabBar",
+          "description": "Tabs bar",
+          "interface": "IonTabBarProps"
+        },
+        {
+          "name": "IonTabButton",
+          "description": "Tab button",
+          "interface": "IonTabButtonProps"
+        }
+      ],
+      "ContainerComponents": [
+        {
+          "name": "IonGrid",
+          "description": "Grid system",
+          "interface": "IonGridProps"
+        },
+        {
+          "name": "IonRow",
+          "description": "Grid system row",
+          "interface": "IonRowProps"
+        },
+        {
+          "name": "IonCol",
+          "description": "Grid system column",
+          "interface": "IonColProps"
+        }
+      ],
+      "NavigationComponents": [
+        {
+          "name": "IonBackButton",
+          "description": "Back button",
+          "interface": "IonBackButtonProps"
+        },
+        {
+          "name": "IonMenu",
+          "description": "Sliding menu",
+          "interface": "IonMenuProps"
+        },
+        {
+          "name": "IonMenuToggle",
+          "description": "Menu toggle",
+          "interface": "IonMenuToggleProps"
+        },
+        {
+          "name": "IonNavLink",
+          "description": "Navigation link",
+          "interface": "IonNavLinkProps"
+        },
+        {
+          "name": "IonRouter",
+          "description": "Router component",
+          "interface": "IonRouterProps"
+        }
+      ],
+      "OtherComponents": [
+        {
+          "name": "IonBadge",
+          "description": "Badge to show counters",
+          "interface": "IonBadgeProps"
+        },
+        {
+          "name": "IonChip",
+          "description": "Styled tag",
+          "interface": "IonChipProps"
+        },
+        {
+          "name": "IonPopover",
+          "description": "Popup window",
+          "interface": "IonPopoverProps"
+        },
+        {
+          "name": "IonReorder",
+          "description": "Reordering control",
+          "interface": "IonReorderProps"
+        },
+        {
+          "name": "IonReorderGroup",
+          "description": "Reordering group",
+          "interface": "IonReorderGroupProps"
+        },
+        {
+          "name": "IonRippleEffect",
+          "description": "Ripple effect",
+          "interface": "IonRippleEffectProps"
+        },
+        {
+          "name": "IonSelectOption",
+          "description": "Select option",
+          "interface": "IonSelectOptionProps"
+        },
+        {
+          "name": "IonVirtualScroll",
+          "description": "Virtual scroll for large lists",
+          "interface": "IonVirtualScrollProps"
+        }
+      ]
+    }
+  }
