@@ -1,9 +1,12 @@
 import { HeaderProps } from "../main/interfaces/HeaderProps";
 
 export interface inputGa4 {
-  category: string, // Categoría del evento (puede ser cualquier nombre relevante)
-  action: string, // Acción realizada (por ejemplo, 'Clic en botón')
-  label: string, // Etiqueta opcional para detalles adicionales
+  action: string;
+  data: {
+    category: string, // Categoría del evento (puede ser cualquier nombre relevante)
+    action: string, // Acción realizada (por ejemplo, 'Clic en botón')
+    label: string, // Etiqueta opcional para detalles adicionales
+  }
 }
 
 export interface IonPageProps {
@@ -24,10 +27,10 @@ export interface IonPageProps {
 
 export interface PageProps {
   settings: IonPageProps;
-  ga4?: inputGa4;
+  ga4?: inputGa4[];
   header?: Function | HeaderProps | undefined;
   content: Function;
   footer?: Function | undefined;
-  sidenavs?: any[];
-  methods?: any;
+  sidenavs?: Function[];
+  methods?: Function[];
 }

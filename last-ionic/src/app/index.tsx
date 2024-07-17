@@ -23,7 +23,7 @@ import '@ionic/react/css/flex-utils.css'
 import '@ionic/react/css/display.css'
 
 /* Whole app style */
-import './style.scss';
+import './App.scss';
 
 /* Theme variables */
 import './../theme/variables.css'
@@ -59,8 +59,8 @@ import DebugUtil from './../classes/DebugUtil'
 //import { getAnalytics } from "firebase/analytics";
 //import { firebaseConfig } from './../data/firebase'
 
-import { OwnProps, ComponentProps, StateProps, DispatchProps, mapStateToProps, mapDispatchToProps } from './reducer'
 // Are you testing this tools set && app?
+import { OwnProps, ComponentProps, StateProps, DispatchProps, mapStateToProps, mapDispatchToProps } from './reducer'
 
 let debug = DebugUtil.setDebug(false);
 
@@ -72,8 +72,12 @@ setupIonicReact({
 
 ReactGA.initialize('UA-XXXXXXXXX-X');// TODO: Move param to environment!!
 
-const IonicApp: React.FC<ComponentProps> = ({
+interface IonicAppProps extends StateProps, DispatchProps { }
+
+const IonicApp: React.FC<IonicAppProps> = ({
   darkMode,
+  setData,
+  loadConfData,
 }) => {
 
   // TODO: TRY AGAIN!!
@@ -121,11 +125,10 @@ const IonicApp: React.FC<ComponentProps> = ({
 
 }
 
-const IonicAppConnected = connect<OwnProps, StateProps, DispatchProps>({ mapStateToProps, mapDispatchToProps, component: IonicApp });
-
 const App: React.FC = () => <>
   <IonicAppConnected />
 </>
 
 export default App
 
+const IonicAppConnected = connect<OwnProps, StateProps, DispatchProps>({ mapStateToProps, mapDispatchToProps, component: IonicApp });

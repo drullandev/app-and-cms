@@ -5,15 +5,21 @@ import { loadConfData } from "../reducer/data/sessions/sessions.actions";
 import { Schedule } from '../reducer/models/Schedule';
 
 // Define OwnProps to extend RouteComponentProps for routing capabilities
-export interface OwnProps extends RouteComponentProps {
-    darkMode: boolean;
-}
+export interface OwnProps {}
 
 // Define StateProps to represent the part of the state this component needs
-export interface StateProps {}
+export interface StateProps {
+    darkMode: boolean
+    schedule: Schedule
+    hasLoggedIn: boolean
+}
 
 // Define DispatchProps to represent the action creators this component needs to dispatch
-export interface DispatchProps {}
+export interface DispatchProps {
+    loadConfData: typeof loadConfData
+    loadUserData: typeof loadUserData
+    setData: typeof setData
+}
 
 // Define ComponentProps to combine all props needed by the component
 export interface ComponentProps extends OwnProps, StateProps, DispatchProps {}
@@ -21,6 +27,8 @@ export interface ComponentProps extends OwnProps, StateProps, DispatchProps {}
 // mapStateToProps maps the required state properties to the component's props
 export const mapStateToProps = (state: AppState): StateProps => ({
     darkMode: state.user.darkMode,
+    schedule: state.data.schedule,
+    hasLoggedIn: state.user.hasLoggedIn,
 });
 
 // mapDispatchToProps maps the action creators to the component's props

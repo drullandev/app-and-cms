@@ -32,11 +32,16 @@ const Login: React.FC<ComponentProps> = (pageProps) => {
       //skeleton: true
       //animated: "true"
     },
-    ga4: {
-      category: 'Interacción', // Categoría del evento (puede ser cualquier nombre relevante)
-      action: 'Clic en botón', // Acción realizada (por ejemplo, 'Clic en botón')
-      label: 'Botón de Ejemplo', // Etiqueta opcional para detalles adicionales
-    },
+    ga4: [
+      {
+        action: 'onLoad',
+        data: {
+          category: 'auth', // Categoría del evento (puede ser cualquier nombre relevante)
+          action: 'load', // Acción realizada (por ejemplo, 'Clic en botón')
+          label: 'login-landing', // Etiqueta opcional para detalles adicionales
+        }
+      }
+    ],
     header: ()=> {
       const headerProps = {
         label: i18n.t('Login'),
