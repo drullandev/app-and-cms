@@ -1,6 +1,6 @@
 import React from 'react'
 import { IonHeader, IonToolbar, IonTitle, IonContent, IonPage, IonButtons, IonMenuButton, IonGrid, IonRow, IonCol } from '@ionic/react'
-import SpeakerItem from '../../components/SpeakerItem'
+import SpeakerItem from '../../components/SpeakerItem/SpeakerItem'
 import { Speaker } from '../../reducer/models/Speaker'
 import { Session } from '../../reducer/models/Schedule'
 import { connect } from '../../reducer/src/connect'

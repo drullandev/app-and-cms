@@ -4,15 +4,15 @@ import { useHistory } from 'react-router';
 import { useIonToast } from '@ionic/react'
 import * as icon from 'ionicons/icons';
 
-import { HOME_PATH, apiUrl } from '../../env';
-import DebugUtil from '../../classes/DebugUtil';
-import RestAPI from '../../classes/Rest';
-import RestOutput from '../../classes/RestOutput';
+import { HOME_PATH, apiUrl } from '../env';
+import DebugUtil from '../classes/DebugUtil';
+import RestAPI from '../classes/Rest';
+import RestOutput from '../classes/RestOutput';
 
-import { FormProps } from '../../components/Form/types';
+import { FormProps } from '../components/Form/types';
 
-import { setData, setLoading, setisLogged } from '../../reducer/data/user/user.actions';
-import Logger from '../../classes/Logger';
+import { setData, setLoading, setisLogged } from '../reducer/data/user/user.actions';
+import Logger from '../classes/Logger';
 
 export const loginForm = ({
   setisLogged

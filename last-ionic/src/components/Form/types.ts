@@ -24,7 +24,7 @@ export interface LabelProps {
 export interface FieldProps {
   id?: string | undefined;
   name: string;
-  label: any;
+  label?: any;
   type: string;
   required?: false | boolean | undefined;
   validationSchema?: Schema | undefined;
@@ -47,9 +47,12 @@ export interface FieldProps {
   icon?: any;
   href?: string;
   onClick?: Function;
+  onChange?: Function;
   secret?: false | boolean;
   loading?: boolean | false;
   siteKey?: string | 'sdfasdfdas';
+  csrfToken?: string;
+  hidden?: boolean | false;
 } 
 
 export interface ErrorProps {

@@ -1,3 +1,11 @@
+import { HeaderProps } from "../main/interfaces/HeaderProps";
+
+export interface inputGa4 {
+  category: string, // Categoría del evento (puede ser cualquier nombre relevante)
+  action: string, // Acción realizada (por ejemplo, 'Clic en botón')
+  label: string, // Etiqueta opcional para detalles adicionales
+}
+
 export interface IonPageProps {
   id: string;
   className?: string;
@@ -5,6 +13,7 @@ export interface IonPageProps {
   color?: string;
   animated?: boolean;
   routerDirection?: 'forward' | 'back' | 'root' | string; // Ajusta según las opciones reales de Ionic
+  skeleton?: boolean | false;
   ionViewWillEnter?: () => void;
   ionViewDidEnter?: () => void;
   ionViewWillLeave?: () => void;
@@ -14,7 +23,8 @@ export interface IonPageProps {
 }
 
 export interface PageProps {
-  settings: IonPageProps
+  settings: IonPageProps;
+  ga4?: inputGa4;
   header?: Function | HeaderProps | undefined;
   content: Function;
   footer?: Function | undefined;

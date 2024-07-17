@@ -69,7 +69,7 @@ const Field = forwardRef<any, {
   const renderInput = (controller: any, errors: DeepMap<Record<string, any>, FieldError>) => {
     
     // Render skeleton if loading is true
-    if (loading) {
+    if (loading && field?.type != 'hidden') {
       return (
         <IonItem style={field.style}>
           <IonSkeletonText style={{ width: '100%', height: '45px', borderRadius: '15px' }} className={field.className} />
@@ -87,6 +87,7 @@ const Field = forwardRef<any, {
         controller.onChange(value);
         debouncedHandleFieldChange(value);
       }
+
     };
 
     // Common properties for input elements
@@ -223,6 +224,7 @@ const Field = forwardRef<any, {
                 label={field.label + (checkIfFieldIsRequired(field.name) ? ' *' : '')}
                 labelPlacement="floating"
                 value={controller.value}
+                disabled={loading}
                 aria-invalid={errors && errors[field.name ?? field.id ?? 'input'] ? 'true' : 'false'}
                 {...commonProps}
                 onBlur={() => { // Add onBlur to force validation when the field loses focus
@@ -244,6 +246,7 @@ const Field = forwardRef<any, {
             {checkIfFieldIsRequired(field.name)}
             <IonTextarea
               label={field.label}
+              disabled={loading}
               labelPlacement="floating"
               {...commonProps}
             />
@@ -256,7 +259,10 @@ const Field = forwardRef<any, {
           <>
             <Label name={field.name} label={field.label} errors={errors} />
             {checkIfFieldIsRequired(field.name) && <>*</>}
-            <IonSelect {...commonProps} interface="popover">
+            <IonSelect {...commonProps}
+              interface="popover"
+              disabled={loading}
+            >
               {field.options && field.options.map(option => (
                 <IonSelectOption key={option.value} value={option.value}>
                   {option.label}
@@ -286,6 +292,7 @@ const Field = forwardRef<any, {
             <IonItem 
               onClick={() => commonProps.onIonChange({ detail: { checked: !controller.value } })}
               style={{paddingTop: '8px', paddingBottom: '8px'}}
+              disabled={loading}
             >
               <IonLabel style={{ display: 'flex', alignItems: 'start', width: '93%' }}>{field.label}</IonLabel>
               <div style={{ display: 'flex', alignItems: 'end' }}
@@ -297,6 +304,7 @@ const Field = forwardRef<any, {
                   label={field.label}
                   color={displayColor}
                   checked={Boolean(controller.value || field.defaultValue)}
+                  disabled={loading}
                 />
               </div>
             </IonItem>
@@ -310,7 +318,11 @@ const Field = forwardRef<any, {
         return (
           <>
             {field.label && <IonLabel position='floating' aria-label={field.label}>{field.label}</IonLabel>}
-            <IonDatetime value={controller.value || field.defaultValue} {...commonProps} />
+            <IonDatetime
+              {...commonProps}
+              value={controller.value || field.defaultValue}
+              disabled={loading}
+            />
             {fieldStatusIcon(controller, field.name, errors)}
             <Error name={field.name} label={field.label} errors={errors} />
           </>
@@ -323,6 +335,7 @@ const Field = forwardRef<any, {
             expand
             style={field.style || { width: '100%' }}
             label={field.label}
+            disabled={loading}
             onClick={field.onClick ? field.onClick : undefined}
             icon={field.icon}
             loading={loading}
@@ -387,8 +400,14 @@ const Field = forwardRef<any, {
             <Skeleton {...field} />
           </IonItem>
         );
-
-      /*  
+      
+        case 'hidden':
+          return (
+            <IonInput type="hidden" name={field.name} value={field.csrfToken}
+              {...commonProps}
+            ></IonInput>
+            );
+  
       case 'recaptcha':
         return (process.env.NODE_ENV == 'production') ? (<>
           <ReCAPTCHA 
@@ -397,7 +416,7 @@ const Field = forwardRef<any, {
             onChange={()=> field.onChange }
           />
         </>
-        ):<IonInput {...commonProps}></IonInput>;*/
+        ):<IonInput {...commonProps}></IonInput>;
     }
   };
 
@@ -407,7 +426,7 @@ const Field = forwardRef<any, {
       ...prevLoadingField,
       [field.name]: false,
     }));
-  }, [field.name]);
+  }, [field]);
 
   return (
     <Controller

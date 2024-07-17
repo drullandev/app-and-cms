@@ -6,25 +6,25 @@ import ReactGA from'react-ga';
 import './styles.scss';
 
 // Used Components
-import Page from '../../components/Page';
-import Header from '../../components/main/Header';
-import Form from '../../components/Form';
+import Page from '../components/Page';
+import Header from '../components/main/Header';
+import Form from '../components/Form';
 // Used Source
 import { loginForm } from './source';
 // Used Reducers
-import { connect } from '../../reducer/src/connect';
+import { connect } from '../reducer/src/connect';
 // This component
-import { PageProps } from '../../components/Page/types';
+import { PageProps } from '../components/Page/types';
 
 
 // Component Reducer
 import { OwnProps, ComponentProps, StateProps, DispatchProps, mapStateToProps, mapDispatchToProps } from './reducer'
-import i18n from '../../components/extra/i18n';
+import i18n from '../components/extra/i18n';
 import { IonFab, IonFabButton, IonIcon } from '@ionic/react';
 import { add } from 'lodash';
 import { checkboxOutline } from 'ionicons/icons';
 
-const Login: React.FC<ComponentProps> = (pageProps) => {
+const Sheet: React.FC<ComponentProps> = (pageProps) => {
 
   const pageSettings : PageProps = {
     settings: {
@@ -48,7 +48,7 @@ const Login: React.FC<ComponentProps> = (pageProps) => {
     content: () => {
       return (
         <>
-          <Form {...loginForm(pageProps)} />
+
           <IonFab>
           <IonFabButton>
             <IonIcon icon={checkboxOutline}></IonIcon>
@@ -65,4 +65,4 @@ const Login: React.FC<ComponentProps> = (pageProps) => {
   );
 };
 
-export default connect<OwnProps, StateProps, DispatchProps>({ mapStateToProps, mapDispatchToProps, component: Login });
+export default connect<OwnProps, StateProps, DispatchProps>({ mapStateToProps, mapDispatchToProps, component: Sheet });

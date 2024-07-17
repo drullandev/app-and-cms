@@ -106,6 +106,23 @@ class DebugUtil {
       console.timeEnd(label);
     }
   }
+
+  public isProduction(){
+    return import.meta.env.NODE_ENV === 'production'
+  }
+
+  public isDevelopent(){
+    return import.meta.env.NODE_ENV === 'development'
+  }
+
+  /**
+   * Stops a debug timer with a given label.
+   * @param label The label for the timer.
+   */
+  public trackElement(element: Element) {
+
+  }
+  
 }
 
 export default new DebugUtil();

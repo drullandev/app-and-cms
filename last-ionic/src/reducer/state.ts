@@ -20,6 +20,7 @@ export const initialData = {
 export const initialUser = {
   id: '0',
   jwt: '',
+  sessionId: undefined,
   username: '',
   email: '',
   createdAt: '',

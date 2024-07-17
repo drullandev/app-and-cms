@@ -1,3 +1,8 @@
+ion-input[type='hidden'], div.hidden {
+  display: none;
+}
+
+
 .error-text {
   font-size: 0.8rem; /* Ajusta el tamaño de la fuente para hacer el texto más pequeño */
   margin-top: 4px; /* Reduce el margen superior */

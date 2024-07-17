@@ -1,236 +1,52 @@
-import React, { useEffect } from 'react'
-import { useIonToast } from '@ionic/react'
-import { RouteComponentProps } from 'react-router'
-import { useTranslation } from 'react-i18next'
+// Global imports
+import React from 'react';
+import { RouteComponentProps } from 'react-router';
+import { IonContent } from '@ionic/react';
+// Component imports
+import './styles.scss';
 
-import * as yup from 'yup'
-import * as icon from 'ionicons/icons'
-
-import { connect } from '../../reducer/src/connect'
-import { setisLogged, setUsername, setLoading } from '../../reducer/data/user/user.actions'
-import RestAPI from '../../classes/Rest'
-import StringUtil from '../../classes/StringUtil'
-
-
-import Header from '../../components/main/Header'
-import Form from '../../components/Form'
-import Page from '../../components/Page'
-import { PageProps } from '../../components/Page/types'
-
-import '../../styles/index.scss'
-import RestOutput from '../../classes/RestOutput'
-import { MyExtraOutputOptions } from '../../../src/components/main/interfaces/ModalToastProps';
+// Used Components
+import Page from '../../components/Page';
+import Header from '../../components/main/Header';
+import Form from '../../components/Form';
+// Used Source
+import { signupForm } from './source';
+// Used Reducers
+import { connect } from '../../reducer/src/connect';
+// This component
+import { PageProps } from '../../components/Page/types';
 
 // Component Reducer
 import { OwnProps, ComponentProps, StateProps, DispatchProps, mapStateToProps, mapDispatchToProps } from './reducer'
-import DebugUtil from '../../classes/DebugUtil'
+import i18n from '../../components/extra/i18n';
 
-const Signup: React.FC<ComponentProps> = ({
-  history,
-  setUsername: setUsernameAction,
-  setisLogged,
-  setLoading,
-}) => {
+const Signup: React.FC<ComponentProps> = (pageProps) => {
 
-  const {t} = useTranslation()
-  const [presentToast] = useIonToast()
-  const debug = DebugUtil.setDebug(false);
-
-  //SMTP code:550 msg:550-5.1.1 The email account that you tried to reach does not exist. Please try 550-5.1.1 double-checking the recipient's email address for typos or 550-5.1.1 unnecessary spaces. Learn more at 550 5.1.1 https://support.google.com/mail/?p=NoSuchUser q16-20020a2e9690000000b0027744b28539si4283378lji.72 - gsmtp 
-
-  const pageSettings: PageProps = {
-    settings:{
+  const pageSettings : PageProps = {
+    settings: {
       id: 'signup-page',
     },
-    header: ()=> <Header label={"Sign up"} slot="start"/>,
-    content: ()=> <Form {...pageSettings.methods.signupForm}/>,
-    methods: {
-      
-      onLoad: ()=>{
-        
-        setLoading(false)
-      },
-
-      signupForm: {
-
-        id: 'signup-form',
-
-        settings: {
-          autoSendIfValid: false,
-          animations: {
-            initial: { opacity: 0, y: -20 },
-            animate: { opacity: 1, y: 0 },
-            transition: { duration: 0.5 },
-          },
-        },
-    
-        rows: [
-          {
-            cols:[
-              {
-                component: <div className="login-logo">
-                  <img src="assets/img/appicon.svg" alt="Ionic logo" />
-                </div>
-              }
-            ]
-          }, 
-          {
-            cols: [
-              {
-                type: 'input',
-                name: 'username',
-                fieldType: 'text',// TODO: Liberate for email and also nickname
-                label: t('Nickname'),
-                //value: testing ? import.meta.env.REACT_APP_DEFAULT_USER : undefined,
-                required: true,
-                //onChange: (e:any)=> setValue('identifier',e.detail.value)    
-              }
-            ]
-          },
-          {
-            cols: [
-              {
-                type: 'input',
-                name: 'email',
-                fieldType: 'email',
-                label: t('Email'),
-                //value: testing ? import.meta.env.REACT_APP_DEFAULT_PASS : undefined,
-                required: true,
-                //onChange: (e:any)=> setPassword(e.detail.value)
-              }
-            ]
-          },
-          {
-            cols: [
-              {
-                type: 'input',
-                name: 'password',
-                fieldType: 'password',
-                label: t('Password'),
-                //value: testing ? import.meta.env.REACT_APP_DEFAULT_PASS : undefined,
-                required: true,
-                //onChange: (e:any)=> setPassword(e.detail.value)
-              }
-            ]
-          },
-          {
-            cols: [
-              {
-                type: 'input',
-                name: 'repeatPassword',
-                fieldType: 'password',
-                label: t('Repeat the password'),
-                //value: testing ? import.meta.env.REACT_APP_DEFAULT_PASS : undefined,
-                required: true,
-                //onChange: (e:any)=> setPassword(e.detail.value)
-              }
-            ]
-          },
-          {
-            cols:[
-              {
-                name: 'wanna-reset',
-                type: 'button',
-                label: t("You don't remember your account?"),
-                color: 'clear',
-                icon: icon.logIn
-              },
-            ]
-          },    
-          {
-            cols: [
-              {
-                name: 'login-submit',
-                type: 'button',
-                fieldType: 'submit',
-                label: t('Signup'),
-                icon: icon.personAdd
-              },
-              {
-                name: 'login-cancel',
-                type: 'button',
-                fieldType: 'link',
-                label: t('Cancel'),
-                fill: 'outline',
-                icon: icon.close,
-                onClick: () : any=> pageSettings.methods.loginForm.methods.onCancel()
-              }
-            ],
-          },
-        ],
-    
-        methods:{
-    
-          onSubmit: async (data: any) => {
-
-            setLoading(true)
-            if(data.password !== data.repeatPassword){
-              //presentToast(RestOutput.setOutput({message:''} as MyExtraOutputOptions))
-              setLoading(false)
-            }
-
-            setLoading(true)
-            const onSignupSuccess = async (ret: any) => {
-              let user = ret.user
-              user.jwt = ret.jwt // Attaching the JWT to the user level and state...
-              await setisLogged(true)
-              return user
-            }  
-      
-            await RestAPI.restCallAsync({
-              req: {
-                url: '/auth/local/register',
-                method: 'POST',
-                data: {
-                  // BE AWARE OF TESTING PARAMS... Anyway, in production will be banned but yeah... 
-                  username: debug ? StringUtil.random(12) : data.username,
-                  password: debug ? StringUtil.random(12) : data.password,  
-                  email: debug ? StringUtil.random(12)+'@gmail.com' : data.email
-                }                
-              },
-              onSuccess: { 
-                default: async (ret: any)=>{
-                  await onSignupSuccess(ret.data)
-                    .then((ret: any)=>{
-                      switch (ret.status) {
-                        case 200:
-                          setisLogged(true)
-                          presentToast({ 
-                            message: t('user-wellcome', { username: ret.data.user.username }) 
-                          })
-                            .then(()=> history.push('/tabs/schedule', { direction: 'none' }))                            
-                      }            
-                    })
-                }
-              },
-              onError: {
-                default: presentToast
-              }
-              
-            })
-            setLoading(false)
-          },
-    
-          onCancel: ()=> history.push('/home', { direction: 'none' })      
-    
-        },
-    
-        validation: yup.object().shape({
-            username: yup.string().required().min(3),
-            email: yup.string().required().email().min(8),
-            password: yup.string().required().min(6).max(64),//64 was arbitrary...
-            repeatPassword: yup.string().required().min(6).max(64),//64 was arbitrary...
-          })
-        ,
-    
+    header: ()=> {
+      const headerProps = {
+        label: i18n.t('Signup'),
+        slot: 'start',
+        loading: pageProps.loading || false
       }
-    }
-  }
+      return <Header {...headerProps} />
+    },
+    content: () => {
+      return (
+        <>
+          <Form {...signupForm(pageProps)} />
+        </>
+      );
+    },
+    footer: ()=>{ return <></>}
+  };
 
-  useEffect(pageSettings.methods.onLoad,[])
-
-  return <Page {...pageSettings}/>
-  
-}
+  return (
+    <Page {...pageSettings} />
+  );
+};
 
 export default connect<OwnProps, StateProps, DispatchProps>({ mapStateToProps, mapDispatchToProps, component: Signup });

@@ -1,9 +1,10 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { useForm, FieldValues } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
+import yup from 'yup';
 import { motion } from 'framer-motion';
 
-import { FormComponentProps, FormProps, FieldProps } from './types';
+import { FormComponentProps, FieldProps, FormProps } from './types';
 import './style.css';
 
 import DebugUtil from '../../classes/DebugUtil';
@@ -13,60 +14,97 @@ import Overlay from './components/Overlay';
 import Field from './components/Field';
 
 import { buildValidationSchema, buildInitialValues } from './src/MyYup';
+import Security from '../../classes/Security';
+import i18n from '../extra/i18n';
 
 const debug = DebugUtil.setDebug(false);
 
-const Form: React.FC<FormComponentProps> = (form) => {
-
-  // Ref to store the initial values of the form
-  const initialValuesRef = useRef(buildInitialValues(form.fields));
-  
-  // Ref for the first field to set focus on it when the form loads
+const Form: React.FC<FormComponentProps> = (formData) => {
+  const [form, setForm] = useState<FormProps | null>(null); // Ensure form is initially null
+  const initialValuesRef = useRef<FieldValues>({});
   const firstFieldRef = useRef<HTMLInputElement | null>(null);
-  
-  // State to track if the form is being submitted
   const [isSubmitting, setIsSubmitting] = useState(false);
-
-  // State to track if the form is loading initially
   const [isLoading, setIsLoading] = useState(true);
 
-  // State to track the inner form structure
-  const [innerForm, setInnerForm] = useState<FormProps>();
+  const sessionId = 'user-session-id'; // Esto puede ser el ID de la sesión del usuario
+  const [csrfToken, setCsrfToken] = useState<string>('');
 
-  // useForm hook to handle form logic
   const { control, handleSubmit, formState: { errors }, reset } = useForm<FieldValues>({
-    resolver: yupResolver(buildValidationSchema(form.fields)),
+    resolver: yupResolver(buildValidationSchema(form?.fields || [])),
     defaultValues: initialValuesRef.current,
   });
 
-  // Effect to update initial values, set focus on the first field when form fields change, and manage loading state
-  useEffect(() => {
-    const newInitialValues = buildInitialValues(form.fields);
-    initialValuesRef.current = newInitialValues;
-    reset(newInitialValues);
-    firstFieldRef.current?.focus();
-    // Simulate a loading delay for demonstration purposes
-    setTimeout(() =>
-      setIsLoading(false),
-    1000); // Adjust the delay as needed
-  }, [form.fields, reset]);
+  const generateNewCsrfToken = () => {
+    const token = Security.generateCsrfToken(sessionId);
+    setCsrfToken(token);
+  };
 
-  // Function to handle form submission
   const onSubmit = async (data: FieldValues) => {
     try {
       setIsSubmitting(true);
-      await form.onSuccess(data);
+
+      // Filtrar los datos del formulario para eliminar los botones
+      const filteredData = Object.keys(data).reduce((acc, key) => {
+        if (!key.startsWith('button')) { // O puedes usar otra lógica para identificar botones
+          acc[key] = data[key];
+        }
+        return acc;
+      }, {} as any);
+
+      const approvedData = Security.approveFormData(filteredData, sessionId);
+      if (approvedData) {
+        await form?.onSuccess(approvedData)
+          .then(()=>{
+            generateNewCsrfToken()
+
+          })
+         // Generate a new CSRF token after successful submission
+      } else {
+        // Manejo de error en caso de CSRF token inválido
+      }
+
     } catch (error) {
-      if (debug) Logger.error('- Error validating form!', error);
+      if (debug) Logger.error('• Error validating form!', error);
     } finally {
       setIsSubmitting(false);
     }
   };
 
-  // Function to handle field value changes
-  const handleFieldChange = (fieldName: string, value: any) => {
-    if (debug) Logger.log('- Change', { name: fieldName, value });
+  const onFormChange = (fieldName: string, value: any) => {
+    if (debug) Logger.log('• Change', { name: fieldName, value });
   };
+
+  useEffect(() => {
+    if (!form) return;
+    const newInitialValues = buildInitialValues(form.fields);
+    initialValuesRef.current = newInitialValues;
+    reset(newInitialValues);
+    firstFieldRef.current?.focus();
+    setTimeout(() => setIsLoading(false), 1000);
+  }, [form, reset]);
+
+  useEffect(() => {
+    setForm(formData);
+  }, [formData]);
+
+  useEffect(() => {
+    generateNewCsrfToken();
+  }, []);
+
+  if (!form) {
+    return null; // or a loading spinner
+  }
+
+  // Add the hidden field to the form fields array
+  const updatedFields: FieldProps[] = [
+    ...form.fields,
+    {
+      id: 'csrf',
+      name: 'csrf',
+      type: 'hidden',
+      defaultValue: csrfToken
+    }
+  ];
 
   return (
     <>
@@ -76,17 +114,17 @@ const Form: React.FC<FormComponentProps> = (form) => {
           onSubmit={handleSubmit(onSubmit, form.onError)}
           style={form.settings.style}
         >
-          {form.fields.map((field: FieldProps, index: number) => (
+          {updatedFields.map((field: FieldProps, index: number) => (
             <div
               key={'div-' + (field.name ?? 'div-' + field.id)}
-              className={`form-field ${field.className ?? 'col-span-12'}`}
+              className={`form-field ${field.className ?? 'col-span-12'} ${field.type == 'hidden' ? 'hidden' : ''}`}
             >
               <Field
                 key={'field-' + (field.name ?? 'field-' + field.id)}
                 field={field}
                 control={control}
                 errors={errors}
-                onFieldChange={handleFieldChange}
+                onFieldChange={onFormChange}
                 ref={index === 0 ? firstFieldRef : null} // Assign ref to the first field
                 loading={isLoading}
               />
@@ -103,7 +141,7 @@ const Form: React.FC<FormComponentProps> = (form) => {
                   field={button}
                   control={control}
                   errors={errors}
-                  onFieldChange={handleFieldChange}
+                  onFieldChange={onFormChange}
                   loading={isLoading}
                 />
               </div>

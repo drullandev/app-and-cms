@@ -32,6 +32,8 @@ export const mapDispatchToProps: DispatchProps = {
   setisLogged, // Map the setisLogged action creator to props
 };
 
+const inputProps: DispatchProps = { setData, setLoading, setisLogged }
+
 // Explanation of the reducers and actions:
 
 /**

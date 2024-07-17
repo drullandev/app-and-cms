@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next'
 import detector from 'i18next-browser-languagedetector'
 import { setLocale } from 'yup'
 
-import App from './../../App'
+import App from '../../app'
 import resources from '../../../public/static/i18next/translations.json'
 
 export function buildYupLocale(_: unknown, t: TFunction): void {

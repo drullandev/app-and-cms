@@ -2,6 +2,7 @@ export interface UserState {
   // From Strapi
   id?: string
   jwt?: string
+  sessionId?: string
   username?: string
   email?: string
   blocked?: boolean

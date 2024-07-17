@@ -1,6 +1,7 @@
 import {
   setIdData,
   setJwtData,
+  setSessionIdData,
   setUsernameData,
   setEmailData,
   setBlockedData,
@@ -14,8 +15,11 @@ import {
   setUserData,
   setCaretData,
   setRoleData,
+} from '../global/data.setters'
+
+import {
   getUserData,
-} from '../dataApi'
+} from '../global/data.getters'
 
 import { ActionType } from '../../../utils/types'
 import { UserState } from './user.state'
@@ -63,6 +67,12 @@ export const setJwt = (jwt?: string) => async (dispatch: React.Dispatch<any>) =>
   setTesting(setJwt, jwt)
   await setJwtData(jwt)
   return ({type: 'set-jwt',jwt  } as const)
+}
+
+export const setSessionId = (sessionId?: string) => async (dispatch: React.Dispatch<any>) => {
+  setTesting(setSessionId, sessionId)
+  await setSessionIdData(sessionId)
+  return ({type: 'set-session-id',sessionId  } as const)
 }
 
 export const setUsername = (username?: string) => async (dispatch: React.Dispatch<any>) => {

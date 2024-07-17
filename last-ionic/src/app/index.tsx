@@ -4,7 +4,7 @@ import { Route } from 'react-router-dom'
 import { IonApp, IonRouterOutlet, IonSplitPane, setupIonicReact } from '@ionic/react'
 import { IonReactRouter } from '@ionic/react-router'
 
-import Menu from './components/Menu'
+import Menu from './../components/Menu'
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css'
@@ -23,41 +23,43 @@ import '@ionic/react/css/flex-utils.css'
 import '@ionic/react/css/display.css'
 
 /* Whole app style */
-import './App.scss';
+import './style.scss';
 
 /* Theme variables */
-import './theme/variables.css'
+import './../theme/variables.css'
 
-import { connect } from './reducer/src/connect'
-import { loadConfData } from './reducer/data/sessions/sessions.actions'
-import { loadUserData, setData } from './reducer/data/user/user.actions'
+import { connect } from './../reducer/src/connect'
+import { loadConfData } from './../reducer/data/sessions/sessions.actions'
+import { loadUserData, setData } from './../reducer/data/user/user.actions'
 
-import TestForm from './pages/TestForm'
-import Login from './pages/Login'
-import Signup from './pages/Signup'
-import Account from './pages/Account'
-import ChangePassword from './pages/ChangePassword'
-import Support from './pages/Support'
-import ResetPassword from './pages/ChangePassword'
-import Recover from './pages/Recover'
+import TestForm from './../pages/TestForm'
+import Login from './../pages/Login'
+import Signup from './../pages/Signup'
+import Account from './../pages/Account'
+import ChangePassword from './../pages/ChangePassword'
+import Support from './../pages/Support'
+import ResetPassword from './../pages/ChangePassword'
+import Recover from './../pages/Recover'
 
-import Tutorial from './pages/Tutorial'
+import Tutorial from './../pages/Tutorial'
 
-import Page from './components/Page'
-import MainTabs from './components/main/MainTabs'
-import Home from './components/HomeRedirect'
-import Logout from './components/Logout'
+import Page from './../components/Page'
+import MainTabs from './../components/main/MainTabs'
+import Home from './../components/Home'
+import Logout from './../components/Logout'
+import ReactGA from 'react-ga';
 
-import { Schedule } from './reducer/models/Schedule'
-import { initialUser } from './reducer/state'
-import DebugUtil from './classes/DebugUtil'
+import { Schedule } from './../reducer/models/Schedule'
+import { initialUser } from './../reducer/state'
+import DebugUtil from './../classes/DebugUtil'
 
 // Import the functions you need from the SDKs you need
 
 //import { initializeApp } from "firebase/app";
 //import { getAnalytics } from "firebase/analytics";
-//import { firebaseConfig } from './data/firebase'
+//import { firebaseConfig } from './../data/firebase'
 
+import { OwnProps, ComponentProps, StateProps, DispatchProps, mapStateToProps, mapDispatchToProps } from './reducer'
 // Are you testing this tools set && app?
 
 let debug = DebugUtil.setDebug(false);
@@ -68,36 +70,29 @@ setupIonicReact({
   animated: true
 })
 
-interface StateProps {
-  darkMode: boolean
-  schedule: Schedule
-  hasLoggedIn: boolean
-}
+ReactGA.initialize('UA-XXXXXXXXX-X');// TODO: Move param to environment!!
 
-interface DispatchProps {
-  loadConfData: typeof loadConfData
-  loadUserData: typeof loadUserData
-  setData: typeof setData
-}
-
-interface IonicAppProps extends StateProps, DispatchProps { }
-
-const IonicApp: React.FC<IonicAppProps> = ({
+const IonicApp: React.FC<ComponentProps> = ({
   darkMode,
-  setData,
-  loadConfData,
 }) => {
 
+  // TODO: TRY AGAIN!!
   // Initialize Firebase
+  //if (DebugUtil.isProduction()) {
+    //const app = initializeApp(firebaseConfig)
+    //const analytics = getAnalytics(app)
+  //}
 
-  //const app = initializeApp(firebaseConfig)
-  //const analytics = getAnalytics(app)
-
-  useEffect(() => {
+  const setApp = ()=> {
+    // App settings
     loadConfData()
-    //loadUserData()
-    //setData(initialUser)
-  }, [])
+    // Loading usree data
+    loadUserData()
+    setData(initialUser)
+  }
+
+  // Initial settings
+  useEffect(setApp,[])
 
   return <IonApp className={`${darkMode ? 'dark-theme' : ''}`}>
     <IonReactRouter>
@@ -126,24 +121,11 @@ const IonicApp: React.FC<IonicAppProps> = ({
 
 }
 
+const IonicAppConnected = connect<OwnProps, StateProps, DispatchProps>({ mapStateToProps, mapDispatchToProps, component: IonicApp });
+
 const App: React.FC = () => <>
   <IonicAppConnected />
 </>
 
 export default App
 
-const connectProps = {
-  mapStateToProps: (state:any) => ({
-    darkMode: state.user.darkMode,
-    schedule: state.data.schedule,
-    hasLoggedIn: state.user.hasLoggedIn,
-  }),
-  mapDispatchToProps: {
-    loadConfData,
-    loadUserData,
-    setData
-  },
-  component: IonicApp
-}
-
-const IonicAppConnected = connect<{}, StateProps, DispatchProps>(connectProps)

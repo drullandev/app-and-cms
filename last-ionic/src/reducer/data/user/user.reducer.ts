@@ -1,14 +1,16 @@
 import DebugUtil from '../../../classes/DebugUtil'
 import { UserActions } from './user.actions'
 import { UserState } from './user.state'
+import Logger from '../../../classes/Logger';
 
 const debug = DebugUtil.setDebug(true);
 
 export function userReducer(state: UserState, action: UserActions): UserState {
-  if (debug) console.log('userReducer', action.type, action)
+  if (debug) Logger.log('userReducer', action.type, action)
   switch (action.type) {
     case 'set-id':                return { ...state, id:                action.id }
     case 'set-jwt':               return { ...state, jwt:               action.jwt }
+    case 'set-session-id':        return { ...state, sessionId:         action.sessionId }
     case 'set-username':          return { ...state, username:          action.username }
     case 'set-email':             return { ...state, email:             action.email }
     case 'set-blocked':           return { ...state, blocked:           action.blocked }
@@ -23,5 +25,6 @@ export function userReducer(state: UserState, action: UserActions): UserState {
     case 'set-caret':             return { ...state, caret:             action.caret }
     case 'set-role':              return { ...state, role:              action.role }
     case 'set-user-data':         return { ...state, ...action.data }
+    default:                      return state
   }
 }

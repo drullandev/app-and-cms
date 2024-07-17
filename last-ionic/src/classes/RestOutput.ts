@@ -55,7 +55,7 @@ class RestOutput {
       this.setOutput(props, this.defaultMessages.success as MyExtraOutputOptions),
       props
     );
-    if (this.debug || debug) Logger.log('catchWarning::error::output', response, output)
+    if (this.debug || debug) Logger.log(' • CatchWarning::error::output', response, output)
     return output
   }
 
@@ -71,7 +71,7 @@ class RestOutput {
       this.setOutput(props, this.defaultMessages.warning as MyExtraOutputOptions),
       props
     );
-    if (this.debug || debug) Logger.log('catchWarning::error::output', error, output)
+    if (this.debug || debug) Logger.log(' • CatchWarning::error::output', error, output)
     return output;
   }
 
@@ -87,7 +87,7 @@ class RestOutput {
       this.setOutput(props, this.defaultMessages.danger as MyExtraOutputOptions),
       props
     );
-    if (this.debug || debug) Logger.log('catchDanger::error::output', error, output)
+    if (this.debug || debug) Logger.log(' • CatchDanger::error::output', error, output)
     return output
   }
 
@@ -105,7 +105,7 @@ class RestOutput {
 
     error = this.setMessage(errors, error, props)
     
-    if (this.debug || debug) Logger.log('catchWarning::error::output', errors, error)
+    if (this.debug || debug) Logger.log(' • CatchWarning::error::output', errors, error)
 
     return error;
   }

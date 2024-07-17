@@ -9,18 +9,19 @@ import DebugUtil from '../../classes/DebugUtil';
 import RestAPI from '../../classes/Rest';
 import RestOutput from '../../classes/RestOutput';
 
-import { FormProps } from '../../components/Form/types';
+import { ComponentProps } from './reducer';
 
 import { setData, setLoading, setisLogged } from '../../reducer/data/user/user.actions';
 import Logger from '../../classes/Logger';
+import { FormProps } from '../../components/Form/types';
 
-export const loginForm = ({
-  setisLogged
-}: {
-  setLoading: (loading: boolean) => void;
-  setData: (data: any) => void;
-  setisLogged: (isLoggedIn: boolean) => void;
-}): FormProps => {
+export const signupForm = ({
+    setisLogged
+  }: {
+    setLoading: (loading: boolean) => void;
+    setData: (data: any) => void;
+    setisLogged: (isLoggedIn: boolean) => void;
+  }): FormProps => {
 
   const { t } = useTranslation();
   const history = useHistory();
@@ -29,7 +30,7 @@ export const loginForm = ({
   const debug = DebugUtil.setDebug(false);
   
   return {
-    id: 'login-page',
+    id: 'signup-page',
     settings: {
       autoSendIfValid: false,
       animations: {
@@ -43,6 +44,15 @@ export const loginForm = ({
       }
     },
     fields: [
+      {   
+        name: 'username',
+        label: t('User name'),
+        type: 'text',
+        defaultValue: '',
+        validationSchema: yup.string()
+          .required(t('Username is required')),
+        className: 'col-span-12'
+      },
       {
         name: 'email',
         label: t('Email'),
@@ -65,22 +75,24 @@ export const loginForm = ({
         className: 'col-span-12',
         secret: true
       },
-      {
-        name: 'agreement',
-        label: t('Accept the publicity agreement'),
-        type: 'checkbox',
-        defaultValue: false,
+      { 
+        name: 'repeat-password',
+        label: t('Repeat the password'),
+        type: 'password',
+        defaultValue: '', 
+        validationSchema: yup.string()
+          .required(t('Password is required'))
+          .oneOf([yup.ref('password'), ''], 'Passwords must match with previoous one')
+          .min(8, t('Password must be at least 8 characters'))
+          .max(16, t('Password must be at max 16 characters')),
         className: 'col-span-12',
-        validationSchema: yup.boolean()
-        .required(t('Accept agreement is required'))
-          .oneOf([true], t('You must accept the terms and conditions'))
+        secret: true
       },
       {
         name: 'recaptcha',
         label: t('Please, can you complete the captcha?'),
         type: 'recaptcha',
-        siteKey: 'pinga',
-        validationSchema: yup.string(),
+        siteKey: 'sitekey_TODO',//TODO
         onClick: ()=>{
           Logger.log(' • Done recaptcha!')
         }

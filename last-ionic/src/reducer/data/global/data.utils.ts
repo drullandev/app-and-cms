@@ -1,8 +1,7 @@
-import { Schedule, Session } from '../models/Schedule';
+import { Schedule, Session } from '../../models/Schedule';
 import { Preferences } from '@capacitor/preferences';
-import Logger from '../../../src/classes/Logger';
-import DebugUtil from '../../classes/DebugUtil';
-import i18n from '../../components/extra/i18n';
+import Logger from '../../../classes/Logger';
+import DebugUtil from '../../../classes/DebugUtil';
 
 const debug = DebugUtil.setDebug(false) // Adjust based on environment or build configuration
 
@@ -27,12 +26,12 @@ export const parseSessions = (schedule: Schedule): Session[] => {
  */
 export const setOrRemove = async (key: string, value: any, def: any, string: boolean = true) => {
   try {
-    if (debug) Logger.log('dataApi::setOrRemove', { key: key, value: value, string: string });
+    if (debug) Logger.log(' • DataApi::setOrRemove', { key: key, value: value, string: string });
     return !value
       ? await Preferences.remove({ key: key })
       : await Preferences.set({ key: key, value: value });
   } catch (error) {
-    Logger.error('Error setting or removing preference:', error);
+    Logger.error('• Error setting or removing preference:', error);
     throw error; // Propagate the error for higher-level handling
   }
 };
@@ -46,10 +45,10 @@ export const setOrRemove = async (key: string, value: any, def: any, string: boo
  */
 export const toggleBool = async (key: string, value: any, def: boolean = true) => {
   try {
-    if (debug) Logger.log('dataApi::toggleBool', { key: key, value: value });
+    if (debug) Logger.log(' • DataApi::toggleBool', { key: key, value: value });
     await Preferences.set({ key: key, value: value });
   } catch (error) {
-    Logger.error('Error toggling boolean preference:', error);
+    Logger.error('• Error toggling boolean preference:', error);
     throw error; // Propagate the error for higher-level handling
   }
 };

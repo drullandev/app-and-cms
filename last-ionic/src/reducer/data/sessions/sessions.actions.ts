@@ -1,4 +1,4 @@
-import { getConfData } from '../dataApi'
+import { getConfData } from '../global/data.getters'
 import { ActionType } from '../../../utils/types'
 import { ConfState } from './sessions.state'
 
