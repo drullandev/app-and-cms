@@ -1,0 +1,130 @@
+ion-input[type='hidden'], div.hidden {
+  display: none;
+}
+
+
+.error-text {
+  font-size: 0.8rem; /* Ajusta el tamaño de la fuente para hacer el texto más pequeño */
+  margin-top: 4px; /* Reduce el margen superior */
+  line-height: 1.2; /* Ajusta la altura de la línea para reducir la altura general */
+}
+
+.error-text p {
+  margin: 0;
+  padding: 0;
+}
+
+.checkbox-color-border {
+  --background-checked: transparent;
+  --border-color-checked: transparent;
+  display: flex;
+  align-items: end;
+  /* Esto estiliza el contenedor si es necesario */
+}
+
+/* Aplica el borde rojo al checkbox interno */
+.checkbox-color-border .checkbox-danger {
+  --border-color: red;
+  --checkmark-color: var(--ion-color-danger);
+}
+
+.checkbox-color-border .checkbox-warning {
+  --border-color: orange;
+  --checkmark-color: var(--ion-color-warning);
+}
+
+.checkbox-color-border .checkbox-success {
+  --border-color: green;
+  --checkmark-color: var(--ion-color-success);
+}
+
+.checkbox-color-border .checkbox-medium {
+  --border-color: grey;
+  --checkmark-color: var(--ion-color-primary);
+}
+
+/* Overlay.css */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5); /* Adjust the transparency as needed */
+  z-index: 9999; /* Ensure it's above other elements */
+}
+
+.spinner {
+  border: 16px solid #f3f3f3;
+  border-top: 16px solid #3498db;
+  border-radius: 50%;
+  width: 120px;
+  height: 120px;
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.message {
+  position: absolute;
+  top: calc(50% + 80px);
+  font-size: 24px;
+  color: #fff;
+  text-align: center;
+}
+
+
+/* formStyles.css */
+
+.ion-item-custom {
+  --background: #ffffff;
+  --border-radius: 10px;
+  --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --padding-start: 16px;
+  --padding-end: 16px;
+  --margin-bottom: 15px;
+}
+
+.ion-input-custom,
+.ion-textarea-custom,
+.ion-select-custom {
+  --background: #f9f9f9;
+  --border-radius: 8px;
+  --padding: 12px;
+  --color: #333333;
+  --placeholder-color: #999999;
+  --placeholder-opacity: 0.5;
+  --highlight-color-focused: #3880ff;
+}
+
+.ion-label-custom {
+  --color: #333333;
+  --font-weight: bold;
+  --padding-start: 8px;
+  --padding-end: 8px;
+}
+
+.ion-button-custom {
+  --background: #3880ff;
+  --background-hover: #4c8dff;
+  --background-activated: #3367d6;
+  --color: #ffffff;
+  --border-radius: 8px;
+  --padding-start: 20px;
+  --padding-end: 20px;
+  --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.ion-text-danger-custom {
+  --color: #f44336;
+  --font-size: 14px;
+}
+
+form {
+  background-color: var(--ion-item-background, #f8f8f8); /* color de fondo similar al de IonItem */
+  padding: 8px; /* agrega un padding similar al de IonItem */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* agrega una sombra ligera */
+}

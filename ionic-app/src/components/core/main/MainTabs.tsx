@@ -1,7 +1,7 @@
-import React, { 
+import React, {
   //useEffect
  }  from 'react'
-import { IonTabs, IonRouterOutlet, IonTabBar, IonTabButton, //IonIcon, 
+import { IonTabs, IonRouterOutlet, IonTabBar, IonTabButton, //IonIcon,
 IonLabel } from '@ionic/react'
 import { Route, Redirect } from 'react-router'
 import SchedulePage from '../../../pages/extra/SchedulePage'
@@ -40,9 +40,10 @@ const MainTabs: React.FC<MainTabsProps> = () => {
       <Route path="/tabs/speakers/sessions/:id" component={SessionDetail} />
       <Route path="/tabs/map" render={() => <MapView />} exact={true} />
       <Route path="/tabs/about" render={() => <About />} exact={true} />
+      <Route path="/tabs/list" render={() => <About />} exact={true} />
     </IonRouterOutlet>
     <IonTabBar slot="bottom">
-      {MainMenu && MainMenu.map((tab: TabProps)=> TabButton(tab) )}
+      {MainMenu && MainMenu.map(TabButton)}
     </IonTabBar>
   </IonTabs>
 

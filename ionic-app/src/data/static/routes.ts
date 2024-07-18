@@ -3,7 +3,7 @@ import * as icon from 'ionicons/icons'
 let testingFeature = true
 let testing = testingFeature && process.env.REACT_APP_TESTING
 
-export const routes = {    
+export const routes = {
   appPages: [
     //{ title: 'Schedule', path: '/tabs/schedule', icon: calendarOutline },
     //{ title: 'Speakers', path: '/tabs/speakers', icon: peopleOutline },

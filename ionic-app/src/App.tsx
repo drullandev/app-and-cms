@@ -77,7 +77,7 @@ interface DispatchProps {
 
 interface IonicAppProps extends StateProps, DispatchProps { }
 
-const IonicApp: React.FC<IonicAppProps> = ({ 
+const IonicApp: React.FC<IonicAppProps> = ({
   darkMode,
   schedule,
   hasLoggedIn,
@@ -85,7 +85,7 @@ const IonicApp: React.FC<IonicAppProps> = ({
   loadConfData,
   loadUserData
 }) => {
-  
+
   // Initialize Firebase
 
   const app = initializeApp(firebaseConfig)
@@ -95,7 +95,7 @@ const IonicApp: React.FC<IonicAppProps> = ({
     loadUserData()
     loadConfData()
     setData(initialUser)
-    
+
     // eslint-disable-next-line
   }, [])
 
@@ -107,7 +107,7 @@ const IonicApp: React.FC<IonicAppProps> = ({
           {/*
             We use IonRoute here to keep the tabs state intact,
             which makes transitions between tabs and non tab pages smooth
-          */}          
+          */}
           <Route path='/tabs' render={() => <MainTabs />} />
           <Route path='/:slug' component={Page} />
           <Route path='/tabs/home/:id' render={() => <MainTabs />} />
@@ -133,7 +133,6 @@ const IonicApp: React.FC<IonicAppProps> = ({
 }
 
 const App: React.FC = () => <AppContextProvider>
-  
     <IonicAppConnected />
   </AppContextProvider>
 

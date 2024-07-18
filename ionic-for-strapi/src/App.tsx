@@ -80,7 +80,7 @@ const IonicApp: React.FC<IonicAppProps> = ({
 
   useEffect(() => {
 
-    //setDarkMode(false)    
+    //setDarkMode(false)
     //loadUserData()
     //loadUserData()
     //loadConfData()
@@ -95,9 +95,9 @@ const IonicApp: React.FC<IonicAppProps> = ({
     <IonApp className={userDarkMode ? 'dark-theme' : ''}>
       <IonReactRouter>
         <IonSplitPane contentId='main'>
-  
+
           {/*<Menu key='mainMenu' slug={'sidenav'} />*/}
-  
+
           <IonRouterOutlet id='main'>
             {/* TODO: Revisistate this case :: We use IonRoute here to keep the tabs state intact, which makes transitions between tabs and non tab pages smooth */}
             <Redirect path='/' to={'/home'} />
@@ -111,7 +111,7 @@ const IonicApp: React.FC<IonicAppProps> = ({
                 key='rtl'
                 setIsLoggedIn={setIsLoggedIn}
                 setNickname={setNickname}
-                setDarkMode={setDarkMode} 
+                setDarkMode={setDarkMode}
               />
             )}/>
           </IonRouterOutlet>
@@ -140,5 +140,5 @@ const IonicAppConnected = connect<{}, StateProps, DispatchProps>({
   },
 
   component: IonicApp
-  
+
 })
