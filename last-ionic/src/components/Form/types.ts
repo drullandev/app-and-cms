@@ -5,6 +5,8 @@ import { Schema } from 'yup';
 export interface FormProps {
   id: string;
   fields: FieldProps[];
+  captcha?: false | boolean;
+  captchaKey?: string;
   buttons: FieldProps[];
   onSuccess:(data: any) => Promise<void>;
   onError: (errors: { [key: string]: any }) => void;
@@ -54,6 +56,7 @@ export interface FieldProps {
   csrfToken?: string;
   hidden?: boolean | false;
   captcha?: string;
+  captchaKey?: string;
 } 
 
 export interface ErrorProps {

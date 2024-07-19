@@ -14,6 +14,7 @@ import Skeleton from './Skeleton';
 import Error from './Error';
 import Button from './Button';
 import ReCAPTCHA from 'react-google-recaptcha';
+import Security from '../../../classes/Security';
 
 /**
  * Field component that handles various types of form fields with validation, loading states, and error handling.
@@ -33,8 +34,6 @@ const Field = forwardRef<any, {
   loading: boolean; // Added loading prop
 }>(({ field, control, errors, onFieldChange, loading }, ref) => {
 
-  const debug = DebugUtil.setDebug(false);
-
   // State to manage the loading status of the field
   const [loadingField, setLoadingField] = useState<{ [key: string]: boolean }>({});
   const [showSecret, setShowSecret] = useState(false);
@@ -45,7 +44,6 @@ const Field = forwardRef<any, {
       if (row.validationSchema) {
         acc[row.name] = row.validationSchema;
       }
-      return acc;
     }, {});
     return yup.object().shape(shape);
   };
@@ -153,7 +151,7 @@ const Field = forwardRef<any, {
               <IonIcon
                 color={color ?? setColor()}
                 onClick={() => setShowSecret(!showSecret)}
-                icon={showSecret ? icon.eye : icon.eyeOff}
+                icon={showSecret ? icon.eyeOff : icon.eye}
               />
             );
           case 'number':
@@ -190,7 +188,7 @@ const Field = forwardRef<any, {
       ];
 
       const matchingCase = setCases.find(c => c.condition);
-      return matchingCase ? matchingCase.icon : null;
+      return matchingCase ? matchingCase.icon : <></>;
     };
 
     // Checks if a field is required based on the validation schema
@@ -274,7 +272,8 @@ const Field = forwardRef<any, {
           </>
         );
 
-      case 'checkbox': {
+      case 'checkbox':
+        
         let displayColor = 'medium';
 
         if (loadingField[field.name]) {
@@ -311,7 +310,6 @@ const Field = forwardRef<any, {
             <Error name={field.name} label={field.label} errors={errors} />
           </>
         );
-      }
 
       case 'date':
       case 'datetime':
@@ -408,28 +406,37 @@ const Field = forwardRef<any, {
           ></IonInput>
         );
   
-      case 'recaptcha':
+      case 'recaptcha':{
         return (
-          <div style={{ margin: '4%' }}>
-            <IonLabel>{field.label}</IonLabel>
+          <div style={{ margin: '4%', border: '2px solid #BF4F74' }}>
+            <div className="captcha-container">
+              <IonLabel>{field.label}</IonLabel>
+            </div>
             {process.env.NODE_ENV === 'production' ? (
-              <ReCAPTCHA 
-                {...recaptchaProps}
-                sitekey={'asdfasdf'}
-                onChange={(value) => controller.onChange(value)}
-              />
-            ) : (
-              <>
-                <IonLabel>Write this: {'asdfads'}</IonLabel>
-                <IonInput {...commonProps}
-                  validationSchema={yup.string()
-                    .required()
-                    .oneOf(['asdfads'])}
+              <div>
+                <ReCAPTCHA 
+                  {...recaptchaProps}
+                  sitekey={'asdfasdf'}
+                  onChange={(value) => controller.onChange(value)}
                 />
-              </>
+              </div>
+            ) : (//TOXO: asdf must come from env file
+              <div style={{}}>
+                <div className="captcha-container">
+                  <IonLabel className="captcha">{field.captchaKey}</IonLabel>
+                </div>
+                <div>
+                  <IonInput 
+                    {...commonProps}
+                    placeholder={"Write this: " + field.captchaKey}
+                  />
+                </div>
+              </div>
+
             )}
           </div>
         );
+      }
     }
   };
 

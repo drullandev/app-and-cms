@@ -15,6 +15,16 @@ class Security {
       this.csrfTokens.set(sessionId, token);
       return token;
     }
+
+    public generateCaptcha(length = 8): string {
+      const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+      let captcha = '';
+      for (let i = 0; i < length; i++) {
+        const randomIndex = Math.floor(Math.random() * characters.length);
+        captcha += characters[randomIndex];
+      }
+      return captcha;
+    }
   
     /**
      * Validates a given CSRF token against the stored token for the session ID.

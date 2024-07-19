@@ -1,6 +1,5 @@
 // Global imports
 import React from 'react';
-import ReactGA from'react-ga';
 
 // Component imports
 import './styles.scss';

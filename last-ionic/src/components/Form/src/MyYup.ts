@@ -1,5 +1,5 @@
 import * as yup from 'yup';
-import { FieldProps } from '../types';
+import { FieldProps, FormProps } from '../types';
 
 export const buildValidationSchema = (fields: FieldProps[]) => {
   const shape = fields.reduce((acc: any, row: FieldProps) => {

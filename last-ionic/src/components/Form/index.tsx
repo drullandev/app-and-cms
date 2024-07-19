@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { useForm, FieldValues } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import yup from 'yup';
+import * as yup from 'yup';
 import { motion } from 'framer-motion';
 
 import { FormComponentProps, FieldProps, FormProps } from './types';
@@ -20,6 +20,7 @@ import i18n from '../extra/i18n';
 const debug = DebugUtil.setDebug(false);
 
 const Form: React.FC<FormComponentProps> = (formData) => {
+
   const [form, setForm] = useState<FormProps | null>(null); // Ensure form is initially null
   const initialValuesRef = useRef<FieldValues>({});
   const firstFieldRef = useRef<HTMLInputElement | null>(null);
@@ -28,6 +29,7 @@ const Form: React.FC<FormComponentProps> = (formData) => {
 
   const sessionId = 'user-session-id'; // Esto puede ser el ID de la sesión del usuario
   const [csrfToken, setCsrfToken] = useState<string>('');
+  const [captcha, setCaptcha] = useState<string>('');
 
   const { control, handleSubmit, formState: { errors }, reset } = useForm<FieldValues>({
     resolver: yupResolver(buildValidationSchema(form?.fields || [])),
@@ -39,13 +41,24 @@ const Form: React.FC<FormComponentProps> = (formData) => {
     setCsrfToken(token);
   };
 
+  const generateCaptcha = () => {
+    const captcha = Security.generateCaptcha();
+    setCaptcha(captcha);
+  };
+
+  const onFormChange = (fieldName: string, value: any) => {
+    if (debug) Logger.log('• Change', { name: fieldName, value });
+  }
+
   const onSubmit = async (data: FieldValues) => {
     try {
+
       setIsSubmitting(true);
 
       // Filtrar los datos del formulario para eliminar los botones
+      Logger.log('data', data);
       const filteredData = Object.keys(data).reduce((acc, key) => {
-        if (!key.startsWith('button')) { // O puedes usar otra lógica para identificar botones
+        if (!key.startsWith('button')) {
           acc[key] = data[key];
         }
         return acc;
@@ -56,9 +69,8 @@ const Form: React.FC<FormComponentProps> = (formData) => {
         await form?.onSuccess(approvedData)
           .then(()=>{
             generateNewCsrfToken()
-
+            generateCaptcha()
           })
-         // Generate a new CSRF token after successful submission
       } else {
         // Manejo de error en caso de CSRF token inválido
       }
@@ -70,26 +82,21 @@ const Form: React.FC<FormComponentProps> = (formData) => {
     }
   };
 
-  const onFormChange = (fieldName: string, value: any) => {
-    if (debug) Logger.log('• Change', { name: fieldName, value });
-  };
-
   useEffect(() => {
     if (!form) return;
     const newInitialValues = buildInitialValues(form.fields);
     initialValuesRef.current = newInitialValues;
     reset(newInitialValues);
     firstFieldRef.current?.focus();
+    generateNewCsrfToken();
+    generateCaptcha();
+    Logger.log('captcha created')
     setTimeout(() => setIsLoading(false), 1000);
   }, [form, reset]);
 
   useEffect(() => {
     setForm(formData);
   }, [formData]);
-
-  useEffect(() => {
-    generateNewCsrfToken();
-  }, []);
 
   if (!form) {
     return null; // or a loading spinner
@@ -106,6 +113,21 @@ const Form: React.FC<FormComponentProps> = (formData) => {
     }
   ];
 
+  const Captcha = ()=>{
+    return captcha && <Field
+      key={'captcha-' + form.id}
+      field={{
+        name: 'captcha',
+        type: 'captcha',
+        defaultValue: captcha
+      } as FieldProps}
+      control={control}
+      errors={errors}
+      onFieldChange={onFormChange}
+      loading={isLoading}
+    />
+  }
+
   return (
     <>
       <motion.div {...form.settings.animations}>
@@ -120,16 +142,17 @@ const Form: React.FC<FormComponentProps> = (formData) => {
               className={`form-field ${field.className ?? 'col-span-12'} ${field.type == 'hidden' ? 'hidden' : ''}`}
             >
               <Field
+                ref={index === 0 ? firstFieldRef : null} // Assign ref to the first field
                 key={'field-' + (field.name ?? 'field-' + field.id)}
                 field={field}
                 control={control}
                 errors={errors}
                 onFieldChange={onFormChange}
-                ref={index === 0 ? firstFieldRef : null} // Assign ref to the first field
                 loading={isLoading}
               />
             </div>
           ))}
+          {form?.captcha && captcha && <Captcha/>}
           <div>
             {form.buttons.map((button: FieldProps, index: number) => (
               <div
