@@ -2,7 +2,7 @@ import { CSSProperties } from 'react';
 import { ControllerProps, DeepMap, FieldError } from 'react-hook-form';
 import { Schema } from 'yup';
 
-export interface FormProps {
+export interface FormDataProps {
   id: string;
   fields: FieldProps[];
   captcha?: false | boolean;
@@ -13,7 +13,7 @@ export interface FormProps {
   settings?: any;
 }
 
-export interface FormComponentProps extends FormProps {
+export interface FormComponentProps extends FormDataProps {
   onError: (errors: DeepMap<Record<string, any>, FieldError>) => void;
 }
 
@@ -28,6 +28,7 @@ export interface FieldProps {
   name: string;
   label?: any;
   type: string;
+  value?: any;
   required?: false | boolean | undefined;
   validationSchema?: Schema | undefined;
   className?: string;
@@ -57,6 +58,7 @@ export interface FieldProps {
   hidden?: boolean | false;
   captcha?: string;
   captchaKey?: string;
+  placeholder?: string | undefined;
 } 
 
 export interface ErrorProps {

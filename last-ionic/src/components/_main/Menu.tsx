@@ -16,7 +16,7 @@ import SubMenu from './SubMenu'
 
 // Main interfaces
 //import { StateProps } from '../../models/StateProps'
-import { MenuRowProps } from './interfaces/MenuRowProps'
+import { MenuRowProps } from '../../interfaces/MenuRowProps'
 
 // Style
 import './styles/Menu.css'

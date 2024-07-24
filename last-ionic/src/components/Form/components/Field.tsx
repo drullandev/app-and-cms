@@ -44,6 +44,7 @@ const Field = forwardRef<any, {
       if (row.validationSchema) {
         acc[row.name] = row.validationSchema;
       }
+      return acc;
     }, {});
     return yup.object().shape(shape);
   };
@@ -156,6 +157,8 @@ const Field = forwardRef<any, {
             );
           case 'number':
             return <IonIcon icon={icon.calculator} color={color ?? setColor()} />;
+          case 'recaptcha':
+            return <IonIcon icon={icon.ribbonOutline} color={color ?? setColor()} />;
           default:
             return <IonIcon icon={icon.checkmarkCircle} color={color ?? setColor()} />;
         }
@@ -179,9 +182,9 @@ const Field = forwardRef<any, {
           icon: (() => {
             try {
               validationSchema.validateSyncAt(fieldName, { [fieldName]: controller.value });
-              return setIcon('success');
+              return setIcon('success'); // Change to green if valid
             } catch (error) {
-              return setIcon('danger');
+              return setIcon('danger'); // Keep red if invalid
             }
           })()
         }
@@ -421,18 +424,33 @@ const Field = forwardRef<any, {
                 />
               </div>
             ) : (//TOXO: asdf must come from env file
-              <div style={{}}>
+            <>
+              <div style={{ margin: '4%'}}>
+                <>
                 <div className="captcha-container">
-                  <IonLabel className="captcha">{field.captchaKey}</IonLabel>
+                  <IonLabel className="captcha">{field.captcha}</IonLabel>
                 </div>
-                <div>
-                  <IonInput 
-                    {...commonProps}
-                    placeholder={"Write this: " + field.captchaKey}
-                  />
-                </div>
+                  <IonItem>
+                    <IonInput
+                      type='text'
+                      label={'Write here the captcha text!' + (checkIfFieldIsRequired(field.name) ? ' *' : '')}
+                      labelPlacement="floating"
+                      value={controller.value}
+                      disabled={loading}
+                      aria-invalid={errors && errors[field.name ?? field.id ?? 'input'] ? 'true' : 'false'}
+                      {...commonProps}
+                      onBlur={() => { // Add onBlur to force validation when the field loses focus
+                        validationSchema && validationSchema.validateAt(field.name, { [field.name]: controller.value })
+                          .then(() => {})
+                          .catch(() => {});
+                      }}
+                    />
+                    {fieldStatusIcon(controller, field.name, errors)}
+                  </IonItem>
+                  <Error name={field.name} label={field.label} errors={errors} />
+                </>
               </div>
-
+            </>
             )}
           </div>
         );

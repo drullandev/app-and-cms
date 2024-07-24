@@ -1,68 +1,113 @@
-// Global imports
-import React from 'react';
-import ReactGA from'react-ga';
+import React, { useEffect, useRef } from 'react';
+import { Route } from 'react-router-dom';
+import { IonApp, IonRouterOutlet, IonSplitPane } from '@ionic/react';
+import { IonReactRouter } from '@ionic/react-router';
 
-// Component imports
-import './styles.scss';
+// Import configurations and utilities
+import './config';
+import './styles';
+import './types';
+import DebugUtil from './../classes/DebugUtil';
+import Logger from '../classes/LoggerClass';
+import { withLifecycleHooks, LifecycleHooks } from '../interfaces/LifecycleHooks';
 
-// Used Components
-import Page from '../components/Page';
-import Header from '../components/main/Header';
-import Form from '../components/Form';
-// Used Source
-import { loginForm } from './source';
-// Used Reducers
-import { connect } from '../reducer/src/connect';
-// This component
-import { PageProps } from '../components/Page/types';
+// Import Redux-related utilities and actions
+import { connect } from './../reducer/src/connect';
+import { OwnProps, ComponentProps, StateProps, DispatchProps, mapStateToProps, mapDispatchToProps } from './reducer';
 
+// Import application pages and components
+import { Account, ChangePassword, Home, Login, Logout, MainTabs, Menu, Page, Recover, ResetPassword, Signup, Support, TestForm, Tutorial } from './components';
 
-// Component Reducer
-import { OwnProps, ComponentProps, StateProps, DispatchProps, mapStateToProps, mapDispatchToProps } from './reducer'
-import i18n from '../components/extra/i18n';
-import { IonFab, IonFabButton, IonIcon } from '@ionic/react';
-import { add } from 'lodash';
-import { checkboxOutline } from 'ionicons/icons';
+// App component
+const App: React.FC<ComponentProps & LifecycleHooks> = (props) => {
+  const { darkMode, loadConfData, loadUserData, setData, initialUser, onLoad, afterMount, beforeUpdate, afterUpdate, beforeDismount, onError } = props;
 
-const Sheet: React.FC<ComponentProps> = (pageProps) => {
+  const debug = DebugUtil.setDebug(false);
+  const prevPropsRef = useRef<ComponentProps>(props);
+  const prevStateRef = useRef<any>(null);
 
-  const pageSettings : PageProps = {
-    settings: {
-      id: 'login-page',
-      //skeleton: true
-      //animated: "true"
-    },
-    ga4: {
-      category: 'Interacción', // Categoría del evento (puede ser cualquier nombre relevante)
-      action: 'Clic en botón', // Acción realizada (por ejemplo, 'Clic en botón')
-      label: 'Botón de Ejemplo', // Etiqueta opcional para detalles adicionales
-    },
-    header: ()=> {
-      const headerProps = {
-        label: i18n.t('Login'),
-        slot: 'start',
-        loading: pageProps.loading || false
+  useEffect(() => {
+    console.log('onLoad effect triggered');
+    if (onLoad) {
+      onLoad(() => {
+        Logger.log('onLoad callback executed');
+        loadConfData();
+        loadUserData();
+        setData(initialUser);
+      });
+    }
+  }, [onLoad, loadConfData, loadUserData, setData, initialUser]);
+
+  useEffect(() => {
+    console.log('afterMount effect triggered');
+    if (afterMount) {
+      afterMount(() => {
+        Logger.log('afterMount callback executed');
+      });
+    }
+  }, [afterMount]);
+
+  useEffect(() => {
+    if (beforeUpdate) {
+      beforeUpdate(prevPropsRef.current, prevStateRef.current, () => {
+        Logger.log('beforeUpdate callback executed');
+      });
+    }
+    if (afterUpdate) {
+      afterUpdate(prevPropsRef.current, prevStateRef.current, () => {
+        Logger.log('afterUpdate callback executed');
+      });
+    }
+    prevPropsRef.current = props;
+    prevStateRef.current = null;
+  }, [props, beforeUpdate, afterUpdate]);
+
+  useEffect(() => {
+    return () => {
+      if (beforeDismount) {
+        beforeDismount(() => {
+          Logger.log('beforeDismount callback executed');
+        });
       }
-      return <Header {...headerProps} />
-    },
-    content: () => {
-      return (
-        <>
-
-          <IonFab>
-          <IonFabButton>
-            <IonIcon icon={checkboxOutline}></IonIcon>
-            </IonFabButton>
-          </IonFab>
-        </>
-      );
-    },
-    footer: ()=>{ return <></>}
-  };
+    };
+  }, [beforeDismount]);
 
   return (
-    <Page {...pageSettings} />
+    <IonApp className={`${darkMode ? 'dark-theme' : ''}`}>
+      <IonReactRouter>
+        <IonSplitPane contentId='main'>
+          <Menu />
+          <IonRouterOutlet id='main'>
+            <Route path='/tabs' render={() => <MainTabs />} />
+            <Route path='/:slug' component={Page} />
+            <Route path='/tabs/home/:id' render={() => <MainTabs />} />
+            <Route path='/tabs/:slug' render={() => <MainTabs />} />
+            <Route path='/tutorial' component={Tutorial} />
+            <Route path='/login' component={Login} />
+            <Route path='/test' component={TestForm} />
+            <Route path='/sign-up' component={Signup} />
+            <Route path='/reset' component={ResetPassword} />
+            <Route path='/recover' component={Recover} />
+            <Route path='/support' component={Support} />
+            <Route path='/account' component={Account} />
+            <Route path='/change-password' component={ChangePassword} />
+            <Route path='/logout' render={() => <Logout />} />
+            <Route path='/' component={Home} exact />
+          </IonRouterOutlet>
+        </IonSplitPane>
+      </IonReactRouter>
+    </IonApp>
   );
 };
 
-export default connect<OwnProps, StateProps, DispatchProps>({ mapStateToProps, mapDispatchToProps, component: Sheet });
+const AppWithLifecycleHooks = withLifecycleHooks(App);
+
+const ConnectedApp: React.FC = () => <AppWithLifecycleHooks />;
+
+export default ConnectedApp;
+
+const ConnectedAppWithRedux = connect<OwnProps, StateProps, DispatchProps>({
+  mapStateToProps,
+  mapDispatchToProps,
+  component: AppWithLifecycleHooks,
+});

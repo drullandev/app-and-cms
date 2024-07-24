@@ -7,7 +7,7 @@ import './styles.scss';
 
 // Used Components
 import Page from '../../components/Page';
-import Header from '../../components/main/Header';
+import Header from '../../components/_main/Header';
 import Form from '../../components/Form';
 // Used Source
 import { signupForm } from './source';
@@ -18,7 +18,7 @@ import { PageProps } from '../../components/Page/types';
 
 // Component Reducer
 import { OwnProps, ComponentProps, StateProps, DispatchProps, mapStateToProps, mapDispatchToProps } from './reducer'
-import i18n from '../../components/extra/i18n';
+import i18n from '../../components/_extra/i18n';
 
 const Signup: React.FC<ComponentProps> = (pageProps) => {
 

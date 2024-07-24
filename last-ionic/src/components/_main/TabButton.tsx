@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { IonTabButton, IonLabel } from '@ionic/react'
 
-import { TabButtonProps } from './interfaces/TabButtonProps'
+import { TabButtonProps } from '../../interfaces/TabButtonProps'
 
 //import { restGet } from '../../../data/utils/rest/rest.utils'
 

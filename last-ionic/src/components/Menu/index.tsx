@@ -1,6 +1,6 @@
 import React from 'react'
 import { RouteComponentProps, withRouter, useLocation } from 'react-router'
-import i18n from '../extra/i18n'
+import i18n from '../_extra/i18n'
 import { IonContent, IonIcon, IonItem, IonLabel, IonList, IonListHeader, IonMenu, IonMenuToggle, IonToggle } from '@ionic/react'
 
 import { connect } from '../../reducer/src/connect'

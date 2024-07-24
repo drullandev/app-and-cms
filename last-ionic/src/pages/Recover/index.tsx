@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { useIonToast } from '@ionic/react'
+import { IonItem, useIonToast } from '@ionic/react'
 import { useTranslation } from 'react-i18next'
 
 
@@ -12,7 +12,7 @@ import '../../styles/index.scss'
 import { PageProps } from '../../components/Page/types'
 import Form from '../../components/Form'
 import Page from '../../components/Page'
-import Header from '../../components/main/Header'
+import Header from '../../components/_main/Header'
 import { recover } from './source';
 
 // Component Reducer
@@ -33,7 +33,9 @@ const Recover: React.FC<ComponentProps> = ({
     header: ()=> <Header label={"Recover"} slot="start"/>,
     content: ()=>{//Remember, you are in a content yet
       return <>
-          <Form {...recover()} />
+        <IonItem>{t('Please include here you account mail to recover your account')}</IonItem>
+        <IonItem>{t('After that check your email box')}</IonItem>
+        <Form {...recover()} />
       </>
     },
     footer: ()=>{

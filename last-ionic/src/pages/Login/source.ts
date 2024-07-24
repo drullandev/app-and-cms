@@ -9,10 +9,10 @@ import DebugUtil from '../../classes/DebugUtil';
 import RestAPI from '../../classes/Rest';
 import RestOutput from '../../classes/RestOutput';
 
-import { FormProps } from '../../components/Form/types';
+import { FormDataProps } from '../../components/Form/types';
 
 import { setData, setLoading, setisLogged } from '../../reducer/data/user/user.actions';
-import Logger from '../../classes/Logger';
+import Logger from '../../classes/LoggerClass';
 
 export const loginForm = ({
   setisLogged
@@ -20,7 +20,7 @@ export const loginForm = ({
   setLoading: (loading: boolean) => void;
   setData: (data: any) => void;
   setisLogged: (isLoggedIn: boolean) => void;
-}): FormProps => {
+}): FormDataProps => {
 
   const { t } = useTranslation();
   const history = useHistory();
@@ -30,6 +30,7 @@ export const loginForm = ({
   
   return {
     id: 'login-page',
+    captcha: true,
     settings: {
       autoSendIfValid: false,
       animations: {
@@ -64,26 +65,6 @@ export const loginForm = ({
           .max(16, t('Password must be at max 16 characters')),
         className: 'col-span-12',
         secret: true
-      },
-      {
-        name: 'agreement',
-        label: t('Accept the publicity agreement'),
-        type: 'checkbox',
-        defaultValue: false,
-        className: 'col-span-12',
-        validationSchema: yup.boolean()
-        .required(t('Accept agreement is required'))
-          .oneOf([true], t('You must accept the terms and conditions'))
-      },
-      {
-        name: 'recaptcha',
-        label: t('Please, can you complete the captcha?'),
-        type: 'recaptcha',
-        siteKey: 'pinga',
-        validationSchema: yup.string(),
-        onClick: ()=>{
-          Logger.log(' • Done recaptcha!')
-        }
       }
     ],
     buttons:[      
@@ -91,7 +72,7 @@ export const loginForm = ({
         name: 'submit',
         label: t('Submit'),
         type: 'submit',
-        style: { borderRadius: '20px', float: 'left', width: '46%', margin: '2%' },
+        style: { borderRadius: '20px', float: 'left', width: '46%', margin: '2%'},
         icon: icon.starOutline
       },
       {

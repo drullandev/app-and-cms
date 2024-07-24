@@ -1,7 +1,7 @@
 import DebugUtil from '../../../classes/DebugUtil'
 import { UserActions } from './user.actions'
 import { UserState } from './user.state'
-import Logger from '../../../classes/Logger';
+import Logger from '../../../classes/LoggerClass';
 
 const debug = DebugUtil.setDebug(true);
 

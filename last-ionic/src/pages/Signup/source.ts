@@ -12,8 +12,8 @@ import RestOutput from '../../classes/RestOutput';
 import { ComponentProps } from './reducer';
 
 import { setData, setLoading, setisLogged } from '../../reducer/data/user/user.actions';
-import Logger from '../../classes/Logger';
-import { FormProps } from '../../components/Form/types';
+import Logger from '../../classes/LoggerClass';
+import { FormDataProps } from '../../components/Form/types';
 
 export const signupForm = ({
     setisLogged
@@ -21,7 +21,7 @@ export const signupForm = ({
     setLoading: (loading: boolean) => void;
     setData: (data: any) => void;
     setisLogged: (isLoggedIn: boolean) => void;
-  }): FormProps => {
+  }): FormDataProps => {
 
   const { t } = useTranslation();
   const history = useHistory();
@@ -43,6 +43,7 @@ export const signupForm = ({
         borderRadius: '0%'
       }
     },
+    captcha: true,
     fields: [
       {   
         name: 'username',
@@ -89,13 +90,14 @@ export const signupForm = ({
         secret: true
       },
       {
-        name: 'recaptcha',
-        label: t('Please, can you complete the captcha?'),
-        type: 'recaptcha',
-        siteKey: 'sitekey_TODO',//TODO
-        onClick: ()=>{
-          Logger.log(' • Done recaptcha!')
-        }
+        name: 'agreement',
+        label: t('Accept the publicity agreement'),
+        type: 'checkbox',
+        defaultValue: false,
+        className: 'col-span-12',
+        validationSchema: yup.boolean()
+        .required(t('Accept agreement is required'))
+          .oneOf([true], t('You must accept the terms and conditions'))
       }
     ],
     buttons:[      

@@ -13,7 +13,7 @@ import Page from '../../components/Page'
 import Form from '../../components/Form'
 import * as yup from 'yup'
 import * as icon from 'ionicons/icons'
-import Icon from '../../components/main/Icon'
+import Icon from '../../components/_main/Icon'
 import { OwnProps, ComponentProps, StateProps, DispatchProps, mapStateToProps, mapDispatchToProps } from './reducer'
 import DebugUtil from '../../classes/DebugUtil'
 

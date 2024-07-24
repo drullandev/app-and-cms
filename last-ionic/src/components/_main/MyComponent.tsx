@@ -15,7 +15,7 @@ import MapView from '../../extra/MapView'
 //import Content from './Content'
 //import Main from './Main'
 
-import { MyComponentProps } from './interfaces/MyComponentProps'
+import { MyComponentProps } from '../../interfaces/MyComponentProps'
 
 //const  testing = false
 

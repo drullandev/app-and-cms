@@ -6,8 +6,8 @@ import { useHistory } from 'react-router-dom'
 
 //import { restGet } from '../../../data/utils/rest/rest.utils'
 
-import { PathProps } from './interfaces/PathProps'
-import { MenuRowProps } from './interfaces/MenuRowProps'
+import { PathProps } from '../../interfaces/PathProps'
+import { MenuRowProps } from '../../interfaces/MenuRowProps'
 
 // Style
 import './styles/Menu.css'

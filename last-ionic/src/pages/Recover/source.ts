@@ -9,11 +9,11 @@ import DebugUtil from '../../classes/DebugUtil';
 import RestAPI from '../../classes/Rest';
 import RestOutput from '../../classes/RestOutput';
 
-import { FormProps } from '../../components/Form/types';
+import { FormDataProps } from '../../components/Form/types';
 
 import { setData, setLoading, setisLogged } from '../../reducer/data/user/user.actions';
 
-export const recover = (): FormProps => {
+export const recover = (): FormDataProps => {
 
   const { t } = useTranslation();
   const history = useHistory();
@@ -22,7 +22,7 @@ export const recover = (): FormProps => {
   const debug = DebugUtil.setDebug(false);
   
   return {
-    id: 'login-page',
+    id: 'recover-page',
     settings: {
       autoSendIfValid: false,
       animations: {
@@ -35,12 +35,12 @@ export const recover = (): FormProps => {
         borderRadius: '0%'
       }
     },
+    captcha: true,
     fields: [
       {
         name: 'email',
         label: t('Email'),
         type: 'email',
-        defaultValue: '',
         validationSchema: yup.string()
           .required(t('Email is required'))
           .email(t('This email is invalid...')),

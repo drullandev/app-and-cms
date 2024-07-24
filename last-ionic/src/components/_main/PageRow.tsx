@@ -5,7 +5,7 @@ import Menu from './Menu'
 import Form from '../Form'
 import MyComponent from './MyComponent'
 
-import { PageRowProps } from './interfaces/PageRowProps'
+import { PageRowProps } from '../../interfaces/PageRowProps'
 
 /**
  * Painting a page row ;)

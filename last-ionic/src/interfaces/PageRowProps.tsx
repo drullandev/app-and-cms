@@ -1,8 +1,8 @@
 import { MenuProps } from './MenuProps'
-//import { FormProps } from '../../Form/FormProps'
+//import { FormDataProps } from '../../Form/FormDataProps'
 export interface PageRowProps {
   menu?: MenuProps[]
-  //form?: FormProps[]
+  //form?: FormDataProps[]
   component?: {
     name: string
     slug: string

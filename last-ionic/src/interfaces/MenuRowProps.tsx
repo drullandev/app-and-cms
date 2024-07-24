@@ -1,4 +1,4 @@
-import { PathProps } from '../interfaces/PathProps'
+import { PathProps } from './PathProps'
 export interface MenuRowProps {
   row: {
     title: string

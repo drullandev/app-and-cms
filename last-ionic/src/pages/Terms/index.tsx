@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next'
 import './About.scss'
 
 //import Popover from '../../components/Popover'
-import Header from '../../components/main/ToolBar'
+import Header from '../../components/_main/ToolBar'
 
 interface AboutProps { }
 

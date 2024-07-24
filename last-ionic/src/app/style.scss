@@ -4,8 +4,12 @@
  * Put style rules here that you want to apply globally. These styles are for
  * the entire app and not just one component.
  */
-
+ 
+ /**
+  * Hide elements that are not needed in the app. (custom for the form 
+  * TODO: also move a copy to the form or move to the form instead mmm lol yes is better)
+ */
  ion-input[type='hidden'], div.hidden {
-    visibility: hidden;
-  }
+  visibility: hidden;
+ }
   

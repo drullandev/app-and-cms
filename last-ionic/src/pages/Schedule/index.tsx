@@ -3,7 +3,7 @@ import React, { useState, useRef } from 'react'
 import { IonToolbar, IonContent, IonPage, IonButtons, IonTitle, IonMenuButton, IonSegment, IonSegmentButton, IonButton, IonIcon, IonSearchbar, IonRefresher, IonRefresherContent, IonToast, IonModal, IonHeader, getConfig } from '@ionic/react'
 import { options, search } from 'ionicons/icons'
 
-import SessionList from '../../components/extra/SessionList'
+import SessionList from '../../components/_extra/SessionList'
 import SessionListFilter from '../../components/SessionListFilter'
 import '../../styles/index.scss'
 

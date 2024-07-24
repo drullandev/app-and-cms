@@ -1,6 +1,6 @@
 // TODO : MAKE IT WORK SOMEHOW!
 import { RouteProps } from 'react-router-dom';
-import MainTabs from '../components/main/MainTabs';
+import MainTabs from '../components/_main/MainTabs';
 import Page from '../components/Page';
 import Tutorial from '../pages/Tutorial';
 import Login from '../pages/Login';

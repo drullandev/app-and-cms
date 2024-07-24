@@ -1,4 +1,4 @@
-import Logger from "./Logger";
+import Logger from "./LoggerClass";
 import DOMPurify from "dompurify";
 
 class Security {

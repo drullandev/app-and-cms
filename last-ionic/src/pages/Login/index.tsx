@@ -6,7 +6,7 @@ import './styles.scss';
 
 // Used Components
 import Page from '../../components/Page';
-import Header from '../../components/main/Header';
+import Header from '../../components/_main/Header';
 import Form from '../../components/Form';
 // Used Source
 import { loginForm } from './source';
@@ -18,12 +18,15 @@ import { PageProps } from '../../components/Page/types';
 
 // Component Reducer
 import { OwnProps, ComponentProps, StateProps, DispatchProps, mapStateToProps, mapDispatchToProps } from './reducer'
-import i18n from '../../components/extra/i18n';
-import { IonFab, IonFabButton, IonIcon } from '@ionic/react';
+import i18n from '../../components/_extra/i18n';
+import { IonFab, IonFabButton, IonIcon, IonItem } from '@ionic/react';
 //import { add } from 'lodash';
 import { checkboxOutline } from 'ionicons/icons';
+import { useTranslation } from 'react-i18next';
 
 const Login: React.FC<ComponentProps> = (pageParams) => {
+  
+  const { t } = useTranslation();
 
   const pageSettings : PageProps = {
     settings: {
@@ -50,10 +53,11 @@ const Login: React.FC<ComponentProps> = (pageParams) => {
     content: () => {
       return (
         <>
+          <IonItem>{t('Wellcome to Festivore!')}</IonItem>
+          <IonItem>{t('Login to your account')}</IonItem>
           <Form {...loginForm(pageParams)} />
           <IonFab>
           <IonFabButton>
-            <IonIcon icon={checkboxOutline}></IonIcon>
             </IonFabButton>
           </IonFab>
         </>

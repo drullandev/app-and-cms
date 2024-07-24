@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { ToastOptions, ModalOptions } from '@ionic/react';
-import { MyExtraOutputOptions } from './interfaces/ModalToastProps';
+import { MyExtraOutputOptions } from '../../interfaces/ModalToastProps';
 
 const ModalToast: React.FC<MyExtraOutputOptions> = (props) => {
 

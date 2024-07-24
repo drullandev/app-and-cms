@@ -2,7 +2,7 @@
 
 import React from 'react'
 import { IonMenuToggle, IonIcon, IonItem, IonLabel } from '@ionic/react'
-import { ListRowProps } from './interfaces/ListRowProps'
+import { ListRowProps } from '../../interfaces/ListRowProps'
 
 const ListRow: React.FC<ListRowProps> = (row) => (
   //(isLoggedIn === false && p.roles.find(el => el.name === 'Public' && el.allowed === true) ) ||

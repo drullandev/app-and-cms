@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { IonList, IonLabel, IonListHeader } from '@ionic/react'
 //import { restGet } from '../../../data/utils/rest/rest.utils'
 
-import { SubMenuProps } from './interfaces/SubMenuProps'
+import { SubMenuProps } from '../../interfaces/SubMenuProps'
 
 import MenuRow from './MenuRow'
 

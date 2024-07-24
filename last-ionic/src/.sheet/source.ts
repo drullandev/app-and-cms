@@ -9,7 +9,7 @@ import DebugUtil from '../classes/DebugUtil';
 import RestAPI from '../classes/Rest';
 import RestOutput from '../classes/RestOutput';
 
-import { FormProps } from '../components/Form/types';
+import { FormDataProps } from '../components/Form/types';
 
 import { setData, setLoading, setisLogged } from '../reducer/data/user/user.actions';
 import Logger from '../classes/Logger';
@@ -20,7 +20,7 @@ export const loginForm = ({
   setLoading: (loading: boolean) => void;
   setData: (data: any) => void;
   setisLogged: (isLoggedIn: boolean) => void;
-}): FormProps => {
+}): FormDataProps => {
 
   const { t } = useTranslation();
   const history = useHistory();

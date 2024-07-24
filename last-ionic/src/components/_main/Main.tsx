@@ -14,7 +14,7 @@ import MainList from './MainList2'
 
 import { connect } from '../../../reducer/src/connect'
 
-import { Filter } from './interfaces/Filter'
+import { Filter } from '../../interfaces/Filter'
 
 export interface FilterModel {
   filterField?: string
