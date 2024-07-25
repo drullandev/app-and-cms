@@ -9,6 +9,7 @@ import Overlay from './components/Overlay';
 import Field from './components/Field';
 import DebugBox from '../DebugBox';
 import Accordion from '../Accordion';
+import GA4Tracker  from '../../classes/GA4'
 
 // Importing utilities and helper functions
 import Logger from '../../classes/LoggerClass';
@@ -17,7 +18,7 @@ import DebugUtil from '../../classes/DebugUtil';
 import { buildValidationSchema, buildInitialValues } from './src/MyYup';
 
 // Importing types
-import { FormComponentProps, FieldProps, FormDataProps } from './types';
+import { FieldProps, FormComponentProps, FormDataProps,  } from './types';
 
 // Importing styles
 import './style.css';
@@ -25,10 +26,10 @@ import './style.css';
 /**
  * Form component that handles rendering and submission of a dynamic form.
  * 
- * @param {FormComponentProps} props - Props to configure the form component.
+ * @param {FormComponentProps} formProps - formProps to configure the form component.
  * @returns {JSX.Element | null} - Rendered form component or null if no form data is available.
  */
-const Form: React.FC<FormComponentProps> = (props) => {
+const Form: React.FC<FormComponentProps> = (formProps: FormComponentProps): JSX.Element | null => {
   // Enable debug mode if necessary
   const debug = DebugUtil.setDebug(true);
 
@@ -46,7 +47,7 @@ const Form: React.FC<FormComponentProps> = (props) => {
   /**
    * Creates a resolver for form validation schema and initial values.
    * 
-   * @param {FieldProps[]} [fields] - Array of field configurations.
+   * @param {FieldformProps[]} [fields] - Array of field configurations.
    * @returns {object} - Object containing resolver and default values.
    */
   const setFormResolver = (fields?: FieldProps[]) => {
@@ -86,7 +87,7 @@ const Form: React.FC<FormComponentProps> = (props) => {
         Logger.error('Invalid CSRF token');
         await formData?.onError({message: 'Invalid CSRF token'});
       }
-
+      GA4Tracker.trackEvent('submit', formProps.ga4)
     } catch (error) {
       Logger.error('Submission error:', error);
     } finally {
@@ -107,7 +108,7 @@ const Form: React.FC<FormComponentProps> = (props) => {
    * Generates a CAPTCHA if required by form settings.
    */
   const generateCaptcha = () => {
-    if (props.captcha) {
+    if (formProps.captcha) {
       const captcha = Security.generateCaptcha();
       Logger.log('Generated CAPTCHA:', captcha);
       setCaptcha(captcha);
@@ -133,9 +134,9 @@ const Form: React.FC<FormComponentProps> = (props) => {
   // Update form data when CSRF token and CAPTCHA are available
   useEffect(() => {
     
-    const setInitialForm = (props?: FormComponentProps) => {
+    const setInitialForm = (formProps?: FormComponentProps) => {
 
-      const fields = [...(props?.fields || [])];
+      const fields = [...(formProps?.fields || [])];
       const csrfFieldIndex = fields.findIndex(field => field.name === 'csrf');
 
       if (csrfToken && csrfFieldIndex === -1) {
@@ -149,7 +150,7 @@ const Form: React.FC<FormComponentProps> = (props) => {
         });
       }
 
-      if (captcha && props?.captcha) {
+      if (captcha && formProps?.captcha) {
         fields.push({
           name: 'captcha',
           type: 'recaptcha',
@@ -163,15 +164,18 @@ const Form: React.FC<FormComponentProps> = (props) => {
       Logger.log('Updated formData fields:', fields);
 
       return {
-        ...props,
+        ...formProps,
         fields,
-        settings: props?.settings || {}
+        settings: formProps?.settings || {}
       };
     };
 
-    setFormData(setInitialForm(props) as FormDataProps);
+    setFormData(setInitialForm(formProps) as FormDataProps);
+
+    GA4Tracker.trackEvent('load', formProps.ga4)
     setTimeout(() => setIsLoading(false), 500);
-  }, [csrfToken, captcha, props]);
+    
+  }, [csrfToken, captcha, formProps]);
 
   // Set initial form values and focus on the first input field when formData is available
   useEffect(() => {

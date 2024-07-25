@@ -17,8 +17,9 @@
       this.logs.push(args);
       // Limit the number of stored logs to the most recent 100 entries
       if (this.logs.length > 10000) this.logs.shift();
-      console.warn(...args);
+      console.log(...args);
     }
+    return args;
   }
 
   /**
@@ -38,6 +39,7 @@
     if (this.mustShow()) {
       console.warn(...args);
     }
+    return args;
   }
 
   /**
@@ -49,6 +51,7 @@
     if (this.mustShow()) {
       console.error(...args);
     }
+    return args;
   }
 
   /**
@@ -60,6 +63,7 @@
     if (this.mustShow()) {
       console.info(...args);
     }
+    return args;
   }
 
   /**
@@ -71,6 +75,7 @@
     if (this.mustShow()) {
       console.debug(...args);
     }
+    return args;
   }
 
   /**
@@ -79,6 +84,7 @@
    */
   public show(...args: any) {
     console.info(...args);
+    return args;
   }
 
   /**
@@ -86,7 +92,7 @@
    * 
    * @returns {boolean} - True if the environment is 'development', otherwise false.
    */
-  private mustShow() {
+  private mustShow(): boolean {
     return process.env.NODE_ENV === 'development';
   }
 }

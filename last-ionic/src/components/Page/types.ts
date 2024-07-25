@@ -1,11 +1,4 @@
-export interface inputGa4 {
-  action: string;
-  data: {
-    category: string, // Categoría del evento (puede ser cualquier nombre relevante)
-    action: string, // Acción realizada (por ejemplo, 'Clic en botón')
-    label: string, // Etiqueta opcional para detalles adicionales
-  }
-}
+import { GA4Options } from '../../interfaces/GA4';
 
 export interface IonPageProps {
   id: string;
@@ -25,10 +18,11 @@ export interface IonPageProps {
 
 export interface PageProps {
   settings: IonPageProps;
-  loadingGa4?: inputGa4;
-  header?: Function | undefined;
   content: Function;
+  methods?: Function[];
+  ga4?: GA4Options;
+  captcha?: boolean | undefined;
+  header?: Function | undefined;
   footer?: Function | undefined;
   sidenavs?: Function[];
-  methods?: Function[];
 }

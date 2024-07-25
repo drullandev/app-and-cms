@@ -1,32 +1,35 @@
 // Required
 import React, { useEffect } from 'react'
 import { IonPage, IonContent } from '@ionic/react'
-import { PageProps } from './types'
+// Classes
 import Logger from '../../classes/LoggerClass'
-
-// Are you testing this tools set && app?
-//let debug = testingPage && process.env.REACT_APP_TESTING
+import  GA4Tracker  from '../../classes/GA4'
+// Common
+import { PageProps } from './types'
+import './styles.css'
 
 /**
  * This component is helpfull to generate a Ionic Page
  * David Rullán Díaz
+ * - Also integrated with GA4
  * @param pageProps PageProps
  * @returns JSX.IonPage
  */
 const Page: React.FC<PageProps> = (pageProps) => {
 
-  useEffect(()=>{
-    Logger.info('loading page!')
+  useEffect(()=> {
+    Logger.info(' • Loading page!');
+    GA4Tracker.trackEvent('load', pageProps.ga4)
   },[])
   
   return <IonPage {...pageProps.settings}>
-    {pageProps.header !== undefined && pageProps.header()}
+    {pageProps.header !== undefined && pageProps.header(pageProps)}
     <IonContent>
-      {pageProps.content()}
+      {pageProps.content(pageProps)}
     </IonContent>
-    {pageProps.footer !== undefined && pageProps.footer()}
+    {pageProps.footer !== undefined && pageProps.footer(pageProps)}
   </IonPage>
 
 }
 
-export default Page
+export default React.memo(Page)

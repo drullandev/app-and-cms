@@ -1,12 +1,13 @@
 import { CSSProperties } from 'react';
 import { ControllerProps, DeepMap, FieldError } from 'react-hook-form';
 import { Schema } from 'yup';
+import { GA4Options } from '../../interfaces/GA4';
 
 export interface FormDataProps {
   id: string;
   fields: FieldProps[];
   captcha?: false | boolean;
-  captchaKey?: string;
+  ga4?: GA4Options;
   buttons: FieldProps[];
   onSuccess:(data: any) => Promise<void>;
   onError: (errors: { [key: string]: any }) => void;

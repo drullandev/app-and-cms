@@ -1,31 +1,7 @@
 import React from 'react';
-import {
-  IonHeader,
-  IonToolbar,
-  IonButtons,
-  IonMenuButton,
-  IonTitle,
-  IonButton,
-  IonIcon,
-  IonSearchbar,
-  IonPopover,
-  IonList,
-  IonItem,
-  IonLabel,
-} from '@ionic/react';
+import { IonHeader, IonToolbar, IonButtons, IonMenuButton, IonTitle, IonButton, IonIcon, IonSearchbar, IonPopover, IonList, IonItem, IonLabel } from '@ionic/react';
 import { filter, shareSocial, menu } from 'ionicons/icons';
-
-interface CustomHeaderProps {
-  title: string;
-  showMenuButton?: boolean;
-  showSearchBar?: boolean;
-  showFilterButton?: boolean;
-  showShareButton?: boolean;
-  filters?: string[];
-  onFilterChange?: (filter: string) => void;
-  onShare?: () => void;
-  onSearch?: (query: string) => void;
-}
+import { CustomHeaderProps } from './types';    
 
 const CustomHeader: React.FC<CustomHeaderProps> = ({
   title,
@@ -57,25 +33,35 @@ const CustomHeader: React.FC<CustomHeaderProps> = ({
 
   return (
     <IonHeader>
+
       <IonToolbar>
+
         <IonButtons slot="start">
           {showMenuButton && <IonMenuButton />}
         </IonButtons>
+
         <IonTitle>{title}</IonTitle>
+
         <IonButtons slot="end">
+
           {showFilterButton && (
             <IonButton onClick={() => setShowPopover(true)}>
               <IonIcon slot="icon-only" icon={filter} />
             </IonButton>
           )}
+
           {showShareButton && onShare && (
             <IonButton onClick={onShare}>
               <IonIcon slot="icon-only" icon={shareSocial} />
             </IonButton>
           )}
+          
         </IonButtons>
+
       </IonToolbar>
+
       {showSearchBar && (
+
         <IonToolbar>
           <IonSearchbar
             value={searchQuery}
@@ -83,11 +69,14 @@ const CustomHeader: React.FC<CustomHeaderProps> = ({
             placeholder="Search"
           />
         </IonToolbar>
+
       )}
+
       <IonPopover
         isOpen={showPopover}
         onDidDismiss={() => setShowPopover(false)}
       >
+
         <IonList>
           {filters.map((filter, index) => (
             <IonItem button key={index} onClick={() => handleFilterChange(filter)}>
@@ -95,7 +84,9 @@ const CustomHeader: React.FC<CustomHeaderProps> = ({
             </IonItem>
           ))}
         </IonList>
+
       </IonPopover>
+
     </IonHeader>
   );
 };

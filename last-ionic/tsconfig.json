@@ -14,7 +14,8 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
+    "typeRoots": ["./node_modules/@types", "./types", "./global.d.ts"]
   },
   "include": ["src", "assets/data/fonts_list.ts", "src/config/pages.tsx", "src/config/routes.ts", "static", "src/config/firebase.ts", "src/.sheet", "src/reducer/data/global/data.setters.ts", "stuff/hobform"],
   "references": [{ "path": "./tsconfig.node.json" }]

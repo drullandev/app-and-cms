@@ -20,7 +20,7 @@ const root = createRoot(container!);
  *       If `false`, the application will render without the extra development checks, which might be less confusing
  *       but will miss the additional debugging assistance. Evaluate the impact based on your specific needs and development experience.
  */
-const strictMode = true;
+const strictMode = false;
 
 // Render the React application with or without StrictMode based on the `strictMode` flag
 root.render(

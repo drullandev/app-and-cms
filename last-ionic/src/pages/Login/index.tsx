@@ -34,9 +34,8 @@ const Login: React.FC<ComponentProps> = (pageParams) => {
       //skeleton: true
       //animated: "true"
     },
-    loadingGa4: {
-      action: 'onLoad',
-      data: {
+    ga4: {
+      load: {
         category: 'auth', // Categoría del evento (puede ser cualquier nombre relevante)
         action: 'load', // Acción realizada (por ejemplo, 'Clic en botón')
         label: 'login-landing', // Etiqueta opcional para detalles adicionales

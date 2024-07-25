@@ -1,4 +1,4 @@
-import { AppState } from "../../../../reducer/state";
+import { AppState } from "../../../reducer/state";
 
 export interface OwnProps {
   label: string,

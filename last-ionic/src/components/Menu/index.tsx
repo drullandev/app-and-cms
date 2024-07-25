@@ -43,6 +43,7 @@ const Menu: React.FC<MenuProps> = ({
     return list
       .filter((route) => !!route.path)
       .map((p) => (
+
         <IonMenuToggle key={p.title} auto-hide="false">
           <IonItem
             detail={false}
@@ -56,37 +57,51 @@ const Menu: React.FC<MenuProps> = ({
             <IonLabel>{p.title}</IonLabel>
           </IonItem>
         </IonMenuToggle>
+        
       ));
   }
 
   return (
     <IonMenu type="overlay" disabled={!menuEnabled} contentId="main">
+
       <IonContent forceOverscroll={false}>
+
         <IonList lines="none">
           <IonListHeader>Conference</IonListHeader>
           {renderlistItems(routes.appPages)}
         </IonList>
+
         <IonList lines="none">
+
           <IonListHeader>Account</IonListHeader>
+
           {isAuthenticated
             ? renderlistItems(routes.loggedInPages)
             : renderlistItems(routes.loggedOutPages)}
+
           <IonItem>
+
             <IonIcon
               slot="start"
               icon={moonOutline}
               aria-hidden="true"
             ></IonIcon>
+
             <IonToggle
               checked={darkMode}
               onClick={() => setDarkMode(!darkMode)}
             >
               Dark Mode
             </IonToggle>
+
           </IonItem>
+
         </IonList>
+
         <IonList lines="none">
+
           <IonListHeader>Tutorial</IonListHeader>
+
           <IonItem
             button
             onClick={() => {
@@ -96,8 +111,11 @@ const Menu: React.FC<MenuProps> = ({
             <IonIcon slot="start" icon={hammer} />
             <IonLabel>Show Tutorial</IonLabel>
           </IonItem>
+
         </IonList>
+
       </IonContent>
+
     </IonMenu>
   );
 };

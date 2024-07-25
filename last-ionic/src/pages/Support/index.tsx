@@ -112,7 +112,7 @@ const Support: React.FC<ComponentProps> = ({
       
             await RestAPI.restCallAsync({
               req: {
-                url: 'api/auth/forgot-password',
+                //url: 'api/auth/forgot-password',
                 method: 'POST',
                 data: { email: testing ? import.meta.env.REACT_APP_DEFAULT_EMAIL : data.email }
               },

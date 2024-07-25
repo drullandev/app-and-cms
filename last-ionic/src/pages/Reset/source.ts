@@ -13,7 +13,7 @@ import { FormDataProps } from '../../components/Form/types';
 
 import { setData, setLoading, setisLogged } from '../../reducer/data/user/user.actions';
 
-export const recover = (): FormDataProps => {
+export const Reset = (): FormDataProps => {
 
   const { t } = useTranslation();
   const history = useHistory();
@@ -22,7 +22,7 @@ export const recover = (): FormDataProps => {
   const debug = DebugUtil.setDebug(false);
   
   return {
-    id: 'recover-page',
+    id: 'reset-page',
     settings: {
       autoSendIfValid: false,
       animations: {
@@ -45,7 +45,32 @@ export const recover = (): FormDataProps => {
           .required(t('Email is required'))
           .email(t('This email is invalid...')),
         className: 'col-span-12'
-      }
+      },
+      { 
+        name: 'password',
+        label: t('Password'),
+        type: 'password',
+        defaultValue: '', 
+        validationSchema: yup.string()
+          .required(t('Password is required'))
+          .min(8, t('Password must be at least 8 characters'))
+          .max(16, t('Password must be at max 16 characters')),
+        className: 'col-span-12',
+        secret: true
+      },
+      { 
+        name: 'repeat-password',
+        label: t('Repeat the password'),
+        type: 'password',
+        defaultValue: '', 
+        validationSchema: yup.string()
+          .required(t('Password is required'))
+          .oneOf([yup.ref('password'), ''], 'Passwords must match with previoous one')
+          .min(8, t('Password must be at least 8 characters'))
+          .max(16, t('Password must be at max 16 characters')),
+        className: 'col-span-12',
+        secret: true
+      },
     ],
     buttons:[      
       { 
@@ -67,21 +92,26 @@ export const recover = (): FormDataProps => {
     ],
     onSuccess: async (data: any) => {
 
-      const onSuccess = async (ret: any) => {
-        let user = ret.user
-        user.jwt = ret.jwt // Attaching the JWT to the user level and state...
-        await setisLogged(true)
-        return user
-      }  
-
       await RestAPI.restCallAsync({
         req: {
-          url: '/auth/forgot-password',
+          url: '/auth/reset-password',
           method: 'POST',
-          data: { email: data.email }
+          data: {
+            "code": data.code,
+            "password": data.password,
+            "passwordConfirmation": data.password
+          }
         },
         onSuccess: {
           default: async (ret: any)=>{
+
+            const onSuccess = async (ret: any) => {
+              let user = ret.user
+              user.jwt = ret.jwt // Attaching the JWT to the user level and state...
+              await setisLogged(true)
+              return user
+            } 
+
             await onSuccess(ret.data)
               .then((ret: any)=>{
                 switch (ret.status) {
@@ -106,10 +136,12 @@ export const recover = (): FormDataProps => {
 
     onError: (errors:any) =>{
       presentToast({
-        message: 'Login error!',
+        message: 'Reset error!',
         duration: 2000,
         color: 'warning',
       });
     }
   };
 };
+
+export default Reset;
