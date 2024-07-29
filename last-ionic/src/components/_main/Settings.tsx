@@ -1,4 +1,4 @@
-import * as AppConst from '../../env'
+import * as AppConst from '../../config/env'
 import React from 'react'
 // I did it with graphql
 

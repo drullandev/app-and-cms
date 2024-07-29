@@ -1,19 +1,22 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { IonHeader, IonToolbar, IonButtons, IonMenuButton, IonTitle, IonButton, IonIcon, IonSearchbar, IonPopover, IonList, IonItem, IonLabel } from '@ionic/react';
 import { filter, shareSocial, menu } from 'ionicons/icons';
-import { CustomHeaderProps } from './types';    
+import { ComponentProps } from './types';    
 
-const CustomHeader: React.FC<CustomHeaderProps> = ({
-  title,
-  showMenuButton = true,
-  showSearchBar = true,
-  showFilterButton = true,
-  showShareButton = true,
-  filters = [],
-  onFilterChange,
-  onShare,
-  onSearch,
-}) => {
+const Header: React.FC<ComponentProps> = (HeaderProps) => {
+
+  const {
+    title,
+    showMenuButton = true,
+    showSearchBar = false,
+    showFilterButton = false,
+    showShareButton = false,
+    filters = [],
+    onFilterChange,
+    onShare,
+    onSearch,
+  } = HeaderProps;
+
   const [showPopover, setShowPopover] = React.useState(false);
   const [searchQuery, setSearchQuery] = React.useState('');
 
@@ -32,15 +35,19 @@ const CustomHeader: React.FC<CustomHeaderProps> = ({
   };
 
   return (
+    
     <IonHeader>
 
       <IonToolbar>
+
 
         <IonButtons slot="start">
           {showMenuButton && <IonMenuButton />}
         </IonButtons>
 
+
         <IonTitle>{title}</IonTitle>
+
 
         <IonButtons slot="end">
 
@@ -57,6 +64,7 @@ const CustomHeader: React.FC<CustomHeaderProps> = ({
           )}
           
         </IonButtons>
+
 
       </IonToolbar>
 
@@ -88,7 +96,9 @@ const CustomHeader: React.FC<CustomHeaderProps> = ({
       </IonPopover>
 
     </IonHeader>
+
   );
+
 };
 
-export default CustomHeader;
+export default Header;

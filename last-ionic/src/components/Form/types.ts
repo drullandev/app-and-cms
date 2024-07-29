@@ -60,6 +60,7 @@ export interface FieldProps {
   captcha?: string;
   captchaKey?: string;
   placeholder?: string | undefined;
+  animations?: any
 } 
 
 export interface ErrorProps {

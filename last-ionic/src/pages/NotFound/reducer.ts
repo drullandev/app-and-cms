@@ -1,6 +1,6 @@
 import { RouteComponentProps } from "react-router"; // Import necessary type from react-router
 
-import { AppState } from '../reducer/state'; // Import the type for the global state
+import { AppState } from '../../reducer/state'; // Import the type for the global state
 
 // Define OwnProps to extend RouteComponentProps for routing capabilities
 export interface OwnProps extends RouteComponentProps {}
@@ -15,7 +15,10 @@ export interface DispatchProps {}
 export interface ComponentProps extends OwnProps, StateProps, DispatchProps {}
 
 // mapStateToProps maps the required state properties to the component's props
-export const mapStateToProps = (state: AppState): StateProps => ({});
+
+export const stateProps = {}
+
+export const mapStateToProps = (state: AppState): StateProps => (stateProps);
 
 // mapDispatchToProps maps the action creators to the component's props
 export const mapDispatchToProps: DispatchProps = {};
@@ -23,10 +26,6 @@ export const mapDispatchToProps: DispatchProps = {};
 // Explanation of the reducers and actions:
 
 /**
- * // Component Reducer
- * import { OwnProps, ComponentProps, StateProps, DispatchProps, mapStateToProps, mapDispatchToProps } from './reducer'
- * import DebugUtil from '../../classes/DebugUtil'
- * export default connect<OwnProps, StateProps, DispatchProps>({ mapStateToProps, mapDispatchToProps, component: Account });
  * Reducers:
  * - Reducers are functions that take the current state and an action as arguments, and return a new state.
  * - They are used to manage how the state changes in response to actions.

@@ -4,7 +4,7 @@ import { useHistory } from 'react-router';
 import { useIonToast } from '@ionic/react'
 import * as icon from 'ionicons/icons';
 
-import { HOME_PATH, apiUrl } from '../../env';
+import { HOME_PATH, apiUrl } from '../../config/env';
 import DebugUtil from '../../classes/DebugUtil';
 import RestAPI from '../../classes/Rest';
 import RestOutput from '../../classes/RestOutput';
@@ -78,7 +78,9 @@ export const recover = (): FormDataProps => {
         req: {
           url: '/auth/forgot-password',
           method: 'POST',
-          data: { email: data.email }
+          data: {
+            email: data.email
+          }
         },
         onSuccess: {
           default: async (ret: any)=>{
@@ -88,7 +90,9 @@ export const recover = (): FormDataProps => {
                   case 200:
                     presentToast({ 
                       message: t('user-wellcome', { username: ret.data.user.username }) 
-                    }).then(()=> history.push('/tabs/schedule', { direction: 'none' }))
+                    }).then(()=> 
+                      history.push('/tabs/schedule', { direction: 'none' })
+                    )
                 }            
               })
           }
@@ -104,7 +108,7 @@ export const recover = (): FormDataProps => {
       
     },
 
-    onError: (errors:any) =>{
+    onError: (errors: any) =>{
       presentToast({
         message: 'Login error!',
         duration: 2000,

@@ -13,7 +13,7 @@ import Logger from '../../classes/LoggerClass';
 import Overlay from './components/Overlay';
 import Field from './components/Field';
 
-import { buildValidationSchema, buildInitialValues } from './src/MyYup';
+import { buildValidationSchema, buildInitialValues } from '../../classes/MyYup';
 import Security from '../../classes/Security';
 import i18n from '../i18n';
 

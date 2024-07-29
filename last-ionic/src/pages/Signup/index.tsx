@@ -7,7 +7,7 @@ import './styles.scss';
 
 // Used Components
 import Page from '../../components/Page';
-import Header from '../../components/_main/Header';
+import Header from '../../components/Header';
 import Form from '../../components/Form';
 // Used Source
 import { signupForm } from './source';

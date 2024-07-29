@@ -1,4 +1,4 @@
-import * as AppConst from '../../env'
+import * as AppConst from '../../config/env'
 
 import { IonList, IonInfiniteScroll, IonInfiniteScrollContent, IonItem, IonLabel, IonRefresher, IonRefresherContent, useIonToast } from '@ionic/react'
 import React, { useState, useEffect, useRef } from 'react'

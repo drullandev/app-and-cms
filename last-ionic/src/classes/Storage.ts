@@ -57,4 +57,4 @@ class Storage {
   }
 }
 
-export default new Storage();
+export default Storage.getInstance();

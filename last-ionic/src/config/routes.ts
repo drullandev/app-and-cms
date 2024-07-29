@@ -9,18 +9,18 @@ export const all = import.meta.env
 
 export const routes = { //TODO: Unificar en archivo de configuración con todo esto,,,
 
-  appPages: [
+  appPages: [/*
     { title: 'Schedule', path: '/tabs/schedule', icon: icon.calendarOutline },
     { title: 'Speakers', path: '/tabs/speakers', icon: icon.peopleOutline },
     { title: 'Map', path: '/tabs/map', icon: icon.mapOutline }, // Not for now...
-    { title: 'About', path: '/tabs/about', icon: icon.informationCircleOutline }
-  ],
-
+  */],
+  
   loggedInPages: [
     { title: 'Account', path: '/account', icon: icon.person },
     { title: 'Reset Pass', path: '/reset', icon: icon.person },
     { title: 'Support', path: '/support', icon: icon.help },
-    { title: 'Logout', path: '/logout', icon: icon.logOut }
+    { title: 'Logout', path: '/logout', icon: icon.logOut },
+    { title: 'About', path: '/tabs/about', icon: icon.informationCircleOutline },
   ],
 
   loggedOutPages: [

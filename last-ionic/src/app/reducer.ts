@@ -3,7 +3,7 @@ import { AppState } from '../reducer/state'; // Asegúrate de que esta importaci
 import { loadUserData, setData } from '../reducer/data/user/user.actions'; // Asegúrate de que estas importaciones sean correctas
 import { loadConfData } from '../reducer/data/sessions/sessions.actions';
 import { Schedule } from '../reducer/models/Schedule';
-import { buildInitialValues } from '../components/Form/src/MyYup';
+import { buildInitialValues } from '../classes/MyYup';
 
 
 // Define OwnProps

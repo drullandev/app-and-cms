@@ -10,7 +10,7 @@ import '../../styles/index.scss'
 import { PageProps } from '../../components/Page/types'
 import Form from '../../components/Form'
 import Page from '../../components/Page'
-import Header from '../../components/_main/Header'
+import Header from '../../components/Header'
 import { default as ResetFormData } from './source';
 
 // Component Reducer

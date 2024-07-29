@@ -1,4 +1,4 @@
-import { debug } from '../env'
+import { debug } from '../config/env';
 
 type Timer = ReturnType<typeof setTimeout>;
 
@@ -8,17 +8,30 @@ type Timer = ReturnType<typeof setTimeout>;
  *
  * Usage example:
  * 
- * const debugUtil = new DebugUtil();
+ * const debugUtil = DebugUtil.getInstance();
  * debugUtil.setDebug(true);
  * debugUtil.logInfo('Debug mode is enabled.');
  * const debouncedFunction = debugUtil.debounce(() => console.log('Debounced function called'), 1000);
  * debouncedFunction();
  */
 class DebugUtil {
-
+  private static instance: DebugUtil;
   private timer: Timer | null = null;
-
   public debug: boolean = false;
+
+  // Private constructor to prevent direct instantiation
+  private constructor() {}
+
+  /**
+   * Returns the single instance of DebugUtil.
+   * @returns {DebugUtil} The singleton instance.
+   */
+  public static getInstance(): DebugUtil {
+    if (!DebugUtil.instance) {
+      DebugUtil.instance = new DebugUtil();
+    }
+    return DebugUtil.instance;
+  }
 
   /**
    * Sets the debug mode based on the provided flag or application constants.
@@ -26,7 +39,7 @@ class DebugUtil {
    * @returns The current debug mode.
    */
   public setDebug(debug?: boolean): boolean {
-    this.debug = debug ? (debug ?? debug) : ( debug ?? false );
+    this.debug = debug ?? this.debug ?? false;
     return this.debug;
   }
 
@@ -107,12 +120,12 @@ class DebugUtil {
     }
   }
 
-  public isProduction(){
-    return import.meta.env.NODE_ENV === 'production'
+  public isProduction() {
+    return import.meta.env.NODE_ENV === 'production';
   }
 
-  public isDevelopent(){
-    return import.meta.env.NODE_ENV === 'development'
+  public isDevelopment() {
+    return import.meta.env.NODE_ENV === 'development';
   }
 
   /**
@@ -120,9 +133,8 @@ class DebugUtil {
    * @param label The label for the timer.
    */
   public trackElement(element: Element) {
-
+    // Implementation of trackElement logic
   }
-  
 }
 
-export default new DebugUtil();
+export default DebugUtil.getInstance();

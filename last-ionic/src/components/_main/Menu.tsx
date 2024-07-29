@@ -11,7 +11,7 @@ import { setDarkMode } from '../../../reducer/data/user/user.actions'
 //import { restGet } from '../../../data/utils/rest/rest.utils'
 
 // Components
-import Header from './Header'
+import Header from '../Header'
 import SubMenu from './SubMenu'
 
 // Main interfaces

@@ -20,7 +20,7 @@ import * as yup from 'yup'
 import Form from '../../components/Form'
 
 // Design Dependencies
-import Header from '../../components/_main/Header'
+import Header from '../../components/Header'
 
 const TestForm: React.FC = () => {
 

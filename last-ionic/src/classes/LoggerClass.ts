@@ -4,8 +4,22 @@
  */
  class LoggerClass {
 
-  // Array to store the logs, with a maximum length of 100 entries
+  private static instance: LoggerClass;
   private logs: string[] = [];
+
+  // Private constructor to prevent direct instantiation
+  private constructor() {}
+
+  /**
+   * Returns the single instance of LoggerClass.
+   * @returns {LoggerClass} The singleton instance.
+   */
+  public static getInstance(): LoggerClass {
+    if (!LoggerClass.instance) {
+      LoggerClass.instance = new LoggerClass();
+    }
+    return LoggerClass.instance;
+  }
 
   /**
    * Logs a message with a variable number of arguments.
@@ -14,9 +28,9 @@
    */
   public log(...args: any) {
     if (this.mustShow()) {
-      this.logs.push(args);
+      this.logs.push(args.join(' '));
       // Limit the number of stored logs to the most recent 100 entries
-      if (this.logs.length > 10000) this.logs.shift();
+      if (this.logs.length > 100) this.logs.shift();
       console.log(...args);
     }
     return args;
@@ -95,8 +109,9 @@
   private mustShow(): boolean {
     return process.env.NODE_ENV === 'development';
   }
+  
 }
 
-// Export a single instance of LoggerClass
-const Logger = new LoggerClass();
+// Export the singleton instance of LoggerClass
+const Logger = LoggerClass.getInstance();
 export default Logger;

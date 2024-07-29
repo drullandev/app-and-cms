@@ -1,6 +1,6 @@
 // This way was an awsome one!
 import i18n from 'i18next'
-import { keyTrans } from './classes/i18nextClass'
+import { keyTrans } from '../classes/i18nextClass'
 import * as icon from 'ionicons/icons'
 
 export const all = import.meta.env
@@ -153,6 +153,12 @@ export const fadeVelocity = 300
 // Cors seted: none!!
 export const corsSetted = false
 
+
+
+
+
+
+
 // App main user data!!
 export const appSuperUser = 'system-app-user@maindomain.xyz'
 export const appSuperPass = 'Qwer1234'
@@ -176,7 +182,6 @@ export const menusOrigin = RestAPI + '/menus?slug='
 export const HOME_PATH = '/tabs/schedule'
 export const ADD_DATA = '/add-user-data'
 export const APP_ICON = '/add-user-data'
-
 export const TUTORIAL = '/tutorial'
 export const LOGIN_PATH = '/login'
 
@@ -191,113 +196,6 @@ export const timeout = {
 
 export const paginator = {
   'size' : 8
-}
-
-export const commonFilter = { // Todo: MOVER A LO DE GRAPHQL
-  order : {
-    default: 'desc',
-    options: [ 
-      {
-        label: 'Descendant',
-        value: 'desc'
-      },{
-        label: 'Ascendant',
-        value: 'asc',
-      }
-    ]
-  },
-  fields: {
-    default: 'published_at',
-    options: [
-      {
-        label: 'Published at',
-        value: 'published_at',
-        type: 'date'
-      },{
-        label: 'Created at',
-        value: 'created_at',
-        type: 'date'
-      },{
-        label: 'Updated at',
-        value: 'updated_at',
-        type: 'date'
-      },{
-        label: 'Content',
-        value: 'content',
-        type: 'string'
-      }
-    ]    
-  },
-  conditions: {
-    default: 'contains',
-    options: [
-      {
-        label: 'Distinct',
-        value: 'ne',
-        families: ['all']
-      },
-      {
-        label: 'Lower than',
-        value: 'lt',
-        families: ['all']
-      },
-      {
-        label: 'Lower or equal',
-        value: 'lte',
-        families: ['all']
-      },
-      {
-        label: 'Greater than',
-        value: 'gt',
-        families: ['all']
-      },
-      {
-        label: 'Greater or equal',
-        value: 'gte',
-        families: ['all']
-      },
-      {
-        label: 'Contains',
-        value: 'contains',
-        families: ['all']
-      },
-      {
-        label: 'Contains sensitive',
-        value: 'containss',
-        families: ['all']
-      },
-      {
-        label: 'No Contains',
-        value: 'ncontains',
-        families: ['all']
-      },
-      {
-        label: 'No Contains sensitive',
-        value: 'ncontainss',
-        families: ['all']
-      },
-      {
-        label: 'In',
-        value: 'in',
-        families: ['array']
-      },
-      {
-        label: 'Not in',
-        value: 'nin',
-        families: ['array'] 
-      },
-      {
-        label: 'Equals null',
-        value: 'null',
-        families: []
-      },
-      {
-        label: 'Not equals null',
-        value: 'nnull',
-        families: []
-      }
-    ]
-  }
 }
 
 export const dataUrl           = '/assets/data/data.json'

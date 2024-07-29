@@ -1,21 +1,21 @@
 - Component structures
 
-Structure
-
+- Structure
+  
 │
 ├── src/
 │   ├── components/
 │   │   ├── [componentName]/
 │   │   │   ├── index.tsx
-│   │   │   ├── style.css
 │   │   │   ├── types.ts
+│   │   │   ├── style.css
+│   │   │   └── reducer.ts
 │   │   └── ...
 |   |
 │   ├── models/
 │   │   ├── Schedule.ts
 │   │   ├── Speaker.ts
 │   │   ├── Location.ts
-|   |   |
 |   |   └──...
 │   └── ...
 │ ...
@@ -27,7 +27,10 @@ Structure
 - Features
 
 - Ionic v7
-- Component Form
-- csrf protection
+- Component Form included
+- Csrf protection
 - CAPTCHA
-- Password view switch
+- Password view switch custom
+- GA4 Integration
+- Trackings
+- ... A lot of new classes to do everything you need!
