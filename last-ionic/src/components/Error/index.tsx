@@ -12,12 +12,10 @@ import { warning } from 'ionicons/icons'
 const Error: FC<ErrorProps> = ({ name, label, errors }) => {
   return <IonText color='danger' className='ion-padding-start' style={{ marginLeft: '5px', fontSize: '1rem' }}>
     {errors && errors[name] && (
-      <small>
-        <span role='alert' className='bold fade-in-5' style={{ height: '18px' }}>
-          <IonIcon style={{height: '14px', margin: '-0.7% 1% -0.7% 0'}} icon={warning}/>
-          <IonText>{errors[name].message.replace(name, label)}</IonText>
-        </span>
-      </small>
+      <span role='alert' className='bold fade-in-5' style={{ height: '18px' }}>
+        <IonIcon style={{height: '14px', margin: '-0.7% 1% -0.7% 0'}} icon={warning}/>
+        <IonText aria-live="polite">{errors[name].message.replace(name, label)}</IonText>
+      </span>
     )}
   </IonText>
 }

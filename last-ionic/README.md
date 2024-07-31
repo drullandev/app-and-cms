@@ -27,10 +27,14 @@
 - Features
 
 - Ionic v7
-- Component Form included
-- Csrf protection
-- CAPTCHA
-- Password view switch custom
+-- Component Form included
+- Csrf protection automatic
+- CAPTCHA automatic generation
+  
+-- Page level:
+- Cookies consent (cookie banner)
+- Password view switch customizable
 - GA4 Integration
 - Trackings
+- Better logi distribution with reducers
 - ... A lot of new classes to do everything you need!

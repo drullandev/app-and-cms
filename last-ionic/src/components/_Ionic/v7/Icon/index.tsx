@@ -6,13 +6,12 @@ import { IonIconProps } from './types';
 
 /**
  * Component Icon
- *
  * @param {IonIconProps} props Props of the component
  * @returns React component wrapping IonIcon
  */
 const Icon: React.FC<IonIconProps> = (props: IonIconProps) => {
     return (
-        <IonIcon {...props} />
+        <IonIcon aria-hidden="true" {...props} />
     );
 };
 

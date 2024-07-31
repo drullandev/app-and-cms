@@ -67,7 +67,7 @@ const TestForm: React.FC = () => {
     settings:{
       id: 'login-page',
     },
-    header: () => <Header label={t('Login')} slot={'start'}/>,
+    header: () => <Header />,
     content: () => (<>
         <Form {...formData}/>
       </>

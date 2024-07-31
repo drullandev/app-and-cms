@@ -1,0 +1,98 @@
+/*
+COMPLAIN USAMBILITY RULES EUROPEAN UNION
+https://ionic.io/docs/accessibility
+*/
+
+body {
+    font-size: 16px;
+}
+
+@media (min-width: 600px) {
+    body {
+        font-size: 18px;
+    }
+}
+
+button:focus {
+    outline: 2px solid blue;
+}
+
+/*Sometimes you will want to provide a single level 1 heading but do not want to visually display it.
+
+You can achieve this with css:
+*/
+.screen-reader-only {
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+    height: 1px;
+    position: absolute;
+    white-space: nowrap;
+    overflow: hidden;
+    width: 1px;
+}
+
+/*
+The option to increase contrast is available in:
+
+iOS - Settings > Accessibility > Display & Text Size > Increase Contrast
+The prefers-contrast CSS media feature is used to detect if the user has requested that an increase in contrast.
+
+You can use this property to programmatically increase contrast. For example: a default Ionic application will have a primary color --ion-color-primary of #3880ff. When used with a white background this equates to a Contrast Ratio of 3.68 which does not meet the WCAG Level AA recommendation of 4.5, so lets increase it:
+*/
+@media (prefers-contrast: more) {
+  :root {
+    --ion-color-primary: #2561c9;
+  }
+}
+
+/*
+Dark Mode​
+Lets not forget that your app can also be used in dark mode, or can be used together with a color other than white.
+
+In our case we also need additional contrast in dark mode:
+*/
+
+@media (prefers-contrast: more) and (prefers-color-scheme: dark) {
+  body {
+    --ion-color-primary: #7c9bd1;
+  }
+}
+
+
+/*
+
+Ionic Component Styling​
+You can add css styling to Ionic components so that during keyboard navigation the focused element is easily visible. For example, this css will show a red border around any element:
+*/
+
+ion-input.has-focus,
+button:focus-visible,
+ion-button.ion-focused,
+ion-segment-button.ion-focused,
+ion-radio.ion-focused,
+ion-select.ion-focused,
+ion-fab.ion-focused,
+ion-searchbar.ion-focused,
+ion-checkbox.ion-focused,
+ion-toggle.ion-focused,
+ion-range.ion-focused,
+ion-datetime.ion-focused,
+ion-accordion.ion-focused,
+ion-textarea.ion-focused {
+  outline: 2px solid red;
+}
+
+/*
+Non-interactive Components​
+Some components like ion-badge are not interactive but you may want to make them interactive by allowing a user to click on them. Example:
+
+<ion-badge (click)="dostuff()">33</ion-badge>
+But, this component cannot be reached through keyboard interaction. So it is better to refactor this to:
+
+<button (click)="dostuff()"><ion-badge>33</ion-badge></button>
+You will need to style using focus-visible for the focus area to be visible:
+*/
+
+button:focus-visible {
+  outline: 2px solid red;
+}

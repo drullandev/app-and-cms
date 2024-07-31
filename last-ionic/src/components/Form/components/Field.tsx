@@ -1,6 +1,6 @@
 import React, { useState, forwardRef, useEffect, useCallback } from 'react';
 import { Controller, DeepMap, FieldError } from 'react-hook-form';
-import { IonItem, IonInput, IonTextarea, IonSelect, IonSelectOption, IonCheckbox, IonDatetime, IonLabel, IonRadio, IonRadioGroup, IonRange, IonToggle, IonSkeletonText, IonIcon, IonSpinner, IonButton } from '@ionic/react';
+import { IonItem, IonInput, IonTextarea, IonSelect, IonSelectOption, IonCheckbox, IonDatetime, IonLabel, IonRadio, IonRadioGroup, IonRange, IonToggle, IonSkeletonText, IonSpinner, IonButton } from '@ionic/react';
 import * as yup from 'yup';
 import * as icon from 'ionicons/icons';
 import { debounce } from 'lodash';
@@ -15,6 +15,7 @@ import Error from './Error';
 import Button from './Button';
 import ReCAPTCHA from 'react-google-recaptcha';
 import Security from '../../../classes/Security';
+import Icon from '../../_Ionic/v7/Icon';
 
 /**
  * Field component that handles various types of form fields with validation, loading states, and error handling.
@@ -130,7 +131,7 @@ const Field = forwardRef<any, {
       const setIcon = (color?: string) => {
         if (field.secret) {
           return (
-            <IonIcon color={color ?? setColor()}
+            <Icon color={color ?? setColor()}
               onClick={() => setShowSecret(!showSecret)}
               icon={showSecret ? icon.eye : icon.eyeOff}
             />
@@ -138,29 +139,29 @@ const Field = forwardRef<any, {
         }
         switch (field.type) {
           case 'email':
-            return <IonIcon icon={icon.at} color={color ?? setColor()} />;
+            return <Icon icon={icon.at} color={color ?? setColor()} />;
           case 'date':
           case 'datetime':
           case 'datetime-local':
-            return <IonIcon icon={icon.calendar} color={color ?? setColor()} />;
+            return <Icon icon={icon.calendar} color={color ?? setColor()} />;
           case 'url':
-            return <IonIcon icon={icon.link} color={color ?? setColor()} />;
+            return <Icon icon={icon.link} color={color ?? setColor()} />;
           case 'tel':
-            return <IonIcon icon={icon.call} color={color ?? setColor()} />;
+            return <Icon icon={icon.call} color={color ?? setColor()} />;
           case 'password':
             return (
-              <IonIcon
+              <Icon
                 color={color ?? setColor()}
                 onClick={() => setShowSecret(!showSecret)}
                 icon={showSecret ? icon.eyeOff : icon.eye}
               />
             );
           case 'number':
-            return <IonIcon icon={icon.calculator} color={color ?? setColor()} />;
+            return <Icon icon={icon.calculator} color={color ?? setColor()} />;
           case 'recaptcha':
-            return <IonIcon icon={icon.ribbonOutline} color={color ?? setColor()} />;
+            return <Icon icon={icon.ribbonOutline} color={color ?? setColor()} />;
           default:
-            return <IonIcon icon={icon.checkmarkCircle} color={color ?? setColor()} />;
+            return <Icon icon={icon.checkmarkCircle} color={color ?? setColor()} />;
         }
       };
 
@@ -227,6 +228,7 @@ const Field = forwardRef<any, {
                 value={controller.value}
                 disabled={loading}
                 aria-invalid={errors && errors[field.name ?? field.id ?? 'input'] ? 'true' : 'false'}
+                aria-describedby={commonProps.id}
                 {...commonProps}
                 onBlur={() => { // Add onBlur to force validation when the field loses focus
                   validationSchema && validationSchema.validateAt(field.name, { [field.name]: controller.value })
@@ -296,7 +298,11 @@ const Field = forwardRef<any, {
               style={{paddingTop: '8px', paddingBottom: '8px'}}
               disabled={loading}
             >
-              <IonLabel style={{ display: 'flex', alignItems: 'start', width: '93%' }}>{field.label}</IonLabel>
+              <IonLabel 
+                style={{ display: 'flex', alignItems: 'start', width: '93%' }}
+              >
+                {field.label}
+              </IonLabel>
               <div style={{ display: 'flex', alignItems: 'end' }}
                 className={(errors && errors[field.name] ? 'checkbox-color-border' : '')}>
                 <IonCheckbox
@@ -318,7 +324,11 @@ const Field = forwardRef<any, {
       case 'datetime':
         return (
           <>
-            {field.label && <IonLabel position='floating' aria-label={field.label}>{field.label}</IonLabel>}
+            {field.label && (
+              <IonLabel position='floating' 
+                aria-label={field.label}>{field.label}
+              </IonLabel>
+            )}
             <IonDatetime
               {...commonProps}
               value={controller.value || field.defaultValue}

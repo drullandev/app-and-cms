@@ -17,3 +17,4 @@ import './style.scss';
 
 /* Theme variables */
 import './../theme/variables.css';
+import '../config/accesibility.css';
