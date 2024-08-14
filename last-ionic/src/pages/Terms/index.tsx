@@ -12,7 +12,7 @@ interface AboutProps { }
 
 const About: React.FC<AboutProps> = () => {
 
-  const { t } = useTranslation()
+  const { t } = useTranslation();
 
   const [showPopover, setShowPopover] = useState(false)
   const [popoverEvent, setPopoverEvent] = useState()

@@ -16,7 +16,7 @@ export interface IonPageProps {
   componentDidUnload?: () => void;
 }
 
-export interface PageProps {
+export default interface PagePropsData {
   settings: IonPageProps;
   content: Function;
   methods?: Function[];

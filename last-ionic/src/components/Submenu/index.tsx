@@ -30,7 +30,7 @@ const Submenu: React.FC<SubmenuProps> = (submenu) => {
     return appAssets +  url.replace('uploads/', "")
   }
 
-  let subObj = useMemo(()=>{
+  let subObj = useMemo(() => {
 
     return {
 
@@ -108,7 +108,7 @@ const Submenu: React.FC<SubmenuProps> = (submenu) => {
     
   },[dismissLoader, history, loader, onlineStatus])
 
-  useEffect(()=>{
+  useEffect(() => {
     subObj.load()
   }, [subObj])
 

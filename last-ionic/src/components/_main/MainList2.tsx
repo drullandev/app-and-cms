@@ -101,7 +101,7 @@ const MainList: React.FC<ThisProps> = ({
   }
 
   // Count max pages to avoid get out of range
-  useEffect(()=>{
+  useEffect(() => {
     let dataCall = getDataToCall()
     /*
     restGet(dataCall.slug+'/count')
@@ -130,7 +130,7 @@ const MainList: React.FC<ThisProps> = ({
           break
       }
     })
-    .catch((res: any)=>{
+    .catch((res: any) => {
       //console.log('Opps!!', dataCall, res)
       launchToast('Oppps!!!',JSON.stringify(res))
     })
@@ -138,7 +138,7 @@ const MainList: React.FC<ThisProps> = ({
   }
   
   // Push the selected page data set
-  useEffect(()=>{
+  useEffect(() => {
     pushPage(page)
   },[page])
 
@@ -147,7 +147,7 @@ const MainList: React.FC<ThisProps> = ({
   }
   
   // Push the selected page data set
-  useEffect(()=>{
+  useEffect(() => {
     pushPage(0)
   },[searchString, searchOrder, orderField])
 
@@ -227,8 +227,8 @@ const MainList: React.FC<ThisProps> = ({
       ></IonInfiniteScrollContent>
     </IonInfiniteScroll>
    {/* 
-    <IonButton  expand='block' onClick={(e: any)=>{reloadList(e)}}>Reload list</IonButton>
-    <IonButton  expand='block' onClick={(e: any)=>{pushNextPage(e)}}>Call Next Page</IonButton>
+    <IonButton  expand='block' onClick={(e: any) => {reloadList(e)}}>Reload list</IonButton>
+    <IonButton  expand='block' onClick={(e: any) => {pushNextPage(e)}}>Call Next Page</IonButton>
     */}
 
   </>

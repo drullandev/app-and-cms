@@ -14,7 +14,7 @@ const Toast: React.FC<ToastOptions> = (toastOptions: any) => {
 
   const [showToast, setShowToast] = useState(false);
 
-  useEffect(()=>{
+  useEffect(() => {
     setShowToast(true)
   },[])
 

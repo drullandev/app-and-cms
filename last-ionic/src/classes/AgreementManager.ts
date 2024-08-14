@@ -37,7 +37,7 @@ class Agreement {
         }
         return this.getRandomBoolean();
       } catch (error) {
-        Logger.error('Error checking user in CRM:', error);
+        Logger.error(' • Error checking user in CRM:', error);
         return false;
       }
     };
@@ -46,11 +46,11 @@ class Agreement {
       try {
         if (process.env.NODE_ENV === 'production') {
           await axios.post('/crm/register-user', userData);
-          Logger.log('User registered successfully');
+          Logger.log(' • User registered successfully');
         }
         return this.getRandomBoolean();
       } catch (error) {
-        Logger.error('Error registering user in CRM:', error);
+        Logger.error(' • Error registering user in CRM:', error);
       }
     };
     

@@ -4,7 +4,7 @@ import { useHistory } from 'react-router';
 import { useIonToast } from '@ionic/react'
 import * as icon from 'ionicons/icons';
 
-import { HOME_PATH, apiUrl } from '../../config/env';
+import { LOGIN_PATH, SIGNUP_PATH, apiUrl } from '../../config/env';
 import DebugUtil from '../../classes/DebugUtil';
 import RestAPI from '../../classes/Rest';
 import RestOutput from '../../classes/RestOutput';
@@ -31,6 +31,8 @@ export const signupForm = ({
   
   return {
     id: 'signup-page',
+    captcha: true,
+    agreement: true,
     settings: {
       autoSendIfValid: false,
       animations: {
@@ -43,61 +45,51 @@ export const signupForm = ({
         borderRadius: '0%'
       }
     },
-    captcha: true,
     fields: [
       {   
         name: 'username',
         label: t('User name'),
         type: 'text',
         defaultValue: '',
+        className: 'col-span-12',
         validationSchema: yup.string()
-          .required(t('Username is required')),
-        className: 'col-span-12'
+          .required(t('Username is required'))
+          .min(7, t('Username must be at least 7 characters')),
       },
       {
         name: 'email',
         label: t('Email'),
         type: 'email',
         defaultValue: '',
+        className: 'col-span-12',
         validationSchema: yup.string()
           .required(t('Email is required'))
           .email(t('This email is invalid...')),
-        className: 'col-span-12'
       },
       { 
         name: 'password',
         label: t('Password'),
         type: 'password',
         defaultValue: '', 
+        className: 'col-span-12',
+        secret: true,
         validationSchema: yup.string()
           .required(t('Password is required'))
           .min(8, t('Password must be at least 8 characters'))
           .max(16, t('Password must be at max 16 characters')),
-        className: 'col-span-12',
-        secret: true
       },
       { 
         name: 'repeat-password',
-        label: t('Repeat the password'),
+        label: t('Please, repeat the password'),
         type: 'password',
         defaultValue: '', 
+        className: 'col-span-12',
+        secret: true,
         validationSchema: yup.string()
           .required(t('Password is required'))
-          .oneOf([yup.ref('password'), ''], 'Passwords must match with previoous one')
           .min(8, t('Password must be at least 8 characters'))
-          .max(16, t('Password must be at max 16 characters')),
-        className: 'col-span-12',
-        secret: true
-      },
-      {
-        name: 'agreement',
-        label: t('Accept the publicity agreement'),
-        type: 'checkbox',
-        defaultValue: false,
-        className: 'col-span-12',
-        validationSchema: yup.boolean()
-        .required(t('Accept agreement is required'))
-          .oneOf([true], t('You must accept the terms and conditions'))
+          .max(16, t('Password must be at max 16 characters'))
+          .oneOf([yup.ref('password')], 'Passwords must match with previoous one!'),
       }
     ],
     buttons:[      
@@ -114,48 +106,68 @@ export const signupForm = ({
         type: 'button',
         style: { display: 'inline-block', width: '46%', margin: '2%' },
         onClick: () => {
-          history.push('/register');
+          history.push(SIGNUP_PATH);
         }
       }
     ],
     onSuccess: async (data: any) => {
       
       setLoading(true);
+
+      const signupSuccess = (res: any)=>{
+        setisLogged(true);
+        var newRes = res;
+        setData(res.data.user);
+        newRes.header = t('Greate! Now validate on emaii!');
+        newRes.message = t('Now you are a new honor guest!');
+        var toastProps = RestOutput.catchSuccess(res, newRes);
+        if (debug) Logger.log(toastProps)
+        presentToast(toastProps)
+          .then(() => {
+            history.push(LOGIN_PATH);
+          });
+      }
+
+      const signupError = (res:any)=>{
+        setisLogged(false);
+        var newRes = res;
+        newRes.header = t('Sign-up warning!');
+        newRes.message = t('Error trying to sing-up!');
+        newRes.showInnerMessage = true;
+        var toastProps = RestOutput.catchDanger(res, newRes);
+        if (debug) Logger.log(toastProps)
+        presentToast(toastProps);
+      }
+
       await RestAPI.restCallAsync({
         req: {
           method: 'POST',
-          url: `${apiUrl}/auth/local`,
-          data: {
-            identifier: data.email,
-            password: data.password,
+          url: `${apiUrl}/auth/local/register`,
+          data: () => {
+            return {
+              name: data.name,
+              password: data.password,
+              email: data.email,
+              username: data.username,
+            };
           },
         },
         onSuccess: {
           default: (res: any) => {
-
-            if (res.status === 200) {
-              setData(res.data.user);
-              setisLogged(true);
-
-              presentToast(RestOutput.catchSuccess(res))
-                .then(() => {
-                  history.push(HOME_PATH);
-                });
-
-            } else {
-              presentToast(RestOutput.catchSuccess(res));
+            switch(res.status){
+              case 200:
+                signupSuccess(res);
+                break;
+              case 400:
+              default:
+                signupError(res);
+                break;
             }
-            setLoading(false);
           }
         },
         onError: {
           default: (error: any) => {
-            setisLogged(false);
-            setLoading(false);
-
-            RestOutput.catchDanger(error)
-
-            presentToast(RestOutput.catchDanger(error));
+            signupError(error);
           }
         },
         onFinally: () => {
@@ -164,15 +176,11 @@ export const signupForm = ({
       });
     },
     onError: (errors: any) => {
-      // This is when the form have some error...
       setisLogged(false);
-      setLoading(false);
-      // Set Form errors output
-      // TODO: Prepare the html errors junmp when form errors...
       const output = RestOutput.catchFormError(errors);
       output.header = 'Login error';
       presentToast(output);
-
+      setLoading(false);
     }
   };
 };

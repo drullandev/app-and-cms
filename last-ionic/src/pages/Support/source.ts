@@ -14,7 +14,7 @@ import { FormDataProps } from '../../components/Form/types';
 import { setData, setLoading, setisLogged } from '../../reducer/data/user/user.actions';
 import Logger from '../../classes/LoggerClass';
 
-export const loginForm = ({
+export const loginFormData = ({
   setisLogged
 }: {
   setLoading: (loading: boolean) => void;

@@ -42,7 +42,7 @@ const SessionListItem: React.FC<SessionListItemProps> = ({ row, searchString }) 
     ionItemSlidingRef.current && ionItemSlidingRef.current.close()
   }
 
-  useEffect(()=>{
+  useEffect(() => {
     /*restGet('user-contents', { id: row.id })
     .then(res=>{
       //console.log(res)
@@ -117,8 +117,8 @@ const SessionListItem: React.FC<SessionListItemProps> = ({ row, searchString }) 
         </IonLabel>
       </IonItem>
       <IonItemOptions>
-        <IonItemOption color="danger" onClick={((e:any)=>{console.log(e)})}><Icon slot='' name='trashoutline'/></IonItemOption>
-        <IonItemOption color="favorite" onClick={((e:any)=>{console.log(e)})}><Icon slot='' name='staroutline'/></IonItemOption>
+        <IonItemOption color="danger" onClick={((e:any) => {console.log(e)})}><Icon slot='' name='trashoutline'/></IonItemOption>
+        <IonItemOption color="favorite" onClick={((e:any) => {console.log(e)})}><Icon slot='' name='staroutline'/></IonItemOption>
       </IonItemOptions>
     </IonItemSliding>
   : <IonItem>

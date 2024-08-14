@@ -29,7 +29,7 @@ export function buildYupLocale(_: unknown, t: TFunction): void {
 }
 
 export function Tt(text: string){
-  const { t } = useTranslation()
+  const { t } = useTranslation();
   return <>{t(text) ?? text}</>
 }
 

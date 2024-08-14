@@ -19,8 +19,8 @@ class i18nextClass {
     return this.myTranslations;
   }
 
-  private translate(key: string): string {
-    return i18n.t(key);
+  public translate(key: string): string {
+    return this.myTranslations[key] || key;
   }
 
 }

@@ -34,25 +34,25 @@ const FilterRow: React.FC<ThisProps> = ({ filter }) => {
   }
 
   const resetFilter = (filterField: string) => {
-    commonFilter.fields.options.forEach((field: any)=>{
+    commonFilter.fields.options.forEach((field: any) => {
       if(field.value === filterField ){
         setFilterType(field.type)
       } 
     })
   }
 
-  useEffect(()=>{
+  useEffect(() => {
     if(filterField === '' || filterCondition === '') return
     updateFilter(key, { key: key, type: filterType, field: filterField, action: filterCondition, value: filterValue })
   },[filterField, filterCondition, filterValue])
 
   const keyExist = (newFilter: Filter) => {
-    return filter.filter((row:any, index: number)=>{
+    return filter.filter((row:any, index: number) => {
       if( row.key === newFilter.key ) return newFilter.key
     })
   }
 
-  const updateFilter = (key: number, values: Filter)=>{
+  const updateFilter = (key: number, values: Filter) => {
     /*console.log('values', values)
     var newFilter = []
     for (var i = 0; i < filter.length; i++) {

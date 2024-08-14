@@ -7,7 +7,7 @@ import { useTranslation } from 'react-i18next'
 
 const QRWebModal: React.FC<QRWebModalProps> = ({ dismiss, set, scan, error, close }) => {
 
-  const { t } = useTranslation()
+  const { t } = useTranslation();
   const [data, setData] = useState(null)
 
   return <IonPage>

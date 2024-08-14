@@ -1,15 +1,16 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useForm, FieldValues } from 'react-hook-form';
-import * as yup from 'yup';
+import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
 
 // Importing components
 import Overlay from './components/Overlay';
 import Field from './components/Field';
+import GA4Tracker from '../../classes/GA4';
 import DebugBox from '../DebugBox';
 import Accordion from '../Accordion';
-import GA4Tracker from '../../classes/GA4';
 
 // Importing utilities and helper functions
 import Logger from '../../classes/LoggerClass';
@@ -25,7 +26,10 @@ import { FieldProps, FormComponentProps, FormDataProps } from './types';
 import './style.css';
 
 const Form: React.FC<FormComponentProps> = (formProps: FormComponentProps): JSX.Element | null => {
+  
   const debug = DebugUtil.setDebug(true);
+  const { t } = useTranslation();
+  
   const [csrfToken, setCsrfToken] = useState<string>(''); // CSRF token for security
   const [captcha, setCaptcha] = useState<string>(''); // CAPTCHA value
   const [formData, setFormData] = useState<FormDataProps | null>(null); // Form data configuration
@@ -50,36 +54,36 @@ const Form: React.FC<FormComponentProps> = (formProps: FormComponentProps): JSX.
 
   const generateCsrfToken = () => {
     const token = Security.generateCsrfToken('sessionId');
-    Logger.log('Generated CSRF Token:', token);
+    if (debug) Logger.log(' • Generated CSRF Token:', token);
     setCsrfToken(token);
   };
 
   const generateCaptcha = () => {
     if (formProps.captcha) {
       const captcha = Security.generateCaptcha();
-      Logger.log('Generated CAPTCHA:', captcha);
+      if (debug) Logger.log(' • Generated CAPTCHA:', captcha);
       setCaptcha(captcha);
     }
   };
 
   const getUserIP = async (): Promise<string> => {
     try {
-        const response = await fetch('https://api.ipify.org?format=json');
-        const data = await response.json();
-        console.log(`Tu IP es: ${data.ip}`);
-        setIpAddress(data.ip);
+      const response = await fetch('https://api.ipify.org?format=json');
+      const data = await response.json();
+      if (debug) Logger.log(` • Tu IP es: ${data.ip}`);
+      setIpAddress(data.ip);
     } catch (error) {
-        console.error('Error al capturar la IP:', error);
+      if (debug) Logger.error('Error al capturar la IP:', error);
     }
     return '';
-};
+  };
 
   const onFormChange = (fieldName: string, value: any) => {
-    if (debug) Logger.log('Field change:', { name: fieldName, value });
+    if (debug) Logger.log(' • Field change:', { name: fieldName, value });
   };
 
   const onSubmit = async (data: FieldValues) => {
-    Logger.log('Data to submit (initial):', data);
+    if (debug) Logger.log(' • Data to submit (initial):', data);
 
     try {
       setIsSubmitting(true);
@@ -104,14 +108,14 @@ const Form: React.FC<FormComponentProps> = (formProps: FormComponentProps): JSX.
           await formData?.onSuccess(approvedData);
         }
       } else {
-        Logger.error('Invalid CSRF token');
-        formData?.onError({ message: 'Invalid CSRF token' });
+        if (debug) Logger.error(' • Invalid CSRF token');
+        formData?.onError({ message: ' • Invalid CSRF token' });
       }
 
       GA4Tracker.trackEvent('submit', formProps.ga4);
 
     } catch (error) {
-      Logger.error('Submission error:', error);
+      if (debug) Logger.error('Submission error:', error);
       GA4Tracker.trackEvent('error', formProps.ga4);
     } finally {
       setIsSubmitting(false);
@@ -133,10 +137,36 @@ const Form: React.FC<FormComponentProps> = (formProps: FormComponentProps): JSX.
         fields.push({
           name: 'csrf',
           type: 'hidden',
+          defaultValue: csrfToken,
           validationSchema: yup.string()
             .required('Why the csrf left ó.ò?')
             .oneOf([csrfToken]),
-          defaultValue: csrfToken
+        });
+      }
+
+      if (formProps?.agreement) {
+        fields.push({
+          name: 'agreement',
+          label: t('Accept the publicity agreement'),
+          type: 'checkbox',
+          className: 'col-span-12',
+          defaultValue: false,
+          validationSchema: yup.boolean()
+            .required(t('Accept publicity agreement is required'))
+            .oneOf([true], t('You must accept the publicity agreement'))
+        });
+      }
+
+      if (formProps?.privacy) {
+        fields.push({
+          name: 'lopd',
+          label: t('Accept Privacy and Data Policy'),
+          type: 'checkbox',
+          className: 'col-span-12',
+          defaultValue: false,
+          validationSchema: yup.boolean()
+            .required(t('Accept Privacy and Data Policy agreement is required'))
+            .oneOf([true], t('You must accept the Privacy and Data Policy agreement'))
         });
       }
 
@@ -157,7 +187,7 @@ const Form: React.FC<FormComponentProps> = (formProps: FormComponentProps): JSX.
         settings: formProps?.settings || {}
       };
 
-      Logger.log('Updated formData ():', fields);
+      Logger.log(' • Updated formData ():', fields);
       return newData;
     };
 
@@ -173,7 +203,9 @@ const Form: React.FC<FormComponentProps> = (formProps: FormComponentProps): JSX.
       const newInitialValues = buildInitialValues(formData.fields);
       initialValuesRef.current = newInitialValues;
       reset(newInitialValues);
-      firstFieldRef.current?.focus();
+      if (firstFieldRef.current) {
+        firstFieldRef.current.focus();
+      }
     }
   }, [formData, reset]);
 
@@ -222,13 +254,15 @@ const Form: React.FC<FormComponentProps> = (formProps: FormComponentProps): JSX.
             </motion.div>
           ))}
         </div>
-        {/* Uncomment if needed
-        <Accordion title="Errors" sections={[{ title: 'Errors', content: errors }]} />
-        <DebugBox debug={debug}>          
-          <Accordion title="Form Data" sections={[{ title: 'Form Data', content: formData }]} />
-          <Accordion title="CSRF Token" sections={[{ title: 'CSRF Token', content: csrfToken}]} />
-        </DebugBox>
-        */}
+        {
+        <>
+          <DebugBox debug={debug}>          
+            <Accordion title="Errors" sections={[{ title: 'Errors', content: errors }]} data={undefined} />
+            <Accordion title="Form Data" sections={[{ title: 'Form Data', content: formData }]} data={formData} />
+            <Accordion title="CSRF Token" sections={[{ title: 'CSRF Token', content: csrfToken }]} data={csrfToken} />
+          </DebugBox>
+        </>
+        }
       </form>
     </motion.div>
   );

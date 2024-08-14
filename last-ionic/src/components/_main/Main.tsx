@@ -59,7 +59,7 @@ const Main: React.FC<ThisProps> = ({
 
   const [filterRows, setFilterRows] = useState<any>([])
 
-  useEffect(()=>{
+  useEffect(() => {
     setSearchString('')
     setSearchOrder(commonFilter.order.default)
     setOrderField(commonFilter.fields.default)
@@ -164,7 +164,7 @@ const Main: React.FC<ThisProps> = ({
             </IonGrid>
 
             <IonGrid>
-              {filter && filter.map((row: any, index: number)=>{
+              {filter && filter.map((row: any, index: number) => {
                 return <FilterRow key={index} filter={[]} setFilter={setFilter}/>
               })}
               <IonRow>

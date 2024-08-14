@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { ToastProps } from './types'
 
 const Toast: React.FC<ToastProps> = ({ show, message, color, duration, timestamp }) => {
-  const { t } = useTranslation()
+  const { t } = useTranslation();
   return <IonToast
     id='accessErrorToast'
     key={'toast-'+timestamp}

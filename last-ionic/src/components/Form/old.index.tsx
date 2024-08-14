@@ -31,7 +31,7 @@ const Form: React.FC<FormComponentProps> = (formData) => {
   const [csrfToken, setCsrfToken] = useState<string>('');
   const [captcha, setCaptcha] = useState<string>('');
 
-  const setFormResolver = (fields?: FieldProps[])=>{
+  const setFormResolver = (fields?: FieldProps[]) => {
     return fields && {
       resolver: yupResolver(buildValidationSchema(fields)),
       defaultValues: initialValuesRef.current,
@@ -71,7 +71,7 @@ const Form: React.FC<FormComponentProps> = (formData) => {
       const approvedData = Security.approveFormData(filteredData, sessionId);
       if (approvedData) {
         await form?.onSuccess(approvedData)
-          .then(()=>{
+          .then(() => {
             generateNewCsrfToken()
             generateCaptcha()
           })
@@ -95,7 +95,7 @@ const Form: React.FC<FormComponentProps> = (formData) => {
     firstFieldRef.current?.focus();
     generateNewCsrfToken();
     generateCaptcha();
-    Logger.log('captcha created')
+    Logger.log(' • Captcha created')
     setTimeout(() => setIsLoading(false), 1000);
   }, [form, reset]);
   
@@ -121,7 +121,7 @@ const Form: React.FC<FormComponentProps> = (formData) => {
     }
   ];
 
-  const Captcha = ()=>{
+  const Captcha = () => {
     return captcha && <Field
       key={'captcha-' + form.id}
       field={{

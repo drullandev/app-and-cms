@@ -5,7 +5,9 @@ import { setupIonicReact } from '@ionic/react';
 import ReactGA from 'react-ga';
 
 // Inicializa Google Analytics
-ReactGA.initialize('UA-XXXXXXXXX-X'); // TODO: Mueve el parámetro a un entorno seguroç
+if (process.env.NODE_ENV === 'production'){
+    ReactGA.initialize('UA-XXXXXXXXX-X'); // TODO: Mueve el parámetro a un entorno seguroç
+}
 
 
 // Inicialice Ionic React

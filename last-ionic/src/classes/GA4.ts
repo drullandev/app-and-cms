@@ -25,9 +25,9 @@ class GA4Tracker {
             event_label: event.label,
             send_to: this.trackingId
           });
-          Logger.log(`Event tracked: ${JSON.stringify(event)}`);
+          Logger.log(` • Event tracked: ${JSON.stringify(event)}`);
         } else {
-          Logger.error('GA4 is not initialized or gtag function is not available, or the event is not found.');
+          Logger.error(' • GA4 is not initialized or gtag function is not available, or the event is not found.');
         }
     }
   }

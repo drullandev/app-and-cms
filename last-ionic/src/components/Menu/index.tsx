@@ -11,6 +11,7 @@ import { useTranslation } from 'react-i18next'
 
 import { routes } from '../../config/routes'
 import { hammer, moonOutline } from 'ionicons/icons'
+import { OwnProps } from '../../app/reducer';
 
 interface Pages {
   title: string;
@@ -18,6 +19,7 @@ interface Pages {
   icon: string;
   routerDirection?: string;
 }
+
 interface StateProps {
   darkMode: boolean;
   isAuthenticated: boolean;
@@ -25,7 +27,7 @@ interface StateProps {
 }
 
 interface DispatchProps {
-  setDarkMode: typeof setDarkMode;
+  setDarkMode: (darkMode: boolean) => void;
 }
 
 interface MenuProps extends RouteComponentProps, StateProps, DispatchProps {}
@@ -66,12 +68,11 @@ const Menu: React.FC<MenuProps> = ({
 
       <IonContent forceOverscroll={false}>
 
-        <IonList lines="none">
-          <IonListHeader>Conference</IonListHeader>
+        <IonList role="list" lines="none">
           {renderlistItems(routes.appPages)}
         </IonList>
 
-        <IonList lines="none">
+        <IonList role="list" lines="none">
 
           <IonListHeader>Account</IonListHeader>
 
@@ -89,7 +90,7 @@ const Menu: React.FC<MenuProps> = ({
 
             <IonToggle
               checked={darkMode}
-              onClick={() => setDarkMode(!darkMode)}
+              onIonChange={() => setDarkMode(!darkMode)}
             >
               Dark Mode
             </IonToggle>
@@ -120,7 +121,7 @@ const Menu: React.FC<MenuProps> = ({
   );
 };
 
-export default connect<{}, StateProps, {}>({
+export default connect<OwnProps, StateProps, DispatchProps>({
   mapStateToProps: (state) => ({
     darkMode: state.user.darkMode,
     isAuthenticated: state.user.isLoggedin,

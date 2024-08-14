@@ -6,17 +6,17 @@ import GA4Tracker  from '../../classes/GA4'
 
 import CookieConsent from '../CookieConsent'
 
-import { PageProps } from './types'
+import PagePropsData from './types'
 import './styles.css'
 
 /**
  * This component is helpfull to generate a Ionic Page
  * David Rullán Díaz
  * - Also integrated with GA4
- * @param pageProps PageProps
+ * @param pageProps PagePropsData
  * @returns JSX.IonPage
  */
-const Page: React.FC<PageProps> = (pageProps) => {
+const Page: React.FC<PagePropsData> = (pageProps) => {
 
   useEffect(()=> {
     Logger.info(' • Loading page!');

@@ -17,10 +17,10 @@ export const DefaultLanguage = 'en'
 // MAIN DATA
 
 // The expected local url off the app
-const publicUrlDefault = 'http://localhost:5173'
+const publicUrlDefault = 'http://localhost:3000'
 
 // The main cms url for the app
-const apiUrlDefault = 'https://cms.hoponboard.eu'
+const apiUrlDefault = 'https://cms.hoponboard.eu/api'
 
 // The node encvironment: development | production
 const nodeEnvDefault = 'development'
@@ -179,6 +179,7 @@ export const APP_ICON = '/add-user-data'
 
 export const TUTORIAL = '/tutorial'
 export const LOGIN_PATH = '/login'
+export const SIGNUP_PATH = '/signup'
 
 export const timeout = {
   buttonSpinner : 123,

@@ -115,7 +115,7 @@ const Field = forwardRef<any, {
      */
     const fieldStatusIcon = (controller: any, fieldName: string, errors: any): JSX.Element => {
 
-      const setColor = ()=>{
+      const setColor = () => {
         let displayColor = 'medium';
 
         if (loadingField[fieldName]) {
@@ -195,11 +195,14 @@ const Field = forwardRef<any, {
       return matchingCase ? matchingCase.icon : <></>;
     };
 
-    // Checks if a field is required based on the validation schema
-    const checkIfFieldIsRequired = (fieldName: string) => {
+
+    const checkIfFieldIsRequired = (fieldName: string): boolean => {
       try {
-        validationSchema.validateSyncAt(fieldName, { [fieldName]: 'test' });
-        return true;
+        const fieldSchema = validationSchema.fields[fieldName] as yup.BaseSchema;
+        if (!fieldSchema) {
+          return false;
+        }
+        return fieldSchema.tests.some((test: any) => test.OPTIONS.name === 'required');
       } catch (error) {
         return false;
       }
@@ -222,7 +225,7 @@ const Field = forwardRef<any, {
           <>
             <IonItem>
               <IonInput
-                type={field.secret && showSecret ? 'text' : field.type}
+                type={ field.type == 'email' || showSecret ? 'text' : field.type}
                 label={field.label + (checkIfFieldIsRequired(field.name) ? ' *' : '')}
                 labelPlacement="floating"
                 value={controller.value}
@@ -241,6 +244,7 @@ const Field = forwardRef<any, {
             <Error name={field.name} label={field.label} errors={errors} />
           </>
         );
+        break;
 
       case 'textarea':
         return (
@@ -301,7 +305,7 @@ const Field = forwardRef<any, {
               <IonLabel 
                 style={{ display: 'flex', alignItems: 'start', width: '93%' }}
               >
-                {field.label}
+                {field.label} {checkIfFieldIsRequired(field.name)}
               </IonLabel>
               <div style={{ display: 'flex', alignItems: 'end' }}
                 className={(errors && errors[field.name] ? 'checkbox-color-border' : '')}>

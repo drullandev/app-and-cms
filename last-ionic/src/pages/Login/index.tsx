@@ -1,38 +1,30 @@
 // Global imports
 import React from 'react';
-//import { add } from 'lodash';
 import { useTranslation } from 'react-i18next';
-import { IonFab, IonFabButton, IonIcon, IonItem, IonText, IonFooter, IonToolbar, IonButtons, IonButton } from '@ionic/react';
+import { IonIcon, IonItem, IonText, IonFooter, IonToolbar, IonButtons, IonButton } from '@ionic/react';
 
 // Used Components
+import PagePropsData from '../../components/Page/types';
 import Page from '../../components/Page';
 import Header from '../../components/Header';
 import Form from '../../components/Form';
 
-// Used Source
-import { loginForm } from './source';
-
-// Used Reducers
-import { connect } from '../../reducer/src/connect';
-
-// This component
-import { PageProps } from '../../components/Page/types';
-
 // Component Reducer
+import { connect } from '../../reducer/src/connect';
 import { OwnProps, ComponentProps, StateProps, DispatchProps, mapStateToProps, mapDispatchToProps } from './reducer'
-import i18n from '../../components/_extra/i18n';
 
 // Component imports
+import { loginFormData } from './source';
 import './styles.scss';
 import './style.css';
 
-const Login: React.FC<ComponentProps> = (pageParams) => {
+const LoginPage: React.FC<ComponentProps> = (pageProps) => {
   
   const { t } = useTranslation();
 
-  const pageSettings : PageProps = {
+  const pageSettings : PagePropsData = {
     settings: {
-      id: 'login-page',
+      id: 'login-page',//Concern css classes, for now!
       //skeleton: true
       //animated: "true"
     },
@@ -45,9 +37,9 @@ const Login: React.FC<ComponentProps> = (pageParams) => {
     },
     header: () => {
       const headerProps = {
-        title: i18n.t('Login'),
+        title: t('Login'),
         slot: 'start',
-        loading: pageParams.loading || false
+        loading: pageProps.loading || false
       }
       return <Header {...headerProps} />
     },
@@ -68,7 +60,7 @@ const Login: React.FC<ComponentProps> = (pageParams) => {
                 <p>{t('Enter your credentials to access your account and start exploring the world of Festivore.')}</p>
               </IonText>
             </IonItem>
-            <Form {...loginForm(pageParams)} />
+            <Form {...loginFormData(pageProps)} />
           </div>
         </>
       );
@@ -99,9 +91,8 @@ const Login: React.FC<ComponentProps> = (pageParams) => {
     }
   };
 
-  return (
-    <Page {...pageSettings} />
-  );
+  return <Page {...pageSettings} />
+
 };
 
-export default connect<OwnProps, StateProps, DispatchProps>({ mapStateToProps, mapDispatchToProps, component: Login });
+export default connect<OwnProps, StateProps, DispatchProps>({ mapStateToProps, mapDispatchToProps, component: LoginPage });

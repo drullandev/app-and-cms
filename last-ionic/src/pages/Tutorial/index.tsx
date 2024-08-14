@@ -1,22 +1,23 @@
 import React, { useState } from 'react'
 import { IonContent, IonPage, IonHeader, IonToolbar, IonButtons, IonButton, IonIcon, useIonViewWillEnter } from '@ionic/react'
+import { arrowForward } from 'ionicons/icons'
+
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Swiper as SwiperCore } from 'swiper'
-import { arrowForward } from 'ionicons/icons'
-import { setData, setMenuEnabled } from '../../reducer/data/sessions/sessions.actions'
-import { setHasSeenTutorial } from '../../reducer/data/user/user.actions'
-import '../../styles/index.scss'
-//import 'swiper/swiper.min.css'
 import '@ionic/react/css/ionic-swiper.css'
-import { connect } from '../../reducer/src/connect'
-import { RouteComponentProps } from 'react-router'
-import { initialUser } from '../../reducer/state'
+//import 'swiper/swiper.min.css'
 
 // Component Reducer
+import { connect } from '../../reducer/src/connect'
+import { initialUser } from '../../reducer/state'
 import { OwnProps, ComponentProps, StateProps, DispatchProps, mapStateToProps, mapDispatchToProps } from './reducer'
+
+import '../../styles/index.scss'
+
 import DebugUtil from '../../classes/DebugUtil'
 
-const Tutorial: React.FC<ComponentProps> = ({ history, setHasSeenTutorial, setMenuEnabled }) => {
+const Tutorial: React.FC<ComponentProps> = ({ history, setData, setHasSeenTutorial, setMenuEnabled }) => {
+  
   const [showSkip, setShowSkip] = useState(true)
   let [swiper, setSwiper] = useState<SwiperCore>()
 
@@ -48,6 +49,7 @@ const Tutorial: React.FC<ComponentProps> = ({ history, setHasSeenTutorial, setMe
       <IonContent fullscreen>
 
         <Swiper onSwiper={setSwiper} onSlideChangeTransitionStart={handleSlideChangeStart}>
+
           <SwiperSlide>
             <img src="assets/img/ica-slidebox-img-1.png" alt="" className="slide-image" />
             <h2 className="slide-title">
@@ -82,6 +84,7 @@ const Tutorial: React.FC<ComponentProps> = ({ history, setHasSeenTutorial, setMe
               <IonIcon slot="end" icon={arrowForward} />
             </IonButton>
           </SwiperSlide>
+
         </Swiper>
       </IonContent>
     </IonPage>

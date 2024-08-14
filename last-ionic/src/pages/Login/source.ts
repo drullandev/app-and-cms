@@ -13,8 +13,9 @@ import { FormDataProps } from '../../components/Form/types';
 
 import { setData, setLoading, setisLogged } from '../../reducer/data/user/user.actions';
 import Logger from '../../classes/LoggerClass';
+import { initialUser } from '../../reducer/state';
 
-export const loginForm = ({
+export const loginFormData = ({
   setisLogged
 }: {
   setLoading: (loading: boolean) => void;
@@ -81,13 +82,41 @@ export const loginForm = ({
         type: 'button',
         style: { display: 'inline-block', width: '46%', margin: '2%' },
         onClick: () => {
-          history.push('/register');
+          history.push('/sign-up');
         }
       }
     ],
     onSuccess: async (data: any) => {
       
       setLoading(true);
+
+      const loginSuccess = (res: any)=>{
+        setData(res.data.user).then(()=>{
+          setisLogged(true);
+          var newRes = res;
+          newRes.header = t('Wellcome to the app!');
+          newRes.message = 'Hello '+res.data.user.username+'!';
+          var toastProps = RestOutput.catchSuccess(res, newRes);
+          if (debug) Logger.log(toastProps)
+          presentToast(toastProps)
+            .then(() => {
+              history.push(HOME_PATH);
+            });
+        });
+      }
+
+      const loginError = (res: any) => {
+        setData(initialUser);
+        setisLogged(false);
+        var newRes = res;
+        newRes.header = t('Login error!');
+        newRes.showInnerMessage = true;
+        newRes.message = 'Was an error!';
+        var toastProps = RestOutput.catchDanger(res, newRes)
+        if (debug) Logger.log(toastProps)
+        presentToast(toastProps)
+      }
+
       await RestAPI.restCallAsync({
         req: {
           method: 'POST',
@@ -99,30 +128,19 @@ export const loginForm = ({
         },
         onSuccess: {
           default: (res: any) => {
-
-            if (res.status === 200) {
-              setData(res.data.user);
-              setisLogged(true);
-
-              presentToast(RestOutput.catchSuccess(res))
-                .then(() => {
-                  history.push(HOME_PATH);
-                });
-
-            } else {
-              presentToast(RestOutput.catchSuccess(res));
+            switch(res.status){
+              case 200:
+                loginSuccess(res);
+                break;
+              case 400:
+              default:
+                loginError(res);
             }
-            setLoading(false);
           }
         },
         onError: {
           default: (error: any) => {
-            setisLogged(false);
-            setLoading(false);
-
-            RestOutput.catchDanger(error)
-
-            presentToast(RestOutput.catchDanger(error));
+            loginError(error);
           }
         },
         onFinally: () => {

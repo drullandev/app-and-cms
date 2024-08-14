@@ -31,7 +31,7 @@ SwiperCore.use([ Navigation, Pagination])
 
 const Equipment: React.FC = () => {
 
-  const { t } = useTranslation()
+  const { t } = useTranslation();
   const history = useHistory()
   const pageRef = useRef<HTMLDivElement>(null)
 

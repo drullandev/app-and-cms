@@ -9,17 +9,17 @@ import PageRow from './PageRow'
 
 import '../styles/About.scss'
 
-export interface PageProps extends RouteComponentProps<{ slug: string, id?: string }> {
+export interface PagePropsData extends RouteComponentProps<{ slug: string, id?: string }> {
   slug: string
   id?: string
 }
 
-const Page: React.FC<PageProps> = ({ match }) => {
+const Page: React.FC<PagePropsData> = ({ match }) => {
 
   const location = useLocation()
   const testing = false
 
-  //const [page, setPage] = useState<PageProps>()
+  //const [page, setPage] = useState<PagePropsData>()
   const [slugIn, setSlugIn] = useState('')
   const [pageRows, setPageRows] = useState([])
 

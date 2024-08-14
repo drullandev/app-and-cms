@@ -1,11 +1,13 @@
 import React, { useEffect } from 'react';
 import { Redirect } from 'react-router-dom';
 
-interface LogoutProps {
-  setData: (data: any) => void;
-}
+import { LogoutProps } from './types'
 
-const Logout: React.FC<LogoutProps> = ({ setData }) => {
+// Component Reducer
+import { connect } from '../../reducer/src/connect';
+import { OwnProps, ComponentProps, StateProps, DispatchProps, mapStateToProps, mapDispatchToProps } from './reducer'
+
+const LogoutPage: React.FC<LogoutProps> = ({ setData }) => {
   useEffect(() => {
     setData(null);
     // eslint-disable-next-line
@@ -14,4 +16,4 @@ const Logout: React.FC<LogoutProps> = ({ setData }) => {
   return <Redirect to="/login" />;
 }
 
-export default Logout;
+export default connect<OwnProps, StateProps, DispatchProps>({ mapStateToProps, mapDispatchToProps, component: LogoutPage });

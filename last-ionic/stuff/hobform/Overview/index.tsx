@@ -125,7 +125,7 @@ const Overview: React.FC<RoutePageProps> = ({ match }) => {
     if (header) stateChanges.header(header)
   }, [header, stateChanges])
 
-  useEffect(()=>{
+  useEffect(() => {
     setRoot(root)
   },[setRoot, root])
 

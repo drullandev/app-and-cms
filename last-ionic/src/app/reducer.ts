@@ -1,9 +1,14 @@
 import { RouteComponentProps } from 'react-router';
 import { AppState } from '../reducer/state'; // Asegúrate de que esta importación sea correcta
+
+import { UserState } from './user.state'
+
 import { loadUserData, setData } from '../reducer/data/user/user.actions'; // Asegúrate de que estas importaciones sean correctas
 import { loadConfData } from '../reducer/data/sessions/sessions.actions';
 import { Schedule } from '../reducer/models/Schedule';
 import { buildInitialValues } from '../classes/MyYup';
+
+export { initialUser } from './../reducer/state';
 
 
 // Define OwnProps
@@ -14,7 +19,7 @@ export interface StateProps {
     darkMode: boolean;
     schedule: Schedule;
     hasLoggedIn: boolean;
-    initialUser: User; // Asegúrate de que el tipo de User sea el adecuado
+    initialUser: UserState; // Asegúrate de que el tipo de User sea el adecuado
 }
 // mapStateToProps
 export const mapStateToProps = (state: AppState): StateProps => ({

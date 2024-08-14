@@ -60,7 +60,7 @@ export interface MapProps {
 
 const MyMap: React.FC<MapProps> = ({ style, showSelector, geolocation, urlSelected, pageRef, scroll }) => {
 
-  const { t } = useTranslation()
+  const { t } = useTranslation();
   const history = useHistory()
   const testing = true
 
@@ -96,7 +96,7 @@ const MyMap: React.FC<MapProps> = ({ style, showSelector, geolocation, urlSelect
       //let loading = 
       launchLoader(t('Loading') ?? 'Loading', 345, 'dots')
       //let creator_id = sessionStorage.getItem("creator:id")
-      getStorage('creator:id').then((creator_id)=>{
+      getStorage('creator:id').then((creator_id) => {
         if (creator_id) {
           getStorage('routes_' + creator_id)
             .then(routes => {

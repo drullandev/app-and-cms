@@ -2,7 +2,7 @@ import { RouteComponentProps } from "react-router"; // Import necessary type fro
 
 import { AppState } from '../../reducer/state'; // Import the type for the global state
 import { setHasSeenTutorial } from "../../reducer/data/user/user.actions";
-import { setMenuEnabled } from "../../reducer/data/sessions/sessions.actions";
+import { setMenuEnabled, setData } from "../../reducer/data/sessions/sessions.actions";
 
 // Define OwnProps to extend RouteComponentProps for routing capabilities
 export interface OwnProps extends RouteComponentProps {}
@@ -14,6 +14,7 @@ export interface StateProps {}
 export interface DispatchProps {
     setHasSeenTutorial: typeof setHasSeenTutorial
     setMenuEnabled: typeof setMenuEnabled
+    setData: typeof setData
 }
 
 // Define ComponentProps to combine all props needed by the component
@@ -26,7 +27,8 @@ export const mapStateToProps = (state: AppState): StateProps => ({
 // mapDispatchToProps maps the action creators to the component's props
 export const mapDispatchToProps: DispatchProps = {
     setHasSeenTutorial,
-    setMenuEnabled
+    setMenuEnabled,
+    setData
 };
 
 // Explanation of the reducers and actions:

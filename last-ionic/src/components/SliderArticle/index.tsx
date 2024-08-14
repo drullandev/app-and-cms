@@ -31,7 +31,7 @@ const SliderArticle: React.FC<SlideData> = ({ root, step, slideData }) => {
         }
       },
 
-      setSlider: (data: any)=>{
+      setSlider: (data: any) => {
         if (data && data.length > 0) {
           // Access the first element and its 'translations' property
           const firstItem = data[0];

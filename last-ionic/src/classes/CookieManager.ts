@@ -35,7 +35,7 @@ class CookieManager {
     }
     const cookie = name + '=' + value + expires + '; path=/';
     document.cookie = cookie;
-    if (this.debug) Logger.log('Setting cookie', cookie);
+    if (this.debug) Logger.log(' • Setting cookie', cookie);
   }
 
   /**
@@ -51,7 +51,7 @@ class CookieManager {
       while (c.charAt(0) === ' ') c = c.substring(1, c.length);
       if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
     }
-    if (this.debug) Logger.log('Getting cookie', name);
+    if (this.debug) Logger.log(' • Getting cookie', name);
     return null;
   }
 
@@ -61,7 +61,7 @@ class CookieManager {
    */
   public erase(name: string): void {
     document.cookie = name + '=; Max-Age=-' + this.maxAge + '; path=/';
-    if (this.debug) Logger.log('Erasing cookie', name);
+    if (this.debug) Logger.log(' • Erasing cookie', name);
   }
 
   /**
@@ -82,7 +82,7 @@ class CookieManager {
       const cookieName = cookie.split('=')[0].trim(); // Get cookie name
       this.erase(cookieName); // Erase the cookie
     }
-    if (this.debug) Logger.log('Clearing cookies', cookies);
+    if (this.debug) Logger.log(' • Clearing cookies', cookies);
   }
 }
 

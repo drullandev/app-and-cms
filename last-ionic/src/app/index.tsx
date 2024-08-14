@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Route } from 'react-router-dom';
 import { IonApp, IonRouterOutlet, IonSplitPane } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
@@ -10,15 +10,12 @@ import './types';  // Importing centraliced types
 
 // Reducer settings
 import { connect } from './../reducer/src/connect';
-import { OwnProps, ComponentProps, StateProps, DispatchProps, mapStateToProps, mapDispatchToProps } from './reducer';
 
 // Reducer options
-import { loadConfData } from './../reducer/data/sessions/sessions.actions';
-import { loadUserData, setData } from './../reducer/data/user/user.actions';
-import { initialUser } from './../reducer/state';
+import { initialUser, OwnProps, ComponentProps, StateProps, DispatchProps, mapStateToProps, mapDispatchToProps } from './reducer';
 
 // Pages
-import { Account, ChangePassword, Home, Login, Logout, MainTabs, Menu, Page, Recover, ResetPassword, Signup, Support, TestForm, Tutorial } from './components'
+import { NotFound, Account, ChangePassword, Home, Login, Logout, MainTabs, Menu, Page, Recover, ResetPassword, Signup, Support, TestForm, Tutorial } from './components'
 
 // Classes
 import DebugUtil from './../classes/DebugUtil';
@@ -32,10 +29,12 @@ import { withLifecycleHooks, LifecycleHooks } from '../interfaces/LifecycleHooks
  * @param param0 {ComponentProps & ComponentProps}
  * @returns 
  */
-const App: React.FC<ComponentProps & LifecycleHooks> = ({
+const AppComponent: React.FC<ComponentProps & LifecycleHooks> = ({
   darkMode,
+  setData,
   schedule,
   loadConfData,
+  loadUserData,
   onLoad,
   afterMount,
   beforeUpdate,
@@ -49,7 +48,7 @@ const App: React.FC<ComponentProps & LifecycleHooks> = ({
 
   // Inicializa configuraciones y datos
   onLoad = () => {
-    Logger.log('diselo!')
+    Logger.log(' • Loading App!')
     loadConfData();
     loadUserData();
     setData(initialUser);
@@ -75,7 +74,9 @@ const App: React.FC<ComponentProps & LifecycleHooks> = ({
             <Route path='/account' component={Account} />
             <Route path='/change-password' component={ChangePassword} />
             <Route path='/logout' render={() => <Logout />} />
-          <Route path='/' component={Home} exact />
+            <Route path='/' component={Home} exact />
+            <Route path='/not-found' component={NotFound} />
+            <Route component={NotFound} />
           </IonRouterOutlet>
         </IonSplitPane>
       </IonReactRouter>
@@ -84,15 +85,13 @@ const App: React.FC<ComponentProps & LifecycleHooks> = ({
 };
 
 // Envuelve el componente App con los hooks de ciclo de vida
-const AppWithLifecycleHooks = withLifecycleHooks(App);
+//const AppWithLifecycleHooks = withLifecycleHooks(App);
 
-const ConnectedApp: React.FC = () => <AppWithLifecycleHooks />;
-
-export default ConnectedApp;
+//const ConnectedApp: React.FC = () => <AppWithLifecycleHooks />;
 
 // Conecta el componente AppWithLifecycleHooks con Redux
-const ConnectedAppWithRedux = connect<OwnProps, StateProps, DispatchProps>({
+export default connect<OwnProps, StateProps, DispatchProps>({
   mapStateToProps,
   mapDispatchToProps,
-  component: AppWithLifecycleHooks,
+  component: withLifecycleHooks(AppComponent),
 });

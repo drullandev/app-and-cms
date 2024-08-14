@@ -1,50 +1,54 @@
+// Global imports
 import React from 'react'
-
-import { IonItem, useIonToast } from '@ionic/react'
 import { useTranslation } from 'react-i18next'
+import { IonItem } from '@ionic/react'
 
-import { connect } from '../../reducer/src/connect'
-
-import '../../styles/index.scss'
-
-import { PageProps } from '../../components/Page/types'
+// Used Components
+import PagePropsData from '../../components/Page/types'
 import Form from '../../components/Form'
 import Page from '../../components/Page'
 import Header from '../../components/Header'
-import { default as ResetFormData } from './source';
+
+// The component imports
+import resetFormData from './source';
+import '../../styles/index.scss'
 
 // Component Reducer
+import { connect } from '../../reducer/src/connect'
 import { OwnProps, ComponentProps, StateProps, DispatchProps, mapStateToProps, mapDispatchToProps } from './reducer'
 
-const Reset: React.FC<ComponentProps> = ({
-  setisLogged,
-  history,
-}) => {
+const ResetPage: React.FC<ComponentProps> = (pageProps) => {
 
-  const { t } = useTranslation()
-  const [presentToast] = useIonToast()
+  const { t } = useTranslation();
  
-  const pageSettings: PageProps = {
+  const resetPageData: PagePropsData = {
     settings:{
       id: 'reset-page',
     },
     captcha: true,
-    header: ()=> <Header label={"Recover"} slot="start"/>,
-    content: ()=>{//Remember, you are in a content yet
+    header: () => {
+      const headerProps = {
+        title: t('Reset Password'),
+        slot: 'start',
+        loading: pageProps.loading || false
+      }
+      return <Header {...headerProps} />
+    },
+    content: () => {//Remember, you are in a content yet
       return <>
         <IonItem>{t('Please include here you account mail to recover your account')}</IonItem>
         <IonItem>{t('After that check your email box')}</IonItem>
-        <Form {...ResetFormData()} />
+        <Form {...resetFormData()} />
       </>
     },
-    footer: ()=>{
+    footer: () => {
       return <></>
     }
 
-  }
+  };
 
-  return <Page {...pageSettings}/>
+  return <Page {...resetPageData}/>
 
-}
+};
 
-export default connect<OwnProps, StateProps, DispatchProps>({ mapStateToProps, mapDispatchToProps, component: Reset });
+export default connect<OwnProps, StateProps, DispatchProps>({ mapStateToProps, mapDispatchToProps, component: ResetPage });

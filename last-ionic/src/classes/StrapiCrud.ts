@@ -43,11 +43,11 @@ export const StrapiCrud = ( operation: string, model: string, data?: any, onSucc
     },
 
     onSuccess: { 
-      default: onSuccess !== undefined ? (ret: any) => onSuccess(data) : ()=>{}
+      default: onSuccess !== undefined ? (ret: any) => onSuccess(data) : () => {}
     },
 
     onError: {
-      default: onError !== undefined ? (err:Error)=> onError(err) : ()=>{}
+      default: onError !== undefined ? (err:Error)=> onError(err) : () => {}
     }
 
   };

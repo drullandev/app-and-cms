@@ -64,7 +64,7 @@ const FooterMenu: React.FC<FooterProps> = ({ index = 0, path = '' }) => {
     //return (onlineStatus ? apiUrl : 'assets/images') + url
   }
 
-  const footer = useMemo(()=>{ 
+  const footer = useMemo(() => { 
     return {
       load: (index: number, path: string) => {
         footer.toggleShowHide()

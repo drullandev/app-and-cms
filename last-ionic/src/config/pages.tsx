@@ -11,7 +11,7 @@ import Support from '../pages/Support';
 import Account from '../pages/Account';
 import ChangePassword from '../pages/ChangePassword';
 import Logout from '../pages/Logout';
-import Home from '../pages/Home';
+import Home from '../pages/Index';
 
 const routes: RouteProps[] = [
   { path: '/tabs', render: () => <MainTabs /> },
@@ -26,7 +26,7 @@ const routes: RouteProps[] = [
   { path: '/support', component: Support },
   { path: '/account', component: Account },
   { path: '/change-password', component: ChangePassword },
-  { path: '/logout', render: () => <Logout setisLogged={()=>{}}  setNickname={()=>{}}   setisLogged={()=>{}}  /> },
+  { path: '/logout', render: () => <Logout setisLogged={() => {}}  setNickname={() => {}}   setisLogged={() => {}}  /> },
   { path: '/', component: Home, exact: true }
 ];
 

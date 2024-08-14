@@ -5,7 +5,7 @@ import { IonItem, IonLabel, IonSelect, IonSelectOption } from '@ionic/react'
 
 const LanguageSelector = () => {
 
-  //const { t } = useTranslation()
+  //const { t } = useTranslation();
 
   /*const [languages, setLanguages] = useState<Language[]>([])
   useEffect(() => {

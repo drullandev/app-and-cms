@@ -9,13 +9,13 @@ import Header from '../../components/Header';
 //import Form from '../../components/Form';
 
 // Used Source
-//import { loginForm } from './source';
+//import { loginFormData } from './source';
 
 // Used Reducers
 import { connect } from '../../reducer/src/connect';
 
 // This component
-import { PageProps } from '../../components/Page/types';
+import PagePropsData from '../../components/Page/types';
 
 // Component Reducer
 import { OwnProps, ComponentProps, StateProps, DispatchProps, mapStateToProps, mapDispatchToProps } from './reducer';
@@ -23,11 +23,11 @@ import { OwnProps, ComponentProps, StateProps, DispatchProps, mapStateToProps, m
 // Component imports
 import Chat from '../../components/Chat';
 
-const Support: React.FC<ComponentProps> = (pageParams) => {
+const SupportPage: React.FC<ComponentProps> = (pageProps) => {
 
   const { t } = useTranslation();
 
-  const pageSettings: PageProps = {
+  const pageSettings: PagePropsData = {
     settings: {
       id: 'support-page',
     },
@@ -56,4 +56,4 @@ const Support: React.FC<ComponentProps> = (pageParams) => {
   );
 };
 
-export default connect<OwnProps, StateProps, DispatchProps>({ mapStateToProps, mapDispatchToProps, component: Support });
+export default connect<OwnProps, StateProps, DispatchProps>({ mapStateToProps, mapDispatchToProps, component: SupportPage });

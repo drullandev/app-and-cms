@@ -15,7 +15,7 @@ import { setData, setLoading, setisLogged } from '../../reducer/data/user/user.a
 import Logger from '../../classes/LoggerClass';
 
 /*
-export const loginForm = ({
+export const loginFormData = ({
   setisLogged
 }: {
   setLoading: (loading: boolean) => void;
@@ -82,7 +82,7 @@ export const loginForm = ({
         type: 'recaptcha',
         siteKey: 'pinga',
         validationSchema: yup.string(),
-        onClick: ()=>{
+        onClick: () => {
           Logger.log(' • Done recaptcha!')
         }
       }

@@ -1,19 +1,27 @@
-import * as yup from 'yup';
+// General dependencies
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router';
 import { useIonToast } from '@ionic/react'
+
+// Fully imported dependencies
+import * as yup from 'yup';
 import * as icon from 'ionicons/icons';
 
-import { HOME_PATH, apiUrl } from '../../config/env';
+// Used classes
 import DebugUtil from '../../classes/DebugUtil';
 import RestAPI from '../../classes/Rest';
-import RestOutput from '../../classes/RestOutput';
 
+// Local dependencies
 import { FormDataProps } from '../../components/Form/types';
 
-import { setData, setLoading, setisLogged } from '../../reducer/data/user/user.actions';
+// Reducer dependencies
+import { setisLogged } from '../../reducer/data/user/user.actions';
 
-export const Reset = (): FormDataProps => {
+/**
+ * This is the information for the reset page main form
+ * @returns {FormDataProps}
+ */
+export const resetFormData = (): FormDataProps => {
 
   const { t } = useTranslation();
   const history = useHistory();
@@ -103,7 +111,7 @@ export const Reset = (): FormDataProps => {
           }
         },
         onSuccess: {
-          default: async (ret: any)=>{
+          default: async (ret: any) => {
 
             const onSuccess = async (ret: any) => {
               let user = ret.user
@@ -113,7 +121,7 @@ export const Reset = (): FormDataProps => {
             } 
 
             await onSuccess(ret.data)
-              .then((ret: any)=>{
+              .then((ret: any) => {
                 switch (ret.status) {
                   case 200:
                     presentToast({ 
@@ -144,4 +152,4 @@ export const Reset = (): FormDataProps => {
   };
 };
 
-export default Reset;
+export default resetFormData;

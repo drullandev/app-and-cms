@@ -134,10 +134,6 @@ class RestOutput {
     return error;
   }
 
-  private setHEader(){
-
-  }
-
   /**
    * Recursively finds a 'message' property in an object.
    * This function is useful for extracting error messages from nested objects.
@@ -200,7 +196,7 @@ class RestOutput {
    */
   private setOutput = (options?: MyExtraOutputOptions, merge?: MyExtraOutputOptions): MyExtraOutputOptions => {
     let output = {
-      message: options?.message || merge?.message || '',
+      message: options?.message || merge?.message || 'Undefined message!',
       icon: this.getOutlineIcon(options?.icon) || this.getOutlineIcon(merge?.icon) || this.getOutlineIcon(icon.closeCircle),
       duration: options?.duration || merge?.duration || this.default.duration,
       color: options?.color || merge?.color || this.default.color,

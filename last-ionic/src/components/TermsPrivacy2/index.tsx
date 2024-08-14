@@ -25,7 +25,7 @@ const TermsPrivacy2: React.FC<PingaProps> = ({showTerms, setShowTerms}) => {
 
   const history = useHistory()
   const slider = useRef(null)
-  const { t } = useTranslation()
+  const { t } = useTranslation();
 
   const [toast, setToast] = useState<ToastProps>()
   const [articles, setArticles] = useState<[]>([])

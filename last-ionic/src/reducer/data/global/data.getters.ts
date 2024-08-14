@@ -3,7 +3,7 @@ import { Preferences } from '@capacitor/preferences';
 import { Schedule, Session } from '../../models/Schedule'
 import { Speaker } from '../../models/Speaker'
 import { Location } from '../../models/Location'
-import { setOrRemove, parseSessions, toggleBool } from './data.utils'
+import { setOrRemove, parseSessions, setOrRemove } from './data.utils'
 
 //TODO: Add each new key to the data.constants file and also here!
 import {

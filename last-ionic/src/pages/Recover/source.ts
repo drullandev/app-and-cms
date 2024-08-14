@@ -13,7 +13,7 @@ import { FormDataProps } from '../../components/Form/types';
 
 import { setData, setLoading, setisLogged } from '../../reducer/data/user/user.actions';
 
-export const recover = (): FormDataProps => {
+export const recoverFormData = (): FormDataProps => {
 
   const { t } = useTranslation();
   const history = useHistory();
@@ -83,9 +83,9 @@ export const recover = (): FormDataProps => {
           }
         },
         onSuccess: {
-          default: async (ret: any)=>{
+          default: async (ret: any) => {
             await onSuccess(ret.data)
-              .then((ret: any)=>{
+              .then((ret: any) => {
                 switch (ret.status) {
                   case 200:
                     presentToast({ 

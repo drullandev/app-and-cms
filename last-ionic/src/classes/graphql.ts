@@ -112,7 +112,7 @@ const getQuery = (p: GqlQueryModel) =>{
   // WHERE
   var where = []
   if(!StringUtil.empty(p.where)){
-    p.where.map((row:any)=>{
+    p.where.map((row:any) => {
       if(row.value !== undefined && row.value !== ''){
         var whereType = row.value
         switch(row.type){
@@ -123,7 +123,7 @@ const getQuery = (p: GqlQueryModel) =>{
           case 'array':
             const rowLen = whereType.length
             var rows: [] = []
-            var stringedWhere = whereType.map((row: any, index: number)=>{
+            var stringedWhere = whereType.map((row: any, index: number) => {
               //rows.push(row)
               //if (rowLen === index + 1) {
                 // last one
@@ -184,10 +184,10 @@ const graphqlCall = (call: string): any => Rest.restCall({
     data: { query: `${call}` }      
   },
   onSuccess: {
-    default: ()=>{}
+    default: () => {}
   },//
   onError: {
-    default: ()=>{}//
+    default: () => {}//
   }
 })
 
@@ -198,9 +198,9 @@ const graphqlCallAsync = async (call: string) => await Rest.restCallAsync({
     data: { query: `${call}` }
   },
   onSuccess: {
-    default: ()=>{}
+    default: () => {}
   },//
   onError: {
-    default: ()=>{}//
+    default: () => {}//
   }
 })

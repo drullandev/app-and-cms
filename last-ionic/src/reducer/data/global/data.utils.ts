@@ -42,6 +42,7 @@ export const setOrRemove = async (key: string, value: any, def: any, string: boo
  * @param value The boolean value to toggle.
  * @param def The default value if setting (optional).
  * @returns A promise that resolves after toggling the boolean value.
+ * DEPRECATED
  */
 export const toggleBool = async (key: string, value: any, def: boolean = true) => {
   try {

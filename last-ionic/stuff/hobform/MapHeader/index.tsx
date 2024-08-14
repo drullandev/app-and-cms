@@ -15,7 +15,7 @@ interface MapHeaderProps {
 
 const MapHeader: React.FC<MapHeaderProps> = ({ selected, setSelected }) => {
 
-  const { t } = useTranslation()
+  const { t } = useTranslation();
   const history = useHistory()
   const [menu, setMenu] = useState<MenuProps>()
   const [routes, setRoutes] = useState<Route[]>([])
@@ -26,7 +26,7 @@ const MapHeader: React.FC<MapHeaderProps> = ({ selected, setSelected }) => {
     load: () => {
       getStorage('menu_navigate').then(setMenu)
       getStorage('creator:id')
-        .then((creator_id)=>{
+        .then((creator_id) => {
           if (creator_id) {
             getStorage('routes_' + creator_id)
               .then(setRoutes)
@@ -64,7 +64,7 @@ const MemoizedRouteSelector = useCallback(() => (
   </IonItem>
 ), [routes, selected, actions, t])
 
-useEffect(()=>{actions.load()}, [actions])
+useEffect(() => {actions.load()}, [actions])
 
 return <IonHeader className='border-none'>
 

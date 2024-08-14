@@ -14,7 +14,7 @@ const Content: React.FC<ContentProps> = ({row}) => {
   const [content, setContent] = useState([])
   const [image, setThisImage] = useState('')
   
-  useEffect(()=>{
+  useEffect(() => {
     /*
     restGet('contents', { slug: row.slug })
     .then(res => {

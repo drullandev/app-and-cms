@@ -18,7 +18,7 @@ import { FavProps } from './types';
  * 
  * @returns {JSX.Element} The rendered component.
  */
-const FavBall: React.FC<FavProps> = ({ show = true, style = {}, onClick = ()=>{} }: FavProps): JSX.Element => {
+const FavBall: React.FC<FavProps> = ({ show = true, style = {}, onClick = () => {} }: FavProps): JSX.Element => {
   // Destructure style properties with default values
   const { vertical = 'bottom', color = 'primary', class: iconClass = '', icon } = style;
 

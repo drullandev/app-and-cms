@@ -7,7 +7,9 @@ import { setisLogged, setUsername } from "../../reducer/data/user/user.actions";
 export interface OwnProps extends RouteComponentProps {}
 
 // Define StateProps to represent the part of the state this component needs
-export interface StateProps {}
+export interface StateProps {
+    loading: boolean;
+}
 
 // Define DispatchProps to represent the action creators this component needs to dispatch
 export interface DispatchProps {
@@ -20,6 +22,7 @@ export interface ComponentProps extends OwnProps, StateProps, DispatchProps {}
 
 // mapStateToProps maps the required state properties to the component's props
 export const mapStateToProps = (state: AppState): StateProps => ({
+    loading: state.user.loading
 });
 
 // mapDispatchToProps maps the action creators to the component's props

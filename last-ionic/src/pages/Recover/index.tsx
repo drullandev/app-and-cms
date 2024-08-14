@@ -1,51 +1,53 @@
+// Global imports
 import React from 'react'
-
-import { IonItem, useIonToast } from '@ionic/react'
 import { useTranslation } from 'react-i18next'
+import { IonItem } from '@ionic/react'
 
-
-
-import { connect } from '../../reducer/src/connect'
-
-import '../../styles/index.scss'
-
-import { PageProps } from '../../components/Page/types'
+// Used Components
+import PagePropsData from '../../components/Page/types'
 import Form from '../../components/Form'
 import Page from '../../components/Page'
 import Header from '../../components/Header'
-import { recover } from './source';
+
+// Component dependencies
+import '../../styles/index.scss'
+import { recoverFormData } from './source';
 
 // Component Reducer
+import { connect } from '../../reducer/src/connect';
 import { OwnProps, ComponentProps, StateProps, DispatchProps, mapStateToProps, mapDispatchToProps } from './reducer'
 
-const Recover: React.FC<ComponentProps> = ({
-  setisLogged,
-  history,
-}) => {
+const RecoverPage: React.FC<ComponentProps> = (pageProps) => {
 
-  const { t } = useTranslation()
-  const [presentToast] = useIonToast()
- 
-  const pageSettings: PageProps = {
+  const { t } = useTranslation();
+
+  const recoverPageData: PagePropsData = {
     settings:{
       id: 'recover-page',
     },
-    header: ()=> <Header label={"Recover"} slot="start"/>,
-    content: ()=>{//Remember, you are in a content yet
+    header: () => {
+      const headerProps = {
+        title: t('Recover'),
+        slot: 'start',
+        loading: pageProps.loading || false
+      }
+      return <Header {...headerProps} />
+    },
+    content: () => {//Remember, you are in a content yet
       return <>
         <IonItem>{t('Please include here you account mail to recover your account')}</IonItem>
         <IonItem>{t('After that check your email box')}</IonItem>
-        <Form {...recover()} />
+        <Form {...recoverFormData()} />
       </>
     },
-    footer: ()=>{
+    footer: () => {
       return <></>
     }
 
-  }
+  };
 
-  return <Page {...pageSettings}/>
+  return <Page {...recoverPageData}/>
 
-}
+};
 
-export default connect<OwnProps, StateProps, DispatchProps>({ mapStateToProps, mapDispatchToProps, component: Recover });
+export default connect<OwnProps, StateProps, DispatchProps>({ mapStateToProps, mapDispatchToProps, component: RecoverPage });

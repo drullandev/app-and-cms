@@ -47,7 +47,7 @@ const Article: React.FC<ArticlePageProps> = ({ match }) => {
       },
 
       setTextHeight: () => {
-        setTimeout(()=>{
+        setTimeout(() => {
           let pageHeight = jQuery('#content').height() ?? 0
           let imgBoxHeight = jQuery('.box').first().height() ?? 0
           let value = (pageHeight - imgBoxHeight - 20)
@@ -97,7 +97,7 @@ const Article: React.FC<ArticlePageProps> = ({ match }) => {
 
   }, [])
 
-  useEffect(()=>{
+  useEffect(() => {
     articles.load()
     articles.setTextHeight();
   }, [articles ])

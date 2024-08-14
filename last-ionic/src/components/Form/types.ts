@@ -7,6 +7,8 @@ export interface FormDataProps {
   id: string;
   fields: FieldProps[];
   captcha?: false | boolean;
+  agreement?: boolean;
+  privacy?: boolean;
   ga4?: GA4Options;
   buttons: FieldProps[];
   onSuccess:(data: any) => Promise<void>;

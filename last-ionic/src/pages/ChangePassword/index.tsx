@@ -8,7 +8,7 @@ import { RouteComponentProps } from 'react-router'
 import RestAPI from '../../classes/Rest'
 import StringUtil from '../../classes/StringUtil'
 import { useTranslation } from 'react-i18next'
-import { PageProps } from '../../components/Page/types'
+import PagePropsData from '../../components/Page/types'
 import Page from '../../components/Page'
 import Form from '../../components/Form'
 import * as yup from 'yup'
@@ -25,10 +25,10 @@ const ChangePassword: React.FC<ComponentProps> = ({
 
   const debug = DebugUtil.setDebug(false)
 
-  const { t } = useTranslation()
+  const { t } = useTranslation();
   const [presentToast] = useIonToast()
 
-  const pageSettings: PageProps = {
+  const pageSettings: PagePropsData = {
     settings: {
       id: 'reset-page'
     },
@@ -120,9 +120,9 @@ const ChangePassword: React.FC<ComponentProps> = ({
                 }
               },
               onSuccess: {
-                default: async (ret: any)=>{
+                default: async (ret: any) => {
                   await onResetSuccess(ret.data)
-                    .then((ret: any)=>{
+                    .then((ret: any) => {
                       switch (ret.status) {
                         case 200:
                           //setisLogged(true)

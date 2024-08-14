@@ -7,7 +7,7 @@ import { translations, splashScreen } from '../../../../env'
 
 const useAddToHomescreenPrompt = (): [IBeforeInstallPromptEvent | null, () => void, boolean] => {
 
-  const { t } = useTranslation()
+  const { t } = useTranslation();
   const [prompt, setPrompt] = useState<IBeforeInstallPromptEvent | null>(null)
   const [isInstalled, setIsInstalled] = useState(false)
 
@@ -40,7 +40,7 @@ const useAddToHomescreenPrompt = (): [IBeforeInstallPromptEvent | null, () => vo
 
 const PWA: React.FC = () => {
 
-  const { t } = useTranslation()
+  const { t } = useTranslation();
 
   const [loading, setLoading] = useState(false)
 

@@ -79,7 +79,7 @@ ion-range.ion-focused,
 ion-datetime.ion-focused,
 ion-accordion.ion-focused,
 ion-textarea.ion-focused {
-  outline: 2px solid red;
+  /*outline: 2px solid red;*/
 }
 
 /*
@@ -92,7 +92,8 @@ But, this component cannot be reached through keyboard interaction. So it is bet
 <button (click)="dostuff()"><ion-badge>33</ion-badge></button>
 You will need to style using focus-visible for the focus area to be visible:
 */
-
+/*
 button:focus-visible {
   outline: 2px solid red;
 }
+*/
