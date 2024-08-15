@@ -5,15 +5,14 @@ import { SubMenuList, SubMenuItem } from './styles'
 import { IonButton, IonCol, IonFab, IonFabButton, IonGrid, IonIcon, IonImg, IonLabel, IonModal, IonRow, IonThumbnail, useIonLoading } from '@ionic/react'
 import { useHistory } from 'react-router'
 
-import { getStorage, clearStorage } from '../../../data/utils/storage'
+import { getStorage, clearStorage } from '../../../classes/Storage'
 import { translate } from '../../../data/utils/translations'
 import { language, logOutOutline } from 'ionicons/icons'
 import { t } from 'i18next'
 
 import i18n from '../i18n'
 import { ConMiddle, Middle } from '../Pictures/styles'
-import { appAssets } from '../../../../env'
-import { accessHref } from '../../../../env'
+import { appAssets, accessHref } from '../../config/env'
 
 const Submenu: React.FC<SubmenuProps> = (submenu) => {
 

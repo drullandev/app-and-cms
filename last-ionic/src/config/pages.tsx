@@ -10,7 +10,7 @@ import Recover from '../pages/Recover';
 import Support from '../pages/Support';
 import Account from '../pages/Account';
 import ChangePassword from '../pages/ChangePassword';
-import Logout from '../pages/Logout';
+//import Logout from '../pages/Logout';
 import Home from '../pages/Index';
 
 const routes: RouteProps[] = [
@@ -26,7 +26,7 @@ const routes: RouteProps[] = [
   { path: '/support', component: Support },
   { path: '/account', component: Account },
   { path: '/change-password', component: ChangePassword },
-  { path: '/logout', render: () => <Logout setisLogged={() => {}}  setNickname={() => {}}   setisLogged={() => {}}  /> },
+  { path: '/logout', render: () => <></> },// TODO: MOUNT LOGOUT PAGE FUCK !!! Is temporari to avoid all the errors in the project challenge!!
   { path: '/', component: Home, exact: true }
 ];
 
