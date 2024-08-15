@@ -53,7 +53,7 @@ i18n
   buildYupLocale)
 
 i18n.on('languageChanged', () => {
-  return <App/>
+  return <AppContainer/>
 })
 
 export default i18n

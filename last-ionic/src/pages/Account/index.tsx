@@ -45,7 +45,7 @@ const MyProfile = () => {
 
     return (
         <IonPage>
-            <IonHeader>
+            {/*<IonHeader>
                 <IonToolbar>
                     <IonButtons slot="start">
                         <p className={styles.username}>
@@ -128,7 +128,7 @@ const MyProfile = () => {
                         </IonCol>
                     ))}
                 </IonRow>
-            </IonContent>
+                    </IonContent>*/}
         </IonPage>
     );
 };

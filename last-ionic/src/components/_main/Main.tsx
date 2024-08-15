@@ -1,10 +1,10 @@
-import { commonFilter } from '../../config/env'
+import { GraphQLFilter } from '../../classes/data/GraphQLFilter'
 
 import React, { useState, useEffect } from 'react'
 import { IonToolbar, IonContent, IonButtons, IonMenuButton, IonTitle, IonButton, IonSelect, IonSelectOption, IonSearchbar, IonRefresher, IonRefresherContent, IonToast, IonModal, IonHeader, getConfig, IonGrid, IonCol, IonRow, IonDatetime, IonTextarea, IonLabel, IonItem } from '@ionic/react'
 
 //import { restGet, getGQL } from '../../../data/rest/rest.utils'
-import { setSearchString, setSearchOrder, setOrderField, setFilter } from '../../../reducer/data/sessions/sessions.actions'
+import { setSearchString, setSearchOrder, setOrderField, setFilter } from '../../reducer/data/sessions/sessions.actions'
 //import { SessionState } from '../../../data/sessions/sessions.actions'
 
 import Icon from './Icon'
@@ -12,7 +12,7 @@ import FilterRow from './FilterRow'
 
 import MainList from './MainList2'
 
-import { connect } from '../../../reducer/src/connect'
+import { connect } from '../../reducer/src/connect'
 
 import { Filter } from '../../interfaces/Filter'
 
@@ -61,8 +61,8 @@ const Main: React.FC<ThisProps> = ({
 
   useEffect(() => {
     setSearchString('')
-    setSearchOrder(commonFilter.order.default)
-    setOrderField(commonFilter.fields.default)
+    setSearchOrder(GraphQLFilter.order.default)
+    setOrderField(GraphQLFilter.fields.default)
     resetFilters()
   },[])
 
@@ -75,7 +75,7 @@ const Main: React.FC<ThisProps> = ({
     newFilter.push({
       key: Date.now(),
       type: 'string',
-      field: commonFilter.fields.default,
+      field: GraphQLFilter.fields.default,
       action: 'eq',
       value: ''
     })
@@ -139,7 +139,7 @@ const Main: React.FC<ThisProps> = ({
                     placeholder='Order Field'
                     value={orderField}                  
                     onIonChange={(e: CustomEvent) => setOrderField(e.detail.value)}>
-                    {commonFilter.fields.options.map((option: any, index: number) => (
+                    {GraphQLFilter.fields.options.map((option: any, index: number) => (
                       <IonSelectOption key={'order-field-'+index} value={option.value}>
                         {option.label}
                       </IonSelectOption>
@@ -153,7 +153,7 @@ const Main: React.FC<ThisProps> = ({
                     placeholder='Direction'
                     value={searchOrder}    
                     onIonChange={(e: CustomEvent) => setSearchOrder(e.detail.value)}>
-                    {commonFilter.order.options.map((option: any, index: number) => (
+                    {GraphQLFilter.order.options.map((option: any, index: number) => (
                       <IonSelectOption key={'order-'+index} value={option.value}>
                         {option.label}
                       </IonSelectOption>
