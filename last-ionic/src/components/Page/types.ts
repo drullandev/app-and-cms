@@ -19,7 +19,7 @@ export interface IonPageProps {
 export default interface PagePropsData {
   settings: IonPageProps;
   content: Function;
-  methods?: Function[];
+  methods?: any[];
   ga4?: GA4Options;
   captcha?: boolean | undefined;
   header?: Function | undefined;

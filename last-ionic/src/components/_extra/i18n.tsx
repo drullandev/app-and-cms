@@ -2,7 +2,7 @@ import i18n, { TFunction } from 'i18next'
 import { initReactI18next, useTranslation } from 'react-i18next'
 import { setLocale } from 'yup'
 
-import App from '../../app'
+import AppContainer from '../../app'
 
 import detector from 'i18next-browser-languagedetector'
 import resources from '../../../static/i18next/translations.json'
@@ -49,7 +49,7 @@ i18n
   buildYupLocale)
 
 i18n.on('languageChanged', () => {
-  return <App/>
+  return <AppContainer/>
 })
 
 export default i18n

@@ -1,7 +1,7 @@
 import { RouteComponentProps } from 'react-router';
 import { AppState } from '../reducer/state'; // Asegúrate de que esta importación sea correcta
 
-import { UserState } from './user.state'
+import { UserState } from '../reducer/data/user/user.state';
 
 import { loadUserData, setData } from '../reducer/data/user/user.actions'; // Asegúrate de que estas importaciones sean correctas
 import { loadConfData } from '../reducer/data/sessions/sessions.actions';

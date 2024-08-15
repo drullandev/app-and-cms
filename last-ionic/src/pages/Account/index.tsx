@@ -1,7 +1,7 @@
 import { IonButton, IonButtons, IonCardSubtitle, IonCardTitle, IonCol, IonContent, IonGrid, IonHeader, IonIcon, IonPage, IonRow, IonToolbar } from '@ionic/react';
 import { addCircleOutline, bookmarksOutline, chevronDown, gridOutline, menuOutline } from 'ionicons/icons';
 import { useState, useEffect } from 'react';
-import styles from './styles.scss';
+//import styles from './styles.scss';
 
 const MyProfile = () => {
     const [profile, setProfile] = useState({
@@ -45,7 +45,7 @@ const MyProfile = () => {
 
     return (
         <IonPage>
-            <IonHeader>
+            {/*<IonHeader>
                 <IonToolbar>
                     <IonButtons slot="start">
                         <p className={styles.username}>
@@ -128,7 +128,7 @@ const MyProfile = () => {
                         </IonCol>
                     ))}
                 </IonRow>
-            </IonContent>
+                    </IonContent>*/}
         </IonPage>
     );
 };

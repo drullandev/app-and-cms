@@ -1,7 +1,7 @@
 import { AppState } from "../../reducer/state";
 
 export interface OwnProps {
-  title: string,
+  title?: string,
   showMenuButton?: boolean;
   showSearchBar?: boolean;
   showFilterButton?: boolean;

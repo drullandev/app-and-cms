@@ -1,9 +1,8 @@
 import sqlite3 from 'sqlite3';
-import { open } from 'sqlite';
+import { open, Database } from 'sqlite';
 
 class DatabaseManager {
-
-    private db: sqlite3.Database | null = null;
+    private db: Database | null = null; // Cambiado de sqlite3.Database a Database
     private dbPath: string;
 
     constructor(dbPath: string) {
