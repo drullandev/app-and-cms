@@ -1,6 +1,6 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
-import App from '.';
+import AppContainer from './index';
 
 // Get the root DOM element where the React app will be mounted
 const container = document.getElementById('root');
@@ -25,8 +25,8 @@ const strictMode = false;
 // Render the React application with or without StrictMode based on the `strictMode` flag
 root.render(
   !strictMode 
-    ? <App />
+    ? <AppContainer />
     : <StrictMode>
-        <App />
+        <AppContainer />
       </StrictMode>
 );
