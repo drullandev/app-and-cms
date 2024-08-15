@@ -10,7 +10,7 @@ import { IonBackButtonProps } from './types';
  * @param {IonBackButtonProps} props Props of the component
  * @returns React component wrapping IonBackButton
  */
-const BackButton: React.FC<IonBackButtonProps> = (props: IonBackButtonProps) => {
+const BackButton: React.FC<IonBackButtonProps> = (props) => {
     return (
         <IonBackButton {...props} />
     );

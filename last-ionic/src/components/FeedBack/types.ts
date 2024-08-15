@@ -1,4 +1,4 @@
-import { Language } from '../../../data/models/Language'
+//import { Language } from '../../../data/models/Language'
 export interface PlaceState {
   name: string,
   images: {
@@ -7,7 +7,7 @@ export interface PlaceState {
   description: {
     description: string
     label: string
-    language: Language
+    language: any//TODO: yatusabe
   }
   map_marker: {
     name: string
