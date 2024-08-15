@@ -11,10 +11,8 @@ import { ErrorProps } from '../types';
  const Error: React.FC<ErrorProps> = ({ name, label, errors }) => {
   if (errors && errors[name ?? 'input']) {
     return (<IonItem>
-      <IonNote color="danger">
-        <small role="alert" id={`error-${name}`}>
-          {errors[name ?? 'input'].message.replace(name ?? 'input', label)}
-        </small>
+      <IonNote role="alert" color="danger">
+        {errors[name ?? 'input'].message.replace(name ?? 'input', label)}
       </IonNote>
     </IonItem>
     );

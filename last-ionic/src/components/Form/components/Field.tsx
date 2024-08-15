@@ -1,6 +1,6 @@
 import React, { useState, forwardRef, useEffect, useCallback } from 'react';
 import { Controller, DeepMap, FieldError } from 'react-hook-form';
-import { IonItem, IonInput, IonTextarea, IonSelect, IonSelectOption, IonCheckbox, IonDatetime, IonLabel, IonRadio, IonRadioGroup, IonRange, IonToggle, IonSkeletonText, IonIcon, IonSpinner, IonButton } from '@ionic/react';
+import { IonItem, IonInput, IonTextarea, IonSelect, IonSelectOption, IonCheckbox, IonDatetime, IonLabel, IonRadio, IonRadioGroup, IonRange, IonToggle, IonSkeletonText, IonSpinner, IonButton } from '@ionic/react';
 import * as yup from 'yup';
 import * as icon from 'ionicons/icons';
 import { debounce } from 'lodash';
@@ -14,6 +14,8 @@ import Skeleton from './Skeleton';
 import Error from './Error';
 import Button from './Button';
 import ReCAPTCHA from 'react-google-recaptcha';
+import Security from '../../../classes/Security';
+import Icon from '../../_Ionic/v7/Icon';
 
 /**
  * Field component that handles various types of form fields with validation, loading states, and error handling.
@@ -32,8 +34,6 @@ const Field = forwardRef<any, {
   onFieldChange: (name: string, value: any) => void;
   loading: boolean; // Added loading prop
 }>(({ field, control, errors, onFieldChange, loading }, ref) => {
-
-  const debug = DebugUtil.setDebug(false);
 
   // State to manage the loading status of the field
   const [loadingField, setLoadingField] = useState<{ [key: string]: boolean }>({});
@@ -115,7 +115,7 @@ const Field = forwardRef<any, {
      */
     const fieldStatusIcon = (controller: any, fieldName: string, errors: any): JSX.Element => {
 
-      const setColor = ()=>{
+      const setColor = () => {
         let displayColor = 'medium';
 
         if (loadingField[fieldName]) {
@@ -131,7 +131,7 @@ const Field = forwardRef<any, {
       const setIcon = (color?: string) => {
         if (field.secret) {
           return (
-            <IonIcon color={color ?? setColor()}
+            <Icon color={color ?? setColor()}
               onClick={() => setShowSecret(!showSecret)}
               icon={showSecret ? icon.eye : icon.eyeOff}
             />
@@ -139,27 +139,29 @@ const Field = forwardRef<any, {
         }
         switch (field.type) {
           case 'email':
-            return <IonIcon icon={icon.at} color={color ?? setColor()} />;
+            return <Icon icon={icon.at} color={color ?? setColor()} />;
           case 'date':
           case 'datetime':
           case 'datetime-local':
-            return <IonIcon icon={icon.calendar} color={color ?? setColor()} />;
+            return <Icon icon={icon.calendar} color={color ?? setColor()} />;
           case 'url':
-            return <IonIcon icon={icon.link} color={color ?? setColor()} />;
+            return <Icon icon={icon.link} color={color ?? setColor()} />;
           case 'tel':
-            return <IonIcon icon={icon.call} color={color ?? setColor()} />;
+            return <Icon icon={icon.call} color={color ?? setColor()} />;
           case 'password':
             return (
-              <IonIcon
+              <Icon
                 color={color ?? setColor()}
                 onClick={() => setShowSecret(!showSecret)}
-                icon={showSecret ? icon.eye : icon.eyeOff}
+                icon={showSecret ? icon.eyeOff : icon.eye}
               />
             );
           case 'number':
-            return <IonIcon icon={icon.calculator} color={color ?? setColor()} />;
+            return <Icon icon={icon.calculator} color={color ?? setColor()} />;
+          case 'recaptcha':
+            return <Icon icon={icon.ribbonOutline} color={color ?? setColor()} />;
           default:
-            return <IonIcon icon={icon.checkmarkCircle} color={color ?? setColor()} />;
+            return <Icon icon={icon.checkmarkCircle} color={color ?? setColor()} />;
         }
       };
 
@@ -181,23 +183,26 @@ const Field = forwardRef<any, {
           icon: (() => {
             try {
               validationSchema.validateSyncAt(fieldName, { [fieldName]: controller.value });
-              return setIcon('success');
+              return setIcon('success'); // Change to green if valid
             } catch (error) {
-              return setIcon('danger');
+              return setIcon('danger'); // Keep red if invalid
             }
           })()
         }
       ];
 
       const matchingCase = setCases.find(c => c.condition);
-      return matchingCase ? matchingCase.icon : null;
+      return matchingCase ? matchingCase.icon : <></>;
     };
 
-    // Checks if a field is required based on the validation schema
-    const checkIfFieldIsRequired = (fieldName: string) => {
+
+    const checkIfFieldIsRequired = (fieldName: string): boolean => {
       try {
-        validationSchema.validateSyncAt(fieldName, { [fieldName]: 'test' });
-        return true;
+        const fieldSchema = validationSchema.fields[fieldName] as yup.BaseSchema;
+        if (!fieldSchema) {
+          return false;
+        }
+        return fieldSchema.tests.some((test: any) => test.OPTIONS.name === 'required');
       } catch (error) {
         return false;
       }
@@ -220,12 +225,13 @@ const Field = forwardRef<any, {
           <>
             <IonItem>
               <IonInput
-                type={field.secret && showSecret ? 'text' : field.type}
+                type={ field.type == 'email' || showSecret ? 'text' : field.type}
                 label={field.label + (checkIfFieldIsRequired(field.name) ? ' *' : '')}
                 labelPlacement="floating"
                 value={controller.value}
                 disabled={loading}
                 aria-invalid={errors && errors[field.name ?? field.id ?? 'input'] ? 'true' : 'false'}
+                aria-describedby={commonProps.id}
                 {...commonProps}
                 onBlur={() => { // Add onBlur to force validation when the field loses focus
                   validationSchema && validationSchema.validateAt(field.name, { [field.name]: controller.value })
@@ -238,6 +244,7 @@ const Field = forwardRef<any, {
             <Error name={field.name} label={field.label} errors={errors} />
           </>
         );
+        break;
 
       case 'textarea':
         return (
@@ -274,7 +281,8 @@ const Field = forwardRef<any, {
           </>
         );
 
-      case 'checkbox': {
+      case 'checkbox':
+        
         let displayColor = 'medium';
 
         if (loadingField[field.name]) {
@@ -294,7 +302,11 @@ const Field = forwardRef<any, {
               style={{paddingTop: '8px', paddingBottom: '8px'}}
               disabled={loading}
             >
-              <IonLabel style={{ display: 'flex', alignItems: 'start', width: '93%' }}>{field.label}</IonLabel>
+              <IonLabel 
+                style={{ display: 'flex', alignItems: 'start', width: '93%' }}
+              >
+                {field.label} {checkIfFieldIsRequired(field.name)}
+              </IonLabel>
               <div style={{ display: 'flex', alignItems: 'end' }}
                 className={(errors && errors[field.name] ? 'checkbox-color-border' : '')}>
                 <IonCheckbox
@@ -311,13 +323,16 @@ const Field = forwardRef<any, {
             <Error name={field.name} label={field.label} errors={errors} />
           </>
         );
-      }
 
       case 'date':
       case 'datetime':
         return (
           <>
-            {field.label && <IonLabel position='floating' aria-label={field.label}>{field.label}</IonLabel>}
+            {field.label && (
+              <IonLabel position='floating' 
+                aria-label={field.label}>{field.label}
+              </IonLabel>
+            )}
             <IonDatetime
               {...commonProps}
               value={controller.value || field.defaultValue}
@@ -401,22 +416,59 @@ const Field = forwardRef<any, {
           </IonItem>
         );
       
-        case 'hidden':
-          return (
-            <IonInput type="hidden" name={field.name} value={field.csrfToken}
-              {...commonProps}
-            ></IonInput>
-            );
+      case 'hidden':
+        return (
+          <IonInput type="hidden" name={field.name} value={field.csrfToken}
+            {...commonProps}
+          ></IonInput>
+        );
   
-      case 'recaptcha':
-        return (process.env.NODE_ENV == 'production') ? (<>
-          <ReCAPTCHA 
-            {...recaptchaProps}
-            sitekey={'asdfasdf'}
-            onChange={()=> field.onChange }
-          />
-        </>
-        ):<IonInput {...commonProps}></IonInput>;
+      case 'recaptcha':{
+        return (
+          <div style={{ margin: '4%', border: '2px solid #BF4F74' }}>
+            <div className="captcha-container">
+              <IonLabel>{field.label}</IonLabel>
+            </div>
+            {process.env.NODE_ENV === 'production' ? (
+              <div>
+                <ReCAPTCHA 
+                  {...recaptchaProps}
+                  sitekey={'asdfasdf'}
+                  onChange={(value) => controller.onChange(value)}
+                />
+              </div>
+            ) : (//TOXO: asdf must come from env file
+            <>
+              <div style={{ margin: '4%'}}>
+                <>
+                <div className="captcha-container">
+                  <IonLabel className="captcha">{field.captcha}</IonLabel>
+                </div>
+                  <IonItem>
+                    <IonInput
+                      type='text'
+                      label={'Write here the captcha text!' + (checkIfFieldIsRequired(field.name) ? ' *' : '')}
+                      labelPlacement="floating"
+                      value={controller.value}
+                      disabled={loading}
+                      aria-invalid={errors && errors[field.name ?? field.id ?? 'input'] ? 'true' : 'false'}
+                      {...commonProps}
+                      onBlur={() => { // Add onBlur to force validation when the field loses focus
+                        validationSchema && validationSchema.validateAt(field.name, { [field.name]: controller.value })
+                          .then(() => {})
+                          .catch(() => {});
+                      }}
+                    />
+                    {fieldStatusIcon(controller, field.name, errors)}
+                  </IonItem>
+                  <Error name={field.name} label={field.label} errors={errors} />
+                </>
+              </div>
+            </>
+            )}
+          </div>
+        );
+      }
     }
   };
 

@@ -1,152 +1,136 @@
+import { IonButton, IonButtons, IonCardSubtitle, IonCardTitle, IonCol, IonContent, IonGrid, IonHeader, IonIcon, IonPage, IonRow, IonToolbar } from '@ionic/react';
+import { addCircleOutline, bookmarksOutline, chevronDown, gridOutline, menuOutline } from 'ionicons/icons';
+import { useState, useEffect } from 'react';
+//import styles from './styles.scss';
 
-import React, { useEffect, useState } from 'react'
-import { IonContent, IonImg, IonList, IonItem, IonLabel, IonAccordion, IonAccordionGroup, useIonToast, IonIcon, IonAlert, IonAvatar, IonCol, IonGrid, IonRow, IonToggle } from '@ionic/react'
-import { ReactControllerProps } from '@ionic/react/dist/types/components/createControllerComponent'
-import { RouteComponentProps } from 'react-router'
+const MyProfile = () => {
+    const [profile, setProfile] = useState({
+        id: 1,
+        username: 'johndoe',
+        avatar: 'https://www.example.com/avatar.jpg',
+        posts: [{ id: 1, image: 'https://images.pexels.com/photos/699122/pexels-photo-699122.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260' }],
+        followers: 150,
+        following: 100,
+        firstname: 'John',
+        surname: 'Doe',
+        title: 'Developer',
+        bio: 'Full stack developer with a passion for coding.',
+        link: 'https://www.example.com'
+    });
 
-import { setLoading, setDarkMode } from '../../reducer/data/user/user.actions'
-import { connect } from '../../reducer/src/connect'
-import * as icon from 'ionicons/icons'
+    useEffect(() => {
+        // Simulate fetching profile data
+        const fetchProfile = async () => {
+            // Simulated API call
+            const profileData = {
+                id: 1,
+                username: 'johndoe',
+                avatar: 'https://www.example.com/avatar.jpg',
+                posts: [
+                    { id: 1, image: 'https://images.pexels.com/photos/699122/pexels-photo-699122.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260' }
+                ],
+                followers: 150,
+                following: 100,
+                firstname: 'John',
+                surname: 'Doe',
+                title: 'Developer',
+                bio: 'Full stack developer with a passion for coding.',
+                link: 'https://www.example.com'
+            };
+            setProfile(profileData);
+        };
 
-// Extra required
-import { useTranslation } from 'react-i18next'
+        fetchProfile();
+    }, []);
 
-import Rest from '../../classes/Rest'
-import { UserState } from '../../reducer/data/user/user.state'
-import '../../styles/index.scss'
-import Alert from '../../components/Alert'
-import { OwnProps, ComponentProps, StateProps, DispatchProps, mapStateToProps, mapDispatchToProps } from './reducer'
+    return (
+        <IonPage>
+            {/*<IonHeader>
+                <IonToolbar>
+                    <IonButtons slot="start">
+                        <p className={styles.username}>
+                            {profile.username}
+                            <IonIcon icon={chevronDown} />
+                        </p>
+                    </IonButtons>
+                    <IonButtons slot="end">
+                        <IonButton color="dark">
+                            <IonIcon icon={addCircleOutline} />
+                        </IonButton>
+                        <IonButton color="dark">
+                            <IonIcon icon={menuOutline} />
+                        </IonButton>
+                    </IonButtons>
+                </IonToolbar>
+            </IonHeader>
 
+            <IonContent fullscreen>
+                <IonGrid>
+                    <IonRow className="ion-text-center ion-justify-content-between ion-align-self-center ion-align-items-center">
+                        <IonCol size="4">
+                            <img src={profile.avatar} alt="profile avatar" className={styles.profileAvatar} />
+                        </IonCol>
+                        <IonCol>
+                            <IonRow className="ion-text-center ion-justify-content-between ion-align-items-center ion-align-self-center ion-align">
+                                <IonCol size="4" className="ion-text-center">
+                                    <IonCardTitle className={styles.value}>
+                                        {profile.posts && profile.posts.length}
+                                    </IonCardTitle>
+                                    <IonCardSubtitle className={styles.label}>Posts</IonCardSubtitle>
+                                </IonCol>
+                                <IonCol size="4" className="ion-text-center">
+                                    <IonCardTitle className={styles.value}>
+                                        {profile.followers}
+                                    </IonCardTitle>
+                                    <IonCardSubtitle className={styles.label}>Followers</IonCardSubtitle>
+                                </IonCol>
+                                <IonCol size="4" className="ion-text-center">
+                                    <IonCardTitle className={styles.value}>
+                                        {profile.following}
+                                    </IonCardTitle>
+                                    <IonCardSubtitle className={styles.label}>Following</IonCardSubtitle>
+                                </IonCol>
+                            </IonRow>
+                        </IonCol>
+                    </IonRow>
+                    <IonRow>
+                        <IonCol size="12" className={styles.profileInfo}>
+                            <p className={styles.profileUsername}>{profile.firstname} {profile.surname}</p>
+                            <p className={styles.profileTitle}>{profile.title}</p>
+                            <p className={styles.profileBio}>{profile.bio}</p>
+                            <a className={styles.profileLink} href={profile.link}>{profile.link}</a>
+                        </IonCol>
+                    </IonRow>
+                    <IonRow className={styles.profileActions}>
+                        <IonCol size="4">
+                            <IonButton className={styles.lightButton} expand="block" fill="outline">Edit Profile</IonButton>
+                        </IonCol>
+                        <IonCol size="4">
+                            <IonButton className={styles.lightButton} fill="outline" expand="block">Promotions</IonButton>
+                        </IonCol>
+                        <IonCol size="4">
+                            <IonButton className={styles.lightButton} fill="outline" expand="block">Insights</IonButton>
+                        </IonCol>
+                    </IonRow>
+                </IonGrid>
+                <IonRow className="ion-text-center ion-justify-content-center ion-align-items-center ion-align-self-center">
+                    <IonCol size="6" className="ion-justify-content-center ion-align-items-center ion-align-self-center" style={{ borderBottom: "2px solid black", marginBottom: "2px" }}>
+                        <IonIcon style={{ fontSize: "1.5rem" }} icon={gridOutline} />
+                    </IonCol>
+                    <IonCol size="6" className="ion-justify-content-center ion-align-items-center ion-align-self-center">
+                        <IonIcon style={{ fontSize: "1.5rem" }} icon={bookmarksOutline} />
+                    </IonCol>
+                </IonRow>
+                <IonRow className="ion-no-padding ion-no-margin">
+                    {profile.posts && profile.posts.map((post, index) => (
+                        <IonCol className={styles.postCol} key={index} size="4">
+                            <img alt="post" src={post.image} />
+                        </IonCol>
+                    ))}
+                </IonRow>
+                    </IonContent>*/}
+        </IonPage>
+    );
+};
 
-// Are you testing this tools set && app?
-let testingFeature = true
-let testing = testingFeature && import.meta.env.REACT_APP_TESTING
-
-const Account: React.FC<ComponentProps> = ({
-  setLoading,
-  darkMode,
-  setDarkMode
-}) => {
-
-  const { t } = useTranslation()
-  const [presentToast] = useIonToast()
-  const [userData, setUserData] = useState<UserState>()
-  const [showAlert, setShowAlert] = useState(false)
-  const [alert, setAlert] = useState<ReactControllerProps>({isOpen: false})
-/*
-  const onLoad = () => {
-    Rest.restCallAsync({
-      req: {
-        url: 'api/users/1',
-        method: 'GET',
-        //headers: {}
-      },
-      onSuccess: {
-        default: async (ret:any)=> {
-          console.log(ret.data)
-          setUserData(ret.data)
-          setLoading(false)
-        }
-      },
-      onError: {
-        default: presentToast
-      }
-    })
-  }
-
-  useEffect(onLoad,[])
-
-  const openAlert=()=>{
-    setShowAlert(true)
-  }
-  */
-
-  let editOptions = [
-    {
-      name: 'personal-data',
-      label: 'Personal data',
-      icon: icon.accessibility,
-      content: <IonGrid>
-        <IonRow>
-          <IonCol>
-          <IonItem>
-          <IonIcon icon={icon.happy}/>
-          <IonLabel color='primary'>{t("Change Nickname")}</IonLabel>
-        </IonItem>
-
-        <IonItem>
-          <IonIcon icon={icon.at}/>
-          <IonLabel color='primary'>{t("Change Email")}</IonLabel>
-          <IonLabel>{userData?.email}</IonLabel>
-        </IonItem>
-
-        <IonItem>
-          <IonIcon icon={icon.lockClosed}/>
-          <IonLabel color='primary'>{t("Change Password")}</IonLabel>
-          <IonLabel>*******</IonLabel>
-        </IonItem>
-
-        <IonItem routerLink='/logout' routerDirection='none'>
-          <IonIcon icon={icon.arrowUndo}/>
-          <IonLabel color='primary'>{t("Logout")}</IonLabel>
-        </IonItem>
-
-        <IonItem onClick={()=> openAlert()}>
-          <IonIcon icon={icon.arrowUndo}/>
-          <IonLabel color='primary'>{t("TestClick")}</IonLabel>
-        </IonItem>
-          </IonCol>
-        </IonRow>
-
-      </IonGrid>
-    },
-    {
-      name: 'app-settings',
-      label: 'App Settings',
-      icon: icon.accessibility,
-      content: <>
-        <IonItem routerLink='/support' routerDirection='none'>
-          <IonIcon icon={icon.helpBuoy}/>
-          <IonLabel color='primary'>Support</IonLabel>
-        </IonItem>
-
-        <IonItem>
-          <IonIcon icon={icon.contrast}/>
-          <IonLabel color='primary'>DarkMode</IonLabel>
-          <IonToggle checked={darkMode} onClick={() => setDarkMode(!darkMode)} />
-          <IonLabel>{userData?.darkMode}</IonLabel>
-        </IonItem>
-      </>
-    }
-  ]
-
-  return <IonContent className='ion-padding-top ion-text-center'>{userData &&
-    <>
-      <IonAvatar>
-        <img src={import.meta.env.REACT_APP_HOST+userData?.caret?.formats?.medium?.url} alt={userData.username}/>
-      </IonAvatar>
-
-      <IonList inset>
-
-        <IonAccordionGroup>
-          {Object.keys(editOptions).map((row: any, key: number)=>{
-            let a = editOptions[key]
-            return <IonAccordion  key={key} value={a.name}>
-              <IonItem slot="header" color="light">
-                <IonLabel>{a.label}</IonLabel>
-              </IonItem>
-              <div className="ion-padding" slot="content">
-                {a.content}
-              </div>
-            </IonAccordion>
-          })}
-        </IonAccordionGroup>
-
-      </IonList>
-
-    </>
-  }</IonContent>
-
-}
-
-export default connect<OwnProps, StateProps, DispatchProps>({ mapStateToProps, mapDispatchToProps, component: Account });
+export default MyProfile;

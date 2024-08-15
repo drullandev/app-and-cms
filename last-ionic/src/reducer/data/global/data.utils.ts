@@ -1,9 +1,9 @@
 import { Schedule, Session } from '../../models/Schedule';
 import { Preferences } from '@capacitor/preferences';
-import Logger from '../../../classes/Logger';
+import Logger from '../../../classes/LoggerClass';
 import DebugUtil from '../../../classes/DebugUtil';
 
-const debug = DebugUtil.setDebug(false) // Adjust based on environment or build configuration
+const debug = DebugUtil.setDebug(true) // Adjust based on environment or build configuration
 
 /**
  * Parses sessions from a schedule by flattening groups.
@@ -27,7 +27,7 @@ export const parseSessions = (schedule: Schedule): Session[] => {
 export const setOrRemove = async (key: string, value: any, def: any, string: boolean = true) => {
   try {
     if (debug) Logger.log(' • DataApi::setOrRemove', { key: key, value: value, string: string });
-    return !value
+    return ! value
       ? await Preferences.remove({ key: key })
       : await Preferences.set({ key: key, value: value });
   } catch (error) {
@@ -42,6 +42,7 @@ export const setOrRemove = async (key: string, value: any, def: any, string: boo
  * @param value The boolean value to toggle.
  * @param def The default value if setting (optional).
  * @returns A promise that resolves after toggling the boolean value.
+ * DEPRECATED
  */
 export const toggleBool = async (key: string, value: any, def: boolean = true) => {
   try {

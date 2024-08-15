@@ -1,7 +1,7 @@
 import * as icon from 'ionicons/icons';
 import i18n from 'i18next';
-import { MyExtraOutputOptions } from '../components/main/interfaces/ModalToastProps';
-import Logger from './Logger';
+import { MyExtraOutputOptions } from '../interfaces/ModalToastProps';
+import Logger from './LoggerClass';
 import { AxiosError, AxiosResponse } from 'axios';
 import DebugUtil from './DebugUtil';
 
@@ -134,10 +134,6 @@ class RestOutput {
     return error;
   }
 
-  private setHEader(){
-
-  }
-
   /**
    * Recursively finds a 'message' property in an object.
    * This function is useful for extracting error messages from nested objects.
@@ -181,15 +177,19 @@ class RestOutput {
   /**
    * Obtains the outline icon corresponding to a filled icon.
    * @param filledIcon The filled icon.
-   * @returns The corresponding outline icon.
+   * @returns The corresponding outline icon or the original if not found.
    */
-  private getOutlineIcon = (filledIcon: any): any => {
+   private getOutlineIcon = (filledIcon: string): string => {
+    // Encuentra el nombre del icono a partir del icono relleno
     const iconName = Object.keys(icon).find(key => icon[key] === filledIcon);
+
     if (iconName) {
-      const outlineIconName = `${iconName}Outline`;
-      return icon[outlineIconName];
+      // Crea el nombre del icono de contorno a partir del nombre del icono encontrado
+      const outlineIconName = `${iconName}Outline` as keyof typeof icon; // Asegura que el tipo sea compatible
+      return icon[outlineIconName] || filledIcon; // Retorna el icono de contorno o el icono original si no se encuentra
     }
-    return filledIcon; // Return the original icon if no 'outline' icon is found
+
+    return filledIcon; // Retorna el icono original si no se encontró uno correspondiente
   };
 
   /**
@@ -200,7 +200,7 @@ class RestOutput {
    */
   private setOutput = (options?: MyExtraOutputOptions, merge?: MyExtraOutputOptions): MyExtraOutputOptions => {
     let output = {
-      message: options?.message || merge?.message || '',
+      message: options?.message || merge?.message || 'Undefined message!',
       icon: this.getOutlineIcon(options?.icon) || this.getOutlineIcon(merge?.icon) || this.getOutlineIcon(icon.closeCircle),
       duration: options?.duration || merge?.duration || this.default.duration,
       color: options?.color || merge?.color || this.default.color,

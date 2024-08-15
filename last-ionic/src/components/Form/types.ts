@@ -1,17 +1,22 @@
 import { CSSProperties } from 'react';
 import { ControllerProps, DeepMap, FieldError } from 'react-hook-form';
 import { Schema } from 'yup';
+import { GA4Options } from '../../interfaces/GA4';
 
-export interface FormProps {
+export interface FormDataProps {
   id: string;
   fields: FieldProps[];
+  captcha?: false | boolean;
+  agreement?: boolean;
+  privacy?: boolean;
+  ga4?: GA4Options;
   buttons: FieldProps[];
   onSuccess:(data: any) => Promise<void>;
   onError: (errors: { [key: string]: any }) => void;
   settings?: any;
 }
 
-export interface FormComponentProps extends FormProps {
+export interface FormComponentProps extends FormDataProps {
   onError: (errors: DeepMap<Record<string, any>, FieldError>) => void;
 }
 
@@ -26,6 +31,7 @@ export interface FieldProps {
   name: string;
   label?: any;
   type: string;
+  value?: any;
   required?: false | boolean | undefined;
   validationSchema?: Schema | undefined;
   className?: string;
@@ -53,6 +59,10 @@ export interface FieldProps {
   siteKey?: string | 'sdfasdfdas';
   csrfToken?: string;
   hidden?: boolean | false;
+  captcha?: string;
+  captchaKey?: string;
+  placeholder?: string | undefined;
+  animations?: any
 } 
 
 export interface ErrorProps {

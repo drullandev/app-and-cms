@@ -1,0 +1,36 @@
+.login-content {
+    padding: 20px;
+    text-align: center;
+  }
+  
+  .welcome-item {
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .welcome-icon {
+    font-size: 2em;
+    margin-right: 10px;
+  }
+  
+  .login-item {
+    margin-bottom: 20px;
+  }
+  
+  .footer-text {
+    text-align: center;
+    margin: 10px 0;
+  }
+  
+  .footer-text p {
+    margin: 5px 0;
+  }
+  
+  .login-footer {
+    background: #f8f8f8;
+  }
+  
+  IonButton {
+    --color-checked: green;
+  }
+  

@@ -112,7 +112,7 @@ const getQuery = (p: GqlQueryModel) =>{
   // WHERE
   var where = []
   if(!StringUtil.empty(p.where)){
-    p.where.map((row:any)=>{
+    p.where.map((row:any) => {
       if(row.value !== undefined && row.value !== ''){
         var whereType = row.value
         switch(row.type){
@@ -123,7 +123,7 @@ const getQuery = (p: GqlQueryModel) =>{
           case 'array':
             const rowLen = whereType.length
             var rows: [] = []
-            var stringedWhere = whereType.map((row: any, index: number)=>{
+            var stringedWhere = whereType.map((row: any, index: number) => {
               //rows.push(row)
               //if (rowLen === index + 1) {
                 // last one
@@ -184,10 +184,10 @@ const graphqlCall = (call: string): any => Rest.restCall({
     data: { query: `${call}` }      
   },
   onSuccess: {
-    default: ()=>{}
+    default: () => {}
   },//
   onError: {
-    default: ()=>{}//
+    default: () => {}//
   }
 })
 
@@ -198,119 +198,9 @@ const graphqlCallAsync = async (call: string) => await Rest.restCallAsync({
     data: { query: `${call}` }
   },
   onSuccess: {
-    default: ()=>{}
+    default: () => {}
   },//
   onError: {
-    default: ()=>{}//
+    default: () => {}//
   }
 })
-
-export const filter = () => {
-  const {t} = useTranslation()
-  return {
-    order : {
-      default: 'desc',
-      options: [ 
-        {
-          label: t('Descendant'),
-          value: 'desc'
-        },{
-          label: t('Ascendant'),
-          value: 'asc',
-        }
-      ]
-    },
-    fields: {
-      default: 'published_at',
-      options: [
-        {
-          label: t('Published at'),
-          value: 'published_at',
-          type: 'date'
-        },{
-          label: t('Created at'),
-          value: 'created_at',
-          type: 'date'
-        },{
-          label: t('Updated at'),
-          value: 'updated_at',
-          type: 'date'
-        },{
-          label: t('Content'),
-          value: 'content',
-          type: 'string'
-        }
-      ]    
-    },
-    conditions: {
-      default: 'contains',
-      options: [
-        {
-          label: t('Distinct'),
-          value: 'ne',
-          families: ['all']
-        },
-        {
-          label: t('Lower than'),
-          value: 'lt',
-          families: ['all']
-        },
-        {
-          label: t('Lower or equal'),
-          value: 'lte',
-          families: ['all']
-        },
-        {
-          label: t('Greater than'),
-          value: 'gt',
-          families: ['all']
-        },
-        {
-          label: t('Greater or equal'),
-          value: 'gte',
-          families: ['all']
-        },
-        {
-          label: t('Contains'),
-          value: 'contains',
-          families: ['all']
-        },
-        {
-          label: t('Contains sensitive'),
-          value: 'containss',
-          families: ['all']
-        },
-        {
-          label: t('No Contains'),
-          value: 'ncontains',
-          families: ['all']
-        },
-        {
-          label: t('No Contains sensitive'),
-          value: 'ncontainss',
-          families: ['all']
-        },
-        {
-          label: t('In'),
-          value: 'in',
-          families: ['array']
-        },
-        {
-          label: t('Not in'),
-          value: 'nin',
-          families: ['array'] 
-        },
-        {
-          label: t('Equals null'),
-          value: 'null',
-          families: []
-        },
-        {
-          label: t('Not equals null'),
-          value: 'nnull',
-          families: []
-        }
-      ]
-    }
-  }
-}

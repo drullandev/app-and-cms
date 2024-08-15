@@ -1,7 +1,7 @@
 import React from 'react'
 import { IonMenuToggle, IonIcon, IonItem, IonLabel } from '@ionic/react'
 
-import { ListProps } from './main/interfaces/ListProps'
+import { ListProps } from '../interfaces/ListProps'
 import { ListRowProps } from '../reducer/models/ListRowProps'
 
 const List: React.FC<ListProps> = (rows) => {

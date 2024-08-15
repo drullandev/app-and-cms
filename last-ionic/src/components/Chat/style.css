@@ -1,0 +1,41 @@
+.chat-container {
+
+
+  height: 80%;
+  background-color: #f8f9fa; /* Color de fondo suave */
+}
+
+.chat-content {
+
+  padding: 10px;
+  overflow-y: auto;
+}
+
+.chat-message {
+  margin-bottom: 10px;
+  border-radius: 8px; /* Bordes redondeados */
+  padding: 10px;
+  position: relative;
+  max-width: 80%; /* Ancho máximo para los mensajes */
+  transition: all 0.4s ease; /* Transición suave */
+}
+
+.user-message {
+  background-color: #cce5ff; /* Color de fondo para el usuario */
+  margin-left: auto; /* Alinear a la derecha */
+}
+
+.bot-message {
+  background-color: #d4edda; /* Color de fondo para el bot */
+  margin-right: auto; /* Alinear a la izquierda */
+}
+
+.chat-input {
+  display: flex;
+  padding: 10px;
+  border-top: 1px solid #ccc;
+}
+
+.chat-input ion-item {
+  flex: 1; /* Hacer que el campo de entrada ocupe todo el espacio disponible */
+}

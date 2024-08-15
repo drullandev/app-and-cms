@@ -1,34 +1,32 @@
 // Global imports
 import React from 'react';
-import { RouteComponentProps } from 'react-router';
-import { IonContent } from '@ionic/react';
+import { useTranslation } from 'react-i18next';
+
 // Component imports
 import './styles.scss';
+import { signupForm } from './source';
+import PagePropsData from '../../components/Page/types';
 
 // Used Components
 import Page from '../../components/Page';
-import Header from '../../components/main/Header';
+import Header from '../../components/Header';
 import Form from '../../components/Form';
-// Used Source
-import { signupForm } from './source';
-// Used Reducers
-import { connect } from '../../reducer/src/connect';
-// This component
-import { PageProps } from '../../components/Page/types';
 
 // Component Reducer
+import { connect } from '../../reducer/src/connect';
 import { OwnProps, ComponentProps, StateProps, DispatchProps, mapStateToProps, mapDispatchToProps } from './reducer'
-import i18n from '../../components/extra/i18n';
 
-const Signup: React.FC<ComponentProps> = (pageProps) => {
+const SignupPage: React.FC<ComponentProps> = (pageProps) => {
 
-  const pageSettings : PageProps = {
+  const { t } = useTranslation();
+
+  const pageSettings : PagePropsData = {
     settings: {
       id: 'signup-page',
     },
-    header: ()=> {
+    header: () => {
       const headerProps = {
-        label: i18n.t('Signup'),
+        title: t('Sign up!'),
         slot: 'start',
         loading: pageProps.loading || false
       }
@@ -41,12 +39,11 @@ const Signup: React.FC<ComponentProps> = (pageProps) => {
         </>
       );
     },
-    footer: ()=>{ return <></>}
+    footer: () => { return <></>}
   };
 
-  return (
-    <Page {...pageSettings} />
-  );
+  return <Page {...pageSettings} />
+
 };
 
-export default connect<OwnProps, StateProps, DispatchProps>({ mapStateToProps, mapDispatchToProps, component: Signup });
+export default connect<OwnProps, StateProps, DispatchProps>({ mapStateToProps, mapDispatchToProps, component: SignupPage });

@@ -4,16 +4,16 @@ import { useHistory } from 'react-router';
 import { useIonToast } from '@ionic/react'
 import * as icon from 'ionicons/icons';
 
-import { HOME_PATH, apiUrl } from '../../env';
+import { HOME_PATH, apiUrl } from '../../config/env';
 import DebugUtil from '../../classes/DebugUtil';
 import RestAPI from '../../classes/Rest';
 import RestOutput from '../../classes/RestOutput';
 
-import { FormProps } from '../../components/Form/types';
+import { FormDataProps } from '../../components/Form/types';
 
 import { setData, setLoading, setisLogged } from '../../reducer/data/user/user.actions';
 
-export const recover = (): FormProps => {
+export const recoverFormData = (): FormDataProps => {
 
   const { t } = useTranslation();
   const history = useHistory();
@@ -22,7 +22,7 @@ export const recover = (): FormProps => {
   const debug = DebugUtil.setDebug(false);
   
   return {
-    id: 'login-page',
+    id: 'recover-page',
     settings: {
       autoSendIfValid: false,
       animations: {
@@ -35,12 +35,12 @@ export const recover = (): FormProps => {
         borderRadius: '0%'
       }
     },
+    captcha: true,
     fields: [
       {
         name: 'email',
         label: t('Email'),
         type: 'email',
-        defaultValue: '',
         validationSchema: yup.string()
           .required(t('Email is required'))
           .email(t('This email is invalid...')),
@@ -67,7 +67,7 @@ export const recover = (): FormProps => {
     ],
     onSuccess: async (data: any) => {
 
-      const onRecoverSuccess = async (ret: any) => {
+      const onSuccess = async (ret: any) => {
         let user = ret.user
         user.jwt = ret.jwt // Attaching the JWT to the user level and state...
         await setisLogged(true)
@@ -78,17 +78,21 @@ export const recover = (): FormProps => {
         req: {
           url: '/auth/forgot-password',
           method: 'POST',
-          data: { email: data.email }
+          data: {
+            email: data.email
+          }
         },
         onSuccess: {
-          default: async (ret: any)=>{
-            await onRecoverSuccess(ret.data)
-              .then((ret: any)=>{
+          default: async (ret: any) => {
+            await onSuccess(ret.data)
+              .then((ret: any) => {
                 switch (ret.status) {
                   case 200:
                     presentToast({ 
                       message: t('user-wellcome', { username: ret.data.user.username }) 
-                    }).then(()=> history.push('/tabs/schedule', { direction: 'none' }))
+                    }).then(()=> 
+                      history.push('/tabs/schedule', { direction: 'none' })
+                    )
                 }            
               })
           }
@@ -104,7 +108,7 @@ export const recover = (): FormProps => {
       
     },
 
-    onError: (errors:any) =>{
+    onError: (errors: any) =>{
       presentToast({
         message: 'Login error!',
         duration: 2000,

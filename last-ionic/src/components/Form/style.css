@@ -128,3 +128,28 @@ form {
   padding: 8px; /* agrega un padding similar al de IonItem */
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* agrega una sombra ligera */
 }
+
+.captcha-container {
+  display: flex;
+  justify-content: center; /* Centrar horizontalmente */
+  margin-top: 10px; /* Ajusta el margen superior según sea necesario */
+}
+
+.captcha {
+  font-size: 1.5rem;
+  font-weight: bold;
+  letter-spacing: 5px;
+  transform: rotate(3deg) scale(1.1) skew(10deg, 5deg); /* Transformaciones para distorsionar */
+  padding: 10px; /* Aumentar el padding para mayor espacio */
+  background-color: #f0f0f0; /* Fondo gris claro */
+  color: #333; /* Color de texto oscuro */
+  border: 2px solid #ccc; /* Borde gris */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Sombra */
+  animation: shake 0.5s linear infinite; /* Animación de agitación */
+}
+
+@keyframes shake {
+  0% { transform: rotate(3deg); }
+  50% { transform: rotate(-3deg); }
+  100% { transform: rotate(3deg); }
+}

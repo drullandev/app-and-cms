@@ -1,71 +1,98 @@
 // Global imports
 import React from 'react';
-import ReactGA from'react-ga';
-
-// Component imports
-import './styles.scss';
+import { useTranslation } from 'react-i18next';
+import { IonIcon, IonItem, IonText, IonFooter, IonToolbar, IonButtons, IonButton } from '@ionic/react';
 
 // Used Components
+import PagePropsData from '../../components/Page/types';
 import Page from '../../components/Page';
-import Header from '../../components/main/Header';
+import Header from '../../components/Header';
 import Form from '../../components/Form';
-// Used Source
-import { loginForm } from './source';
-// Used Reducers
-import { connect } from '../../reducer/src/connect';
-// This component
-import { PageProps } from '../../components/Page/types';
-
 
 // Component Reducer
+import { connect } from '../../reducer/src/connect';
 import { OwnProps, ComponentProps, StateProps, DispatchProps, mapStateToProps, mapDispatchToProps } from './reducer'
-import i18n from '../../components/extra/i18n';
-import { IonFab, IonFabButton, IonIcon } from '@ionic/react';
-//import { add } from 'lodash';
-import { checkboxOutline } from 'ionicons/icons';
 
-const Login: React.FC<ComponentProps> = (pageParams) => {
+// Component imports
+import { loginFormData } from './source';
+import './styles.scss';
+import './style.css';
 
-  const pageSettings : PageProps = {
+const LoginPage: React.FC<ComponentProps> = (pageProps) => {
+  
+  const { t } = useTranslation();
+
+  const pageSettings : PagePropsData = {
     settings: {
-      id: 'login-page',
+      id: 'login-page',//Concern css classes, for now!
       //skeleton: true
       //animated: "true"
     },
-    loadingGa4: {
-      action: 'onLoad',
-      data: {
-        category: 'auth', // Categoría del evento (puede ser cualquier nombre relevante)
-        action: 'load', // Acción realizada (por ejemplo, 'Clic en botón')
-        label: 'login-landing', // Etiqueta opcional para detalles adicionales
+    ga4: {
+      load: {
+        category: 'auth',
+        action: 'page-load',
+        label: 'login-landing',
       }
     },
-    header: ()=> {
+    header: () => {
       const headerProps = {
-        label: i18n.t('Login'),
+        title: t('Login'),
         slot: 'start',
-        loading: pageParams.loading || false
+        loading: pageProps.loading || false
       }
       return <Header {...headerProps} />
     },
     content: () => {
       return (
         <>
-          <Form {...loginForm(pageParams)} />
-          <IonFab>
-          <IonFabButton>
-            <IonIcon icon={checkboxOutline}></IonIcon>
-            </IonFabButton>
-          </IonFab>
+          <div className="login-content">
+            <IonItem lines="none" className="welcome-item">
+              <IonIcon name="checkmark-circle-outline" color="success" className="welcome-icon" />
+              <IonText>
+                <h2>{t('Welcome to Festivore!')}</h2>
+                <p>{t('Join the community and enjoy the best culinary experiences. Login to your account to continue.')}</p>
+              </IonText>
+            </IonItem>
+            <IonItem lines="none" className="login-item">
+              <IonText>
+                <h3>{t('Login to your account')}</h3>
+                <p>{t('Enter your credentials to access your account and start exploring the world of Festivore.')}</p>
+              </IonText>
+            </IonItem>
+            <Form {...loginFormData(pageProps)} />
+          </div>
         </>
       );
     },
-    footer: ()=>{ return <></>}
+    footer: () => {
+      return (
+        <IonFooter className="login-footer">
+          <IonToolbar>
+            <IonText className="footer-text">
+              <p>{t('Need help?')}</p>
+              <p>{t('Contact us at support@festivore.com')}</p>
+              <p>{t('Follow us on')}</p>
+            </IonText>
+            <IonButtons slot="end">
+              <IonButton href="https://www.facebook.com" target="_blank">
+                <IonIcon name="logo-facebook" />
+              </IonButton>
+              <IonButton href="https://www.twitter.com" target="_blank">
+                <IonIcon name="logo-twitter" />
+              </IonButton>
+              <IonButton href="https://www.instagram.com" target="_blank">
+                <IonIcon name="logo-instagram" />
+              </IonButton>
+            </IonButtons>
+          </IonToolbar>
+        </IonFooter>
+      );
+    }
   };
 
-  return (
-    <Page {...pageSettings} />
-  );
+  return <Page {...pageSettings} />
+
 };
 
-export default connect<OwnProps, StateProps, DispatchProps>({ mapStateToProps, mapDispatchToProps, component: Login });
+export default connect<OwnProps, StateProps, DispatchProps>({ mapStateToProps, mapDispatchToProps, component: LoginPage });

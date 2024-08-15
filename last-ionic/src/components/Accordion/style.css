@@ -1,0 +1,15 @@
+/* Accordion.css */
+.accordion-content {
+    padding: 2px;
+    background-color: #b2aeae;
+    color: #222;
+    border-top: 1px solid #ddd;
+    overflow: hidden; /* Asegúrate de que el contenido se ajuste */
+    transition: max-height 0.3s ease-out; /* Animación para el despliegue */
+    max-height: 0; /* Inicia con altura 0 para el acordeón cerrado */
+  }
+  
+.accordion-content.open {
+    max-height: 2000px; /* Un valor alto para permitir expansión completa */
+    transition: max-height 0.3s ease-out; /* Animación suave */
+}

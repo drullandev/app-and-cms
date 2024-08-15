@@ -13,18 +13,18 @@ import { useTranslation } from 'react-i18next'
 
 // Page dependencies
 import Page from '../../components/Page'
-import { PageProps } from '../../components/Page/types'
+import PagePropsData from '../../components/Page/types'
 
 // Form settings
 import * as yup from 'yup'
 import Form from '../../components/Form'
 
 // Design Dependencies
-import Header from '../../components/main/Header'
+import Header from '../../components/Header'
 
 const TestForm: React.FC = () => {
 
-  const { t } = useTranslation()
+  const { t } = useTranslation();
   const [presentToast] = useIonToast()
   //const auth = getAuth()
 
@@ -53,7 +53,7 @@ const TestForm: React.FC = () => {
     buttons: [
       { name: 'submit', label: 'Submit', type: 'button', defaultValue: '' },
     ],
-    onSuccess: (data: any)=>{
+    onSuccess: (data: any) => {
       console.log('When success!!', data)
       return presentToast({ message: 'Success', duration: 2000, position: 'top' })
     },
@@ -63,16 +63,16 @@ const TestForm: React.FC = () => {
     }
   };
   
-  const pageSettings: PageProps = {
+  const pageSettings: PagePropsData = {
     settings:{
       id: 'login-page',
     },
-    header: () => <Header label={t('Login')} slot={'start'}/>,
+    header: () => <Header />,
     content: () => (<>
         <Form {...formData}/>
       </>
     ),
-    footer: ()=>{
+    footer: () => {
       
     }
   }

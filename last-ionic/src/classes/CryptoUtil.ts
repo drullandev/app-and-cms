@@ -64,6 +64,7 @@ import DebugUtil from "./DebugUtil";
       .map((charCode: number) => String.fromCharCode(charCode))
       .join('');
   }
-}
+  
+};
 
 export default new CryptoUtil();

@@ -1,8 +1,9 @@
 import React, { useState, useEffect, forwardRef } from 'react';
-import { IonLabel, IonButton, IonSpinner, IonIcon } from '@ionic/react';
+import { IonLabel, IonButton, IonSpinner } from '@ionic/react';
 import { FieldProps } from '../types';
 import * as icon from 'ionicons/icons';
-import Logger from '../../../../classes/Logger';
+import Logger from '../../../classes/LoggerClass';
+import Icon from '../../_Ionic/v7/Icon';
 
 /**
  * Button component that handles loadinging a label, an optional icon, and a spinner during loading state.
@@ -23,7 +24,7 @@ const Button = forwardRef<HTMLIonButtonElement, FieldProps>((field, ref) => {
     <>
       {loading 
         ? <IonSpinner name="lines-small" />
-        : (field.icon ? <IonIcon slot="start" icon={field.icon || icon.star} /> : null)
+        : (field.icon ? <Icon slot="start" icon={field.icon || icon.star} /> : null)
       }
       <IonLabel>{field.label}</IonLabel>
     </>

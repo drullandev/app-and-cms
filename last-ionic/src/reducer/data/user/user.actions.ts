@@ -25,7 +25,7 @@ import { ActionType } from '../../../utils/types'
 import { UserState } from './user.state'
 import { initialUser } from '../../state'
 import DebugUtil from '../../../classes/DebugUtil'
-import Logger from '../../../../src/classes/Logger';
+import Logger from '../../../classes/LoggerClass';
 
 const debug = DebugUtil.setDebug(false);
 

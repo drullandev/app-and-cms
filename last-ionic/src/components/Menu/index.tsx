@@ -1,6 +1,6 @@
 import React from 'react'
 import { RouteComponentProps, withRouter, useLocation } from 'react-router'
-import i18n from '../extra/i18n'
+import i18n from '../_extra/i18n'
 import { IonContent, IonIcon, IonItem, IonLabel, IonList, IonListHeader, IonMenu, IonMenuToggle, IonToggle } from '@ionic/react'
 
 import { connect } from '../../reducer/src/connect'
@@ -11,6 +11,7 @@ import { useTranslation } from 'react-i18next'
 
 import { routes } from '../../config/routes'
 import { hammer, moonOutline } from 'ionicons/icons'
+import { OwnProps } from '../../app/reducer';
 
 interface Pages {
   title: string;
@@ -18,6 +19,7 @@ interface Pages {
   icon: string;
   routerDirection?: string;
 }
+
 interface StateProps {
   darkMode: boolean;
   isAuthenticated: boolean;
@@ -25,7 +27,7 @@ interface StateProps {
 }
 
 interface DispatchProps {
-  setDarkMode: typeof setDarkMode;
+  setDarkMode: (darkMode: boolean) => void;
 }
 
 interface MenuProps extends RouteComponentProps, StateProps, DispatchProps {}
@@ -43,6 +45,7 @@ const Menu: React.FC<MenuProps> = ({
     return list
       .filter((route) => !!route.path)
       .map((p) => (
+
         <IonMenuToggle key={p.title} auto-hide="false">
           <IonItem
             detail={false}
@@ -56,37 +59,50 @@ const Menu: React.FC<MenuProps> = ({
             <IonLabel>{p.title}</IonLabel>
           </IonItem>
         </IonMenuToggle>
+        
       ));
   }
 
   return (
     <IonMenu type="overlay" disabled={!menuEnabled} contentId="main">
+
       <IonContent forceOverscroll={false}>
-        <IonList lines="none">
-          <IonListHeader>Conference</IonListHeader>
+
+        <IonList role="list" lines="none">
           {renderlistItems(routes.appPages)}
         </IonList>
-        <IonList lines="none">
+
+        <IonList role="list" lines="none">
+
           <IonListHeader>Account</IonListHeader>
+
           {isAuthenticated
             ? renderlistItems(routes.loggedInPages)
             : renderlistItems(routes.loggedOutPages)}
+
           <IonItem>
+
             <IonIcon
               slot="start"
               icon={moonOutline}
               aria-hidden="true"
             ></IonIcon>
+
             <IonToggle
               checked={darkMode}
-              onClick={() => setDarkMode(!darkMode)}
+              onIonChange={() => setDarkMode(!darkMode)}
             >
               Dark Mode
             </IonToggle>
+
           </IonItem>
+
         </IonList>
+
         <IonList lines="none">
+
           <IonListHeader>Tutorial</IonListHeader>
+
           <IonItem
             button
             onClick={() => {
@@ -96,13 +112,16 @@ const Menu: React.FC<MenuProps> = ({
             <IonIcon slot="start" icon={hammer} />
             <IonLabel>Show Tutorial</IonLabel>
           </IonItem>
+
         </IonList>
+
       </IonContent>
+
     </IonMenu>
   );
 };
 
-export default connect<{}, StateProps, {}>({
+export default connect<OwnProps, StateProps, DispatchProps>({
   mapStateToProps: (state) => ({
     darkMode: state.user.darkMode,
     isAuthenticated: state.user.isLoggedin,
