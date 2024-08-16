@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Route } from 'react-router-dom';
 import { IonApp, IonRouterOutlet, IonSplitPane } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
@@ -29,33 +29,18 @@ import { withLifecycleHooks, LifecycleHooks } from '../interfaces/LifecycleHooks
  * @param param0 {ComponentProps & ComponentProps}
  * @returns 
  */
-const AppComponent: React.FC<ComponentProps & LifecycleHooks> = ({
-  darkMode,
-  setData,
-  schedule,
-  loadConfData,
-  loadUserData,
-  onLoad,
-  afterMount,
-  beforeUpdate,
-  afterUpdate,
-  beforeDismount,
-  onError
-}) => {
+const AppComponent: React.FC<any> = () => {
 
   // Configura el modo de depuración
   let debug = DebugUtil.setDebug(false);
 
   // Inicializa configuraciones y datos
-  onLoad = () => {
+  useEffect( () => {
     Logger.log(' • Loading App!')
-    loadConfData();
-    loadUserData();
-    setData(initialUser);
-  };
+  },[]);
 
   return (
-    <IonApp className={`${darkMode ? 'dark-theme' : ''}`}>
+    <IonApp className={`dark-theme`}>
       <IonReactRouter>
         <IonSplitPane contentId='main'>
           <Menu />
@@ -90,8 +75,4 @@ const AppComponent: React.FC<ComponentProps & LifecycleHooks> = ({
 //const ConnectedApp: React.FC = () => <AppWithLifecycleHooks />;
 
 // Conecta el componente AppWithLifecycleHooks con Redux
-export default connect<OwnProps, StateProps, DispatchProps>({
-  mapStateToProps,
-  mapDispatchToProps,
-  component: withLifecycleHooks(AppComponent),
-});
+export default AppComponent;

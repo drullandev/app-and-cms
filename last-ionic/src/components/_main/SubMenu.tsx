@@ -28,7 +28,7 @@ const SubMenu: React.FC<SubMenuProps> = ({ menu }) => {
       </IonListHeader>
       <IonList lines='none' key={menu.menu.slug}>
         {menus.map((row:any, i:number)=>(
-          {/*<MenuRow key={i.toString()} row={row}/>*/}
+          <MenuRow key={i.toString()} userDarkMode={false} isLoggedIn={false}/>
         ))}
       </IonList>
     </>

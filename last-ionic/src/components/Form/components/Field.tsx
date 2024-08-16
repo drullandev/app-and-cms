@@ -15,7 +15,7 @@ import Error from './Error';
 import Button from './Button';
 import ReCAPTCHA from 'react-google-recaptcha';
 import Security from '../../../classes/Security';
-import Icon from '../../_Ionic/v7/Icon';
+import Icon from '../../_Ionic/v8/Icon';
 
 /**
  * Field component that handles various types of form fields with validation, loading states, and error handling.
@@ -198,7 +198,7 @@ const Field = forwardRef<any, {
 
     const checkIfFieldIsRequired = (fieldName: string): boolean => {
       try {
-        const fieldSchema = validationSchema.fields[fieldName] as yup.BaseSchema;
+        const fieldSchema = validationSchema.fields[fieldName] as yup.Schema;
         if (!fieldSchema) {
           return false;
         }

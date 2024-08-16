@@ -82,7 +82,7 @@ const CookieConsent: React.FC = () => {
 		<IonModal
 			isOpen={showModal} // Controls the visibility of the modal based on state
 			onDidDismiss={() => setShowModal(false)} // Closes the modal when dismissed
-			trigger="open-modal" // Trigger element to open the modal
+			 // Trigger element to open the modal
 			initialBreakpoint={0.25} // Initial height of the modal
 			breakpoints={[0, 0.25, 0.5, 0.75]} // Responsive breakpoints for the modal
 			handleBehavior="cycle" // Defines the swipe behavior for the modal

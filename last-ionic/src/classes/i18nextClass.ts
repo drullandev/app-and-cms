@@ -1,4 +1,4 @@
-import { keyTransVar } from '../../public/assets/data/keyTransVar';
+import { keyTransVar } from '../../static/data/keyTransVar';
 import DebugUtil from './DebugUtil';
 import i18n from 'i18next';
 

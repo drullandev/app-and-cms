@@ -41,9 +41,9 @@ const ChangePassword: React.FC<ComponentProps> = ({
           <IonTitle>{t('Reset account')}</IonTitle>
         </IonToolbar>    
       </IonHeader>,
-    content: ()=> <Form {...pageSettings.methods.resetForm}/>,
+    content: ()=> <></>,//<Form {...pageSettings.methods.resetForm}/>
     footer: ()=> <></>,
-    methods: {
+    /*methods: {
       resetForm: {
 
         id: 'reset-form',
@@ -155,7 +155,8 @@ const ChangePassword: React.FC<ComponentProps> = ({
         },
     
       }
-    }
+      
+    }*/
   }
 
   return <Page {...pageSettings}/>

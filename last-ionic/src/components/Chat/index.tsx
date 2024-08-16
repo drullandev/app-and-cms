@@ -35,7 +35,7 @@ const Chat: React.FC = () => {
 
     // Simular respuesta automática
     setTimeout(() => {
-      setMessages(prevMessages => [...prevMessages, { user: 'Bot', text: 'This is an automated response.' }]);
+      setMessages((prevMessages: any) => [...prevMessages, { user: 'Bot', text: 'This is an automated response.' }]);
     }, 1000);
 
     setInput('');

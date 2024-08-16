@@ -34,14 +34,6 @@ class ComponentGenerator {
         performance,
         events
     ) {
-        // Map accessibility properties to props with camelCase keys
-        /*const ariaStandar = Object.keys(accessibility).map((key) => {
-            const camelCaseKey = this.toCamelCase(key);
-            return `${camelCaseKey}={props.${camelCaseKey}}`;
-        }).join(' ');*/
-
-        const validationProps = validation.requiredProps.map(prop =>
-            `const ${this.toCamelCase(prop)} = props.${this.toCamelCase(prop)};`).join('\n');
 
         const memoization = performance.shouldMemoize 
             ? `React.memo(${componentName})`
@@ -52,10 +44,6 @@ class ComponentGenerator {
                     import('@ionic/react').then(module => ({ default: module.Ion${componentName} }))
                 );`
             : `import { Ion${componentName} } from '@ionic/react';`;
-
-        // Generate event handlers in camelCase
-        //const eventHandlers = events.map(event => 
-        //    `    const ${this.getEventHandlerName(event)} = (e: React.${this.getEventType(event)}) => {\n    // handle ${event} here\n    };`).join('\n');
 
         const component = 
             `// This file has been automatically generated from a script\n` +
@@ -73,8 +61,6 @@ class ComponentGenerator {
             ` * @returns React component wrapping Ion${componentName}\n` +
             ` */\n` +
             `const ${componentName}: React.FC<${interfaceName}> = (props: ${interfaceName}) => {\n` +
-        //    `    ${validationProps}\n` +
-        //    `${eventHandlers}\n` +
             `    return <Ion${componentName} {...props} />\n\n` +
             `};\n\n` +
             `export default ${memoization};\n`;
@@ -102,19 +88,6 @@ class ComponentGenerator {
             `${accessibilityProps}\n` +
             `${eventHandlers}\n` +
             `};\n`;
-    }
-
-
-    // Helper function to determine event type
-    getEventType(event) {
-        switch (event) {
-            case 'onClick':
-                return 'MouseEvent';
-            case 'onFocus':
-                return 'FocusEvent';
-            default:
-                return 'Event';
-        }
     }
 
     // Helper function to generate camelCase event handler name
@@ -182,7 +155,7 @@ class ComponentGenerator {
                     const documentationPath = path.join(componentDirectory, 'documentation.md');
                     fs.writeFileSync(documentationPath, documentationContent);
     
-                    console.log(`Generated bridge component: ${componentName}`);
+                    console.log(` • Generated bridge component: ${componentName}`);
                 }
             });
         });
@@ -221,7 +194,7 @@ class ComponentGenerator {
 }
 
 // Example usage
-const jsonFile = './components.json';
+const jsonFile = './src/components/_Ionic/components.json';
 const componentsDirectory = './v8/';
 const generator = new ComponentGenerator(jsonFile, componentsDirectory);
 generator.generateComponents();

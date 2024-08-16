@@ -2345,7 +2345,250 @@
           "customizableProps": [],
           "slots": []
         }
-      }
+      },
+      {
+        "name": "IonBackdrop",
+        "description": "Component that covers the interface to provide a backdrop effect.",
+        "interface": "IonBackdropProps",
+        "accessibility": {
+            "aria-hidden": {
+                "acceptedValues": ["true", "false"],
+                "description": "Indicates whether the backdrop is visible or hidden for accessibility purposes.",
+                "required": false
+            }
+        },
+        "styling": {
+            "defaultStyles": {},
+            "cssClasses": ["ion-backdrop"]
+        },
+        "behavior": {
+            "events": [],
+            "defaultProps": {},
+            "stateful": false
+        },
+        "validation": {
+            "requiredProps": [],
+            "validationRules": {}
+        },
+        "performance": {
+            "lazyLoad": false,
+            "shouldMemoize": true
+        },
+        "i18n": {
+            "translatableProps": [],
+            "defaultLocale": "en"
+        },
+        "testing": {
+            "testId": "ion-backdrop-test",
+            "testCases": ["should render correctly", "should be visible when active"]
+        },
+        "documentation": {
+            "docsUrl": "https://ionicframework.com/docs/api/backdrop",
+            "examples": ["<IonBackdrop />"]
+        },
+        "typeSafety": {
+            "propTypes": {
+                "aria-hidden": "string"
+            }
+        },
+        "dependencies": [],
+        "customization": {
+            "customizableProps": [],
+            "slots": []
+        }
+    },
+    {
+        "name": "IonButtons",
+        "description": "Component for grouping multiple buttons together.",
+        "interface": "IonButtonsProps",
+        "accessibility": {},
+        "styling": {
+            "defaultStyles": {},
+            "cssClasses": ["ion-buttons"]
+        },
+        "behavior": {
+            "events": [],
+            "defaultProps": {},
+            "stateful": false
+        },
+        "validation": {
+            "requiredProps": [],
+            "validationRules": {}
+        },
+        "performance": {
+            "lazyLoad": false,
+            "shouldMemoize": true
+        },
+        "i18n": {
+            "translatableProps": [],
+            "defaultLocale": "en"
+        },
+        "testing": {
+            "testId": "ion-buttons-test",
+            "testCases": ["should render correctly", "should group buttons"]
+        },
+        "documentation": {
+            "docsUrl": "https://ionicframework.com/docs/api/buttons",
+            "examples": ["<IonButtons><IonButton>Button 1</IonButton><IonButton>Button 2</IonButton></IonButtons>"]
+        },
+        "typeSafety": {
+            "propTypes": {}
+        },
+        "dependencies": [],
+        "customization": {
+            "customizableProps": [],
+            "slots": []
+        }
+    },
+    {
+        "name": "IonPicker",
+        "description": "Component for selecting a value from a list of options.",
+        "interface": "IonPickerProps",
+        "accessibility": {
+            "aria-label": {
+                "acceptedValues": "string",
+                "description": "Defines a string value that labels the picker for accessibility purposes.",
+                "required": true
+            }
+        },
+        "styling": {
+            "defaultStyles": {},
+            "cssClasses": ["ion-picker"]
+        },
+        "behavior": {
+            "events": ["onChange"],
+            "defaultProps": {},
+            "stateful": false
+        },
+        "validation": {
+            "requiredProps": ["aria-label"],
+            "validationRules": {
+                "aria-label": "must be a non-empty string"
+            }
+        },
+        "performance": {
+            "lazyLoad": false,
+            "shouldMemoize": true
+        },
+        "i18n": {
+            "translatableProps": ["aria-label"],
+            "defaultLocale": "en"
+        },
+        "testing": {
+            "testId": "ion-picker-test",
+            "testCases": ["should render correctly", "should select value"]
+        },
+        "documentation": {
+            "docsUrl": "https://ionicframework.com/docs/api/picker",
+            "examples": ["const picker = await pickerController.create({ columns: [...], buttons: [...] }); await picker.present();"]
+        },
+        "typeSafety": {
+            "propTypes": {
+                "aria-label": "string"
+            }
+        },
+        "dependencies": [],
+        "customization": {
+            "customizableProps": [],
+            "slots": []
+        }
+    },
+    {
+        "name": "IonPopover",
+        "description": "Component that displays a menu or content in a popover.",
+        "interface": "IonPopoverProps",
+        "accessibility": {
+            "aria-label": {
+                "acceptedValues": "string",
+                "description": "Defines a string value that labels the popover for accessibility purposes.",
+                "required": true
+            }
+        },
+        "styling": {
+            "defaultStyles": {},
+            "cssClasses": ["ion-popover"]
+        },
+        "behavior": {
+            "events": ["onDidDismiss"],
+            "defaultProps": {},
+            "stateful": false
+        },
+        "validation": {
+            "requiredProps": ["aria-label"],
+            "validationRules": {
+                "aria-label": "must be a non-empty string"
+            }
+        },
+        "performance": {
+            "lazyLoad": false,
+            "shouldMemoize": true
+        },
+        "i18n": {
+            "translatableProps": ["aria-label"],
+            "defaultLocale": "en"
+        },
+        "testing": {
+            "testId": "ion-popover-test",
+            "testCases": ["should render correctly", "should show content"]
+        },
+        "documentation": {
+            "docsUrl": "https://ionicframework.com/docs/api/popover",
+            "examples": ["const popover = await popoverController.create({ component: 'YourComponent', translucent: true }); await popover.present();"]
+        },
+        "typeSafety": {
+            "propTypes": {
+                "aria-label": "string"
+            }
+        },
+        "dependencies": [],
+        "customization": {
+            "customizableProps": [],
+            "slots": []
+        }
+    },
+    {
+        "name": "IonRadioGroup",
+        "description": "Component that groups multiple radio buttons together.",
+        "interface": "IonRadioGroupProps",
+        "accessibility": {},
+        "styling": {
+            "defaultStyles": {},
+            "cssClasses": ["ion-radio-group"]
+        },
+        "behavior": {
+            "events": ["onIonChange"],
+            "defaultProps": {},
+            "stateful": false
+        },
+        "validation": {
+            "requiredProps": [],
+            "validationRules": {}
+        },
+        "performance": {
+            "lazyLoad": false,
+            "shouldMemoize": true
+        },
+        "i18n": {
+            "translatableProps": [],
+            "defaultLocale": "en"
+        },
+        "testing": {
+            "testId": "ion-radio-group-test",
+            "testCases": ["should render correctly", "should select radio option"]
+        },
+        "documentation": {
+            "docsUrl": "https://ionicframework.com/docs/api/radio-group",
+            "examples": ["<IonRadioGroup><IonRadio value=\"value1\">Option 1</IonRadio><IonRadio value=\"value2\">Option 2</IonRadio></IonRadioGroup>"]
+        },
+        "typeSafety": {
+            "propTypes": {}
+        },
+        "dependencies": [],
+        "customization": {
+            "customizableProps": [],
+            "slots": []
+        }
+    }
     ]
   }
 }

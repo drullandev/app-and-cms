@@ -1,4 +1,4 @@
-import * as icon from 'ionicons/icons';
+import { checkboxOutline, warningOutline, skullOutline, closeCircle } from 'ionicons/icons';
 import i18n from 'i18next';
 import { MyExtraOutputOptions } from '../interfaces/ModalToastProps';
 import Logger from './LoggerClass';
@@ -11,135 +11,93 @@ class RestOutput {
 
   private defaultMessages = {
     success: {
-      icon: icon.checkboxOutline,
+      icon: checkboxOutline,
       color: 'success',
       header: i18n.t('Greetings!'),
       message: i18n.t('The operation was correct!'),
     },
     warning: {
-      icon: icon.warningOutline,
+      icon: warningOutline,
       color: 'warning',
       header: i18n.t('Pay attention!'),
       message: i18n.t('The operation has some conflict!'),
     },
     danger: {
-      icon: icon.skullOutline,
+      icon: skullOutline,
       color: 'danger',
       header: i18n.t('Caution!'),
       message: i18n.t('The operation resulted in error!'),
     },
     formDanger: {
-      icon: icon.warningOutline,
+      icon: warningOutline,
       color: 'warning',
       header: i18n.t('Form error!'),
       message: i18n.t('Something was wrong sending the form!'),
     },
-
   };
 
   private default = {
     duration: 3000,
     color: 'success',
     header: i18n.t('Greetings!')
-  }
+  };
 
-  /**
-   * Handles successful responses and returns a structured output.
-   * @param response The response object to process.
-   * @param props Optional custom properties to override the default output.
-   * @returns Structured output options for displaying success.
-   */
-  public catchSuccess(response: AxiosResponse, props?: MyExtraOutputOptions, debug? :boolean): MyExtraOutputOptions {
+  public catchSuccess(response: AxiosResponse, props?: MyExtraOutputOptions, debug?: boolean): MyExtraOutputOptions {
     const output = this.setOutputMessage(
       response,
       this.setOutput(props, this.defaultMessages.success as MyExtraOutputOptions),
       props
     );
-    if (this.debug || debug) Logger.log(' • CatchWarning::error::output', response, output)
-    return output
+    if (this.debug || debug) Logger.log(' • CatchSuccess::error::output', response, output);
+    return output;
   }
 
-  /**
-   * Handles warnings and returns a structured output.
-   * @param error The error object to process.
-   * @param props Optional custom properties to override the default output.
-   * @returns Structured output options for displaying warnings.
-   */
   public catchWarning(error: AxiosError, props?: MyExtraOutputOptions, debug?: boolean): MyExtraOutputOptions {
     const output = this.setOutputMessage(
       error,
       this.setOutput(props, this.defaultMessages.warning as MyExtraOutputOptions),
       props
     );
-    if (this.debug || debug) Logger.log(' • CatchWarning::error::output', error, output)
+    if (this.debug || debug) Logger.log(' • CatchWarning::error::output', error, output);
     return output;
   }
 
-  /**
-   * Handles errors and returns a structured output.
-   * @param error The error object to process.
-   * @param props Optional custom properties to override the default output.
-   * @returns Structured output options for displaying errors.
-   */
   public catchDanger(error: AxiosError, props?: MyExtraOutputOptions, debug?: boolean): MyExtraOutputOptions {
     const output = this.setOutputMessage(
       error,
       this.setOutput(props, this.defaultMessages.danger as MyExtraOutputOptions),
       props
     );
-    if (this.debug || debug) Logger.log(' • CatchDanger::error::output', error, output)
-    return output
+    if (this.debug || debug) Logger.log(' • CatchDanger::error::output', error, output);
+    return output;
   }
 
-  /**
-   * Handles form validation errors and returns a structured output.
-   * @param errors The error object containing form validation errors.
-   * @param props Optional custom properties to override the default output.
-   * @returns Structured output options for displaying form errors.
-   */
   public catchFormError(errors: any, props?: MyExtraOutputOptions, debug?: boolean): MyExtraOutputOptions {
-
     let error = this.catchDanger(errors, this.defaultMessages.formDanger as MyExtraOutputOptions);
-
     error.header = props?.header || this.defaultMessages.formDanger.header;
-
-    error = this.setMessage(errors, error, props)
-    
-    if (this.debug || debug) Logger.log(' • CatchWarning::error::output', errors, error)
-
+    error = this.setMessage(errors, error, props);
+    if (this.debug || debug) Logger.log(' • CatchFormError::error::output', errors, error);
     return error;
   }
 
-  private setMessage( errors: any, error: any, props?: MyExtraOutputOptions){
-
+  private setMessage(errors: any, error: any, props?: MyExtraOutputOptions) {
     if (props?.message) {
-
       error.message = props.message;
     } else if (props?.setInnerMessage) {
-
-      error.message = this.findMessage(errors)
+      error.message = this.findMessage(errors);
     } else if (errors) {
-
       Object.keys(errors).forEach((errorKey: string) => {
         if (errors[errorKey]?.message) {
           let errorMessage = errors[errorKey].message || '';
           error.message += (errorMessage ? `\n- ${errorMessage}` : '');
         }
       });
-
     } else {
       error.message = this.defaultMessages.formDanger.message;
     }
-
     return error;
   }
 
-  /**
-   * Recursively finds a 'message' property in an object.
-   * This function is useful for extracting error messages from nested objects.
-   * @param obj The object to search for a 'message' property.
-   * @returns The found message or null if no message is found.
-   */
   private findMessage(obj: any): any {
     if (obj && typeof obj === 'object') {
       if (obj.hasOwnProperty('message')) {
@@ -154,16 +112,9 @@ class RestOutput {
         }
       }
     }
-    return null; // Return null if no 'message' is found
+    return null;
   }
 
-  /**
-   * Sets the output message based on the response and props.
-   * @param response The response object to process.
-   * @param output The output options to set.
-   * @param props Additional properties to set for the output.
-   * @returns Structured output options for displaying messages.
-   */
   private setOutputMessage(response: any, output: MyExtraOutputOptions, props?: MyExtraOutputOptions): MyExtraOutputOptions {
     if (props?.setInnerMessage) {
       output.message = this.findMessage(response);
@@ -174,47 +125,51 @@ class RestOutput {
     return output;
   }
 
-  /**
-   * Obtains the outline icon corresponding to a filled icon.
-   * @param filledIcon The filled icon.
-   * @returns The corresponding outline icon or the original if not found.
-   */
-   private getOutlineIcon = (filledIcon: string): string => {
-    // Encuentra el nombre del icono a partir del icono relleno
-    const iconName = Object.keys(icon).find(key => icon[key] === filledIcon);
+  private getOutlineIcon = (filledIcon: string): string => {
+    const iconsMap: { [key: string]: string } = {
+        checkboxOutline,
+        warningOutline,
+        skullOutline,
+        closeCircle
+    };
+
+    const iconName = Object.keys(iconsMap).find(key => iconsMap[key as keyof typeof iconsMap] === filledIcon);
 
     if (iconName) {
-      // Crea el nombre del icono de contorno a partir del nombre del icono encontrado
-      const outlineIconName = `${iconName}Outline` as keyof typeof icon; // Asegura que el tipo sea compatible
-      return icon[outlineIconName] || filledIcon; // Retorna el icono de contorno o el icono original si no se encuentra
+        const outlineIconName = `${iconName}Outline`;
+        return iconsMap[outlineIconName] || filledIcon;
     }
 
-    return filledIcon; // Retorna el icono original si no se encontró uno correspondiente
-  };
+    return filledIcon;
+};
 
-  /**
-   * Sets output options for displaying messages.
-   * @param options The options to set for the output.
-   * @param merge Additional properties to merge with the options.
-   * @returns Structured output options for displaying messages.
-   */
-  private setOutput = (options?: MyExtraOutputOptions, merge?: MyExtraOutputOptions): MyExtraOutputOptions => {
-    let output = {
-      message: options?.message || merge?.message || 'Undefined message!',
-      icon: this.getOutlineIcon(options?.icon) || this.getOutlineIcon(merge?.icon) || this.getOutlineIcon(icon.closeCircle),
-      duration: options?.duration || merge?.duration || this.default.duration,
-      color: options?.color || merge?.color || this.default.color,
-      header: options?.header || merge?.header || this.default.header,
-      buttons: options?.buttons || merge?.buttons || [],
-      position: options?.position || merge?.position || 'bottom',
-      positionAnchor: options?.positionAnchor || merge?.positionAnchor || undefined,
-      swipeGesture: options?.swipeGesture || merge?.swipeGesture || undefined,
-      translucent: options?.translucent || merge?.translucent || false,
-      layout: options?.layout || merge?.layout || undefined,
-      mode: options?.mode || merge?.mode || 'ios',
-      keyboardClose: options?.keyboardClose || merge?.keyboardClose || true,
-      setInnerMessage: options?.setInnerMessage || merge?.setInnerMessage || true
+
+  private setOutput = (options?: MyExtraOutputOptions, merge?: MyExtraOutputOptions): any => {
+    const defaultOptions = {
+      message: 'Undefined message!',
+      icon: closeCircle, // Valor por defecto
+      duration: this.default.duration,
+      color: this.default.color,
+      header: this.default.header,
+      buttons: [],
+      position: 'bottom',
+      positionAnchor: undefined,
+      swipeGesture: undefined,
+      translucent: false,
+      layout: undefined,
+      mode: 'ios',
+      keyboardClose: true,
+      setInnerMessage: true
     };
+
+    const output = {
+      ...defaultOptions,
+      ...merge,
+      ...options
+    };
+
+    output.icon = options?.icon || merge?.icon || defaultOptions.icon;
+
     return output;
   }
 

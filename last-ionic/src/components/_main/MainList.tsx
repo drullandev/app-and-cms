@@ -3,11 +3,11 @@ import {  } from '../../config/env'
 import { IonItemDivider, IonItemGroup, IonLabel, IonList, IonListHeader, IonAlert, AlertButton } from '@ionic/react'
 import React, { useState, useCallback } from 'react'
 
-import { Schedule, Session } from '../../../reducer/models/Schedule'
+import { Schedule, Session } from '../../reducer/models/Schedule'
 import SessionListItem from './MainListItem'
 
-import { connect } from '../../../reducer/src/connect'
-import { addFavorite, removeFavorite } from '../../../reducer/data/sessions/sessions.actions'
+import { connect } from '../../reducer/src/connect'
+import { addFavorite, removeFavorite } from '../../reducer/data/sessions/sessions.actions'
 
 interface OwnProps {
   schedule: Schedule

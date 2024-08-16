@@ -1,17 +1,23 @@
-import React from 'react'
+import React from 'react';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
 
-import { LazyLoadImage } from 'react-lazy-load-image-component'
+interface ImageProps {
+  root: string;
+  image: {
+    big: { url: string };
+    small: { url: string };
+  };
+}
 
-
-const MyImage = ( root: string | any, image: any ) => (
+const MyImage: React.FC<ImageProps> = ({ root, image }) => (
   <LazyLoadImage
-    class='ken-burns'
+    className='ken-burns' // Cambia 'class' a 'className'
     alt='Boat image'
     effect='blur'
     threshold={100}
     src={root + image.big.url}
     placeholderSrc={root + image.small.url}
   />
-)
+);
 
-export default React.memo(MyImage)
+export default React.memo(MyImage);

@@ -10,8 +10,8 @@ interface AccordionSection {
 
 interface AccordionProps {
   title: string;
-	data: any;
-  sections: AccordionSection[]; // Array of sections to display in the accordion
+	data?: any;
+  sections?: AccordionSection[]; // Array of sections to display in the accordion
 }
 
 const Accordion: React.FC<AccordionProps> = ({ title, data, sections }) => {

@@ -3,8 +3,8 @@ import { IonSpinner } from '@ionic/react';
 import * as icon from 'ionicons/icons';
 import * as yup from 'yup';
 
-import Icon from '../../_Ionic/v7/Icon';
-import Spinner from '../../_Ionic/v7/Spinner';
+import Icon from '../../_Ionic/v8/Icon';
+import Spinner from '../../_Ionic/v8/Spinner';
 
 interface FieldStatusIconProps {
   controller: {

@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 
 import { default as LoggerClass } from '../../classes/LoggerClass';
-import { IonButton, IonIcon, IonAccordionGroup } from '@ionic/react';
+import { IonButton, IonIcon, IonAccordionGroup, IonItem } from '@ionic/react';
 import * as icon from 'ionicons/icons';
 import Accordion from '../../components/Accordion';
 
@@ -43,7 +43,7 @@ const DebugBox: React.FC<DebugBoxProps> = ({ debug, children }) => {
     <>
 			<IonAccordionGroup ref={accordionGroup}>
 				{children.map((child, index) => (
-					<Accordion key={index} title={`Section ${index + 1}`} children={child} />
+<IonItem key={'accor-'+index}></IonItem>
 				))}
 			</IonAccordionGroup>
     </>

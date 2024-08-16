@@ -42,7 +42,7 @@ const MainTabs: React.FC<MainTabsProps> = () => {
       <Route path="/tabs/speakers/:id" component={SpeakerDetail} exact={true} />
       <Route path="/tabs/schedule/:id" component={SessionDetail} />
       <Route path="/tabs/speakers/sessions/:id" component={SessionDetail} />
-      <Route path="/tabs/map" render={() => <MapView />} exact={true} />
+      <Route path="/tabs/map" render={() => <></> } exact={true} />
       <Route path="/tabs/about" render={() => <About />} exact={true} />
       <Route path="/tabs/list" render={() => <About />} exact={true} />
     </IonRouterOutlet>

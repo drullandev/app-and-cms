@@ -1,10 +1,10 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { IonFooter, IonGrid, IonRow, IonCol, IonToolbar, IonImg, IonLabel, getConfig } from '@ionic/react'
 //import { MenuProps } from '../../../data/models/Menu'
-import { getStorage } from '../../../data/utils/storage'
+import Storage from '../../classes/Storage'
 import { useHistory } from "react-router"
 //import { translate } from '../../../data/utils/translations'
-import { appAssets, menuSettings } from '../../../../env'
+import { appAssets } from '../../config/env'
 
 export interface FooterProps {
   index?: number
@@ -68,7 +68,7 @@ const FooterMenu: React.FC<FooterProps> = ({ index = 0, path = '' }) => {
     return {
       load: (index: number, path: string) => {
         footer.toggleShowHide()
-        getStorage('mainMenu').then(footer.setMain)
+        //getStorage('mainMenu').then(footer.setMain)
         if (path !== '') footer.toggleMenu(path)
       },
       setMain: (mainMenu: MenuProps[]) => {
@@ -81,8 +81,8 @@ const FooterMenu: React.FC<FooterProps> = ({ index = 0, path = '' }) => {
         history.replace(parent)
       },
       toggleShowHide: () => {
-        let show = menuSettings.hiddenFooter.indexOf(history.location.pathname) === -1
-        if (!show) setShowFooter(show)
+        //let show = menuSettings.hiddenFooter.indexOf(history.location.pathname) === -1
+        //if (!show) setShowFooter(show)
       },
       toggleMenu: (path: any) => {
         let p = path.split('/')
@@ -137,7 +137,6 @@ const FooterMenu: React.FC<FooterProps> = ({ index = 0, path = '' }) => {
                     : imgUrl(r.icon_inactive.url)}
                   onClick={() => { footer.handleClick('/' + r.ionic_resource + '/' + r.slug) }}
                 />
-                <IonLabel className='roboto' style={{ fontWeight: footerIndex === i ? /*'bold'*/ 'light' : 'light', fontSize: '0.6rem' }}>{translate(r.label, 'label')}</IonLabel>
               </IonCol>
             ))}
           </IonRow>
@@ -147,4 +146,4 @@ const FooterMenu: React.FC<FooterProps> = ({ index = 0, path = '' }) => {
   )
 }
 
-export default React.memo(FooterMenu)
+export default React.memo(FooterMenu);

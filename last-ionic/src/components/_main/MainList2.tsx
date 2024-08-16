@@ -1,14 +1,14 @@
 import * as AppConst from '../../config/env'
-
+import { GraphQLFilter } from '../../classes/data/GraphQLFilter' 
 import { IonList, IonInfiniteScroll, IonInfiniteScrollContent, IonItem, IonLabel, IonRefresher, IonRefresherContent, useIonToast } from '@ionic/react'
 import React, { useState, useEffect, useRef } from 'react'
 //import { restGet, getGQL } from '../../../data/utils/rest/rest.utils'
 
-import { connect } from '../../../reducer/src/connect'
+import { connect } from '../../reducer/src/connect'
 
-import { toCamelCase } from '../../../reducer/utils/common'
+//import { toCamelCase } from '../../reducer/data/common'
 
-import { setSearchString, setSearchOrder, setOrderField, setFilter } from '../../../reducer/data/sessions/sessions.actions';
+import { setSearchString, setSearchOrder, setOrderField, setFilter } from '../../reducer/data/sessions/sessions.actions';
 import Spinner from './Spinner'
 
 interface OwnProps { }
@@ -47,13 +47,13 @@ const MainList: React.FC<ThisProps> = ({
 
   const getDataToCall = () => {
     return { 
-      model: toCamelCase(slug),
+      model: slug,
       slug: slug,
       paginator : {
         limit: AppConst.paginator.size,
         start: 0,
       },
-      direction: AppConst.filter.order.default,
+      direction: GraphQLFilter.order.default,
       where: [{
         type: 'string',
         key: 'content',
@@ -61,8 +61,8 @@ const MainList: React.FC<ThisProps> = ({
         value: searchString
       }],
       searchString: searchString ? searchString : '', 
-      orderField: orderField ? orderField : AppConst.filter.fields.default,  
-      searchOrder: searchOrder ? searchOrder : AppConst.filter.order.default,
+      orderField: orderField ? orderField : GraphQLFilter.fields.default,  
+      searchOrder: searchOrder ? searchOrder : GraphQLFilter.order.default,
       filter: [],
       struct: {
         id: '',
