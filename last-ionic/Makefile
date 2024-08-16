@@ -22,6 +22,7 @@ all: dev
 # Install dependencies
 install:
 	@echo "Installing dependencies..."
+	brew install openjdk@17
 	$(NPM) install
 
 # Run development server
