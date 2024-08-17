@@ -3,6 +3,6 @@
 import { IonBackdrop } from '@ionic/react';
 
 export type IonBackdropProps = React.ComponentProps<typeof IonBackdrop> & {
-    ariaHidden: any;
-    ononionbackdroptap?: (e: any) => void;
+    ariaHidden?: any;
+
 };

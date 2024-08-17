@@ -2353,6 +2353,7 @@
         "accessibility": {
             "aria-hidden": {
                 "acceptedValues": ["true", "false"],
+                "default": false,
                 "description": "Indicates whether the backdrop is visible or hidden for accessibility purposes.",
                 "required": false
             }

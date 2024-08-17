@@ -4,10 +4,10 @@
 undefined
 
 ## API
-- **Props**: <IonPopover><div>Popover Content</div></IonPopover>
+- **Props**: const popover = await popoverController.create({ component: 'YourComponent', translucent: true }); await popover.present();
 
 ## Example
-<IonPopover><div>Popover Content</div></IonPopover>
+const popover = await popoverController.create({ component: 'YourComponent', translucent: true }); await popover.present();
 
 ## Documentation URL
 https://ionicframework.com/docs/api/popover

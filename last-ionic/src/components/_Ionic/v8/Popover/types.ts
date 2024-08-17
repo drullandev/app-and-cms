@@ -4,6 +4,5 @@ import { IonPopover } from '@ionic/react';
 
 export type IonPopoverProps = React.ComponentProps<typeof IonPopover> & {
     ariaLabel: any;
-    ononionwilldismiss?: (e: any) => void;
-    ononiondiddismiss?: (e: any) => void;
+    onondiddismiss?: (e: any) => void;
 };

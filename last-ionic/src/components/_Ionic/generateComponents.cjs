@@ -195,7 +195,7 @@ class ComponentGenerator {
 
 // Example usage
 const jsonFile = './src/components/_Ionic/components.json';
-const componentsDirectory = './v8/';
+const componentsDirectory = './src/components/_Ionic/v8/';
 const generator = new ComponentGenerator(jsonFile, componentsDirectory);
 generator.generateComponents();
 console.log('OK');

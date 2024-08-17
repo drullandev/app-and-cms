@@ -4,10 +4,10 @@
 undefined
 
 ## API
-- **Props**: <IonPicker columns={columns} />
+- **Props**: const picker = await pickerController.create({ columns: [...], buttons: [...] }); await picker.present();
 
 ## Example
-<IonPicker columns={columns} />
+const picker = await pickerController.create({ columns: [...], buttons: [...] }); await picker.present();
 
 ## Documentation URL
 https://ionicframework.com/docs/api/picker

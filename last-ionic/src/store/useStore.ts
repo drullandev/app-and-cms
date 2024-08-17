@@ -1,15 +1,15 @@
-// src/store/useStore.ts
 import create from 'zustand';
 
-interface UserState {
+// Definir la interfaz del estado
+interface AppState {
   darkMode: boolean;
-  isAuthenticated: boolean;
-  setDarkMode: (darkMode: boolean) => void;
-  // Puedes añadir más estados según sea necesario
+  toogleDarkMode: () => void;
 }
 
-export const useStore = create<UserState>((set) => ({
+// Crear el store usando Zustand
+const useStore = create<AppState>((set) => ({
   darkMode: false,
-  isAuthenticated: false,
-  setDarkMode: (darkMode) => set({ darkMode }),
+  toogleDarkMode: () => set((state) => ({ darkMode: !state.darkMode })),
 }));
+
+export default useStore;

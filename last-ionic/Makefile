@@ -6,6 +6,7 @@ NODE_MODULES := node_modules
 
 # Define commands
 NPM := npm
+NPM_START := npm run dev
 YARN := yarn
 TS := tsc
 VITE := vite
@@ -16,6 +17,12 @@ LINT := eslint
 # Phony targets
 .PHONY: all install dev build preview test lint clean
 
+up:
+	$(NPM_START)
+	
+start: 
+	$(NPM_START)
+
 # Default target
 all: dev
 
@@ -24,6 +31,10 @@ install:
 	@echo "Installing dependencies..."
 	brew install openjdk@17
 	$(NPM) install
+
+outdated:
+	@echo "Checking for outdated dependencies..."
+	npm outdated
 
 # Run development server
 dev:
@@ -40,6 +51,11 @@ build:
 preview:
 	@echo "Previewing the build..."
 	$(VITE) preview
+
+test:
+test-all:
+	make test.e2e
+	make test.unit
 
 # Run end-to-end tests
 test.e2e:

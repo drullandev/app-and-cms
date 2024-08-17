@@ -4,6 +4,5 @@ import { IonPicker } from '@ionic/react';
 
 export type IonPickerProps = React.ComponentProps<typeof IonPicker> & {
     ariaLabel: any;
-    ononionwilldismiss?: (e: any) => void;
-    ononiondiddismiss?: (e: any) => void;
+    ononchange?: (e: any) => void;
 };
