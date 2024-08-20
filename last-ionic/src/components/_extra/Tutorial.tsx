@@ -10,25 +10,18 @@ import {
   useIonViewWillEnter,
 } from '@ionic/react';
 import { arrowForward } from 'ionicons/icons';
-import { setMenuEnabled } from '../../reducer/data/sessions/sessions.actions';
-import { setHasSeenTutorial } from '../../reducer/data/user/user.actions';
+import { useHistory } from 'react-router';
+import useSessionStore from '../../stores/sessions.store';
+import useUserStore from '../../stores/user.store';
 import './Tutorial.scss';
-import { connect } from '../../reducer/src/connect';
-import { RouteComponentProps } from 'react-router';
 
-interface OwnProps extends RouteComponentProps {}
-interface DispatchProps {
-  setHasSeenTutorial: typeof setHasSeenTutorial;
-  setMenuEnabled: typeof setMenuEnabled;
-}
+const Tutorial: React.FC = () => {
+  const history = useHistory();
+  
+  // Usamos Zustand para acceder a las acciones
+  const setHasSeenTutorial = useUserStore((state) => state.setHasSeenTutorial);
+  const setMenuEnabled = useSessionStore((state) => state.setMenuEnabled);
 
-interface TutorialProps extends OwnProps, DispatchProps {}
-
-const Tutorial: React.FC<TutorialProps> = ({
-  history,
-  setHasSeenTutorial,
-  setMenuEnabled,
-}) => {
   useIonViewWillEnter(() => {
     setMenuEnabled(false);
   });
@@ -119,10 +112,4 @@ const Tutorial: React.FC<TutorialProps> = ({
   );
 };
 
-export default connect<OwnProps, {}, DispatchProps>({
-  mapDispatchToProps: {
-    setHasSeenTutorial,
-    setMenuEnabled,
-  },
-  component: Tutorial,
-});
+export default Tutorial;

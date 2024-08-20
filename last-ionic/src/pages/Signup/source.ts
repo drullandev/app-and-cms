@@ -9,24 +9,22 @@ import DebugUtil from '../../classes/DebugUtil';
 import RestAPI from '../../classes/Rest';
 import RestOutput from '../../classes/RestOutput';
 
-import { ComponentProps } from './reducer';
-
-import { setData, setLoading, setisLogged } from '../../reducer/data/user/user.actions';
+import useStore from '../../stores/user.store';
 import Logger from '../../classes/LoggerClass';
 import { FormDataProps } from '../../components/Form/types';
 
 export const signupForm = ({
-    setisLogged
+    setIsLogged
   }: {
     setLoading: (loading: boolean) => void;
     setData: (data: any) => void;
-    setisLogged: (isLoggedIn: boolean) => void;
+    setIsLogged: (isLoggedIn: boolean) => void;
   }): FormDataProps => {
 
   const { t } = useTranslation();
   const history = useHistory();
   const [presentToast] = useIonToast();
-  
+  const { setData, setLoading } = useStore();
   const debug = DebugUtil.setDebug(false);
   
   return {
@@ -115,7 +113,7 @@ export const signupForm = ({
       setLoading(true);
 
       const signupSuccess = (res: any)=>{
-        setisLogged(true);
+        setIsLogged(true);
         var newRes = res;
         setData(res.data.user);
         newRes.header = t('Greate! Now validate on emaii!');
@@ -129,7 +127,7 @@ export const signupForm = ({
       }
 
       const signupError = (res:any)=>{
-        setisLogged(false);
+        setIsLogged(false);
         var newRes = res;
         newRes.header = t('Sign-up warning!');
         newRes.message = t('Error trying to sing-up!');
@@ -176,7 +174,7 @@ export const signupForm = ({
       });
     },
     onError: (errors: any) => {
-      setisLogged(false);
+      setIsLogged(false);
       const output = RestOutput.catchFormError(errors);
       output.header = 'Login error';
       presentToast(output);

@@ -11,22 +11,15 @@ import RestOutput from '../../classes/RestOutput';
 
 import { FormDataProps } from '../../components/Form/types';
 
-import { setData, setLoading, setisLogged } from '../../reducer/data/user/user.actions';
+import useStore from '../../stores/user.store';
 import Logger from '../../classes/LoggerClass';
-import { initialUser } from '../../reducer/state';
 
-export const loginFormData = ({
-  setisLogged
-}: {
-  setLoading: (loading: boolean) => void;
-  setData: (data: any) => void;
-  setisLogged: (isLoggedIn: boolean) => void;
-}): FormDataProps => {
+export const loginFormData = ({}): FormDataProps => {
 
   const { t } = useTranslation();
   const history = useHistory();
   const [presentToast] = useIonToast();
-  
+  const { setLoading, setData, setIsLogged  } = useStore();
   const debug = DebugUtil.setDebug(false);
   
   return {
@@ -92,7 +85,7 @@ export const loginFormData = ({
 
       const loginSuccess = (res: any)=>{
         setData(res.data.user).then(()=>{
-          setisLogged(true);
+          setIsLogged(true);
           var newRes = res;
           newRes.header = t('Wellcome to the app!');
           newRes.message = 'Hello '+res.data.user.username+'!';
@@ -107,7 +100,7 @@ export const loginFormData = ({
 
       const loginError = (res: any) => {
         setData(initialUser);
-        setisLogged(false);
+        setIsLogged(false);
         var newRes = res;
         newRes.header = t('Login error!');
         newRes.showInnerMessage = true;
@@ -150,7 +143,7 @@ export const loginFormData = ({
     },
     onError: (errors: any) => {
       // This is when the form have some error...
-      setisLogged(false);
+      setIsLogged(false);
       setLoading(false);
       // Set Form errors output
       // TODO: Prepare the html errors junmp when form errors...

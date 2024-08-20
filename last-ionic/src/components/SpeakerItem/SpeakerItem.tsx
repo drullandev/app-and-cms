@@ -1,6 +1,6 @@
 import React from 'react';
-import { Session } from '../../reducer/models/Schedule';
-import { Speaker } from '../../reducer/models/Speaker';
+import { Session } from '../../stores/models/Schedule';
+import { Speaker } from '../../stores/models/Speaker';
 import { IonCard, IonCardHeader, IonItem, IonLabel, IonAvatar, IonCardContent, IonList } from '@ionic/react';
 
 

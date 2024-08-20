@@ -1,28 +1,14 @@
 import React from 'react'
 import { IonHeader, IonToolbar, IonContent, IonPage, IonButtons, IonBackButton, IonButton, IonIcon, IonText, IonList, IonItem, IonLabel } from '@ionic/react'
-import { connect } from '../../reducer/src/connect'
+
 import { withRouter, RouteComponentProps } from 'react-router'
-import * as selectors from '../../reducer/src/selectors'
 import { starOutline, star, share, cloudDownload } from 'ionicons/icons'
 import '../../styles/index.scss'
-import { addFavorite, removeFavorite } from '../../reducer/data/sessions/sessions.actions'
-import { Session } from '../../reducer/models/Schedule'
+import useStore from '../../stores/sessions.store'
 
-interface OwnProps extends RouteComponentProps { }
+const SessionDetail: React.FC = () => {
 
-interface StateProps {
-  session?: Session
-  favoriteSessions: number[],
-}
-
-interface DispatchProps {
-  addFavorite: typeof addFavorite
-  removeFavorite: typeof removeFavorite
-}
-
-type SessionDetailProps = OwnProps & StateProps & DispatchProps
-
-const SessionDetail: React.FC<SessionDetailProps> = ({ session, addFavorite, removeFavorite, favoriteSessions }) => {
+  const {addFavorite, removeFavorite, session, favoriteSessions } = useStore()
 
   if (!session) {
     return <div>Session not found</div>
@@ -61,7 +47,7 @@ const SessionDetail: React.FC<SessionDetailProps> = ({ session, addFavorite, rem
       <IonContent>
         <div className="ion-padding">
           <h1>{session.name}</h1>
-          {session.tracks.map(track => (
+          {session.tracks.map((track:any) => (
             <span key={track} className={`session-track-${track.toLowerCase()}`}>{track}</span>
           ))}
           <p>{session.description}</p>
@@ -94,14 +80,4 @@ const SessionDetail: React.FC<SessionDetailProps> = ({ session, addFavorite, rem
   )
 }
 
-export default connect<OwnProps, StateProps, DispatchProps>({
-  mapStateToProps: (state, OwnProps) => ({
-    session: selectors.getSession(state, OwnProps),
-    favoriteSessions: state.data.favorites
-  }),
-  mapDispatchToProps: {
-    addFavorite,
-    removeFavorite
-  },
-  component: withRouter(SessionDetail)
-})
+export default withRouter(SessionDetail);

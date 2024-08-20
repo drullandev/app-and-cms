@@ -13,10 +13,7 @@ import Header from '../../components/Header';
 import Form from '../../components/Form';
 
 // Component Reducer
-import { connect } from '../../reducer/src/connect';
-import { OwnProps, ComponentProps, StateProps, DispatchProps, mapStateToProps, mapDispatchToProps } from './reducer'
-
-const SignupPage: React.FC<ComponentProps> = (pageProps) => {
+const SignupPage: React.FC<any> = (pageProps) => {
 
   const { t } = useTranslation();
 
@@ -46,4 +43,4 @@ const SignupPage: React.FC<ComponentProps> = (pageProps) => {
 
 };
 
-export default connect<OwnProps, StateProps, DispatchProps>({ mapStateToProps, mapDispatchToProps, component: SignupPage });
+export default SignupPage;

@@ -14,10 +14,7 @@ import resetFormData from './source';
 import '../../styles/index.scss'
 
 // Component Reducer
-import { connect } from '../../reducer/src/connect'
-import { OwnProps, ComponentProps, StateProps, DispatchProps, mapStateToProps, mapDispatchToProps } from './reducer'
-
-const ResetPage: React.FC<ComponentProps> = (pageProps) => {
+const ResetPage: React.FC<any> = (pageProps) => {
 
   const { t } = useTranslation();
  
@@ -51,4 +48,4 @@ const ResetPage: React.FC<ComponentProps> = (pageProps) => {
 
 };
 
-export default connect<OwnProps, StateProps, DispatchProps>({ mapStateToProps, mapDispatchToProps, component: ResetPage });
+export default ResetPage;

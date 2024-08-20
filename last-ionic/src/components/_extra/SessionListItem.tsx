@@ -1,7 +1,7 @@
 import * as AppConst from '../../config/env'
 import React, { useRef } from 'react'
 import { IonItemSliding, IonItem, IonLabel, IonItemOptions, IonItemOption, AlertButton } from '@ionic/react'
-import { Session } from '../../reducer/models/Home'
+import { Session } from '../../stores/models/Home'
 
 interface SessionListItemProps {
   session: Session;

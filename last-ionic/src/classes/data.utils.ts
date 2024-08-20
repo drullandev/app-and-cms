@@ -1,4 +1,4 @@
-import { Schedule, Session } from '../reducer/models/Schedule';
+import { Schedule, Session } from '../stores/models/Schedule';
 import { Preferences } from '@capacitor/preferences';
 import Logger from './LoggerClass';
 import DebugUtil from './DebugUtil';

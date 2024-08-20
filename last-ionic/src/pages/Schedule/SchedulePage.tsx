@@ -1,40 +1,38 @@
-import React, { useState, useRef, useEffect } from 'react'
+import React, { useState, useRef } from 'react';
 
-import { IonToolbar, IonContent, IonPage, IonButtons, IonTitle, IonMenuButton, IonSegment, IonSegmentButton, IonButton, IonIcon, IonSearchbar, IonRefresher, IonRefresherContent, IonToast, IonModal, IonHeader, getConfig } from '@ionic/react'
-import { options, search } from 'ionicons/icons'
+import {
+  IonToolbar,
+  IonContent,
+  IonPage,
+  IonButtons,
+  IonTitle,
+  IonMenuButton,
+  IonSegment,
+  IonSegmentButton,
+  IonButton,
+  IonIcon,
+  IonSearchbar,
+  IonRefresher,
+  IonRefresherContent,
+  IonToast,
+  IonModal,
+  IonHeader,
+  getConfig,
+} from '@ionic/react';
+import { options, search } from 'ionicons/icons';
 
-import SessionList from '../../components/_extra/SessionList'
-import SessionListFilter from '../../components/SessionListFilter'
-import '../../styles/index.scss'
+import SessionList from '../../components/_extra/SessionList';
+import SessionListFilter from '../../components/SessionListFilter';
+import '../../styles/index.scss';
 
-import ShareSocialFab from '../../components/ShareSocialFab'
+import ShareSocialFab from '../../components/ShareSocialFab';
 
-import * as selectors from '../../reducer/src/selectors'
-import { connect } from '../../reducer/src/connect'
-import { setSearchText } from '../../reducer/data/sessions/sessions.actions'
-import { Schedule } from '../../reducer/models/Schedule'
+import useStore from '../../stores/sessions.store';
+import { Schedule } from '../../stores/models/Schedule';
 
 interface OwnProps {}
 
-interface StateProps {
-  schedule: Schedule;
-  favoritesSchedule: Schedule;
-  mode: 'ios' | 'md';
-}
-
-interface DispatchProps {
-  setSearchText: typeof setSearchText;
-}
-
-type SchedulePageProps = OwnProps & StateProps & DispatchProps;
-
-const SchedulePage: React.FC<SchedulePageProps> = ({
-  favoritesSchedule,
-  schedule,
-  setSearchText,
-  mode,
-}) => {
-  
+const SchedulePage: React.FC<OwnProps> = () => {
   const [segment, setSegment] = useState<'all' | 'favorites'>('all');
   const [showSearchbar, setShowSearchbar] = useState<boolean>(false);
   const [showFilterModal, setShowFilterModal] = useState(false);
@@ -43,7 +41,12 @@ const SchedulePage: React.FC<SchedulePageProps> = ({
 
   const pageRef = useRef<HTMLElement>(null);
 
+  const mode = getConfig()!.get('mode') as 'ios' | 'md';
   const ios = mode === 'ios';
+
+  const schedule = useStore((state) => state.schedule);
+  const favoritesSchedule = useStore((state) => state.favoritesSchedule);
+  const setSearchText = useStore((state) => state.setSearchText);
 
   const doRefresh = () => {
     setTimeout(() => {
@@ -164,14 +167,4 @@ const SchedulePage: React.FC<SchedulePageProps> = ({
   );
 };
 
-export default connect<OwnProps, StateProps, DispatchProps>({
-  mapStateToProps: (state) => ({
-    schedule: selectors.getSearchedSchedule(state),
-    favoritesSchedule: selectors.getGroupedFavorites(state),
-    mode: getConfig()!.get('mode'),
-  }),
-  mapDispatchToProps: {
-    setSearchText,
-  },
-  component: React.memo(SchedulePage),
-});
+export default React.memo(SchedulePage);

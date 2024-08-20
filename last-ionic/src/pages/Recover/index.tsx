@@ -14,9 +14,6 @@ import '../../styles/index.scss'
 import { recoverFormData } from './source';
 
 // Component Reducer
-import { connect } from '../../reducer/src/connect';
-import { OwnProps, ComponentProps, StateProps, DispatchProps, mapStateToProps, mapDispatchToProps } from './reducer'
-
 const RecoverPage: React.FC<ComponentProps> = (pageProps) => {
 
   const { t } = useTranslation();
@@ -50,4 +47,4 @@ const RecoverPage: React.FC<ComponentProps> = (pageProps) => {
 
 };
 
-export default connect<OwnProps, StateProps, DispatchProps>({ mapStateToProps, mapDispatchToProps, component: RecoverPage });
+export default RecoverPage;

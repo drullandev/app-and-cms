@@ -3,42 +3,17 @@ import * as AppConst from '../../config/env'
 import { IonItemDivider, IonItemGroup, IonLabel, IonList, IonListHeader, IonAlert, AlertButton } from '@ionic/react'
 import React, { useState, useCallback } from 'react'
 
-import { Home, Session } from '../../reducer/models/Schedule'
+import { Home, Session } from '../../stores/models/Schedule'
 import SessionListItem from './SessionListItem'
 
-import { connect } from '../../reducer/src/connect'
-import { addFavorite, removeFavorite } from '../../reducer/data/sessions/sessions.actions'
+import useStore from '../../stores/user.store'
 
-interface OwnProps {
-  schedule: Home
-  listType: 'all' | 'favorites'
-  hide: boolean
-}
-
-interface StateProps {
-  favoriteSessions: number[]
-}
-
-interface DispatchProps {
-  addFavorite: typeof addFavorite
-  removeFavorite: typeof removeFavorite
-}
-
-interface SessionListProps extends OwnProps, StateProps, DispatchProps { }
-
-const SessionList: React.FC<SessionListProps> = ({
-  addFavorite,
-  removeFavorite,
-  favoriteSessions,
-  hide,
-  schedule,
-  listType
-}) => {
+const SessionList: React.FC<any> = ({ hide, listType }) => {
 
   const [showAlert, setShowAlert] = useState(false)
   const [alertHeader, setAlertHeader] = useState('')
   const [alertButtons, setAlertButtons] = useState<(AlertButton | string)[]>([])
-
+  const { schedule, addFavorite, removeFavorite} = useStore()
   const handleShowAlert = useCallback((header: string, buttons: AlertButton[]) => {
     setAlertHeader(header)
     setAlertButtons(buttons)
@@ -96,17 +71,4 @@ const SessionList: React.FC<SessionListProps> = ({
 
 }
 
-export default connect<OwnProps, StateProps, DispatchProps>({
-
-  mapStateToProps: (state) => ({
-    favoriteSessions: state.data.favorites
-  }),
-
-  mapDispatchToProps: ({
-    addFavorite,
-    removeFavorite
-  }),
-
-  component: SessionList
-  
-})
+export default  SessionList;

@@ -1,22 +1,16 @@
-import React from 'react'
-import { connect } from '../../reducer/src/connect'
-import { Redirect } from 'react-router'
+import React from 'react';
+import { Redirect } from 'react-router';
+import useUserStore from '../../stores/user.store'; // Ajusta la ruta según la ubicación de tu store
 
-interface StateProps {
-  hasSeenTutorial: boolean
-}
+const Home: React.FC = () => {
+  // Usa Zustand para acceder al estado
+  const hasSeenTutorial = useUserStore((state) => state.hasSeenTutorial);
 
-const Home: React.FC<StateProps> = ({
-  hasSeenTutorial = false
-}) => {
-  let home = import.meta.env.REACT_APP_HOME_PATH
-  let tutorial = import.meta.env.REACT_APP_TUTORIAL_PATH
-  return <Redirect to={hasSeenTutorial ? `${home}` : `${tutorial}`} />
-}
+  // Lee las rutas desde las variables de entorno
+  const homePath = import.meta.env.REACT_APP_HOME_PATH || '/home';
+  const tutorialPath = import.meta.env.REACT_APP_TUTORIAL_PATH || '/tutorial';
 
-export default connect<{}, StateProps, {}>({
-  mapStateToProps: (state) => ({
-    hasSeenTutorial: state.user.hasSeenTutorial
-  }),
-  component: Home
-})
+  return <Redirect to={hasSeenTutorial ? homePath : tutorialPath} />;
+};
+
+export default Home;

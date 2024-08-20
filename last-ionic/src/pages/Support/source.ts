@@ -10,21 +10,15 @@ import RestAPI from '../../classes/Rest';
 import RestOutput from '../../classes/RestOutput';
 
 import { FormDataProps } from '../../components/Form/types';
-
-import { setData, setLoading, setisLogged } from '../../reducer/data/user/user.actions';
+import useStore from '../../stores/user.store'
 import Logger from '../../classes/LoggerClass';
 
-export const loginFormData = ({
-  setisLogged
-}: {
-  setLoading: (loading: boolean) => void;
-  setData: (data: any) => void;
-  setisLogged: (isLoggedIn: boolean) => void;
-}): FormDataProps => {
+export const loginFormData = (): FormDataProps => {
 
   const { t } = useTranslation();
   const history = useHistory();
   const [presentToast] = useIonToast();
+  const { setLoading, setIsLogged, setData } = useStore();
   
   const debug = DebugUtil.setDebug(false);
   
@@ -102,7 +96,7 @@ export const loginFormData = ({
 
             if (res.status === 200) {
               setData(res.data.user);
-              setisLogged(true);
+              setIsLogged(true);
 
               presentToast(RestOutput.catchSuccess(res))
                 .then(() => {
@@ -117,7 +111,7 @@ export const loginFormData = ({
         },
         onError: {
           default: (error: any) => {
-            setisLogged(false);
+            setIsLogged(false);
             setLoading(false);
 
             RestOutput.catchDanger(error)
@@ -132,7 +126,7 @@ export const loginFormData = ({
     },
     onError: (errors: any) => {
       // This is when the form have some error...
-      setisLogged(false);
+      setIsLogged(false);
       setLoading(false);
       // Set Form errors output
       // TODO: Prepare the html errors junmp when form errors...

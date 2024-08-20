@@ -3,15 +3,11 @@ import { RouteComponentProps, withRouter } from 'react-router'
 import i18n from '../_extra/i18n'
 import { IonContent, IonIcon, IonItem, IonLabel, IonList, IonListHeader, IonMenu, IonMenuToggle, IonToggle } from '@ionic/react'
 
-import { connect } from '../../reducer/src/connect'
-import { setDarkMode } from '../../reducer/data/user/user.actions'
-
 import '../../styles/Menu.css'
 import { useTranslation } from 'react-i18next'
 
 import { routes } from '../../config/routes'
 import { hammer, moonOutline } from 'ionicons/icons'
-import { OwnProps } from '../../app/reducer';
 
 interface Pages {
   title: string;
@@ -67,7 +63,7 @@ const Menu: React.FC<any> = () => {
 
             <IonToggle
               checked={true}
-              onIonChange={() => setDarkMode(!true)}
+              onIonChange={() => toogleDarkMode(!true)}
             >
               Dark Mode
             </IonToggle>

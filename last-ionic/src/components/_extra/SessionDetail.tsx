@@ -1,40 +1,36 @@
-import React from 'react'
-import { IonHeader, IonToolbar, IonContent, IonPage, IonButtons, IonBackButton, IonButton, IonIcon, IonText, IonList, IonItem, IonLabel } from '@ionic/react'
-import { connect } from '../../reducer/src/connect'
-import { withRouter, RouteComponentProps } from 'react-router'
-import * as selectors from '../../reducer/src/selectors'
-import { starOutline, star, share, cloudDownload } from 'ionicons/icons'
-import '../../styles/SessionDetail.scss'
-import { addFavorite, removeFavorite } from '../../reducer/data/sessions/sessions.actions'
-import { Session } from '../../reducer/models/Schedule'
+import React from 'react';
+import { IonHeader, IonToolbar, IonContent, IonPage, IonButtons, IonBackButton, IonButton, IonIcon, IonText, IonList, IonItem, IonLabel } from '@ionic/react';
+import { withRouter, RouteComponentProps } from 'react-router';
+import { starOutline, star, share, cloudDownload } from 'ionicons/icons';
+import '../../styles/SessionDetail.scss';
+import useStore from '../../stores/sessions.store';
+import { Session } from '../../stores/models/Schedule';
 
-interface OwnProps extends RouteComponentProps { };
+interface OwnProps extends RouteComponentProps {}
 
-interface StateProps {
-  session?: Session;
-  favoriteSessions: number[],
-};
+type SessionDetailProps = OwnProps;
 
-interface DispatchProps {
-  addFavorite: typeof addFavorite;
-  removeFavorite: typeof removeFavorite;
-}
+const SessionDetail: React.FC<SessionDetailProps> = ({ match }) => {
+  const sessionId = parseInt((match.params as any).id, 10);
 
-type SessionDetailProps = OwnProps & StateProps & DispatchProps;
-
-const SessionDetail: React.FC<SessionDetailProps> = ({ session, addFavorite, removeFavorite, favoriteSessions }) => {
+  // Acceso al estado usando el hook de Zustand
+  const session = useStore(state => state.sessions.find(session => session.id === sessionId));
+  const favoriteSessions = useStore(state => state.favorites);
+  const addFavorite = useStore(state => state.addFavorite);
+  const removeFavorite = useStore(state => state.removeFavorite);
 
   if (!session) {
-    return <div>Session not found</div>
+    return <div>Session not found</div>;
   }
 
   const isFavorite = favoriteSessions.indexOf(session.id) > -1;
-  
-  const toggleFavorite = () => { 
+
+  const toggleFavorite = () => {
     isFavorite ? removeFavorite(session.id) : addFavorite(session.id);
   };
-  const shareSession = () => { };
-  const sessionClick = (text: string) => { 
+
+  const shareSession = () => {};
+  const sessionClick = (text: string) => {
     console.log(`Clicked ${text}`);
   };
 
@@ -47,10 +43,11 @@ const SessionDetail: React.FC<SessionDetailProps> = ({ session, addFavorite, rem
           </IonButtons>
           <IonButtons slot="end">
             <IonButton onClick={() => toggleFavorite()}>
-              {isFavorite ?
-                <IonIcon slot="icon-only" icon={star}></IonIcon> :
+              {isFavorite ? (
+                <IonIcon slot="icon-only" icon={star}></IonIcon>
+              ) : (
                 <IonIcon slot="icon-only" icon={starOutline}></IonIcon>
-              }
+              )}
             </IonButton>
             <IonButton onClick={() => shareSession}>
               <IonIcon slot="icon-only" icon={share}></IonIcon>
@@ -94,14 +91,4 @@ const SessionDetail: React.FC<SessionDetailProps> = ({ session, addFavorite, rem
   );
 };
 
-export default connect<OwnProps, StateProps, DispatchProps>({
-  mapStateToProps: (state, OwnProps) => ({
-    session: selectors.getSession(state, OwnProps),
-    favoriteSessions: state.data.favorites
-  }),
-  mapDispatchToProps: {
-    addFavorite,
-    removeFavorite
-  },
-  component: withRouter(SessionDetail)
-})
+export default withRouter(SessionDetail);

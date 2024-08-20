@@ -48,7 +48,7 @@ interface UserState {
 }
 
 // Define la interfaz del estado de la conferencia
-interface ConfState {
+export interface ConfState {
   schedule: Schedule;
   sessions: Session[];
   speakers: Speaker[];
@@ -57,6 +57,7 @@ interface ConfState {
   filterDate?: string;
   filteredTracks: string[];
   searchText?: string;
+  searchString?: string;
   mapCenterId?: number;
   orderField: string;
   filter: string;
@@ -64,6 +65,9 @@ interface ConfState {
   loading: boolean;
   allTracks: string[];
   menuEnabled: boolean;
+  favoriteSessions: number[];
+  favoritesSchedule?: Schedule;
+  speakerSessions: Session[];
 }
 
 // Define la interfaz del store con Zustand
@@ -73,7 +77,7 @@ interface StoreState extends UserState, ConfState {
   loadConfData: () => Promise<void>;
   loadUserData: () => Promise<void>;
 
-  // Setters específicos
+  // Setters
   setData: (data: Partial<UserState>) => void;
   setIsLogged: (loggedIn: boolean) => void;
   setId: (id?: string) => void;
@@ -86,12 +90,12 @@ interface StoreState extends UserState, ConfState {
   setCreatedAt: (createdAt?: string) => void;
   setUpdatedAt: (updatedAt?: string) => void;
   setProvider: (provider2?: string) => void;
-  setDarkMode: (darkMode?: boolean) => void;
+  toogleDarkMode: (darkMode?: boolean) => void;
   setHasSeenTutorial: (hasSeenTutorial: boolean) => void;
   setCaret: (caret: string) => void;
   setRole: (role: string) => void;
   setLoading: (loading: boolean) => void;
-
+  getConfData: () => object;
   // Selectors as functions
   getFilteredSchedule: () => Schedule;
   getSearchedSchedule: () => Schedule;
@@ -108,7 +112,6 @@ interface StoreState extends UserState, ConfState {
 }
 
 const useStore = create<StoreState>((set, get) => ({
-  // Estado inicial del usuario
   id: '0',
   blocked: false,
   confirmed: false,
@@ -116,7 +119,6 @@ const useStore = create<StoreState>((set, get) => ({
   hasSeenTutorial: false,
   isLoggedIn: false,
 
-  // Estado inicial de la conferencia
   schedule: {} as Schedule,
   sessions: [],
   speakers: [],
@@ -124,6 +126,7 @@ const useStore = create<StoreState>((set, get) => ({
   locations: [],
   filterDate: undefined,
   filteredTracks: [],
+  searchString: undefined,
   searchText: undefined,
   mapCenterId: undefined,
   orderField: '',
@@ -132,12 +135,36 @@ const useStore = create<StoreState>((set, get) => ({
   loading: false,
   allTracks: [],
   menuEnabled: true,
+  favoriteSessions: [],
+  speakerSessions: [],
 
   // Métodos para actualizar el estado
   setUserState: (user) => set((state) => ({ ...state, ...user })),
   setConfState: (conf) => set((state) => ({ ...state, ...conf })),
+  
+  getConfData: async () => {
+    const response = await Promise.all([fetch(dataUrl), fetch(locationsUrl)]);
+    const responseData = await response[0].json();
+    const schedule = responseData.schedule[0] as Schedule;
+    const sessions = parseSessions(schedule);
+    const speakers = responseData.speakers as Speaker[];
+    const locations = (await response[1].json()) as Location[];
+    const allTracks = sessions
+      .reduce((all, session) => all.concat(session.tracks), [] as string[])
+      .filter((trackName, index, array) => array.indexOf(trackName) === index)
+      .sort();
+  
+    const data = {
+      schedule,
+      sessions,
+      locations,
+      speakers,
+      allTracks,
+      filteredTracks: [...allTracks],
+    };
+    return data;
+  },
 
-  // Funciones para cargar datos
   loadConfData: async () => {
     set({ loading: true });
     try {
@@ -215,7 +242,7 @@ const useStore = create<StoreState>((set, get) => ({
     }
   },
 
-  // Setters adicionales
+  // Setters
   setData: async (data: Partial<UserState>) => {
     const { setUserState } = useStore.getState();
     setUserState(data);
@@ -276,7 +303,7 @@ const useStore = create<StoreState>((set, get) => ({
     setUserState({ provider: provider2 });
   },
   
-  setDarkMode: async () => {
+  toogleDarkMode: async () => {
     const { darkMode } = useStore.getState(); // Obtén el valor actual de darkMode
     const { setUserState } = useStore.getState();
     setUserState({ darkMode: ! darkMode }); // Cambia el valor de darkMode

@@ -8,15 +8,11 @@ import '@ionic/react/css/ionic-swiper.css'
 //import 'swiper/swiper.min.css'
 
 // Component Reducer
-import { connect } from '../../reducer/src/connect'
-import { initialUser } from '../../reducer/state'
-import { OwnProps, ComponentProps, StateProps, DispatchProps, mapStateToProps, mapDispatchToProps } from './reducer'
-
 import '../../styles/index.scss'
 
 import DebugUtil from '../../classes/DebugUtil'
 
-const Tutorial: React.FC<ComponentProps> = ({ history, setData, setHasSeenTutorial, setMenuEnabled }) => {
+const Tutorial: React.FC<any> = ({ history, setData, setHasSeenTutorial, setMenuEnabled }) => {
   
   const [showSkip, setShowSkip] = useState(true)
   let [swiper, setSwiper] = useState<SwiperCore>()
@@ -26,7 +22,7 @@ const Tutorial: React.FC<ComponentProps> = ({ history, setData, setHasSeenTutori
   })
   
   const startApp = async () => { 
-    await setData(initialUser)
+    //await setData(initialUser)
     await setHasSeenTutorial(true)
     await setMenuEnabled(true)
     history.push('/tabs/schedule', { direction: 'none' })
@@ -91,4 +87,4 @@ const Tutorial: React.FC<ComponentProps> = ({ history, setData, setHasSeenTutori
   )
 }
 
-export default connect<OwnProps, StateProps, DispatchProps>({ mapStateToProps, mapDispatchToProps, component: Tutorial });
+export default Tutorial;

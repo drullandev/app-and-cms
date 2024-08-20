@@ -4,7 +4,6 @@ import MainTabs from '../components/_main/MainTabs';
 import Page from '../components/Page';
 import Tutorial from '../pages/Tutorial';
 import Login from '../pages/Login';
-import TestForm from '../pages/TestForm';
 import Signup from '../pages/Signup';
 import Recover from '../pages/Recover';
 import Support from '../pages/Support';
@@ -20,7 +19,6 @@ const routes: RouteProps[] = [
   { path: '/tabs/:slug', render: () => <MainTabs /> },
   { path: '/tutorial', component: Tutorial },
   { path: '/login', component: Login },
-  { path: '/test', component: TestForm },
   { path: '/sign-up', component: Signup },
   { path: '/recover', component: Recover },
   { path: '/support', component: Support },

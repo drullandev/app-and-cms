@@ -11,14 +11,14 @@ import RestOutput from '../../classes/RestOutput';
 
 import { FormDataProps } from '../../components/Form/types';
 
-import { setData, setLoading, setisLogged } from '../../reducer/data/user/user.actions';
+import useStore from '../../stores/user.store';
 
 export const recoverFormData = (): FormDataProps => {
 
   const { t } = useTranslation();
   const history = useHistory();
   const [presentToast] = useIonToast();
-  
+  const { setIsLogged } = useStore()
   const debug = DebugUtil.setDebug(false);
   
   return {
@@ -70,7 +70,7 @@ export const recoverFormData = (): FormDataProps => {
       const onSuccess = async (ret: any) => {
         let user = ret.user
         user.jwt = ret.jwt // Attaching the JWT to the user level and state...
-        await setisLogged(true)
+        await setIsLogged(true)
         return user
       }  
 

@@ -8,21 +8,17 @@ import PagePropsData from '../../components/Page/types';
 import Page from '../../components/Page';
 import Header from '../../components/Header';
 import Form from '../../components/Form';
-
-// Component Reducer
-import { connect } from '../../reducer/src/connect';
-import { OwnProps, ComponentProps, StateProps, DispatchProps, mapStateToProps, mapDispatchToProps } from './reducer'
-
+import useStore from '../../stores/user.store';
 // Component imports
 import { loginFormData } from './source';
 import './styles.scss';
 import './style.css';
-import useStore from '../../stores/user.store';
 
-const LoginPage: React.FC<ComponentProps> = (pageProps) => {
+const LoginPage: React.FC<any> = (pageProps) => {
   
   const { t } = useTranslation();
-  const { darkMode, setDarkMode } = useStore();
+  const { darkMode, toogleDarkMode } = useStore();
+  
   const pageSettings : PagePropsData = {
     settings: {
       id: 'login-page',//Concern css classes, for now!
@@ -61,7 +57,7 @@ const LoginPage: React.FC<ComponentProps> = (pageProps) => {
                 <p>{t('Enter your credentials to access your account and start exploring the world of Festivore.')}</p>
               </IonText>
             </IonItem>
-            <IonButton onClick={setDarkMode}>
+            <IonButton onClick={toogleDarkMode}>
               {darkMode ? 'Light Mode' : 'Dark Mode'}
             </IonButton>
             <Form {...loginFormData(pageProps)} />
@@ -99,4 +95,4 @@ const LoginPage: React.FC<ComponentProps> = (pageProps) => {
 
 };
 
-export default connect<OwnProps, StateProps, DispatchProps>({ mapStateToProps, mapDispatchToProps, component: LoginPage });
+export default LoginPage;

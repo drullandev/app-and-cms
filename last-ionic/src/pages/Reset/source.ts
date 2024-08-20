@@ -15,7 +15,7 @@ import RestAPI from '../../classes/Rest';
 import { FormDataProps } from '../../components/Form/types';
 
 // Reducer dependencies
-import { setisLogged } from '../../reducer/data/user/user.actions';
+import { setIsLogged } from '../../stores/user.store';
 
 /**
  * This is the information for the reset page main form
@@ -116,7 +116,7 @@ export const resetFormData = (): FormDataProps => {
             const onSuccess = async (ret: any) => {
               let user = ret.user
               user.jwt = ret.jwt // Attaching the JWT to the user level and state...
-              await setisLogged(true)
+              await setIsLogged(true)
               return user
             } 
 

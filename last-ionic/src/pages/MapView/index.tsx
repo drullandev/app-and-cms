@@ -1,15 +1,12 @@
 import React from 'react'
 import Map from '../../components/Map'
 import { IonHeader, IonToolbar, IonButtons, IonMenuButton, IonTitle, IonContent, IonPage } from '@ionic/react'
-import { Location } from '../../reducer/models/Location'
-import { connect } from '../../reducer/src/connect'
-import * as selectors from '../../reducer/src/selectors'
+import { Location } from '../../stores/models/Location'
+
 import '../../styles/index.scss'
 
 // Component Reducer
-import { OwnProps, ComponentProps, StateProps, DispatchProps, mapStateToProps, mapDispatchToProps } from './reducer'
-
-const MapView: React.FC<ComponentProps> = ({
+const MapView: React.FC<any> = ({
   locations,
   mapCenter   
 }) => {
@@ -30,4 +27,4 @@ const MapView: React.FC<ComponentProps> = ({
   </IonPage>
 )}
 
-export default connect<OwnProps, StateProps, DispatchProps>({ mapStateToProps, mapDispatchToProps, component: MapView });
+export default MapView;

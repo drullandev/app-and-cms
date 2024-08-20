@@ -1,54 +1,37 @@
-import React from 'react'
-import { IonContent, IonGrid, IonRow, IonCol } from '@ionic/react'
+import React from 'react';
+import { IonContent, IonGrid, IonRow, IonCol } from '@ionic/react';
 
-import MatesItem from './MatesItem'
+import MatesItem from './MatesItem';
 
-import { Speaker } from '../../reducer/models/Speaker'
-import { Session } from '../../reducer/models/Schedule'
+import { Speaker } from '../../stores/models/Speaker';
+import { Session } from '../../stores/models/Schedule';
 
-import { connect } from '../../reducer/src/connect'
-import * as selectors from '../../reducer/src/selectors'
+import useStore from '../../stores/sessions.store';
 
-interface OwnProps { }
+interface OwnProps {}
 
-interface StateProps {
-  speakers: Speaker[]
-  speakerSessions: { [key: string]: Session[] }
-}
+const SpeakerList: React.FC<OwnProps> = () => {
+  // Usamos Zustand para acceder al estado
+  const speakers = useStore((state) => state.speakers);
+  const speakerSessions = useStore((state) => state.speakerSessions);
 
-interface DispatchProps { }
+  return (
+    <IonContent>
+      <IonGrid fixed>
+        <IonRow>
+          {speakers.map((speaker) => (
+            <IonCol size="12" size-md="6" key={speaker.id}>
+              <MatesItem
+                key={speaker.id}
+                speaker={speaker}
+                sessions={speakerSessions[speaker.name]}
+              />
+            </IonCol>
+          ))}
+        </IonRow>
+      </IonGrid>
+    </IonContent>
+  );
+};
 
-interface SpeakerListProps extends OwnProps, StateProps, DispatchProps { }
-
-const SpeakerList: React.FC<SpeakerListProps> = ({ speakers, speakerSessions }) => {
-
-  return <IonContent>
-
-    <IonGrid fixed>
-      <IonRow>
-        {speakers.map(speaker => (
-          <IonCol size='12' size-md='6' key={speaker.id}>
-            <MatesItem
-              key={speaker.id}
-              speaker={speaker}
-              sessions={speakerSessions[speaker.name]}
-            />
-          </IonCol>
-        ))}
-      </IonRow>
-    </IonGrid>
-
-  </IonContent>
-
-}
-
-export default connect<OwnProps, StateProps, DispatchProps>({
-
-  mapStateToProps: (state) => ({
-    speakers: selectors.getSpeakers(state),
-    speakerSessions: selectors.getSpeakerSessions(state)
-  }),
-  
-  component: React.memo(SpeakerList)
-
-})
+export default React.memo(SpeakerList);

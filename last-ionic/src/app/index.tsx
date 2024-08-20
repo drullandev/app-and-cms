@@ -9,7 +9,22 @@ import './styles'; // Estilos centralizados
 import './types';  // Tipos centralizados
 
 // Páginas
-import { NotFound, Account, ChangePassword, Home, Login, Logout, MainTabs, Menu, Page, Recover, ResetPassword, Signup, Support, TestForm, Tutorial } from './components';
+import {
+  NotFound,
+  ChangePassword,
+  Login,
+  Menu,
+  Recover,
+  ResetPassword,
+  Signup,
+  MainTabs,
+  Page,
+/*   Account,
+  Home,
+  Logout,
+  Support,
+  Tutorial */
+} from './components';
 
 // Clases
 import DebugUtil from './../classes/DebugUtil';
@@ -45,21 +60,22 @@ const AppComponent: React.FC = () => {
         <IonSplitPane contentId="main">
           <Menu />
           <IonRouterOutlet id="main">
+            {/*
             <Route path="/tabs" render={() => <MainTabs />} />
             <Route path="/:slug" component={Page} />
             <Route path="/tabs/home/:id" render={() => <MainTabs />} />
             <Route path="/tabs/:slug" render={() => <MainTabs />} />
             <Route path="/tutorial" component={Tutorial} />
+            <Route path="/account" component={Account} />
+            <Route path="/support" component={Support} />
+            <Route path="/logout" render={() => <Logout />} />
+            <Route path="/" component={Home} exact />
+            */}
             <Route path="/login" component={Login} />
-            <Route path="/test" component={TestForm} />
             <Route path="/sign-up" component={Signup} />
             <Route path="/reset" component={ResetPassword} />
             <Route path="/recover" component={Recover} />
-            <Route path="/support" component={Support} />
-            <Route path="/account" component={Account} />
             <Route path="/change-password" component={ChangePassword} />
-            <Route path="/logout" render={() => <Logout />} />
-            <Route path="/" component={Home} exact />
             <Route path="/not-found" component={NotFound} />
             <Route component={NotFound} />
           </IonRouterOutlet>
