@@ -1,7 +1,7 @@
 import create from 'zustand';
 
 import Logger from '../classes/LoggerClass';
-import useStore from '../stores/user.store';
+import useUserStore from '../stores/user.store';
 import ConfState from '../stores/user.store';
 import { Schedule, Session } from './models/Schedule';
 import { Speaker } from './models/Speaker';
@@ -18,6 +18,7 @@ interface ConfStore extends ConfState {
   favorites: number[];
   filteredTracks: string[];
   searchText?: string;
+  searchString?: string;
   menuEnabled: boolean;
   filter: string;
   filterDate?: string;
@@ -62,7 +63,7 @@ const useConfStore = create<ConfStore>((set) => ({
   filter: '',
   filterDate: undefined,
   orderField: '',
-  searchOrder: undefined,
+  searchOrder: 'asc',
   allTracks: [],
   schedule: {} as Schedule,
   sessions: [],

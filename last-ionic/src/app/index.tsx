@@ -31,14 +31,14 @@ import DebugUtil from './../classes/DebugUtil';
 import Logger from '../classes/LoggerClass';
 
 // Zustand Store
-import useStore from '../stores/user.store';
+import useUserStore from '../stores/user.store';
 
 const AppComponent: React.FC = () => {
   
   // Configura el modo de depuración
   let debug = DebugUtil.setDebug(false);
   
-  const { darkMode } = useStore();
+  const { darkMode } = useUserStore();
 
   useEffect(() => {
     Logger.log(' • DarkMode was toggled!', darkMode);

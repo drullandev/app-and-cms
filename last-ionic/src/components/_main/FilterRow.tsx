@@ -2,20 +2,10 @@ import React, { useEffect, useState } from 'react'
 
 import { GraphQLFilter } from '../../classes/data/GraphQLFilter'
 import { IonSelect, IonSelectOption, IonCol, IonRow, IonDatetime, IonTextarea, IonItem, IonInput, IonButton } from '@ionic/react'
-import { setFilter } from '../../reducer/data/sessions/sessions.actions'
+import useConfStore from '../../stores/sessions.store'
 import { Filter } from '../../interfaces/Filter'
 
-interface OwnProps { 
-}
-interface StateProps {
-  filter: Filter[]
-}
-interface DispatchProps {
-  setFilter: typeof setFilter
-}
-type ThisProps = OwnProps & StateProps & DispatchProps
-
-const FilterRow: React.FC<ThisProps> = ({ filter }) => {
+const FilterRow: React.FC<any> = ({ filter }) => {
 
   const [key, setKey] = useState(Date.now())
 
@@ -23,6 +13,7 @@ const FilterRow: React.FC<ThisProps> = ({ filter }) => {
   const [filterCondition, setFilterCondition] = useState(GraphQLFilter.conditions.default)
   const [filterType, setFilterType] = useState('date')
   const [filterValue, setFilterValue] = useState('')
+  const { } = useConfStore();
 
   const resetFilterField = (fieldName: string) => {
     setFilterField(fieldName)

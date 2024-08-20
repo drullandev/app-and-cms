@@ -11,7 +11,7 @@ import RestOutput from '../../classes/RestOutput';
 
 import { FormDataProps } from '../../components/Form/types';
 
-import useStore from '../../stores/user.store';
+import useUserStore from '../../stores/user.store';
 import Logger from '../../classes/LoggerClass';
 
 export const loginFormData = ({}): FormDataProps => {
@@ -19,7 +19,7 @@ export const loginFormData = ({}): FormDataProps => {
   const { t } = useTranslation();
   const history = useHistory();
   const [presentToast] = useIonToast();
-  const { setLoading, setData, setIsLogged  } = useStore();
+  const { setLoading, setData, setIsLogged  } = useUserStore();
   const debug = DebugUtil.setDebug(false);
   
   return {
@@ -84,7 +84,7 @@ export const loginFormData = ({}): FormDataProps => {
       setLoading(true);
 
       const loginSuccess = (res: any)=>{
-        setData(res.data.user).then(()=>{
+        setData(res.data.user)//.then(()=>{
           setIsLogged(true);
           var newRes = res;
           newRes.header = t('Wellcome to the app!');
@@ -95,11 +95,11 @@ export const loginFormData = ({}): FormDataProps => {
             .then(() => {
               history.push(HOME_PATH);
             });
-        });
+        //});
       }
 
       const loginError = (res: any) => {
-        setData(initialUser);
+        //setData(initialUser);
         setIsLogged(false);
         var newRes = res;
         newRes.header = t('Login error!');

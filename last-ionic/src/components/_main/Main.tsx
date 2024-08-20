@@ -1,135 +1,93 @@
-import { GraphQLFilter } from '../../classes/data/GraphQLFilter'
+import React, { useState, useEffect } from 'react';
+import { IonToolbar, IonContent, IonButtons, IonMenuButton, IonTitle, IonButton, IonSelect, IonSelectOption, IonSearchbar, IonGrid, IonCol, IonRow, IonDatetime, IonTextarea, IonLabel, IonItem, IonToast, IonModal, IonHeader } from '@ionic/react';
+import { GraphQLFilter } from '../../classes/data/GraphQLFilter';
+import useConfStore from '../../stores/sessions.store';
+import Icon from './Icon';
+import FilterRow from './FilterRow';
+import MainList from './MainList2';
 
-import React, { useState, useEffect } from 'react'
-import { IonToolbar, IonContent, IonButtons, IonMenuButton, IonTitle, IonButton, IonSelect, IonSelectOption, IonSearchbar, IonRefresher, IonRefresherContent, IonToast, IonModal, IonHeader, getConfig, IonGrid, IonCol, IonRow, IonDatetime, IonTextarea, IonLabel, IonItem } from '@ionic/react'
+const Main: React.FC = () => {
 
-//import { restGet, getGQL } from '../../../data/rest/rest.utils'
-import { setSearchString, setSearchOrder, setOrderField, setFilter } from '../../reducer/data/sessions/sessions.actions'
-//import { SessionState } from '../../../data/sessions/sessions.actions'
+  const {
+    searchString,
+    searchOrder,
+    orderField,
+    filter,
+    setSearchString,
+    setSearchOrder,
+    setOrderField,
+    setFilter,
+    getMode
+  } = useConfStore((state: any) => ({
+    searchString: state.searchString,
+    searchOrder: state.searchOrder,
+    orderField: state.orderField,
+    filter: state.filter,
+    setSearchString: state.setSearchString,
+    setSearchOrder: state.setSearchOrder,
+    setOrderField: state.setOrderField,
+    setFilter: state.setFilter,
+    getMode: state.mode,
+  }));
 
-import Icon from './Icon'
-import FilterRow from './FilterRow'
-
-import MainList from './MainList2'
-
-import { connect } from '../../reducer/src/connect'
-
-import { Filter } from '../../interfaces/Filter'
-
-export interface FilterModel {
-  filterField?: string
-  filterCondition?: string
-  filterDate?: string
-}
-
-interface OwnProps { }
-interface StateProps {
-  mode: 'ios' | 'md'
-  searchString: string | undefined
-  searchOrder: 'asc' | 'desc'
-  orderField: 'published_at' | string,
-  filterDate: string,
-  filterField: string,
-  filterCondition: string,
-  filter: Filter[]
-}
-
-interface DispatchProps {
-  setSearchString: typeof setSearchString
-  setSearchOrder: typeof setSearchOrder
-  setOrderField: typeof setOrderField
-  setFilter: typeof setFilter
-}
-
-type ThisProps = OwnProps & StateProps & DispatchProps
-
-const Main: React.FC<ThisProps> = ({
-  mode,
-  setSearchString, searchString,
-  setSearchOrder, searchOrder,
-  setOrderField, orderField,
-  setFilter, filter
-}) => {
-
-  const ios = (mode === 'ios')
-  const md = (mode === 'md')
-
-  const [showSearchbar, setShowSearchbar] = useState<boolean>(false)
-  const [showFilterModal, setShowFilterModal] = useState<boolean>(true)
-
-  const [filterRows, setFilterRows] = useState<any>([])
+  const [showSearchbar, setShowSearchbar] = useState<boolean>(false);
+  const [showFilterModal, setShowFilterModal] = useState<boolean>(true);
+  const [filterRows, setFilterRows] = useState<any>([]);
 
   useEffect(() => {
-    setSearchString('')
-    setSearchOrder(GraphQLFilter.order.default)
-    setOrderField(GraphQLFilter.fields.default)
-    resetFilters()
-  },[])
+    setSearchString('');
+    setSearchOrder(GraphQLFilter.order.default);
+    setOrderField(GraphQLFilter.fields.default);
+    resetFilters();
+  }, [setSearchString, setSearchOrder, setOrderField, setFilter]);
 
   const resetFilters = () => {
-    setFilter('')
-  }
+    setFilter([]);
+  };
 
   const addFilter = () => {
-    let newFilter = filter      
+    let newFilter = [...filter];
     newFilter.push({
       key: Date.now(),
       type: 'string',
       field: GraphQLFilter.fields.default,
       action: 'eq',
       value: ''
-    })
-    setFilterRows(newFilter)
-  }
+    });
+    setFilter(newFilter);
+  };
 
-  return <IonContent>
-
-    <IonHeader>
-
-      <IonToolbar>
-
-        <IonButtons slot='start'>
-          <IonMenuButton />
-        </IonButtons>
-
-        {!ios && <IonTitle>Main friend</IonTitle>}
-
-        {showSearchbar &&
-          <IonSearchbar
-            showCancelButton='always'
-            placeholder='Search'
-            onIonChange={(e: CustomEvent) => setSearchString(e.detail.value)}
-            onIonCancel={() => setShowSearchbar(false)}>
-          </IonSearchbar>
-        }
-
-        <IonButtons slot='end'>
-
-          {showSearchbar && !ios &&
-            <IonButton onClick={() => setShowSearchbar(true)}>
-              <Icon slot='icon-only' name='search' />
+  return (
+    <IonContent>
+      <IonHeader>
+        <IonToolbar>
+          <IonButtons slot='start'>
+            <IonMenuButton />
+          </IonButtons>
+          {getMode() !== 'ios' && <IonTitle>Main friend</IonTitle>}
+          {showSearchbar && (
+            <IonSearchbar
+              showCancelButton='always'
+              placeholder='Search'
+              value={searchString}
+              onIonChange={(e: CustomEvent) => setSearchString(e.detail.value)}
+              onIonCancel={() => setShowSearchbar(false)}
+            />
+          )}
+          <IonButtons slot='end'>
+            {showSearchbar && getMode() !== 'ios' && (
+              <IonButton onClick={() => setShowSearchbar(true)}>
+                <Icon slot='icon-only' name='search' />
+              </IonButton>
+            )}
+            <IonButton onClick={() => setShowFilterModal(true)}>
+              <Icon slot='icon-only' name='options' />
             </IonButton>
-          }
+          </IonButtons>
+        </IonToolbar>
 
-          <IonButton onClick={() => setShowFilterModal(true)}>
-            <Icon slot='icon-only' name='options' />
-          </IonButton>
-
-        </IonButtons>
-
-      </IonToolbar>
-
-      <IonToolbar>
-        <IonSearchbar
-          placeholder='Search'
-          value={searchString}
-          onIonChange={(e: CustomEvent) => setSearchString(e.detail.value)}>
-        </IonSearchbar>
-      </IonToolbar>
-
-      {showFilterModal &&
-        <IonToolbar>          
-
+        {showFilterModal && (
+          <IonToolbar>
             <IonGrid>
               <IonRow>
                 <IonCol>
@@ -137,10 +95,11 @@ const Main: React.FC<ThisProps> = ({
                     key='field'
                     interface="popover"
                     placeholder='Order Field'
-                    value={orderField}                  
-                    onIonChange={(e: CustomEvent) => setOrderField(e.detail.value)}>
+                    value={orderField}
+                    onIonChange={(e: CustomEvent) => setOrderField(e.detail.value)}
+                  >
                     {GraphQLFilter.fields.options.map((option: any, index: number) => (
-                      <IonSelectOption key={'order-field-'+index} value={option.value}>
+                      <IonSelectOption key={'order-field-' + index} value={option.value}>
                         {option.label}
                       </IonSelectOption>
                     ))}
@@ -151,10 +110,11 @@ const Main: React.FC<ThisProps> = ({
                     key='searchOrder'
                     interface="popover"
                     placeholder='Direction'
-                    value={searchOrder}    
-                    onIonChange={(e: CustomEvent) => setSearchOrder(e.detail.value)}>
+                    value={searchOrder}
+                    onIonChange={(e: CustomEvent) => setSearchOrder(e.detail.value)}
+                  >
                     {GraphQLFilter.order.options.map((option: any, index: number) => (
-                      <IonSelectOption key={'order-'+index} value={option.value}>
+                      <IonSelectOption key={'order-' + index} value={option.value}>
                         {option.label}
                       </IonSelectOption>
                     ))}
@@ -164,44 +124,25 @@ const Main: React.FC<ThisProps> = ({
             </IonGrid>
 
             <IonGrid>
-              {filter && filter.map((row: any, index: number) => {
-                return <FilterRow key={index} filter={[]} setFilter={setFilter}/>
-              })}
+              {filter.map((row: any, index: number) => (
+                <FilterRow key={index} filter={[]} setFilter={setFilter} />
+              ))}
               <IonRow>
                 <IonCol>
-                  <IonButton expand='block' onClick={(e: any) => { addFilter() }}>Add filter</IonButton>
+                  <IonButton expand='block' onClick={() => addFilter()}>
+                    Add filter
+                  </IonButton>
                 </IonCol>
               </IonRow>
             </IonGrid>
-
-        </IonToolbar>
-      }
-
-    </IonHeader>
-    <IonContent>
-
-      <MainList searchOrder={searchOrder} orderField={'asc'} filter={[]} setSearchString={setSearchString} setSearchOrder={setSearchOrder} setOrderField={setOrderField} setFilter={setFilter} />
-
+          </IonToolbar>
+        )}
+      </IonHeader>
+      <IonContent>
+        <MainList />
+      </IonContent>
     </IonContent>
-    {/*<ShareSocialFab />*/}
+  );
+};
 
-  </IonContent>
-
-}
-
-export default connect<ThisProps>({
-  mapStateToProps: (state) => ({
-    mode: getConfig()!.get('mode'),
-    searchString: state.data.searchString,
-    searchOrder: state.data.searchOrder,
-    orderField: state.data.orderField,
-    filter: state.data.filter
-  }),
-  mapDispatchToProps: {
-    setSearchString,
-    setSearchOrder,
-    setOrderField,
-    setFilter
-  },
-  component: Main
-})
+export default Main;

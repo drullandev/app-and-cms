@@ -2,14 +2,14 @@ import { IonItemDivider, IonItemGroup, IonLabel, IonList, IonListHeader, IonAler
 import React, { useState, useCallback } from 'react';
 import { Schedule, Session } from '../../stores/models/Schedule';
 import SessionListItem from '../SessionListItem';
-import useStore from '../../stores/user.store';
+import useUserStore from '../../stores/user.store';
 ;
 const SessionList: React.FC<any> = ({hide, listType, favoriteSessions}) => {
 
   const [showAlert, setShowAlert] = useState(false);
   const [alertHeader, setAlertHeader] = useState('');
   const [alertButtons, setAlertButtons] = useState<(AlertButton | string)[]>([]);
-const { addFavorite, removeFavorite, schedule } = useStore();
+const { addFavorite, removeFavorite, schedule } = useUserStore();
   const handleShowAlert = useCallback((header: string, buttons: AlertButton[]) => {
     setAlertHeader(header);
     setAlertButtons(buttons);

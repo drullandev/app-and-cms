@@ -90,7 +90,7 @@ interface StoreState extends UserState, ConfState {
   setCreatedAt: (createdAt?: string) => void;
   setUpdatedAt: (updatedAt?: string) => void;
   setProvider: (provider2?: string) => void;
-  toogleDarkMode: (darkMode?: boolean) => void;
+  toogleDarkMode: () => void;
   setHasSeenTutorial: (hasSeenTutorial: boolean) => void;
   setCaret: (caret: string) => void;
   setRole: (role: string) => void;
@@ -111,7 +111,7 @@ interface StoreState extends UserState, ConfState {
   removeFavorite: (sessionId: number) => void;
 }
 
-const useStore = create<StoreState>((set, get) => ({
+const useUserStore = create<StoreState>((set, get) => ({
   id: '0',
   blocked: false,
   confirmed: false,
@@ -244,83 +244,83 @@ const useStore = create<StoreState>((set, get) => ({
 
   // Setters
   setData: async (data: Partial<UserState>) => {
-    const { setUserState } = useStore.getState();
+    const { setUserState } = useUserStore.getState();
     setUserState(data);
   },
   
   setIsLogged: async (loggedIn: boolean) => {
-    const { setUserState } = useStore.getState();
+    const { setUserState } = useUserStore.getState();
     setUserState({ isLoggedIn: loggedIn });
   },
   
   setId: async (id?: string) => {
-    const { setUserState } = useStore.getState();
+    const { setUserState } = useUserStore.getState();
     setUserState({ id });
   },
   
   setJwt: async (jwt?: string) => {
-    const { setUserState } = useStore.getState();
+    const { setUserState } = useUserStore.getState();
     setUserState({ jwt });
   },
   
   setSessionId: async (sessionId?: string) => {
-    const { setUserState } = useStore.getState();
+    const { setUserState } = useUserStore.getState();
     setUserState({ sessionId });
   },
   
   setUsername: async (username?: string) => {
-    const { setUserState } = useStore.getState();
+    const { setUserState } = useUserStore.getState();
     setUserState({ username });
   },
   
   setEmail: async (email?: string) => {
-    const { setUserState } = useStore.getState();
+    const { setUserState } = useUserStore.getState();
     setUserState({ email });
   },
   
   setBlocked: async (blocked?: boolean) => {
-    const { setUserState } = useStore.getState();
+    const { setUserState } = useUserStore.getState();
     setUserState({ blocked });
   },
   
   setConfirmed: async (confirmed?: boolean) => {
-    const { setUserState } = useStore.getState();
+    const { setUserState } = useUserStore.getState();
     setUserState({ confirmed });
   },
   
   setCreatedAt: async (createdAt?: string) => {
-    const { setUserState } = useStore.getState();
+    const { setUserState } = useUserStore.getState();
     setUserState({ created_at: createdAt });
   },
   
   setUpdatedAt: async (updatedAt?: string) => {
-    const { setUserState } = useStore.getState();
+    const { setUserState } = useUserStore.getState();
     setUserState({ updated_at: updatedAt });
   },
   
   setProvider: async (provider2?: string) => {
-    const { setUserState } = useStore.getState();
+    const { setUserState } = useUserStore.getState();
     setUserState({ provider: provider2 });
   },
   
   toogleDarkMode: async () => {
-    const { darkMode } = useStore.getState(); // Obtén el valor actual de darkMode
-    const { setUserState } = useStore.getState();
+    const { darkMode } = useUserStore.getState(); // Obtén el valor actual de darkMode
+    const { setUserState } = useUserStore.getState();
     setUserState({ darkMode: ! darkMode }); // Cambia el valor de darkMode
   },
   
   setHasSeenTutorial: async (hasSeenTutorial: boolean) => {
-    const { setUserState } = useStore.getState();
+    const { setUserState } = useUserStore.getState();
     setUserState({ hasSeenTutorial });
   },
   
   setCaret: async (caret: string) => {
-    const { setUserState } = useStore.getState();
+    const { setUserState } = useUserStore.getState();
     setUserState({ caret });
   },
   
   setRole: async (role: string) => {
-    const { setUserState } = useStore.getState();
+    const { setUserState } = useUserStore.getState();
     setUserState({ role });
   },
 
@@ -472,4 +472,4 @@ const useStore = create<StoreState>((set, get) => ({
   }
 }));
 
-export default useStore;
+export default useUserStore;

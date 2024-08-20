@@ -9,7 +9,7 @@ import DebugUtil from '../../classes/DebugUtil';
 import RestAPI from '../../classes/Rest';
 import RestOutput from '../../classes/RestOutput';
 
-import useStore from '../../stores/user.store';
+import useUserStore from '../../stores/user.store';
 import Logger from '../../classes/LoggerClass';
 import { FormDataProps } from '../../components/Form/types';
 
@@ -24,7 +24,7 @@ export const signupForm = ({
   const { t } = useTranslation();
   const history = useHistory();
   const [presentToast] = useIonToast();
-  const { setData, setLoading } = useStore();
+  const { setData, setLoading } = useUserStore();
   const debug = DebugUtil.setDebug(false);
   
   return {

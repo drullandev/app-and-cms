@@ -27,7 +27,7 @@ import '../../styles/index.scss';
 
 import ShareSocialFab from '../../components/ShareSocialFab';
 
-import useStore from '../../stores/sessions.store';
+import useUserStore from '../../stores/sessions.store';
 import { Schedule } from '../../stores/models/Schedule';
 
 interface OwnProps {}
@@ -44,9 +44,9 @@ const SchedulePage: React.FC<OwnProps> = () => {
   const mode = getConfig()!.get('mode') as 'ios' | 'md';
   const ios = mode === 'ios';
 
-  const schedule = useStore((state) => state.schedule);
-  const favoritesSchedule = useStore((state) => state.favoritesSchedule);
-  const setSearchText = useStore((state) => state.setSearchText);
+  const schedule = useUserStore((state) => state.schedule);
+  const favoritesSchedule = useUserStore((state) => state.favoritesSchedule);
+  const setSearchText = useUserStore((state) => state.setSearchText);
 
   const doRefresh = () => {
     setTimeout(() => {

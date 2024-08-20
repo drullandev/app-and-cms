@@ -6,14 +6,14 @@ import React, { useState, useCallback } from 'react'
 import { Home, Session } from '../../stores/models/Schedule'
 import SessionListItem from './SessionListItem'
 
-import useStore from '../../stores/user.store'
+import useUserStore from '../../stores/user.store'
 
 const SessionList: React.FC<any> = ({ hide, listType }) => {
 
   const [showAlert, setShowAlert] = useState(false)
   const [alertHeader, setAlertHeader] = useState('')
   const [alertButtons, setAlertButtons] = useState<(AlertButton | string)[]>([])
-  const { schedule, addFavorite, removeFavorite} = useStore()
+  const { schedule, addFavorite, removeFavorite, favoriteSessions } = useUserStore()
   const handleShowAlert = useCallback((header: string, buttons: AlertButton[]) => {
     setAlertHeader(header)
     setAlertButtons(buttons)

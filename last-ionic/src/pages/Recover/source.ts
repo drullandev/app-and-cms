@@ -11,14 +11,14 @@ import RestOutput from '../../classes/RestOutput';
 
 import { FormDataProps } from '../../components/Form/types';
 
-import useStore from '../../stores/user.store';
+import useUserStore from '../../stores/user.store';
 
 export const recoverFormData = (): FormDataProps => {
 
   const { t } = useTranslation();
   const history = useHistory();
   const [presentToast] = useIonToast();
-  const { setIsLogged } = useStore()
+  const { setIsLogged } = useUserStore()
   const debug = DebugUtil.setDebug(false);
   
   return {

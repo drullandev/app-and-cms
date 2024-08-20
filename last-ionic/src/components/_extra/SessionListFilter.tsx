@@ -29,7 +29,7 @@ import {
   compass,
 } from 'ionicons/icons';
 
-import useStore from '../../stores/sessions.store';
+import useConfStore from '../../stores/sessions.store';
 
 interface OwnProps {
   onDismissModal: () => void;
@@ -39,9 +39,9 @@ const SessionListFilter: React.FC<OwnProps> = ({ onDismissModal }) => {
   const ios = getMode() === 'ios';
 
   // Acceder al estado y acciones usando zustand
-  const allTracks = useStore((state) => state.allTracks);
-  const filteredTracks = useStore((state) => state.filteredTracks);
-  const updateFilteredTracks = useStore((state) => state.updateFilteredTracks);
+  const allTracks = useConfStore((state) => state.allTracks);
+  const filteredTracks = useConfStore((state) => state.filteredTracks);
+  const updateFilteredTracks = useConfStore((state) => state.updateFilteredTracks);
 
   const toggleTrackFilter = (track: string) => {
     if (filteredTracks.indexOf(track) > -1) {
