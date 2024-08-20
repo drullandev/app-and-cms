@@ -9,7 +9,6 @@ if (process.env.NODE_ENV === 'production'){
     ReactGA.initialize('UA-XXXXXXXXX-X'); // TODO: Mueve el parámetro a un entorno seguroç
 }
 
-
 // Inicialice Ionic React
 setupIonicReact({//TODO: Mueve el parámetro a un entorno seguro
     rippleEffect: true,

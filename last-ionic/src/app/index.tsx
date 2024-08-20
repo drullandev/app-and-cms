@@ -16,7 +16,7 @@ import DebugUtil from './../classes/DebugUtil';
 import Logger from '../classes/LoggerClass';
 
 // Zustand Store
-import useStore from '../store/useStore';
+import useStore from '../stores/user.store';
 
 const AppComponent: React.FC = () => {
   
@@ -40,7 +40,7 @@ const AppComponent: React.FC = () => {
   }, []);
 
   return (
-    <IonApp className={darkMode ? '' : ''}>
+    <IonApp className={darkMode ? 'dark-theme' : ''}>
       <IonReactRouter>
         <IonSplitPane contentId="main">
           <Menu />

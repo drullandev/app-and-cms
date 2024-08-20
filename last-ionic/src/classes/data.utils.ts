@@ -1,7 +1,7 @@
-import { Schedule, Session } from '../../models/Schedule';
+import { Schedule, Session } from '../reducer/models/Schedule';
 import { Preferences } from '@capacitor/preferences';
-import Logger from '../../../classes/LoggerClass';
-import DebugUtil from '../../../classes/DebugUtil';
+import Logger from './LoggerClass';
+import DebugUtil from './DebugUtil';
 
 const debug = DebugUtil.setDebug(true) // Adjust based on environment or build configuration
 

@@ -1,5 +1,5 @@
 import { UserState } from '../user/user.state';
-import { setOrRemove, parseSessions } from './data.utils'
+import { setOrRemove, parseSessions } from '../../../classes/data.utils'
 import { initialUser } from '../../state'
 
 import { BLOCKED, CARET, CONFIRMED, CREATED_AT, DARK_MODE, EMAIL, HAS_LOGGED_IN, HAS_SEEN_TUTORIAL, ID, JWT, ROLE, UPDATED_AT, USERNAME, SESSION_ID } from '../../constants';

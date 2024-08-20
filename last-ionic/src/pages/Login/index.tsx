@@ -17,12 +17,12 @@ import { OwnProps, ComponentProps, StateProps, DispatchProps, mapStateToProps, m
 import { loginFormData } from './source';
 import './styles.scss';
 import './style.css';
-import useStore from '../../store/useStore';
+import useStore from '../../stores/user.store';
 
 const LoginPage: React.FC<ComponentProps> = (pageProps) => {
   
   const { t } = useTranslation();
-  const { darkMode, toogleDarkMode } = useStore();
+  const { darkMode, setDarkMode } = useStore();
   const pageSettings : PagePropsData = {
     settings: {
       id: 'login-page',//Concern css classes, for now!
@@ -61,7 +61,7 @@ const LoginPage: React.FC<ComponentProps> = (pageProps) => {
                 <p>{t('Enter your credentials to access your account and start exploring the world of Festivore.')}</p>
               </IonText>
             </IonItem>
-            <IonButton onClick={toogleDarkMode}>
+            <IonButton onClick={setDarkMode}>
               {darkMode ? 'Light Mode' : 'Dark Mode'}
             </IonButton>
             <Form {...loginFormData(pageProps)} />
