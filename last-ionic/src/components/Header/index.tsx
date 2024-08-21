@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { IonHeader, IonToolbar, IonButtons, IonMenuButton, IonTitle, IonButton, IonIcon, IonSearchbar, IonPopover, IonList, IonItem, IonLabel } from '@ionic/react';
 import { filter, shareSocial, menu } from 'ionicons/icons';
-import { ComponentProps } from './types';    
+import './types';    
 
-const Header: React.FC<ComponentProps> = (HeaderProps) => {
+const Header: React.FC<any> = (HeaderProps) => {
 
   const {
     title,
@@ -86,7 +86,7 @@ const Header: React.FC<ComponentProps> = (HeaderProps) => {
       >
 
         <IonList>
-          {filters.map((filter, index) => (
+          {filters.map((filter:any, index: number) => (
             <IonItem button key={index} onClick={() => handleFilterChange(filter)}>
               <IonLabel>{filter}</IonLabel>
             </IonItem>

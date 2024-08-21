@@ -14,7 +14,7 @@ import '../../styles/index.scss'
 import { recoverFormData } from './source';
 
 // Component Reducer
-const RecoverPage: React.FC<ComponentProps> = (pageProps) => {
+const RecoverPage: React.FC<any> = (pageProps) => {
 
   const { t } = useTranslation();
 

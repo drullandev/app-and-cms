@@ -11,7 +11,7 @@ import RestOutput from '../../classes/RestOutput';
 
 import { FormDataProps } from '../../components/Form/types';
 
-import { setData, setLoading, setIsLogged } from '../../stores/user.store';
+//import { setData, setLoading, setIsLogged } from '../../stores/user.store';
 import Logger from '../../classes/LoggerClass';
 
 /*

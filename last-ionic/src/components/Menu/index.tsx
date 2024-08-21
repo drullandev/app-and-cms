@@ -37,6 +37,10 @@ const Menu: React.FC<any> = () => {
       ));
   }
 
+  function toogleDarkMode(): void {
+    throw new Error('Function not implemented.')
+  }
+
   return (
     <IonMenu type="overlay" disabled={true} contentId="main">
 
@@ -63,7 +67,7 @@ const Menu: React.FC<any> = () => {
 
             <IonToggle
               checked={true}
-              onIonChange={() => toogleDarkMode(!true)}
+              onIonChange={() => toogleDarkMode()}
             >
               Dark Mode
             </IonToggle>

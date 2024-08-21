@@ -51,6 +51,8 @@ interface UserState {
 export interface ConfState {
   schedule: Schedule;
   sessions: Session[];
+  session: Session;
+  speaker: Speaker;
   speakers: Speaker[];
   favorites: number[];
   locations: Location[];
@@ -120,7 +122,9 @@ const useUserStore = create<StoreState>((set, get) => ({
   isLoggedIn: false,
 
   schedule: {} as Schedule,
+  session: {} as Session,
   sessions: [],
+  speaker: {} as Speaker,
   speakers: [],
   favorites: [],
   locations: [],

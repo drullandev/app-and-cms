@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { RouteComponentProps } from 'react-router'
 
 import '../../styles/index.scss'
@@ -7,28 +7,18 @@ import { ActionSheetButton } from '@ionic/core'
 import { IonActionSheet, IonChip, IonIcon, IonHeader, IonLabel, IonToolbar, IonButtons, IonContent, IonButton, IonBackButton, IonPage } from '@ionic/react'
 import { callOutline, callSharp, logoTwitter, logoGithub, logoInstagram, shareOutline, shareSharp } from 'ionicons/icons'
 
-
-
+import useSpeakerStore from '../../stores/sessions.store'
 import { Speaker } from '../../stores/models/Speaker'
 
+interface OwnProps extends RouteComponentProps<{ id: string }> {}
 
-interface OwnProps extends RouteComponentProps {
-  speaker?: Speaker
-}
-
-interface StateProps {}
-
-interface DispatchProps {}
-
-interface SpeakerDetailProps extends OwnProps, StateProps, DispatchProps {}
-
-const SpeakerDetail: React.FC<SpeakerDetailProps> = ({
-  speaker
-}) => {
-
+const SpeakerDetail: React.FC<OwnProps> = ({ match }) => {
   const [showActionSheet, setShowActionSheet] = useState(false)
   const [actionSheetButtons, setActionSheetButtons] = useState<ActionSheetButton[]>([])
   const [actionSheetHeader, setActionSheetHeader] = useState('')
+
+  // Obtener el speaker usando el ID de los parámetros de la ruta
+  const speaker = useSpeakerStore(state => state.getSpeaker(match.params.id))
 
   function openSpeakerShare(speaker: Speaker) {
     setActionSheetButtons([
@@ -71,7 +61,7 @@ const SpeakerDetail: React.FC<SpeakerDetailProps> = ({
         }
       }
     ])
-    setActionSheetHeader(`Share ${speaker.name}`)
+    setActionSheetHeader(`Contact ${speaker.name}`)
     setShowActionSheet(true)
   }
 
@@ -138,10 +128,4 @@ const SpeakerDetail: React.FC<SpeakerDetailProps> = ({
   )
 }
 
-
-export default connect({
-  mapStateToProps: (state, ownProps) => ({
-    speaker: selectors.getSpeaker(state, ownProps)
-  }),
-  component: SpeakerDetail
-})
+export default SpeakerDetail

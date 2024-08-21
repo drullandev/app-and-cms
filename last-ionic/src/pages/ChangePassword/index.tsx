@@ -24,7 +24,7 @@ const ChangePassword: React.FC = () => {
   const { t } = useTranslation();
   const [presentToast] = useIonToast();
   const { setIsLogged, setUsername } = useUserStore();
-
+/*
   const pageSettings: PagePropsData = {
     settings: {
       id: 'reset-page',
@@ -139,6 +139,8 @@ const ChangePassword: React.FC = () => {
   };
 
   return <Page {...pageSettings} />;
+  */
+ return <></>
 };
 
 export default ChangePassword;

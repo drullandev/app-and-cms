@@ -2,18 +2,34 @@ import create from 'zustand';
 
 import Logger from '../classes/LoggerClass';
 import useUserStore from '../stores/user.store';
-import ConfState from '../stores/user.store';
+import ConfState from '../stores/sessions.store';
 import { Schedule, Session } from './models/Schedule';
 import { Speaker } from './models/Speaker';
 import { Location } from './models/Location';
 
 // Definición del tipo para las sesiones de los oradores
 interface SpeakerSessions {
-  [speakerName: string]: Session[];
+  [key: string]: Session[]
 }
+
+export interface ConfState {
+  schedule: Schedule;
+  sessions: Session[];
+  speakers: Speaker[];
+  favorites: number[];
+  locations: Location[];
+  filteredTracks: string[];
+  searchText?: string;
+  mapCenterId?: number;
+  loading?: boolean;
+  allTracks: string[];
+  menuEnabled: boolean;
+}
+
 
 // Extensión de ConfState para incluir el estado de la conferencia
 interface ConfStore extends ConfState {
+  [x: string]: any;
   loading: boolean;
   favorites: number[];
   filteredTracks: string[];
@@ -92,7 +108,7 @@ const useConfStore = create<ConfStore>((set) => ({
   setSpeakerSessions: (speakerSessions) => set({ speakerSessions }),
   // Función para cargar datos
   loadConfData: async () => {
-    const { getConfData } = useStore();
+    const { getConfData } = useConfStore();
     Logger.log(' • loadConfData');
     set({ loading: true });
     try {

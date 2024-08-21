@@ -45,7 +45,7 @@ const SpeakerList: React.FC = () => {
                 <SpeakerItem
                   key={speaker.id}
                   speaker={speaker}
-                  sessions={speakerSessions[speaker.name]}
+                  sessions={speakerSessions[speaker.id]}
                 />
               </IonCol>
             ))}

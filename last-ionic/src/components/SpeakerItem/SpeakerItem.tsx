@@ -2,6 +2,7 @@ import React from 'react';
 import { Session } from '../../stores/models/Schedule';
 import { Speaker } from '../../stores/models/Speaker';
 import { IonCard, IonCardHeader, IonItem, IonLabel, IonAvatar, IonCardContent, IonList } from '@ionic/react';
+import useUserStore from '../../stores/user.store';
 
 
 interface SpeakerItemProps {
@@ -9,7 +10,8 @@ interface SpeakerItemProps {
   sessions: Session[];
 }
 
-const SpeakerItem: React.FC<SpeakerItemProps> = ({ speaker, sessions }) => {
+const SpeakerItem: React.FC<any> = () => {
+  const { speaker, sessions } = useUserStore();
   return (
     <>
       <IonCard className="speaker-card">

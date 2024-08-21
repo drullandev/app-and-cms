@@ -15,7 +15,7 @@ import RestAPI from '../../classes/Rest';
 import { FormDataProps } from '../../components/Form/types';
 
 // Reducer dependencies
-import { setIsLogged } from '../../stores/user.store';
+import useUserStore from '../../stores/user.store';
 
 /**
  * This is the information for the reset page main form
@@ -26,7 +26,7 @@ export const resetFormData = (): FormDataProps => {
   const { t } = useTranslation();
   const history = useHistory();
   const [presentToast] = useIonToast();
-  
+  const { setIsLogged } = useUserStore()
   const debug = DebugUtil.setDebug(false);
   
   return {

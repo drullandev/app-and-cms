@@ -6,6 +6,7 @@ import { moonOutline } from 'ionicons/icons'
 import useUserStore from '../../stores/user.store'
 import Header from '../Header'
 import SubMenu from './SubMenu'
+import useConfStore from '../../stores/sessions.store'
 
 interface MenuProps extends RouteComponentProps {
   slug: string
@@ -15,27 +16,23 @@ interface Menu2Props {
   title: string
 }
 
-const Menu: React.FC<MenuProps> = ({ slug }) => {
+const Menu: React.FC<any> = ({ slug }) => {
   const [menu, setMenu] = useState<Menu2Props>()
   const [menus, setMenus] = useState<MenuProps[]>([])
   const [slot, setSlot] = useState('')
 
   // Obtener el estado y funciones del store de Zustand
   const {
-    userDarkMode,
+    darkMode,
     menuEnabled,
     isLoggedIn,
-    setDarkMode,
-    setMenuEnabled,
-    setLoggedIn
-  } = useUserStore(state => ({
-    userDarkMode: state.userDarkMode,
-    menuEnabled: state.menuEnabled,
-    isLoggedIn: state.isLoggedIn,
-    setDarkMode: state.setDarkMode,
-    setMenuEnabled: state.setMenuEnabled,
-    setLoggedIn: state.setLoggedIn,
-  }))
+    toogleDarkMode,
+    setIsLogged
+  } = useUserStore()
+
+  const {
+    setMenuEnabled
+  } = useConfStore()
 
   useEffect(() => {
     setSlot('start')
@@ -57,8 +54,8 @@ const Menu: React.FC<MenuProps> = ({ slug }) => {
         <IonList lines='none' key='dark-mode'>
           <IonItem key='dark-mode-item'>
             <IonIcon slot={slot} icon={moonOutline} />
-            <IonLabel>Dark Mode {userDarkMode ? 'true' : 'false'}</IonLabel>
-            <IonToggle checked={userDarkMode} onIonChange={() => setDarkMode(!userDarkMode)} />
+            <IonLabel>Dark Mode {darkMode ? 'true' : 'false'}</IonLabel>
+            <IonToggle checked={darkMode} onIonChange={() => toogleDarkMode()} />
           </IonItem>
         </IonList>
       </IonContent>
