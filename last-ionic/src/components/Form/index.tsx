@@ -196,7 +196,7 @@ const Form: React.FC<FormComponentProps> = (formProps: FormComponentProps): JSX.
     GA4Tracker.trackEvent('load', formProps.ga4);
     setTimeout(() => setIsLoading(false), 500);
 
-  }, [csrfToken, captcha, formProps, showCaptcha]);
+  }, [csrfToken, captcha, showCaptcha]);
 
   useEffect(() => {
     if (formData) {

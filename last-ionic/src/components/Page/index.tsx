@@ -21,7 +21,7 @@ const Page: React.FC<PagePropsData> = (pageProps) => {
   useEffect(()=> {
     Logger.info(' • Loading page!');
     GA4Tracker.trackEvent('load', pageProps.ga4)
-  })
+  },[ pageProps ])
 
   return (
     <IonPage {...pageProps.settings}>

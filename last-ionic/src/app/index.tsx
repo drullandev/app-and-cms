@@ -40,19 +40,10 @@ const AppComponent: React.FC = () => {
   
   const { darkMode } = useUserStore();
 
-  useEffect(() => {
-    Logger.log(' • DarkMode was toggled!', darkMode);
-    if (darkMode) {
-      document.body.classList.add('dark');
-    } else {
-      document.body.classList.remove('dark');
-    }
-  }, [darkMode]);
-
   // Inicializa configuraciones y datos
   useEffect(() => {
-    Logger.log(' • Loading App!');
-  }, []);
+    if (debug) Logger.log(' • Loading App!');
+  }, [darkMode]);
 
   return (
     <IonApp className={darkMode ? 'dark-theme' : ''}>
