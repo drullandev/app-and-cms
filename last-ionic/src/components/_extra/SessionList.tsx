@@ -3,7 +3,7 @@ import * as AppConst from '../../config/env'
 import { IonItemDivider, IonItemGroup, IonLabel, IonList, IonListHeader, IonAlert, AlertButton } from '@ionic/react'
 import React, { useState, useCallback } from 'react'
 
-import { Home, Session } from '../../stores/models/Schedule'
+import { Home, Session } from '../../models/Schedule'
 import SessionListItem from './SessionListItem'
 
 import useUserStore from '../../stores/user.store'

@@ -11,6 +11,7 @@ const SessionDetail: React.FC = () => {
 
   const { session, favoriteSessions } = useUserStore()
   const { addFavorite, removeFavorite } = useConfStore()
+  
   if (!session) {
     return <div>Session not found</div>
   }

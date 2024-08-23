@@ -4,7 +4,7 @@ import { withRouter, RouteComponentProps } from 'react-router';
 import { starOutline, star, share, cloudDownload } from 'ionicons/icons';
 import '../../styles/SessionDetail.scss';
 import useConfStore from '../../stores/sessions.store';
-import { Session } from '../../stores/models/Schedule';
+import { Session } from '../../models/Schedule';
 
 interface OwnProps extends RouteComponentProps {}
 

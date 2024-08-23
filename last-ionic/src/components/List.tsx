@@ -2,7 +2,7 @@ import React from 'react'
 import { IonMenuToggle, IonIcon, IonItem, IonLabel } from '@ionic/react'
 
 import { ListProps } from '../interfaces/ListProps'
-import { ListRowProps } from '../stores/models/ListRowProps'
+import { ListRowProps } from '../models/ListRowProps'
 
 const List: React.FC<ListProps> = (rows) => {
   return (<></>)// rows.map((row: ListRowProps) => (

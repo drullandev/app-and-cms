@@ -1,9 +1,9 @@
-import { Schedule, Session } from '../stores/models/Schedule';
+import { Schedule, Session } from '../../models/Schedule';
 import { Preferences } from '@capacitor/preferences';
-import Logger from './LoggerClass';
+import Logger from '../LoggerClass';
 import DebugUtil from './DebugUtil';
 
-const debug = DebugUtil.setDebug(true) // Adjust based on environment or build configuration
+const debug = DebugUtil.setDebug(false) // Adjust based on environment or build configuration
 
 /**
  * Parses sessions from a schedule by flattening groups.
@@ -42,14 +42,14 @@ export const setOrRemove = async (key: string, value: any, def: any, string: boo
  * @param value The boolean value to toggle.
  * @param def The default value if setting (optional).
  * @returns A promise that resolves after toggling the boolean value.
- * DEPRECATED
+ * DEPRECATED // TODO: REFORGE!!
  */
 export const toggleBool = async (key: string, value: any, def: boolean = true) => {
   try {
     if (debug) Logger.log(' • DataApi::toggleBool', { key: key, value: value });
     await Preferences.set({ key: key, value: value });
   } catch (error) {
-    Logger.error('• Error toggling boolean preference:', error);
+    if (debug) Logger.error('• Error toggling boolean preference:', error);
     throw error; // Propagate the error for higher-level handling
   }
 };

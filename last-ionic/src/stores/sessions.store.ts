@@ -3,9 +3,9 @@ import create from 'zustand';
 import Logger from '../classes/LoggerClass';
 import useUserStore from '../stores/user.store';
 import ConfState from '../stores/sessions.store';
-import { Schedule, Session } from './models/Schedule';
-import { Speaker } from './models/Speaker';
-import { Location } from './models/Location';
+import { Schedule, Session } from '../models/Schedule';
+import { Speaker } from '../models/Speaker';
+import { Location } from '../models/Location';
 
 // Definición del tipo para las sesiones de los oradores
 interface SpeakerSessions {

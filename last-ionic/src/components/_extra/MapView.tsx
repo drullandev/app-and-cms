@@ -2,7 +2,7 @@ import React from 'react';
 import { IonContent } from '@ionic/react';
 
 import Map from '../Map';
-import { Location } from '../../stores/models/Location';
+import { Location } from '../../models/Location';
 import useUserStore from '../../stores/user.store';
 
 const MapView: React.FC = () => {

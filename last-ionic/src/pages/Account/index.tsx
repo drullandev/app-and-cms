@@ -3,7 +3,8 @@ import { addCircleOutline, bookmarksOutline, chevronDown, gridOutline, menuOutli
 import { useState, useEffect } from 'react';
 //import styles from './styles.scss';
 
-const MyProfile = () => {
+const Account: React.FC = () => {
+
     const [profile, setProfile] = useState({
         id: 1,
         username: 'johndoe',
@@ -134,4 +135,4 @@ const MyProfile = () => {
     );
 };
 
-export default MyProfile;
+export default Account;

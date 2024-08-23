@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { RouteComponentProps } from 'react-router'
+import { RouteComponentProps, withRouter } from 'react-router'
 import { IonContent, IonIcon, IonItem, IonLabel, IonList, IonMenu, IonToggle } from '@ionic/react'
 import { moonOutline } from 'ionicons/icons'
 
@@ -17,6 +17,7 @@ interface Menu2Props {
 }
 
 const Menu: React.FC<any> = ({ slug }) => {
+
   const [menu, setMenu] = useState<Menu2Props>()
   const [menus, setMenus] = useState<MenuProps[]>([])
   const [slot, setSlot] = useState('')
@@ -63,4 +64,4 @@ const Menu: React.FC<any> = ({ slug }) => {
   )
 }
 
-export default Menu
+export default withRouter(Menu);

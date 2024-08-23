@@ -2,7 +2,7 @@ import React, { useRef, useEffect, useState } from 'react';
 import { IonItemSliding, IonItem, IonLabel, IonItemOptions, IonItemOption, IonSkeletonText, IonThumbnail } from '@ionic/react';
 import useSessionStore from '../../stores/sessions.store';
 import Icon from './Icon';
-import { ListRowProps } from '../../stores/models/ListRowProps';
+import { ListRowProps } from '../../models/ListRowProps';
 
 interface LineProps {
   id: string;

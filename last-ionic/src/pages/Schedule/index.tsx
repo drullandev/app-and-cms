@@ -27,7 +27,7 @@ import '../../styles/index.scss';
 import ShareSocialFab from '../../components/ShareSocialFab';
 
 import useConfStore from '../../stores/sessions.store';
-import { Schedule } from '../../stores/models/Schedule';
+import { Schedule } from '../../models/Schedule';
 
 const SchedulePage: React.FC = () => {
   const [segment, setSegment] = useState<'all' | 'favorites'>('all');

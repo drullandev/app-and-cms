@@ -8,7 +8,9 @@ NODE_MODULES := node_modules
 NPM := npm
 NPM_START := npm run dev
 YARN := yarn
+NODE := yarn
 TS := tsc
+TS_NODE := ts-node
 VITE := vite
 E2E_TEST := cypress run
 UNIT_TEST := vitest
@@ -18,8 +20,6 @@ LINT := eslint
 .PHONY: all install dev build preview test lint clean
 
 up:
-	$(NPM_START)
-	
 start: 
 	$(NPM_START)
 
@@ -29,7 +29,7 @@ all: dev
 # Install dependencies
 install:
 	@echo "Installing dependencies..."
-	brew install openjdk@17
+#brew install openjdk@17
 	$(NPM) install
 
 outdated:
@@ -41,9 +41,15 @@ dev:
 	@echo "Starting development server..."
 	$(VITE)
 
+build-translations:
+	$(node) ./src/classes/scripts/TranslationsKeeper.cjs
+
+build-files:
+	node ./src/components/_Ionic/generateComponents.cjs
+	
 # Build the project
 build:
-	node ./src/components/_Ionic/generateComponents.cjs
+	make build-files
 	@echo "Building the project..."
 	$(TS) && $(VITE) build
 

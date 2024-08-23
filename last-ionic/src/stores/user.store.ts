@@ -1,9 +1,9 @@
 import create from 'zustand';
 import { Preferences } from '@capacitor/preferences';
-import { Schedule, Session, ScheduleGroup } from './models/Schedule';
-import { Speaker } from './models/Speaker';
-import { Location } from './models/Location';
-import { parseSessions } from '../classes/data.utils';
+import { Schedule, Session, ScheduleGroup } from '../models/Schedule';
+import { Speaker } from '../models/Speaker';
+import { Location } from '../models/Location';
+import { parseSessions } from '../classes/utils/DataUtils';
 import {
   BLOCKED,
   CARET,
@@ -24,7 +24,7 @@ import {
   USERNAME
 } from './constants';
 import Logger from '../classes/LoggerClass';
-import DebugUtil from '../classes/DebugUtil';
+import DebugUtil from '../classes/utils/DebugUtil';
 
 const debug = DebugUtil.setDebug(false);
 

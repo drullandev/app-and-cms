@@ -1,22 +1,26 @@
 /**
  * LoggerClass provides various methods for logging messages at different levels.
  * It also maintains a history of log messages and limits the number of stored logs.
+ * In production, logs are not stored, only output to the console.
  */
- class LoggerClass {
-
+class LoggerClass {
+  
   private static instance: LoggerClass;
   private logs: string[] = [];
+  private maxLogs: number; // Maximum number of logs to keep
 
   // Private constructor to prevent direct instantiation
-  private constructor() {}
+  private constructor(maxLogs: number = 100) {
+    this.maxLogs = maxLogs;
+  }
 
   /**
    * Returns the single instance of LoggerClass.
    * @returns {LoggerClass} The singleton instance.
    */
-  public static getInstance(): LoggerClass {
+  public static getInstance(maxLogs: number = 100): LoggerClass {
     if (!LoggerClass.instance) {
-      LoggerClass.instance = new LoggerClass();
+      LoggerClass.instance = new LoggerClass(maxLogs);
     }
     return LoggerClass.instance;
   }
@@ -29,9 +33,11 @@
   public log(...args: any) {
     if (this.mustShow()) {
       this.logs.push(args.join(' '));
-      // Limit the number of stored logs to the most recent 100 entries
-      if (this.logs.length > 100) this.logs.shift();
+      // Limit the number of stored logs to the most recent entries
+      if (this.logs.length > this.maxLogs) this.logs.shift();
       console.log(...args);
+    } else {
+      console.log(...args); // Log to console even if not storing logs
     }
     return args;
   }
@@ -41,7 +47,11 @@
    * @returns {string[]} - A copy of the logs array to prevent external modification.
    */
   public getLogs() {
-    return [...this.logs];
+    if (this.mustShow()) {
+      return [...this.logs];
+    } else {
+      return []; // Return empty if not in development
+    }
   }
 
   /**
@@ -52,6 +62,8 @@
   public warn(...args: any) {
     if (this.mustShow()) {
       console.warn(...args);
+    } else {
+      console.warn(...args); // Log to console even if not storing logs
     }
     return args;
   }
@@ -64,6 +76,8 @@
   public error(...args: any) {
     if (this.mustShow()) {
       console.error(...args);
+    } else {
+      console.error(...args); // Log to console even if not storing logs
     }
     return args;
   }
@@ -76,6 +90,8 @@
   public info(...args: any) {
     if (this.mustShow()) {
       console.info(...args);
+    } else {
+      console.info(...args); // Log to console even if not storing logs
     }
     return args;
   }
@@ -88,12 +104,15 @@
   public debug(...args: any) {
     if (this.mustShow()) {
       console.debug(...args);
+    } else {
+      console.debug(...args); // Log to console even if not storing logs
     }
     return args;
   }
 
   /**
-   * Logs a message with informational level regardless of the environment.
+   * Logs a message with informational level regardless of the environment state ;)
+   * - BE CAREFULL!!
    * @param {...any} args - The message(s) to log.
    */
   public show(...args: any) {
@@ -109,9 +128,9 @@
   private mustShow(): boolean {
     return process.env.NODE_ENV === 'development';
   }
-  
 }
 
 // Export the singleton instance of LoggerClass
 const Logger = LoggerClass.getInstance();
+
 export default Logger;

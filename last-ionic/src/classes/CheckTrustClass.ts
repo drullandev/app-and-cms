@@ -30,18 +30,19 @@
      * @param timeWindow - Time window in milliseconds for tracking user actions.
      * @param blockDuration - Duration in milliseconds for blocking IPs.
      */
+    // TODO: Copy and move the rules to some kind of env
     private constructor(
-			maxFailedAttempts = 3,
-			maxActions = 20,
-			maxRequests = 60,
-			timeWindow = 60000,
-			blockDuration = 31536000000
+        maxFailedAttempts = 3,
+        maxActions = 20,
+        maxRequests = 60,
+        timeWindow = 60000,
+        blockDuration = 31536000000
     ) {
-			this.maxFailedAttempts = maxFailedAttempts;
-			this.maxActions = maxActions;
-			this.maxRequests = maxRequests;
-			this.timeWindow = timeWindow; 
-			this.blockDuration = blockDuration;
+        this.maxFailedAttempts = maxFailedAttempts;
+        this.maxActions = maxActions;
+        this.maxRequests = maxRequests;
+        this.timeWindow = timeWindow; 
+        this.blockDuration = blockDuration;
     }
 
     /**
@@ -50,24 +51,24 @@
      * @returns The singleton instance of CheckTrustClass.
      */
     public static getInstance(): CheckTrustClass {
-			if (this.instance === null) {
-				this.instance = new CheckTrustClass();
-			}
-			return this.instance;
+        if (this.instance === null) {
+            this.instance = new CheckTrustClass();
+        }
+        return this.instance;
     }
 
     /** 
      * Records a failed login attempt by incrementing the failed attempts counter.
      */
     private recordFailedAttempt() {
-			this.failedAttempts++;
+        this.failedAttempts++;
     }
 
     /** 
      * Resets the failed attempts counter to zero.
      */
     private resetFailedAttempts() {
-			this.failedAttempts = 0;
+        this.failedAttempts = 0;
     }
 
     /** 
@@ -75,9 +76,9 @@
      * that fall outside the time window.
      */
     private recordUserAction() {
-			const now = Date.now();
-			this.userActions.push(now);
-			this.userActions = this.userActions.filter(timestamp => now - timestamp <= this.timeWindow);
+        const now = Date.now();
+        this.userActions.push(now);
+        this.userActions = this.userActions.filter(timestamp => now - timestamp <= this.timeWindow);
     }
 
     /** 
@@ -85,9 +86,9 @@
      * that fall outside the time window.
      */
     private recordRequest() {
-			const now = Date.now();
-			this.requestTimes.push(now);
-			this.requestTimes = this.requestTimes.filter(timestamp => now - timestamp <= this.timeWindow);
+        const now = Date.now();
+        this.requestTimes.push(now);
+        this.requestTimes = this.requestTimes.filter(timestamp => now - timestamp <= this.timeWindow);
     }
 
     /** 
@@ -97,7 +98,7 @@
      * @returns boolean - True if the IP address is suspicious, false otherwise.
      */
     private checkIPAddress(ip: string): boolean {
-			return this.suspiciousIPs.includes(ip);
+        return this.suspiciousIPs.includes(ip);
     }
         
     /** 
@@ -108,63 +109,63 @@
      */
     public getTrustScore(ip: string): number {
 
-			let score = 10; // Iniciamos con la máxima puntuación
+        let score = 10; // Iniciamos con la máxima puntuación
 
-			// Penaliza la puntuación según los criterios
-			if (this.failedAttempts >= this.maxFailedAttempts) {
-				score -= 5; // Reduce la puntuación si se alcanzan los intentos fallidos
-			}
+        // Penaliza la puntuación según los criterios
+        if (this.failedAttempts >= this.maxFailedAttempts) {
+            score -= 5; // Reduce la puntuación si se alcanzan los intentos fallidos
+        }
 
-			if (this.userActions.length >= this.maxActions) {
-				score -= 3; // Reduce la puntuación si se alcanzan las acciones
-			}
+        if (this.userActions.length >= this.maxActions) {
+            score -= 3; // Reduce la puntuación si se alcanzan las acciones
+        }
 
-			if (this.checkIPAddress(ip)) {
-				score -= 4; // Reduce la puntuación si la IP es sospechosa
-			}
+        if (this.checkIPAddress(ip)) {
+            score -= 4; // Reduce la puntuación si la IP es sospechosa
+        }
 
-			if (this.requestTimes.length > this.maxRequests) {
-				score -= 2; // Reduce la puntuación si se alcanzan las solicitudes
-			}
+        if (this.requestTimes.length > this.maxRequests) {
+            score -= 2; // Reduce la puntuación si se alcanzan las solicitudes
+        }
 
-			// Aseguramos que la puntuación esté entre 0 y 10
-			if (score == 0) {
-				this.blocked = true;
-			}
+        // Aseguramos que la puntuación esté entre 0 y 10
+        if (score == 0) {
+            this.blocked = true;
+        }
 
-			return Math.max(0, Math.min(10, score));
+        return Math.max(0, Math.min(10, score));
     }
 
     public handleUserAction(ip: string, success: boolean): void {
-			if (!success) {
-				this.recordFailedAttempt();
-			} else {
-				this.resetFailedAttempts();
-			}
+        if (!success) {
+            this.recordFailedAttempt();
+        } else {
+            this.resetFailedAttempts();
+        }
 
-			this.recordUserAction();
-			this.recordRequest();
+        this.recordUserAction();
+        this.recordRequest();
     }
 
     public addSuspiciousIP(ip: string): void {
-			if (!this.suspiciousIPs.includes(ip)) {
-				this.suspiciousIPs.push(ip);
-				// TODO: Save to database
-			}
+        if (!this.suspiciousIPs.includes(ip)) {
+            this.suspiciousIPs.push(ip);
+            // TODO: Save to database
+        }
     }
 
     public removeSuspiciousIP(ip: string): void {
-			this.suspiciousIPs = this.suspiciousIPs.filter(suspiciousIP => suspiciousIP !== ip);
+        this.suspiciousIPs = this.suspiciousIPs.filter(suspiciousIP => suspiciousIP !== ip);
     }
 
     // Método adicional para mostrar el estado de confianza
     public displayTrustStatus(ip: string): void {
-			const trustScore = this.getTrustScore(ip);
-			console.log(`El usuario tiene un puntaje de confianza de: ${trustScore}`);
+        const trustScore = this.getTrustScore(ip);
+        console.log(`El usuario tiene un puntaje de confianza de: ${trustScore}`);
     }
 
     public isBlocked(ip: string): boolean {
-			return this.blockedIPs[ip]!== undefined;
+        return this.blockedIPs[ip]!== undefined;
     }
 }
 

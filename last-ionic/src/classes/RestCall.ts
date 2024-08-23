@@ -1,6 +1,4 @@
 import axios, { AxiosRequestConfig } from 'axios';
-import RestOutput from './RestOutput';
-//import * as AppConst from '../env'
 
 /**
  * This module provides a class `Rest` that encapsulates the functionality for making REST API calls.
@@ -52,7 +50,7 @@ export interface CallProps {
 /**
  * Class encapsulating operations for making REST calls.
  */
-class Rest {
+class RestCall {
 
   /**
    * Performs an asynchronous REST call.
@@ -89,7 +87,7 @@ class Rest {
 
     // Add the '?populate=*' parameter if the method is 'get'
     if (call.req.method.toLowerCase() === 'get') {
-      call.req.url = `${call.req.url}?populate=*`;
+      call.req.url = `${call.req.url}?populate=*`;//TODO: Invest why
     }
 
     return call;
@@ -100,21 +98,21 @@ class Rest {
    * @param call - The properties of the API call.
    * @returns A promise with the result of the Axios call.
    */
-  private static setCall(call: CallProps) {
-    return axios(call.req)
-      .then((res: any) => {
+  private static async setCall(call: CallProps) {
+    try {
+      try {
+        const res = await axios(call.req);
         return call.onSuccess.default(res);
-      })
-      .catch((err: any) => {
+      } catch (err) {
         return call.onError.default(err);
-      })
-      .finally(() => {
-        if (call.onFinally) {
-          return call.onFinally();
-        }
-      });
+      }
+    } finally {
+      if (call.onFinally) {
+        return call.onFinally();
+      }
+    }
   }
 
 }
 
-export default Rest;
+export default RestCall;

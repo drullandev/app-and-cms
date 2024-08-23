@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 
-import { GraphQLFilter } from '../../classes/data/GraphQLFilter'
+import { GraphQLFilter } from '../../classes/assets/GraphQLFilter'
 import { IonSelect, IonSelectOption, IonCol, IonRow, IonDatetime, IonTextarea, IonItem, IonInput, IonButton } from '@ionic/react'
 import useConfStore from '../../stores/sessions.store'
 import { Filter } from '../../interfaces/Filter'

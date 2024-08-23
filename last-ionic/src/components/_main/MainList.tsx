@@ -1,10 +1,10 @@
 import { IonItemDivider, IonItemGroup, IonLabel, IonList, IonListHeader, IonAlert, AlertButton } from '@ionic/react';
 import React, { useState, useCallback } from 'react';
-import { Schedule, Session } from '../../stores/models/Schedule';
+import { Schedule, Session } from '../../models/Schedule';
 import SessionListItem from './MainListItem';
 import useStore from '../../stores/user.store';
 import useSessionStore from '../../stores/sessions.store';
-import { SessionGroup } from '../../stores/models/SessionGroup copy';
+import { SessionGroup } from '../../models/SessionGroup copy';
 
 interface OwnProps {
   schedule: Schedule;

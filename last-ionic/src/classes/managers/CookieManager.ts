@@ -1,6 +1,6 @@
-import DebugUtil from './DebugUtil';
-import Logger from './LoggerClass';
-import TimeClass from './TimeClass';
+import DebugUtil from '../utils/DebugUtil';
+import Logger from '../LoggerClass';
+import TimeClass from '../TimeClass';
 
 class CookieManager {
 

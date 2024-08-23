@@ -8,7 +8,7 @@ import {
   useIonToast,
 } from '@ionic/react';
 import { RouteComponentProps } from 'react-router';
-import RestAPI from '../../classes/Rest';
+import RestAPI from '../../classes/RestCall';
 import StringUtil from '../../classes/StringUtil';
 import { useTranslation } from 'react-i18next';
 import PagePropsData from '../../components/Page/types';
@@ -16,7 +16,7 @@ import Page from '../../components/Page';
 import * as yup from 'yup';
 import * as icon from 'ionicons/icons';
 import useUserStore from '../../stores/user.store';
-import DebugUtil from '../../classes/DebugUtil';
+import DebugUtil from '../../classes/utils/DebugUtil';
 
 const ChangePassword: React.FC = () => {
   

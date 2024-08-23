@@ -25,7 +25,7 @@ import {
   shareOutline,
   shareSharp
 } from 'ionicons/icons';
-import { Speaker } from '../../stores/models/Speaker';
+import { Speaker } from '../../models/Speaker';
 
 // Define component props including route properties
 interface MateDetailProps { }

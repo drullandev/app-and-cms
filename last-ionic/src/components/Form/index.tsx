@@ -15,15 +15,16 @@ import Accordion from '../Accordion';
 // Importing utilities and helper functions
 import Logger from '../../classes/LoggerClass';
 import Security from '../../classes/Security';
-import DebugUtil from '../../classes/DebugUtil';
-import { buildValidationSchema, buildInitialValues } from '../../classes/MyYup';
-import CaptchaManager from '../../classes/CaptchaManager'; // Importar CaptchaManager
+import DebugUtil from '../../classes/utils/DebugUtil';
+import { buildValidationSchema, buildInitialValues } from '../../classes/utils/ValidationUtil';
+import CaptchaManager from '../../classes/managers/CaptchaManager'; // Importar CaptchaManager
 
 // Importing types
 import { FieldProps, FormComponentProps, FormDataProps } from './types';
 
 // Importing styles
 import './style.css';
+import { IonButtons, IonMenuButton, IonToolbar } from '@ionic/react';
 
 const Form: React.FC<FormComponentProps> = (formProps: FormComponentProps): JSX.Element | null => {
   

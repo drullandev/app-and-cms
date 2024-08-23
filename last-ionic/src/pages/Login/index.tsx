@@ -35,6 +35,7 @@ const LoginPage: React.FC<any> = (pageProps) => {
     header: () => {
       const headerProps = {
         title: t('Login'),
+        showMenuButton: true, // Asegúrate de que esto es true
         slot: 'start',
         loading: pageProps.loading || false
       }
@@ -68,7 +69,7 @@ const LoginPage: React.FC<any> = (pageProps) => {
     footer: () => {
       return (
         <IonFooter className="login-footer">
-          <IonToolbar>
+          {/*<IonToolbar>
             <IonText className="footer-text">
               <p>{t('Need help?')}</p>
               <p>{t('Contact us at support@festivore.com')}</p>
@@ -85,7 +86,7 @@ const LoginPage: React.FC<any> = (pageProps) => {
                 <IonIcon name="logo-instagram" />
               </IonButton>
             </IonButtons>
-          </IonToolbar>
+      </IonToolbar>*/}
         </IonFooter>
       );
     }

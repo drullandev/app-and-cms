@@ -3,8 +3,8 @@ import { IonContent, IonGrid, IonRow, IonCol } from '@ionic/react';
 
 import MatesItem from './MatesItem';
 
-import { Speaker } from '../../stores/models/Speaker';
-import { Session } from '../../stores/models/Schedule';
+import { Speaker } from '../../models/Speaker';
+import { Session } from '../../models/Schedule';
 
 import useStore from '../../stores/sessions.store';
 

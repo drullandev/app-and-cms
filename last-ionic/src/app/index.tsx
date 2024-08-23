@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Route } from 'react-router-dom';
 import { IonApp, IonRouterOutlet, IonSplitPane } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
@@ -19,39 +19,38 @@ import {
   Signup,
   MainTabs,
   Page,
-/*   Account,
+  Account,
   Home,
   Logout,
   Support,
-  Tutorial */
+  Tutorial
 } from './components';
 
-// Clases
-import DebugUtil from './../classes/DebugUtil';
-import Logger from '../classes/LoggerClass';
-
-// Zustand Store
+// Store
 import useUserStore from '../stores/user.store';
 
+// Classes
+import DebugUtil from '../classes/utils/DebugUtil';
+import Logger from '../classes/LoggerClass';
+
 const AppComponent: React.FC = () => {
-  
-  // Configura el modo de depuración
-  let debug = DebugUtil.setDebug(false);
+
+  const debug = DebugUtil.setDebug(false);
   
   const { darkMode } = useUserStore();
+  const [ theme, setTheme ] = useState<string>('dark-mode');
 
-  // Inicializa configuraciones y datos
   useEffect(() => {
     if (debug) Logger.log(' • Loading App!');
+    setTheme(darkMode ? 'dark-theme' : '')
   }, [darkMode]);
 
   return (
-    <IonApp className={darkMode ? 'dark-theme' : ''}>
+    <IonApp className={theme}>
       <IonReactRouter>
         <IonSplitPane contentId="main">
           <Menu />
           <IonRouterOutlet id="main">
-            {/*
             <Route path="/tabs" render={() => <MainTabs />} />
             <Route path="/:slug" component={Page} />
             <Route path="/tabs/home/:id" render={() => <MainTabs />} />
@@ -60,13 +59,12 @@ const AppComponent: React.FC = () => {
             <Route path="/account" component={Account} />
             <Route path="/support" component={Support} />
             <Route path="/logout" render={() => <Logout />} />
-            <Route path="/" component={Home} exact />
-            */}
             <Route path="/login" component={Login} />
             <Route path="/sign-up" component={Signup} />
             <Route path="/reset" component={ResetPassword} />
             <Route path="/recover" component={Recover} />
             <Route path="/change-password" component={ChangePassword} />
+            <Route path="/" component={Home} exact />
             <Route path="/not-found" component={NotFound} />
             <Route component={NotFound} />
           </IonRouterOutlet>

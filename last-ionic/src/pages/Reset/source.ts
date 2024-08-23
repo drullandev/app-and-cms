@@ -8,8 +8,8 @@ import * as yup from 'yup';
 import * as icon from 'ionicons/icons';
 
 // Used classes
-import DebugUtil from '../../classes/DebugUtil';
-import RestAPI from '../../classes/Rest';
+import DebugUtil from '../../classes/utils/DebugUtil';
+import RestAPI from '../../classes/RestCall';
 
 // Local dependencies
 import { FormDataProps } from '../../components/Form/types';

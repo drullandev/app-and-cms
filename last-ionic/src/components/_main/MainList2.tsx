@@ -1,5 +1,5 @@
 import * as AppConst from '../../config/env';
-import { GraphQLFilter } from '../../classes/data/GraphQLFilter';
+import { GraphQLFilter } from '../../classes/assets/GraphQLFilter';
 import { IonList, IonInfiniteScroll, IonInfiniteScrollContent, IonItem, IonLabel, IonRefresher, IonRefresherContent, useIonToast } from '@ionic/react';
 import React, { useState, useEffect, useRef } from 'react';
 import Spinner from './Spinner';

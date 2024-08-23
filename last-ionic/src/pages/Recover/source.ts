@@ -5,8 +5,8 @@ import { useIonToast } from '@ionic/react'
 import * as icon from 'ionicons/icons';
 
 import { HOME_PATH, apiUrl } from '../../config/env';
-import DebugUtil from '../../classes/DebugUtil';
-import RestAPI from '../../classes/Rest';
+import DebugUtil from '../../classes/utils/DebugUtil';
+import RestAPI from '../../classes/RestCall';
 import RestOutput from '../../classes/RestOutput';
 
 import { FormDataProps } from '../../components/Form/types';

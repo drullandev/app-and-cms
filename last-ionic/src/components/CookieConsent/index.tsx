@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next'; // Importing translation hook fo
 import { IonButton, IonContent, IonModal } from '@ionic/react'; // Importing Ionic components for UI
 
 import Storage from '../../classes/Storage'; // Importing a custom storage class for handling consent storage
-import CookieManager from '../../classes/CookieManager';
+import CookieManager from '../../classes/managers/CookieManager';
 
 import './style.css'; // Importing styles for the component
 import CookieConsentSource from './source'; // Importing the component source

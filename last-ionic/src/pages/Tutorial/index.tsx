@@ -10,7 +10,7 @@ import '@ionic/react/css/ionic-swiper.css'
 // Component Reducer
 import '../../styles/index.scss'
 
-import DebugUtil from '../../classes/DebugUtil'
+import DebugUtil from '../../classes/utils/DebugUtil'
 
 const Tutorial: React.FC<any> = ({ history, setData, setHasSeenTutorial, setMenuEnabled }) => {
   
