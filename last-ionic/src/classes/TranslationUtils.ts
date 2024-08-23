@@ -6,7 +6,7 @@ export interface KeyTranslations {
   [key: string]: string;
 }
 
-class i18nextClass {
+class TranslationUtils {
 
   private myTranslations: KeyTranslations | null = null;
   private debug = DebugUtil.setDebug(true);
@@ -29,6 +29,6 @@ class i18nextClass {
   }
 }
 
-const i18next = new i18nextClass();
+const i18next = new TranslationUtils();
 
 export const keyTrans = i18next.getInstance();

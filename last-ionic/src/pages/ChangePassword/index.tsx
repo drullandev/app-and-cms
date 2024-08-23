@@ -8,7 +8,7 @@ import {
   useIonToast,
 } from '@ionic/react';
 import { RouteComponentProps } from 'react-router';
-import RestAPI from '../../classes/RestCall';
+import RestAPI from '../../classes/utils/RestUtils';
 import StringUtil from '../../classes/StringUtil';
 import { useTranslation } from 'react-i18next';
 import PagePropsData from '../../components/Page/types';

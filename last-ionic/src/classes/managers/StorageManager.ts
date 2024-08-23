@@ -1,16 +1,16 @@
 import { Preferences } from '@capacitor/preferences';
 
-class Storage {
+class StorageManager {
 
   public static instance: Storage;
 
   public constructor() {}
 
   public static getInstance(): Storage {
-    if (!Storage.instance) {
-      Storage.instance = new Storage();
+    if (!this.instance) {
+      this.instance = new Storage();
     }
-    return Storage.instance;
+    return this.instance;
   }
 
   // Function to set a value in storage
@@ -53,5 +53,6 @@ class Storage {
   }
 
 }
+const StorageInstance = StorageManager.getInstance();
 
-export default Storage.getInstance();
+export default StorageInstance;

@@ -1,4 +1,4 @@
-import Rest, { CallProps } from './RestCall'
+import Rest, { CallProps } from './utils/RestUtils'
 
 /**
  * FOS TRAPI PURPOSES, PRIMARY

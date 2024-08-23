@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'; // Importing React and hooks
 import { useTranslation } from 'react-i18next'; // Importing translation hook for internationalization
 import { IonButton, IonContent, IonModal } from '@ionic/react'; // Importing Ionic components for UI
 
-import Storage from '../../classes/Storage'; // Importing a custom storage class for handling consent storage
+import Storage from '../../classes/managers/StorageManager'; // Importing a custom storage class for handling consent storage
 import CookieManager from '../../classes/managers/CookieManager';
 
 import './style.css'; // Importing styles for the component
@@ -39,13 +39,13 @@ const CookieConsent: React.FC = () => {
 	*/
 	const load = () => {
 		Storage.get(COOKIE_CONSENT_KEY)
-		.then((selected) => {
+		.then((selected:boolean) => {
 			// If no consent has been recorded, display the consent modal
 			if (selected === null) {
 				setShowModal(true);
 			} else {
 				Storage.get(COOKIE_CONSENT_KEY_EXPIRE)
-					.then((expiration) => {
+					.then((expiration: number) => {
 						if (TimeUtils.hasElapsed(expiration)) {
 							reset()
 						}

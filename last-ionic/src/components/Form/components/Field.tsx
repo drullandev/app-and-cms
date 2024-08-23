@@ -14,7 +14,7 @@ import Skeleton from './Skeleton';
 import Error from './Error';
 import Button from './Button';
 import ReCAPTCHA from 'react-google-recaptcha';
-import Security from '../../../classes/Security';
+import Security from '../../../classes/utils/SecurityUtils';
 import Icon from '../../_Ionic/v8/Icon';
 
 /**

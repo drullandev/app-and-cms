@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useQuery, UseQueryOptions } from '@tanstack/react-query';
-import RestCall, { CallProps } from '../../classes/RestCall'; // Importa la clase RestCall
+import RestCall, { CallProps } from '../../classes/utils/RestUtils'; // Importa la clase RestCall
 
 interface FetchDataWrapperProps<T> {
   url: string;

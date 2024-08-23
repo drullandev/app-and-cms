@@ -14,7 +14,7 @@ import Accordion from '../Accordion';
 
 // Importing utilities and helper functions
 import Logger from '../../classes/utils/LoggerUtils';
-import Security from '../../classes/Security';
+import Security from '../../classes/utils/SecurityUtils';
 import DebugUtil from '../../classes/utils/DebugUtils';
 import { buildValidationSchema, buildInitialValues } from '../../classes/utils/ValidationUtil';
 import CaptchaManager from '../../classes/managers/CaptchaManager'; // Importar CaptchaManager

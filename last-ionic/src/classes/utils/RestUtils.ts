@@ -28,10 +28,10 @@ import axios, { AxiosRequestConfig } from 'axios';
  * };
  *
  * // Perform a synchronous call
- * Rest.RestUtils(callProps);
+ * Rest.restCall(callProps);
  *
  * // Perform an asynchronous call
- * Rest.RestUtilsAsync(callProps);
+ * Rest.restCallAsync(callProps);
  *
  * This code is designed to be reusable and maintainable, ensuring default values are set and errors are properly handled.
  */
@@ -57,7 +57,7 @@ class RestUtils {
    * @param call - The properties of the API call.
    * @returns A promise with the result of the call.
    */
-  static async RestUtilsAsync(call: CallProps) {
+  static async restCallAsync(call: CallProps) {
     return this.setCall(this.commonCall(call));
   }
 
@@ -66,7 +66,7 @@ class RestUtils {
    * @param call - The properties of the API call.
    * @returns A promise with the result of the call.
    */
-  static RestUtils(call: CallProps) {
+  static restCall(call: CallProps) {
     return this.setCall(this.commonCall(call));
   }
 

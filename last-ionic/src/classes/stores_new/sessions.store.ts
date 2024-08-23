@@ -1,8 +1,7 @@
 import create from 'zustand';
 
 import Logger from '../utils/LoggerUtils';
-import useUserStore from './user.store';
-import AppState from './sessions.store';
+// EXTRAS
 import { Schedule, Session } from '../../interfaces/models/Schedule';
 import { Speaker } from '../../interfaces/models/Speaker';
 import { Location } from '../../interfaces/models/Location';
@@ -25,7 +24,6 @@ export interface AppState {
   allTracks: string[];
   menuEnabled: boolean;
 }
-
 
 // Extensión de AppState para incluir el estado de la conferencia
 interface ConfStore extends AppState {
@@ -120,6 +118,7 @@ const useConfStore = create<ConfStore>((set) => ({
       set({ loading: false });
     }
   },
+  
 }));
 
 export default useConfStore;

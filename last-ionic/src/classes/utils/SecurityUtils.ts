@@ -1,7 +1,7 @@
-import Logger from "./utils/LoggerUtils";
+import Logger from "./LoggerUtils";
 import DOMPurify from "dompurify";
 
-class Security {
+class SecurityUtils {
 
   private csrfTokens: Map<string, string> = new Map();
 
@@ -74,4 +74,4 @@ class Security {
   }
 }
 
-export default new Security();
+export default new SecurityUtils();

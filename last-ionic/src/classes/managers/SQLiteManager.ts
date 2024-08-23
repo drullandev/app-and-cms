@@ -4,18 +4,16 @@ import { open, Database } from 'sqlite';
 /* 
 // Example usage:
 (async () => {
-    const dbManager = new DatabaseManager('./my-database.db');
+    const dbManager = new SQLiteManager('./my-database.db');
     await dbManager.connect();
     await dbManager.createTable('users', 'id INTEGER PRIMARY KEY, name TEXT, email TEXT');
     await dbManager.insert('users', { name: 'John Doe', email: 'john@example.com' });
     const users = await dbManager.query('users');
-    console.log(users);
-    
     await dbManager.close();
 })();
  */
 
-class DatabaseManager {
+class SQLiteManager {
 
     // The SQLite database instance
     private db: Database | null = null;
@@ -93,4 +91,4 @@ class DatabaseManager {
     }
 }
 
-export default DatabaseManager;
+export default SQLiteManager;
