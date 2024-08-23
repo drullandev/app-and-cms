@@ -2,7 +2,7 @@ import Rest from './RestCall'
 import { AxiosRequestConfig } from 'axios'
 import StringUtil from './StringUtil'
 import { useTranslation } from 'react-i18next'
-import DebugUtil from './utils/DebugUtil'
+import DebugUtil from './utils/DebugUtils'
 
 const debug = DebugUtil.setDebug(false);
 

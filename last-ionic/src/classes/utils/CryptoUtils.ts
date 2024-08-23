@@ -1,4 +1,4 @@
-import DebugUtil from "./DebugUtil";
+import DebugUtil from "./DebugUtils";
 
 /**
  * Utility class for cryptographic operations such as encryption and decryption.

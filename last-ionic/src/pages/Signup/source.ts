@@ -5,12 +5,12 @@ import { useIonToast } from '@ionic/react'
 import * as icon from 'ionicons/icons';
 
 import { LOGIN_PATH, SIGNUP_PATH, apiUrl } from '../../config/env';
-import DebugUtil from '../../classes/utils/DebugUtil';
+import DebugUtil from '../../classes/utils/DebugUtils';
 import RestAPI from '../../classes/RestCall';
 import RestOutput from '../../classes/RestOutput';
 
 import useUserStore from '../../stores/user.store';
-import Logger from '../../classes/LoggerClass';
+import Logger from '../../classes/utils/LoggerUtils';
 import { FormDataProps } from '../../components/Form/types';
 
 export const signupForm = ({

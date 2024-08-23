@@ -1,7 +1,4 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.MainMenu = void 0;
-exports.MainMenu = [
+export const MainMenu = [
     {
         name: 'schedule',
         href: '/tabs/schedule',

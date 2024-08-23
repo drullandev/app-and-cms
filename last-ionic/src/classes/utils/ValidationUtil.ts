@@ -8,9 +8,9 @@ import { FieldProps } from '../../components/Form/types';
  * for each field that has a specified validation schema. The schema is returned as a Yup object schema.
  *
  * @param {FieldProps[]} fields - An array of field properties containing validation schema information.
- * @returns {yup.ObjectSchema} A Yup validation schema object.
+ * @returns {yup.ObjectSchema<Record<string, any>>} A Yup validation schema object.
  */
-export const buildValidationSchema = (fields: FieldProps[]): yup.Schema => {
+export const buildValidationSchema = (fields: FieldProps[]): yup.ObjectSchema<Record<string, any>> => {
   // Construct the shape of the schema by mapping field properties to Yup schemas
   const shape = fields.reduce<Record<string, yup.AnySchema>>((acc, field) => {
     if (field.validationSchema) {

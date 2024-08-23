@@ -8,14 +8,14 @@ import * as yup from 'yup';
 // Importing components
 import Overlay from './components/Overlay';
 import Field from './components/Field';
-import GA4Tracker from '../../classes/GA4';
+import GA4Tracker from '../../classes/integrations/GA4Integration';
 import DebugBox from '../DebugBox';
 import Accordion from '../Accordion';
 
 // Importing utilities and helper functions
-import Logger from '../../classes/LoggerClass';
+import Logger from '../../classes/utils/LoggerUtils';
 import Security from '../../classes/Security';
-import DebugUtil from '../../classes/utils/DebugUtil';
+import DebugUtil from '../../classes/utils/DebugUtils';
 import { buildValidationSchema, buildInitialValues } from '../../classes/utils/ValidationUtil';
 import CaptchaManager from '../../classes/managers/CaptchaManager'; // Importar CaptchaManager
 

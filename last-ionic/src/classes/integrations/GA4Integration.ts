@@ -1,7 +1,23 @@
-import { GA4Event } from '../interfaces/GA4';
-import Logger from './LoggerClass';
+//import { GA4Event } from '../interfaces/GA4';
+import Logger from '../utils/LoggerUtils';
 
-class GA4Tracker {
+export interface GA4Event {
+  category: string, // Categoría del evento (puede ser cualquier nombre relevante)
+  action: string, // Acción realizada (por ejemplo, 'Clic en botón')
+  label?: string, // Etiqueta opcional para detalles adicionales
+}
+
+export interface GA4Options {
+  load?: GA4Event;
+  submit?: FormEventsProps
+}
+
+export interface FormEventsProps {
+  succcess: GA4Event;
+  error: GA4Event;
+}
+
+class GA4Integration {
   
   private trackingId: string;
 
@@ -37,4 +53,6 @@ class GA4Tracker {
   }
 }
 
-export default new GA4Tracker('YOUR_GA4_TRACKING_ID');
+const GA4Tracker = new GA4Integration('YOUR_GA4_TRACKING_ID');
+
+export default GA4Tracker;

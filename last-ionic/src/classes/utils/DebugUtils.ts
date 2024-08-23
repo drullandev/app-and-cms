@@ -1,4 +1,4 @@
-import { debug } from '../../config/env';
+import { debug } from '../../app/config/env';
 
 type Timer = ReturnType<typeof setTimeout>;
 

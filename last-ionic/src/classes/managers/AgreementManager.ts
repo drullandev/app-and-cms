@@ -1,5 +1,5 @@
 import axios from "axios";
-import Logger from "../LoggerClass";
+import Logger from "../utils/LoggerUtils";
 import DOMPurify from "dompurify";
 
 class Agreement {

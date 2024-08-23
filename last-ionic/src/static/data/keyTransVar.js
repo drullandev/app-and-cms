@@ -1,9 +1,6 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.keyTransVar = void 0;
 // App text to translate for the app!!!
 // Dont change the keywords, this translations are keywords and then them come back from translations
-exports.keyTransVar = {
+export const keyTransVar = {
     invalidCredentials: 'Invalid credentials',
     fillForm: 'You must to fill the access form',
     userEmail: 'User Email',

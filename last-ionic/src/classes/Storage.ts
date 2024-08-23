@@ -29,11 +29,6 @@ class Storage {
     await Preferences.remove({ key: key });
   }
 
-  // Function to switch storage value (set or remove)
-  public async switch(key: string, value: any): Promise<void> {
-    return value ? await this.set(key, value) : await this.remove(key);
-  }
-
   // Function to parse a value
   private parse(value: any): any {
     try {
@@ -44,6 +39,7 @@ class Storage {
   }
 
   // Function to stringify a value
+  // TODO: Move to strings utils
   private stringify(value: any): string {
     return this.getType(value) === 'string' ? value : JSON.stringify(value);
   }
@@ -55,6 +51,7 @@ class Storage {
     else if (p != null && typeof p == 'object') return 'object';
     else return 'other';
   }
+
 }
 
 export default Storage.getInstance();

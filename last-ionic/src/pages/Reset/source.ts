@@ -8,7 +8,7 @@ import * as yup from 'yup';
 import * as icon from 'ionicons/icons';
 
 // Used classes
-import DebugUtil from '../../classes/utils/DebugUtil';
+import DebugUtil from '../../classes/utils/DebugUtils';
 import RestAPI from '../../classes/RestCall';
 
 // Local dependencies

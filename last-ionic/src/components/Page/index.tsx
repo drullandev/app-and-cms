@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react'
 import { IonPage, IonContent } from '@ionic/react'
 
-import Logger from '../../classes/LoggerClass'
-import GA4Tracker  from '../../classes/GA4'
+import Logger from '../../classes/utils/LoggerUtils'
+import GA4Tracker  from '../../classes/integrations/GA4Integration'
 
 import CookieConsent from '../CookieConsent'
 

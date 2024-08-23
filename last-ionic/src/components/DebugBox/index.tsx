@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 
-import { default as LoggerClass } from '../../classes/LoggerClass';
+import { default as LoggerClass } from '../../classes/utils/LoggerUtils';
 import { IonButton, IonIcon, IonAccordionGroup, IonItem } from '@ionic/react';
 import * as icon from 'ionicons/icons';
 import Accordion from '../../components/Accordion';

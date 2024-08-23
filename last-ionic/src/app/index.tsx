@@ -30,8 +30,8 @@ import {
 import useUserStore from '../stores/user.store';
 
 // Classes
-import DebugUtil from '../classes/utils/DebugUtil';
-import Logger from '../classes/LoggerClass';
+import DebugUtil from '../classes/utils/DebugUtils';
+import Logger from '../classes/utils/LoggerUtils';
 
 const AppComponent: React.FC = () => {
 

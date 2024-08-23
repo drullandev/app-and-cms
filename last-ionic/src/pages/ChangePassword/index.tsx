@@ -16,7 +16,7 @@ import Page from '../../components/Page';
 import * as yup from 'yup';
 import * as icon from 'ionicons/icons';
 import useUserStore from '../../stores/user.store';
-import DebugUtil from '../../classes/utils/DebugUtil';
+import DebugUtil from '../../classes/utils/DebugUtils';
 
 const ChangePassword: React.FC = () => {
   

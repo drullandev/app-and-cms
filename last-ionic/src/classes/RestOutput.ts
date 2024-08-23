@@ -1,9 +1,9 @@
 import { checkboxOutline, warningOutline, skullOutline, closeCircle } from 'ionicons/icons';
 import i18n from 'i18next';
 import { MyExtraOutputOptions } from '../interfaces/ModalToastProps';
-import Logger from './LoggerClass';
+import Logger from './utils/LoggerUtils';
 import { AxiosError, AxiosResponse } from 'axios';
-import DebugUtil from './utils/DebugUtil';
+import DebugUtil from './utils/DebugUtils';
 
 class RestOutput {
 

@@ -1,5 +1,5 @@
-import { keyTransVar } from '../../static/data/keyTransVar';
-import DebugUtil from './utils/DebugUtil';
+import { keyTransVar } from '../static/data/keyTransVar';
+import DebugUtil from './utils/DebugUtils';
 import i18n from 'i18next';
 
 export interface KeyTranslations {
@@ -7,6 +7,7 @@ export interface KeyTranslations {
 }
 
 class i18nextClass {
+
   private myTranslations: KeyTranslations | null = null;
   private debug = DebugUtil.setDebug(true);
 
@@ -29,4 +30,5 @@ class i18nextClass {
 }
 
 const i18next = new i18nextClass();
+
 export const keyTrans = i18next.getInstance();

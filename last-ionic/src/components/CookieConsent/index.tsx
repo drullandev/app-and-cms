@@ -8,7 +8,7 @@ import CookieManager from '../../classes/managers/CookieManager';
 import './style.css'; // Importing styles for the component
 import CookieConsentSource from './source'; // Importing the component source
 import { COOKIE_CONSENT_KEY, COOKIE_EXPIRATION_TIME, COOKIE_CONSENT_KEY_EXPIRE } from './env';
-import TimeClass from '../../classes/TimeClass';
+import TimeUtils from '../../classes/utils/TimeUtils';
 
 /**
  * CookieConsent Component
@@ -46,7 +46,7 @@ const CookieConsent: React.FC = () => {
 			} else {
 				Storage.get(COOKIE_CONSENT_KEY_EXPIRE)
 					.then((expiration) => {
-						if (TimeClass.hasElapsed(expiration)) {
+						if (TimeUtils.hasElapsed(expiration)) {
 							reset()
 						}
 					});
@@ -62,7 +62,7 @@ const CookieConsent: React.FC = () => {
 		// Evaluate by cookie consent selection made before during 12 months...
 		Storage.set(COOKIE_CONSENT_KEY, consent)
 			.then(() => {
-				Storage.set(COOKIE_CONSENT_KEY_EXPIRE, TimeClass.parseFutureTimeString(COOKIE_EXPIRATION_TIME))
+				Storage.set(COOKIE_CONSENT_KEY_EXPIRE, TimeUtils.parseFutureTimeString(COOKIE_EXPIRATION_TIME))
 					.then(() => {
 						setShowModal(false); // Close the modal after saving the user's choice
 					})

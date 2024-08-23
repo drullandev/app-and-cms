@@ -1,6 +1,6 @@
-import DebugUtil from '../utils/DebugUtil';
-import Logger from '../LoggerClass';
-import TimeClass from '../TimeClass';
+import DebugUtil from '../utils/DebugUtils';
+import Logger from '../utils/LoggerUtils';
+import TimeUtils from '../utils/TimeUtils';
 
 class CookieManager {
 
@@ -30,7 +30,7 @@ class CookieManager {
     let expires = '';
     if (timeString) {
       const date = new Date();
-      date.setTime(TimeClass.parseTime(timeString ?? this.defaultTimeString));
+      date.setTime(TimeUtils.parseTime(timeString ?? this.defaultTimeString));
       expires = '; expires=' + date.toUTCString();
     }
     const cookie = name + '=' + value + expires + '; path=/';

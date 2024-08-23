@@ -1,8 +1,8 @@
 /**
- * TimeClass provides methods to convert various time units 
+ * TimeUtils provides methods to convert various time units 
  * (days, weeks, months, years, centuries, hours, and minutes) to milliseconds.
  */
- class TimeClass {
+ class TimeUtils {
 
     private millisecondsInSecond = 1000;
     private secondsInMinute = 60;
@@ -225,4 +225,4 @@
     }
 }
 
-export default new TimeClass(); // Export the class instance directly
+export default new TimeUtils(); // Export the class instance directly

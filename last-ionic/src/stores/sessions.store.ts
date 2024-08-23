@@ -1,6 +1,6 @@
 import create from 'zustand';
 
-import Logger from '../classes/LoggerClass';
+import Logger from '../classes/utils/LoggerUtils';
 import useUserStore from '../stores/user.store';
 import ConfState from '../stores/sessions.store';
 import { Schedule, Session } from '../models/Schedule';

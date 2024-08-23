@@ -23,8 +23,8 @@ import {
   UPDATED_AT,
   USERNAME
 } from './constants';
-import Logger from '../classes/LoggerClass';
-import DebugUtil from '../classes/utils/DebugUtil';
+import Logger from '../classes/utils/LoggerUtils';
+import DebugUtil from '../classes/utils/DebugUtils';
 
 const debug = DebugUtil.setDebug(false);
 
