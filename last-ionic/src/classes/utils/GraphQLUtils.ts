@@ -1,6 +1,6 @@
-import RestUtils from '../utils/RestUtils';
+import RestUtils from '../managers/RestManager';
 import { AxiosRequestConfig } from 'axios';
-import StringUtil from '../StringUtil';
+import StringUtil from './StringUtil';
 import { useTranslation } from 'react-i18next';
 import DebugUtil from './DebugUtils';
 

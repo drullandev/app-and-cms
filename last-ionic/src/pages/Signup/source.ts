@@ -6,8 +6,8 @@ import * as icon from 'ionicons/icons';
 
 import { LOGIN_PATH, SIGNUP_PATH, apiUrl } from '../../config/env';
 import DebugUtil from '../../classes/utils/DebugUtils';
-import RestAPI from '../../classes/utils/RestUtils';
-import RestOutput from '../../classes/RestOutput';
+import RestAPI from '../../classes/managers/RestManager';
+import RestOutput from '../../classes/utils/RestOutput';
 
 import useUserStore from '../../stores/user.store';
 import Logger from '../../classes/utils/LoggerUtils';

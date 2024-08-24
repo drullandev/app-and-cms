@@ -6,8 +6,8 @@ import * as icon from 'ionicons/icons';
 
 import { HOME_PATH, apiUrl } from '../../config/env';
 import DebugUtil from '../../classes/utils/DebugUtils';
-import RestAPI from '../../classes/utils/RestUtils';
-import RestOutput from '../../classes/RestOutput';
+import RestAPI from '../../classes/managers/RestManager';
+import RestOutput from '../../classes/utils/RestOutput';
 
 import { FormDataProps } from '../../components/Form/types';
 import useUserStore from '../../stores/user.store';  // Importa el store

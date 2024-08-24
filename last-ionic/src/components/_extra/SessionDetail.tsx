@@ -3,7 +3,7 @@ import { IonHeader, IonToolbar, IonContent, IonPage, IonButtons, IonBackButton, 
 import { withRouter, RouteComponentProps } from 'react-router';
 import { starOutline, star, share, cloudDownload } from 'ionicons/icons';
 import '../../styles/SessionDetail.scss';
-import useConfStore from '../../stores/sessions.store';
+import useAppStore from '../../stores/sessions.store';
 import { Session } from '../../models/Schedule';
 
 interface OwnProps extends RouteComponentProps {}
@@ -14,10 +14,10 @@ const SessionDetail: React.FC<SessionDetailProps> = ({ match }) => {
   const sessionId = parseInt((match.params as any).id, 10);
 
   // Acceso al estado usando el hook de Zustand
-  const session = useConfStore(state => state.sessions.find(session => session.id === sessionId));
-  const favoriteSessions = useConfStore(state => state.favorites);
-  const addFavorite = useConfStore(state => state.addFavorite);
-  const removeFavorite = useConfStore(state => state.removeFavorite);
+  const session = useAppStore(state => state.sessions.find(session => session.id === sessionId));
+  const favoriteSessions = useAppStore(state => state.favorites);
+  const addFavorite = useAppStore(state => state.addFavorite);
+  const removeFavorite = useAppStore(state => state.removeFavorite);
 
   if (!session) {
     return <div>Session not found</div>;

@@ -1,5 +1,5 @@
-import { keyTransVar } from '../static/data/keyTransVar';
-import DebugUtil from './utils/DebugUtils';
+import { keyTransVar } from '../../static/data/keyTransVar';
+import DebugUtil from './DebugUtils';
 import i18n from 'i18next';
 
 export interface KeyTranslations {

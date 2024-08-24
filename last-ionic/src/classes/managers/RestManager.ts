@@ -50,7 +50,7 @@ export interface CallProps {
 /**
  * Class encapsulating operations for making REST calls.
  */
-class RestUtils {
+class RestManager {
 
   /**
    * Performs an asynchronous REST call.
@@ -115,4 +115,4 @@ class RestUtils {
 
 }
 
-export default RestUtils;
+export default RestManager;

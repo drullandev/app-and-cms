@@ -1,6 +1,6 @@
 // This way was an awsome one!
 import i18n from 'i18next'
-import { keyTrans } from '../../classes/TranslationUtils'
+import { keyTrans } from '../../classes/utils/TranslationUtils'
 import * as icon from 'ionicons/icons'
 
 export const all = import.meta.env

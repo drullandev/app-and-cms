@@ -28,7 +28,7 @@ export interface AppState {
 
 
 // Extensión de AppState para incluir el estado de la conferencia
-interface ConfStore extends AppState {
+interface AppStore extends AppState {
   [x: string]: any;
   loading: boolean;
   favorites: number[];
@@ -66,11 +66,11 @@ interface ConfStore extends AppState {
   setLocations: (locations: Location[]) => void;
   setMapCenterId: (mapCenterId?: number) => void;
   setSpeakerSessions: (speakerSessions: SpeakerSessions) => void;
-  loadConfData: () => Promise<void>;
+  loadAppData: () => Promise<void>;
 }
 
 // Crear el store usando Zustand
-const useConfStore = create<ConfStore>((set) => ({
+const useAppStore = create<AppStore>((set) => ({
   loading: false,
   favorites: [],
   filteredTracks: [],
@@ -107,9 +107,9 @@ const useConfStore = create<ConfStore>((set) => ({
   setMapCenterId: (mapCenterId) => set({ mapCenterId }),
   setSpeakerSessions: (speakerSessions) => set({ speakerSessions }),
   // Función para cargar datos
-  loadConfData: async () => {
-    const { getConfData } = useConfStore();
-    Logger.log(' • loadConfData');
+  loadAppData: async () => {
+    const { getConfData } = useAppStore();
+    Logger.log(' • loadAppData');
     set({ loading: true });
     try {
       const data = getConfData();
@@ -122,4 +122,4 @@ const useConfStore = create<ConfStore>((set) => ({
   },
 }));
 
-export default useConfStore;
+export default useAppStore;

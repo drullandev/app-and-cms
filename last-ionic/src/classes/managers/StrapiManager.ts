@@ -1,4 +1,4 @@
-import Rest, { CallProps } from './utils/RestUtils'
+import Rest, { CallProps } from './RestManager'
 
 /**
  * FOS TRAPI PURPOSES, PRIMARY
@@ -20,11 +20,9 @@ export const StrapiCrud = ( operation: string, model: string, data?: any, onSucc
   if (method === 'GET') {// || method === 'POST'
     let queryStr = '/'
     Object.entries(data).forEach(([key, value]) => {
-      if (key === 'id') {
-        queryStr = queryStr + `${value}`
-      } else {
-        queryStr = queryStr + `${key}=${value}&`
-      }      
+      queryStr = (key === 'id') 
+        ? queryStr + `${value}`
+        : queryStr + `${key}=${value}&`;
     })
     queryStr.replace(/&+$/, '')
     uri = uri + queryStr
@@ -36,10 +34,11 @@ export const StrapiCrud = ( operation: string, model: string, data?: any, onSucc
       url: 'api/'+uri,
       data: data,
       method: 
-        ( operation === 'insert') ? 'PUT'     :
-        ( operation === 'update') ? 'POST'    :
-        ( operation === 'delete') ? 'DELETE'  :
-        ( operation === 'get'   ) ? 'GET'     : 'OPTIONS'
+        ( operation === 'insert')  ? 'PUT'     :
+        ( operation === 'update')  ? 'POST'    :
+        ( operation === 'delete')  ? 'DELETE'  :
+        ( operation === 'get'   )  ? 'GET'     : 
+        ( operation === 'options') ? 'OPTIONS' : 'GET'
     },
 
     onSuccess: { 

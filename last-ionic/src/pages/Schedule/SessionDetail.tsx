@@ -4,13 +4,13 @@ import { IonHeader, IonToolbar, IonContent, IonPage, IonButtons, IonBackButton, 
 import { withRouter, RouteComponentProps } from 'react-router'
 import { starOutline, star, share, cloudDownload } from 'ionicons/icons'
 import '../../styles/index.scss'
-import useConfStore from '../../stores/sessions.store'
+import useAppStore from '../../stores/sessions.store'
 import useUserStore from '../../stores/user.store'
 
 const SessionDetail: React.FC = () => {
 
   const { session, favoriteSessions } = useUserStore()
-  const { addFavorite, removeFavorite } = useConfStore()
+  const { addFavorite, removeFavorite } = useAppStore()
   
   if (!session) {
     return <div>Session not found</div>

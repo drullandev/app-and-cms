@@ -9,7 +9,7 @@ import * as icon from 'ionicons/icons';
 
 // Used classes
 import DebugUtil from '../../classes/utils/DebugUtils';
-import RestAPI from '../../classes/utils/RestUtils';
+import RestAPI from '../../classes/managers/RestManager';
 
 // Local dependencies
 import { FormDataProps } from '../../components/Form/types';

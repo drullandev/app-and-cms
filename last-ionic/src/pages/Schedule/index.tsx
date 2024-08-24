@@ -26,7 +26,7 @@ import '../../styles/index.scss';
 
 import ShareSocialFab from '../../components/ShareSocialFab';
 
-import useConfStore from '../../stores/sessions.store';
+import useAppStore from '../../stores/sessions.store';
 import { Schedule } from '../../models/Schedule';
 
 const SchedulePage: React.FC = () => {
@@ -39,9 +39,9 @@ const SchedulePage: React.FC = () => {
   const pageRef = useRef<HTMLElement>(null);
 
   // Obtener valores del store usando zustand
-  const schedule = useConfStore(state => state.schedule);
-  const favoritesSchedule = useConfStore(state => state.favoritesSchedule);
-  const setSearchText = useConfStore(state => state.setSearchText);
+  const schedule = useAppStore(state => state.schedule);
+  const favoritesSchedule = useAppStore(state => state.favoritesSchedule);
+  const setSearchText = useAppStore(state => state.setSearchText);
 
   const mode = getConfig()!.get('mode');
   const ios = mode === 'ios';

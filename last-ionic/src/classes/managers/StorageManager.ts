@@ -2,49 +2,78 @@ import { Preferences } from '@capacitor/preferences';
 
 class StorageManager {
 
-  public static instance: Storage;
+  // Singleton instance of StorageManager
+  private static instance: StorageManager | null = null;
 
-  public constructor() {}
+  // Private constructor to prevent direct instantiation
+  private constructor() {}
 
-  public static getInstance(): Storage {
-    if (!this.instance) {
-      this.instance = new Storage();
+  /**
+   * Retrieves the singleton instance of StorageManager.
+   * If no instance exists, it creates one.
+   * @returns The singleton instance of StorageManager.
+   */
+  public static getInstance(): StorageManager {
+    if (this.instance === null) {
+      this.instance = new StorageManager();
     }
     return this.instance;
   }
 
-  // Function to set a value in storage
+  /**
+   * Sets a value in the storage.
+   * @param key - The key to associate with the value.
+   * @param value - The value to store.
+   */
   public async set(key: string, value: any): Promise<void> {
     await Preferences.set({ key: key, value: this.stringify(value) });
   }
 
-  // Function to get a value from storage
+  /**
+   * Retrieves a value from storage by key.
+   * @param key - The key of the value to retrieve.
+   * @returns The parsed value from storage.
+   */
   public async get(key: string): Promise<any> {
     const { value } = await Preferences.get({ key: key });
     return this.parse(value);
   }
 
-  // Function to remove a value from storage
+  /**
+   * Removes a value from storage by key.
+   * @param key - The key of the value to remove.
+   */
   public async remove(key: string): Promise<void> {
     await Preferences.remove({ key: key });
   }
 
-  // Function to parse a value
+  /**
+   * Parses a value from storage, assuming it may be JSON.
+   * @param value - The value to parse.
+   * @returns The parsed object or the raw value if parsing fails.
+   */
   private parse(value: any): any {
     try {
       return JSON.parse(value);
     } catch (e) {
-      return value;
+      return value; // Return as-is if not JSON
     }
   }
 
-  // Function to stringify a value
-  // TODO: Move to strings utils
+  /**
+   * Stringifies a value for storage.
+   * @param value - The value to stringify.
+   * @returns The stringified value.
+   */
   private stringify(value: any): string {
     return this.getType(value) === 'string' ? value : JSON.stringify(value);
   }
 
-  // Function to get the type of a variable
+  /**
+   * Determines the type of a variable.
+   * @param p - The variable to check.
+   * @returns A string representing the type of the variable.
+   */
   private getType(p: any): string {
     if (Array.isArray(p)) return 'array';
     else if (typeof p == 'string') return 'string';
@@ -53,6 +82,8 @@ class StorageManager {
   }
 
 }
+
+// Export the singleton instance of StorageManager
 const StorageInstance = StorageManager.getInstance();
 
 export default StorageInstance;

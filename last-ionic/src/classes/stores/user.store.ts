@@ -78,7 +78,7 @@ export interface AppState {
 interface StoreState extends UserState, AppState {
   setUserState: (user: Partial<UserState>) => void;
   setConfState: (conf: Partial<AppState>) => void;
-  loadConfData: () => Promise<void>;
+  loadAppData: () => Promise<void>;
   loadUserData: () => Promise<void>;
 
   // Setters
@@ -171,7 +171,7 @@ const useUserStore = create<StoreState>((set, get) => ({
     return data;
   },
 
-  loadConfData: async () => {
+  loadAppData: async () => {
     set({ loading: true });
     try {
       const response = await Promise.all([

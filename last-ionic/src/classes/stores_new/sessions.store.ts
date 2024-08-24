@@ -1,116 +1,51 @@
 import create from 'zustand';
-
 import Logger from '../utils/LoggerUtils';
-// EXTRAS
-import { Schedule, Session } from '../../interfaces/models/Schedule';
-import { Speaker } from '../../interfaces/models/Speaker';
-import { Location } from '../../interfaces/models/Location';
-
-// Definición del tipo para las sesiones de los oradores
-interface SpeakerSessions {
-  [key: string]: Session[]
-}
 
 export interface AppState {
-  schedule: Schedule;
-  sessions: Session[];
-  speakers: Speaker[];
-  favorites: number[];
-  locations: Location[];
-  filteredTracks: string[];
-  searchText?: string;
-  mapCenterId?: number;
   loading?: boolean;
-  allTracks: string[];
   menuEnabled: boolean;
 }
 
-// Extensión de AppState para incluir el estado de la conferencia
-interface ConfStore extends AppState {
-  [x: string]: any;
-  loading: boolean;
-  favorites: number[];
-  filteredTracks: string[];
-  searchText?: string;
-  searchString?: string;
-  menuEnabled: boolean;
-  filter: string;
-  filterDate?: string;
-  orderField: string;
-  searchOrder?: 'asc' | 'desc';
-  allTracks: string[];
-  schedule: Schedule;
-  sessions: Session[];
-  speakers: Speaker[];
-  locations: Location[];
-  mapCenterId?: number;
-  speakerSessions: SpeakerSessions;
-  setLoading: (isLoading: boolean) => void;
+/**
+ * APP STATES
+ * - Use to come from the users, but also the schedule or feed
+ */
+interface AppStore extends AppState {
   setData: (data: Partial<AppState>) => void;
-  addFavorite: (sessionId: number) => void;
-  removeFavorite: (sessionId: number) => void;
-  updateFilteredTracks: (filteredTracks: string[]) => void;
-  setSearchText: (searchText?: string) => void;
-  setSearchString: (searchString?: string) => void;
+  setLoading: (isLoading: boolean) => void;
   setMenuEnabled: (menuEnabled: boolean) => void;
-  setFilter: (filter: string) => void;
-  setFilterDate: (filterDate?: string) => void;
-  setOrderField: (orderField: string) => void;
-  setSearchOrder: (searchOrder?: 'asc' | 'desc') => void;
-  setAllTracks: (allTracks: string[]) => void;
-  setSchedule: (schedule: Schedule) => void;
-  setSessions: (sessions: Session[]) => void;
-  setSpeakers: (speakers: Speaker[]) => void;
-  setLocations: (locations: Location[]) => void;
-  setMapCenterId: (mapCenterId?: number) => void;
-  setSpeakerSessions: (speakerSessions: SpeakerSessions) => void;
-  loadConfData: () => Promise<void>;
+  getConfData: () => AppState;
+  loadAppData: () => Promise<void>;
 }
 
-// Crear el store usando Zustand
-const useConfStore = create<ConfStore>((set) => ({
+const useAppStore = create<AppStore>((set, get) => ({
+
+    // Loading level standar, not level SplashScreen jejeje...
   loading: false,
-  favorites: [],
-  filteredTracks: [],
-  searchText: undefined,
+
   menuEnabled: false,
-  filter: '',
-  filterDate: undefined,
-  orderField: '',
-  searchOrder: 'asc',
-  allTracks: [],
-  schedule: {} as Schedule,
-  sessions: [],
-  speakers: [],
-  locations: [],
-  mapCenterId: undefined,
-  speakerSessions: {}, // Inicializa speakerSessions aquí
-  setLoading: (isLoading) => set({ loading: isLoading }),
+
+  // Setter for updating multiple properties in the state
   setData: (data) => set((state) => ({ ...state, ...data })),
-  addFavorite: (sessionId) => set((state) => ({ favorites: [...state.favorites, sessionId] })),
-  removeFavorite: (sessionId) => set((state) => ({ favorites: state.favorites.filter(id => id !== sessionId) })),
-  updateFilteredTracks: (filteredTracks) => set({ filteredTracks }),
-  setSearchText: (searchText?) => set({ searchText }),
-  setSearchString: (searchString) => set({ searchString }),
+  
+  // Setter for loading state
+  setLoading: (isLoading) => set({ loading: isLoading }),
+
+  // Setter for menuEnabled state
   setMenuEnabled: (menuEnabled) => set({ menuEnabled }),
-  setFilter: (filter) => set({ filter }),
-  setFilterDate: (filterDate) => set({ filterDate }),
-  setOrderField: (orderField) => set({ orderField }),
-  setSearchOrder: (searchOrder) => set({ searchOrder }),
-  setAllTracks: (allTracks) => set({ allTracks }),
-  setSchedule: (schedule) => set({ schedule }),
-  setSessions: (sessions) => set({ sessions }),
-  setSpeakers: (speakers) => set({ speakers }),
-  setLocations: (locations) => set({ locations }),
-  setMapCenterId: (mapCenterId) => set({ mapCenterId }),
-  setSpeakerSessions: (speakerSessions) => set({ speakerSessions }),
-  // Función para cargar datos
-  loadConfData: async () => {
-    const { getConfData } = useConfStore();
-    Logger.log(' • loadConfData');
+
+  // Function to retrieve the current conference data from the state
+  getConfData: () => {
+    const { loading, menuEnabled } = get();
+    return { loading, menuEnabled };
+  },
+
+  // Function to load application data and update the state accordingly
+  loadAppData: async () => {
+    Logger.log(' • loadAppData');
     set({ loading: true });
     try {
-      const data = getConfData();
+      const data = get().getConfData();
       set({ ...data });
     } catch (error) {
       console.error('Error loading conference data:', error);
@@ -118,7 +53,7 @@ const useConfStore = create<ConfStore>((set) => ({
       set({ loading: false });
     }
   },
-  
+
 }));
 
-export default useConfStore;
+export default useAppStore;
