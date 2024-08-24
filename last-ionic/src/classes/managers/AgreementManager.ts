@@ -1,6 +1,5 @@
 import axios from "axios";
 import Logger from "../utils/LoggerUtils";
-import DOMPurify from "dompurify";
 
 export class AgreementManager {
 

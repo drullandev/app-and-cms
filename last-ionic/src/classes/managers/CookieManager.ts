@@ -7,6 +7,7 @@ class CookieManager {
   private defaultTimeString = '12months';
   private maxAge = '99999999';
   private debug = DebugUtil.setDebug(false);
+  
   private static instance: CookieManager;
   
   // Private constructor to prevent instantiation

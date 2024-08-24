@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useQuery, UseQueryOptions } from '@tanstack/react-query';
-import RestCall, { CallProps } from '../../classes/utils/RestUtils'; // Importa la clase RestCall
+import RestCall, { CallProps } from '../../classes/managers/RestManager'; // Importa la clase RestCall
 
 interface FetchDataWrapperProps<T> {
   url: string;
@@ -10,10 +10,7 @@ interface FetchDataWrapperProps<T> {
   queryOptions?: UseQueryOptions<T, unknown, T, [string, Record<string, any>]>;
   onSuccessCallback?: (data: T) => void;
   ZustandStore: any;
-  ZustandActions: {
-    setData: (data: T) => void;
-    setLoading: (isLoading: boolean) => void;
-  };
+  ZustandActions: any;
   LoadingComponent?: React.ReactNode;  // Componente para mostrar mientras se carga
   ErrorComponent?: React.ReactNode;    // Componente para mostrar en caso de error
   children: React.ReactNode;
@@ -72,12 +69,11 @@ const FetchDataWrapper: React.FC<FetchDataWrapperProps<any>> = ({
   // Cuando los datos están disponibles, actualiza el store de Zustand
   useEffect(() => {
     if (data) {
-      setData(data);
       if (onSuccessCallback) {
         onSuccessCallback(data);
       }
     }
-  }, [data, setData, onSuccessCallback]);
+  }, [data, onSuccessCallback]);
 
   // Maneja los estados de carga y error
   if (isLoading) return <>{LoadingComponent}</>;
