@@ -1,7 +1,7 @@
 import React from 'react'
 import Map from '../../components/Map'
 import { IonHeader, IonToolbar, IonButtons, IonMenuButton, IonTitle, IonContent, IonPage } from '@ionic/react'
-import { Location } from '../../models/Location'
+import { Location } from '../../interfaces/models/Location'
 
 import '../../styles/index.scss'
 

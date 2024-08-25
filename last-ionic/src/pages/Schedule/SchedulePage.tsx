@@ -28,7 +28,7 @@ import '../../styles/index.scss';
 import ShareSocialFab from '../../components/ShareSocialFab';
 
 import useUserStore from '../../stores/sessions.store';
-import { Schedule } from '../../models/Schedule';
+import { Schedule } from '../../interfaces/models/Schedule';
 
 interface OwnProps {}
 

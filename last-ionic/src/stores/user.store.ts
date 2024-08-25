@@ -1,8 +1,8 @@
 import create from 'zustand';
 import { Preferences } from '@capacitor/preferences';
-import { Schedule, Session, ScheduleGroup } from '../models/Schedule';
-import { Speaker } from '../models/Speaker';
-import { Location } from '../models/Location';
+import { Schedule, Session, ScheduleGroup } from '../interfaces/models/Schedule';
+import { Speaker } from '../interfaces/models/Speaker';
+import { Location } from '../interfaces/models/Location';
 import { parseSessions } from '../classes/utils/DataUtils';
 import {
   BLOCKED,

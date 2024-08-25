@@ -9,7 +9,7 @@ import * as icon from 'ionicons/icons';
 
 // Used classes
 import DebugUtil from '../../classes/utils/DebugUtils';
-import RestAPI from '../../classes/managers/RestManager';
+import apiUrl from '../../classes/managers/RestManager';
 
 // Local dependencies
 import { FormDataProps } from '../../components/Form/types';
@@ -100,7 +100,7 @@ export const resetFormData = (): FormDataProps => {
     ],
     onSuccess: async (data: any) => {
 
-      await RestAPI.restCallAsync({
+      await apiUrl.restCallAsync({
         req: {
           url: '/auth/reset-password',
           method: 'POST',

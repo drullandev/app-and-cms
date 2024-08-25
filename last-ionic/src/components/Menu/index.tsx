@@ -6,7 +6,7 @@ import { routes } from '../../config/routes'
 import useUserStore from '../../stores/user.store'
 import '../../styles/Menu.css'
 import './style.css'
-import { Page } from '../../models/Page'
+import { Page } from '../../interfaces/models/Page'
 
 const Menu: React.FC<any> = () => {
 

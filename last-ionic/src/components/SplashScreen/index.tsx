@@ -1,7 +1,7 @@
 import React from 'react'
 import { IonImg, IonProgressBar, IonGrid, IonCol, IonRow, IonPage } from '@ionic/react'
 import { ConMiddle, Middle, Loader, SplashLabel, SplashProgress } from './styles'
-import { appIcon, appName } from '../../config/env'
+import { appIcon, appName } from '../../app/config/env'
 
 const SplashScreen: React.FC = () => {
 

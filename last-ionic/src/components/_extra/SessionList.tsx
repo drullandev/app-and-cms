@@ -1,12 +1,13 @@
-import * as AppConst from '../../config/env'
+import * as AppConst from '../../app/config/env'
 
 import { IonItemDivider, IonItemGroup, IonLabel, IonList, IonListHeader, IonAlert, AlertButton } from '@ionic/react'
 import React, { useState, useCallback } from 'react'
 
-import { Home, Session } from '../../models/Schedule'
+import { Home, ScheduleGroup, Session } from '../../interfaces/models/Schedule'
 import SessionListItem from './SessionListItem'
 
 import useUserStore from '../../stores/user.store'
+import { SessionGroup } from '../../interfaces/models/SessionGroup copy'
 
 const SessionList: React.FC<any> = ({ hide, listType }) => {
 
@@ -32,7 +33,7 @@ const SessionList: React.FC<any> = ({ hide, listType }) => {
   return <>
     <IonList style={hide ? { display: 'none' } : {}}>
 
-      {schedule.groups.map((group, index: number) => (
+      {schedule.groups.map((group: ScheduleGroup, index: number) => (
 
         <IonItemGroup key={`group-${index}`}>
 

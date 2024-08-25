@@ -5,85 +5,63 @@ import * as icon from 'ionicons/icons'
 
 export const all = import.meta.env
 
-export const debug = import.meta.env.REACT_APP_TESTING ?? true
 
 // The default PWA values...
 export const appName = 'AppTestForm'
 export const appIcon = 'assets/icon/transp-icon-512.png'
 
-// The default language for the app
-export const DefaultLanguage = 'en'
-
-// MAIN DATA
-
-// The expected local url off the app
-const publicUrlDefault = 'http://localhost:3000'
-
-// The main cms url for the app
-const apiUrlDefault = 'https://cms.hoponboard.eu/api'
-
-// The node encvironment: development | production
-const nodeEnvDefault = 'development'
-
-// If u use maobox, this is a key!...
-//const mapboxKeyDefault = "pk.eyJ1IjoiZHJ1bGxhbiIsImEiOiJja2l4eDBpNWUxOTJtMnRuejE1YWYyYThzIn0.y7nuRLnfl72qFp2Rq06Wlg"
-const allowedDomainsDefault = ['localhost:8100', 'localhost:3000', 'localhost:5173']
-
-const asciiArtDefault = "  ██░ ██ ▒█████  ▄▄▄▄      \n ▓██░ ██▒██▒  ██▓█████▄    \n ▒██▀▀██▒██░  ██▒██▒ ▄██   \n ░▓█ ░██▒██   ██▒██░█▀     \n ░▓█▒░██░ ████▓▒░▓█  ▀█▓   \n  ▒ ░░▒░░ ▒░▒░▒░░▒▓███▀▒   \n  ▒ ░▒░ ░ ░ ▒ ▒░▒░▒   ░    \n  ░  ░░ ░ ░ ░ ▒  ░    ░    \n  ░  ░  ░   ░ ░  ░         \n  ▄▄▄      ██▓███  ██▓███  \n ▒████▄   ▓██░  ██▓██░  ██▒\n ▒██  ▀█▄ ▓██░ ██▓▓██░ ██▓▒\n ░██▄▄▄▄██▒██▄█▓▒ ▒██▄█▓▒ ▒\n  ▓█   ▓██▒██▒ ░  ▒██▒ ░  ░\n  ▒▒   ▓▒█▒▓▒░ ░  ▒▓▒░ ░  ░\n   ▒   ▒▒ ░▒ ░    ░▒ ░     \n   ░   ▒  ░░      ░░       \n       ░  ░                      \n ᵦᵧ ᴅₐᵥᵢ𝓭 ᵣᵤₗₗáₙ ᴅíₐ𝆎 𝔀ᵢₜₕ ₗₒᵥₑ ;₎\n 𝖧ɑρρɣ ɕ𝗈ᑯ౿"
-
 // The exported constants...
-export const publicUrl  = import.meta.env.REACT_APP_PUBLIC_URL ?? publicUrlDefault
-export const apiUrl     = import.meta.env.REACT_APP_API_URL ?? apiUrlDefault
-export const nodeEnv    = import.meta.env.REACT_APP_NODE_ENV ?? nodeEnvDefault
-export const allowedDomains = import.meta.env.REACT_APP_ALLOWED_DOMAINS ? import.meta.env.REACT_APP_ALLOWED_DOMAINS?.split('|') : allowedDomainsDefault
-export const asciiArt   = import.meta.env.REACT_APP_PROJECT_ASCIIART ?? asciiArtDefault
-//export const mapboxKey  = import.meta.env.REACT_APP_MAPBOX_KEY ?? mapboxKeyDefault
+export const debug      = import.meta.env.REACT_APP_TESTING ?? true
 
+// URLS
+export const publicUrl  = import.meta.env.REACT_APP_PUBLIC_URL ?? 'http://localhost:3000';
+export const apiUrl     = import.meta.env.REACT_APP_API_URL ?? 'http://localhost:1337/api'
 
-// Strapi: Images sizes
-export const imgSizes = ['thumbnail', 'small', 'medium', 'large']
+export const nodeEnv    = import.meta.env.REACT_APP_NODE_ENV ?? 'development'
 
+export const defaultLanguage = import.meta.env.REACT_APP_DEFAULT_LANG ?? 'en';
 
+export const supportedLanguages = import.meta.env.REACT_APP_SUPPORTED_LANGS 
+  ? import.meta.env.REACT_APP_SUPPORTED_LANGS?.split('|')
+  : ['en', 'es'];
 
+// This is the list of available langs, also the prior order along app.
+export const langsPriority = import.meta.env.REACT_APP_LANGS_PRIORITY 
+  ? import.meta.env.REACT_APP_LANGS_PRIORITY?.split('|')
+  : ['en', 'es'];
 
+export const allowedDomains = import.meta.env.REACT_APP_ALLOWED_DOMAINS 
+  ? import.meta.env.REACT_APP_ALLOWED_DOMAINS?.split('|')
+  : ['localhost:8100', 'localhost:3000', 'localhost:5173'];
 
+export const asciiArt   = import.meta.env.REACT_APP_PROJECT_ASCIIART 
+  ?? "  ██░ ██ ▒█████  ▄▄▄▄      \n ▓██░ ██▒██▒  ██▓█████▄    \n ▒██▀▀██▒██░  ██▒██▒ ▄██   \n ░▓█ ░██▒██   ██▒██░█▀     \n ░▓█▒░██░ ████▓▒░▓█  ▀█▓   \n  ▒ ░░▒░░ ▒░▒░▒░░▒▓███▀▒   \n  ▒ ░▒░ ░ ░ ▒ ▒░▒░▒   ░    \n  ░  ░░ ░ ░ ░ ▒  ░    ░    \n  ░  ░  ░   ░ ░  ░         \n  ▄▄▄      ██▓███  ██▓███  \n ▒████▄   ▓██░  ██▓██░  ██▒\n ▒██  ▀█▄ ▓██░ ██▓▓██░ ██▓▒\n ░██▄▄▄▄██▒██▄█▓▒ ▒██▄█▓▒ ▒\n  ▓█   ▓██▒██▒ ░  ▒██▒ ░  ░\n  ▒▒   ▓▒█▒▓▒░ ░  ▒▓▒░ ░  ░\n   ▒   ▒▒ ░▒ ░    ░▒ ░     \n   ░   ▒  ░░      ░░       \n       ░  ░                      \n ᵦᵧ ᴅₐᵥᵢ𝓭 ᵣᵤₗₗáₙ ᴅíₐ𝆎 𝔀ᵢₜₕ ₗₒᵥₑ ;₎\n 𝖧ɑρρɣ ɕ𝗈ᑯ౿"
 
+export const mapboxKey = import.meta.env.REACT_APP_MAPBOX_KEY
+  ?? "pk.eyJ1IjoiZHJ1bGxhbiIsImEiOiJja2l4eDBpNWUxOTJtMnRuejE1YWYyYThzIn0.y7nuRLnfl72qFp2Rq06Wlg"
 
+  
 
+// FOR STRAPI INTEGRERATION
 
-
-
-
-
-
-
-
-
-
-
-
-
+// Strapi image sizes names
+export const imgSizes = ['thumbnail', 'small', 'medium', 'large'];// TODO: Move to a interface or model related with this images kind!!
 
 // Strapi images location
-export const apiUploads = apiUrlDefault + '/uploads/'
+export const apiUploads = apiUrl + '/uploads/'
 
 // Local assets o.o!
 export const appAssets = publicUrl + '/assets/'
 
-// This is the list of available langs, also the prior order along app.
-export const langsPriority = ['en', 'es', 'de', 'fr']
-
-
-// PROVISIONAL:: //TODO
+// PROVISIONAL:: //TODO: Improve somhow!!
 export const translations = keyTrans
 
-// Must come from assets, 'im pretty sure mmmm 
 
 // TODO: try to verfy why it gets throw, from where and why!!!
-export const appIconSplash = appAssets + 'icon_hob_f8df2ad0d3.png'
-const shareIcon = apiUploads + 'IMG_BC_665869_B3_D7_1_94e9c07314.jpeg'
-const addToHomeScreenIcon = apiUploads + 'Imagen_PNG_31ebb6323a.png'
-const selectAddToHomeScreenIcon = apiUploads + 'instructt3_9278a46ae6.png'
+export const appIconSplash = appAssets + ''
+const shareIcon = apiUploads + ''
+const addToHomeScreenIcon = apiUploads + ''
+const selectAddToHomeScreenIcon = apiUploads + ''
 
 export const addToHomeScreenImages = [
   {
@@ -102,11 +80,6 @@ export const addToHomeScreenImages = [
 
 // TESTING PURPOSES!!!
 export const loadingTime = 400
-
-export const homeHref = '/menu/home'
-export const homeMenu = '/menu/'
-export const accessHref = '/access'
-export const trainYourself = 'train-yourself' // Main after home!!
 
 export const splashScreen = {
   showDuration: 4000,
@@ -144,32 +117,18 @@ export const fadeVelocity = 300
 //   'mapbox': 'https://api.mapbox.com/styles/v1/drullan/ckqbpu0ia03ve17o4278zpw3f/tiles/256/{z}/{x}/{y}@2x?access_token='+mapboxKey
 // }
 
-
-
-
-
-
-
-// Cors seted: none!!
-export const corsSetted = false
-
-// App main user data!!
-export const appSuperUser = 'system-app-user@maindomain.xyz'
-export const appSuperPass = 'Qwer1234'
-
 // The origin of backoffice stuff for the app
 export const MyIP = 'localhost'
 
 // MAIN DEFAULTS !!
 
-export const RestAPI = 'http://' + MyIP + ':1337'
-export const RestStorage = RestAPI
-export const PHOTO_STORAGE = RestAPI + '/uploads'
+export const RestStorage = apiUrl
+export const PHOTO_STORAGE = apiUrl + '/uploads'
 
-export const pagesOrigin = RestAPI + '/forms?slug='
-export const formsOrigin = RestAPI + '/forms?slug='
-export const fieldsOrigin = RestAPI + '/fields?slug='
-export const menusOrigin = RestAPI + '/menus?slug='
+export const pagesOrigin = apiUrl + '/forms?slug='
+export const formsOrigin = apiUrl + '/forms?slug='
+export const fieldsOrigin = apiUrl + '/fields?slug='
+export const menusOrigin = apiUrl + '/menus?slug='
 
 // OVERRIDE FROM THE CMS!!!! TODO TODO TODO TODO
 

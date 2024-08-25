@@ -14,7 +14,7 @@ import {
 import SpeakerItem from '../../components/SpeakerItem/SpeakerItem';
 import useSpeakerStore from '../../stores/user.store';
 import '../../styles/index.scss';
-import { Speaker } from '../../models/Speaker';
+import { Speaker } from '../../interfaces/models/Speaker';
 
 const SpeakerList: React.FC = () => {
   // Obtén el estado y las acciones del store de Zustand

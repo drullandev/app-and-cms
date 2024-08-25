@@ -8,7 +8,7 @@ import {
   useIonToast,
 } from '@ionic/react';
 import { RouteComponentProps } from 'react-router';
-import RestAPI from '../../classes/managers/RestManager';
+import apiUrl from '../../classes/managers/RestManager';
 import StringUtil from '../../classes/utils/StringUtil';
 import { useTranslation } from 'react-i18next';
 import PagePropsData from '../../components/Page/types';
@@ -100,7 +100,7 @@ const ChangePassword: React.FC = () => {
                 return user;
               };
 
-              await RestAPI.restCallAsync({
+              await apiUrl.restCallAsync({
                 req: {
                   url: 'api/auth/reset-password',
                   method: 'POST',

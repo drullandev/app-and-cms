@@ -4,9 +4,8 @@ import { useHistory } from 'react-router';
 import { useIonToast } from '@ionic/react'
 import * as icon from 'ionicons/icons';
 
-import { HOME_PATH, apiUrl } from '../../config/env';
+import { HOME_PATH, apiUrl } from '../../app/config/env';
 import DebugUtil from '../../classes/utils/DebugUtils';
-import RestAPI from '../../classes/managers/RestManager';
 import RestOutput from '../../classes/utils/RestOutput';
 
 import { FormDataProps } from '../../components/Form/types';
@@ -108,7 +107,7 @@ export const loginFormData = ({
     onSuccess: async (data: any) => {
       
       setLoading(true);
-      await RestAPI.restCallAsync({
+      await apiUrl.restCallAsync({
         req: {
           method: 'POST',
           url: `${apiUrl}/auth/local`,

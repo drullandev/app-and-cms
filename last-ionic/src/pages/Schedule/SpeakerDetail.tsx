@@ -8,7 +8,7 @@ import { IonActionSheet, IonChip, IonIcon, IonHeader, IonLabel, IonToolbar, IonB
 import { callOutline, callSharp, logoTwitter, logoGithub, logoInstagram, shareOutline, shareSharp } from 'ionicons/icons'
 
 import useSpeakerStore from '../../stores/sessions.store'
-import { Speaker } from '../../models/Speaker'
+import { Speaker } from '../../interfaces/models/Speaker'
 
 interface OwnProps extends RouteComponentProps<{ id: string }> {}
 
