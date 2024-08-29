@@ -1,15 +1,15 @@
 // Global imports
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { IonIcon, IonItem, IonText, IonFooter, IonToolbar, IonButtons, IonButton } from '@ionic/react';
+import { IonIcon, IonItem, IonText, IonFooter } from '@ionic/react';
 
 // Used Components
 import PagePropsData from '../../components/Page/types';
 import Page from '../../components/Page';
 import Header from '../../components/Header';
 import Form from '../../components/Form';
-import useStore from '../../stores/user.store';
-// Component imports
+
+// Page imports
 import { loginFormData } from './source';
 import './styles.scss';
 import './style.css';
@@ -17,8 +17,7 @@ import './style.css';
 const LoginPage: React.FC<any> = (pageProps) => {
   
   const { t } = useTranslation();
-  const { darkMode, toogleDarkMode } = useStore();
-  
+
   const pageSettings : PagePropsData = {
     settings: {
       id: 'login-page',//Concern css classes, for now!
@@ -58,9 +57,6 @@ const LoginPage: React.FC<any> = (pageProps) => {
                 <p>{t('Enter your credentials to access your account and start exploring the world of Festivore.')}</p>
               </IonText>
             </IonItem>
-            <IonButton onClick={toogleDarkMode}>
-              {darkMode ? 'Light Mode' : 'Dark Mode'}
-            </IonButton>
             <Form {...loginFormData(pageProps)} />
           </div>
         </>
@@ -86,7 +82,7 @@ const LoginPage: React.FC<any> = (pageProps) => {
                 <IonIcon name="logo-instagram" />
               </IonButton>
             </IonButtons>
-      </IonToolbar>*/}
+          </IonToolbar>*/}
         </IonFooter>
       );
     }

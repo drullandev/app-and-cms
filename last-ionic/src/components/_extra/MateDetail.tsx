@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router';
-import useSpeakerStore from '../../stores/user.store';
+import useSpeakerStore from '../../classes/stores/user.store';
 import './styles/MateDetail.scss';
 import { ActionSheetButton } from '@ionic/core';
 import {

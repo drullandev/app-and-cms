@@ -8,22 +8,22 @@ import {
   useIonToast,
 } from '@ionic/react';
 import { RouteComponentProps } from 'react-router';
-import apiUrl from '../../classes/managers/RestManager';
+import RestManager from '../../classes/managers/RestManager';
 import StringUtil from '../../classes/utils/StringUtil';
 import { useTranslation } from 'react-i18next';
 import PagePropsData from '../../components/Page/types';
 import Page from '../../components/Page';
 import * as yup from 'yup';
 import * as icon from 'ionicons/icons';
-import useUserStore from '../../stores/user.store';
-import DebugUtil from '../../classes/utils/DebugUtils';
+import useUserStore from '../../classes/stores/user.store';
+import DebugUtils from '../../classes/utils/DebugUtils';
 
 const ChangePassword: React.FC = () => {
   
-  const debug = DebugUtil.setDebug(false);
+  const debug = DebugUtils.setDebug(false);
   const { t } = useTranslation();
   const [presentToast] = useIonToast();
-  const { setIsLogged, setUsername } = useUserStore();
+  const { setUsername } = useUserStore();
 /*
   const pageSettings: PagePropsData = {
     settings: {
@@ -100,7 +100,7 @@ const ChangePassword: React.FC = () => {
                 return user;
               };
 
-              await apiUrl.restCallAsync({
+              await RestCall.RestCallAsync({
                 req: {
                   url: 'api/auth/reset-password',
                   method: 'POST',

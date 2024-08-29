@@ -1,9 +1,9 @@
 import { Schedule, Session } from '../../interfaces/models/Schedule';
 import { Preferences } from '@capacitor/preferences';
 import Logger from '../utils/LoggerUtils';
-import DebugUtil from './DebugUtils';
+import DebugUtils from './DebugUtils';
 
-const debug = DebugUtil.setDebug(false) // Adjust based on environment or build configuration
+const debug = DebugUtils.setDebug(false) // Adjust based on environment or build configuration
 
 /**
  * Parses sessions from a schedule by flattening groups.

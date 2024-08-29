@@ -1,23 +1,17 @@
 // TODO : MAKE IT WORK SOMEHOW!
 import { RouteProps } from 'react-router-dom';
-import MainTabs from '../components/_main/MainTabs';
-import Page from '../components/Page';
-import Tutorial from '../pages/Tutorial';
-import Login from '../pages/Login';
-import Signup from '../pages/Signup';
-import Recover from '../pages/Recover';
-import Support from '../pages/Support';
-import Account from '../pages/Account';
-import ChangePassword from '../pages/ChangePassword';
-//import Logout from '../pages/Logout';
-import Home from '../pages/Index';
+import Page from '../../components/Page';
+import Login from '../../pages/Login';
+import Signup from '../../pages/Signup';
+import Recover from '../../pages/Recover';
+import Support from '../../pages/Support';
+import Account from '../../pages/Account';
+import ChangePassword from '../../pages/ChangePassword';
+//import Logout from '../../pages/Logout';
+import Home from '../../pages/Index';
 
 const routes: RouteProps[] = [
-  { path: '/tabs', render: () => <MainTabs /> },
   { path: '/:slug', component: Page },
-  { path: '/tabs/home/:id', render: () => <MainTabs /> },
-  { path: '/tabs/:slug', render: () => <MainTabs /> },
-  { path: '/tutorial', component: Tutorial },
   { path: '/login', component: Login },
   { path: '/sign-up', component: Signup },
   { path: '/recover', component: Recover },

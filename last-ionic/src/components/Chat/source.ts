@@ -5,12 +5,12 @@ import { useIonToast } from '@ionic/react'
 import * as icon from 'ionicons/icons';
 
 import { HOME_PATH, apiUrl } from '../../app/config/env';
-import DebugUtil from '../../classes/utils/DebugUtils';
+import DebugUtils from '../../classes/utils/DebugUtils';
 import RestOutput from '../../classes/utils/RestOutput';
 
 import { FormDataProps } from '../../components/Form/types';
 
-//import { setData, setLoading, setIsLogged } from '../../stores/user.store';
+//import { setData, setLoading, setIsLogged } from '../../classes/stores/user.store';
 import Logger from '../../classes/utils/LoggerUtils';
 
 /*
@@ -26,7 +26,7 @@ export const loginFormData = ({
   const history = useHistory();
   const [presentToast] = useIonToast();
   
-  const debug = DebugUtil.setDebug(false);
+  const debug = DebugUtils.setDebug(false);
   
   return {
     id: 'login-page',
@@ -107,7 +107,7 @@ export const loginFormData = ({
     onSuccess: async (data: any) => {
       
       setLoading(true);
-      await apiUrl.restCallAsync({
+      await RestCall.RestCallAsync({
         req: {
           method: 'POST',
           url: `${apiUrl}/auth/local`,

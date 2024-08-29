@@ -1,4 +1,4 @@
-import DebugUtil from "./DebugUtils";
+import DebugUtils from "./DebugUtils";
 
 /**
  * Utility class for cryptographic operations such as encryption and decryption.
@@ -7,7 +7,7 @@ import DebugUtil from "./DebugUtils";
  */
  class CryptoUtil {
 
-  private debug = DebugUtil.setDebug(false);
+  private debug = DebugUtils.setDebug(false);
 
   /**
    * Converts a text string to an array of character codes.

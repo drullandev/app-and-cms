@@ -7,7 +7,7 @@ import { debounce } from 'lodash';
 
 import { FieldProps } from '../types';
 
-import DebugUtil from '../../../classes/utils/DebugUtils';
+import DebugUtils from '../../../classes/utils/DebugUtils';
 
 import Label from './Label';
 import Skeleton from './Skeleton';

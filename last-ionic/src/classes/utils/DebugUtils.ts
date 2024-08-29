@@ -1,36 +1,35 @@
-import { debug } from '../../app/config/env';
-
-type Timer = ReturnType<typeof setTimeout>;
-
 /**
  * Utility class for debugging operations including logging and debouncing functions.
  * Provides methods for setting debug mode, logging messages, and debouncing callbacks.
  *
  * Usage example:
  * 
- * const debugUtil = DebugUtil.getInstance();
- * debugUtil.setDebug(true);
- * debugUtil.logInfo('Debug mode is enabled.');
- * const debouncedFunction = debugUtil.debounce(() => console.log('Debounced function called'), 1000);
+ * const debugUtil = DebugUtils.getInstance();
+ * DebugUtils.setDebug(true);
+ * DebugUtils.logInfo('Debug mode is enabled.');
+ * const debouncedFunction = DebugUtils.debounce(() => console.log('Debounced function called'), 1000);
  * debouncedFunction();
  */
-class DebugUtil {
-  private static instance: DebugUtil;
-  private timer: Timer | null = null;
+class DebugUtils {
+
+  private static instance: DebugUtils;
+
+  private timer: ReturnType<typeof setTimeout> | null = null;
+
   public debug: boolean = false;
 
   // Private constructor to prevent direct instantiation
   private constructor() {}
 
   /**
-   * Returns the single instance of DebugUtil.
-   * @returns {DebugUtil} The singleton instance.
+   * Returns the single instance of DebugUtils.
+   * @returns {DebugUtils} The singleton instance.
    */
-  public static getInstance(): DebugUtil {
-    if (!DebugUtil.instance) {
-      DebugUtil.instance = new DebugUtil();
+  public static getInstance(): DebugUtils {
+    if (!DebugUtils.instance) {
+      DebugUtils.instance = new DebugUtils();
     }
-    return DebugUtil.instance;
+    return DebugUtils.instance;
   }
 
   /**
@@ -137,4 +136,4 @@ class DebugUtil {
   }
 }
 
-export default DebugUtil.getInstance();
+export default DebugUtils.getInstance();

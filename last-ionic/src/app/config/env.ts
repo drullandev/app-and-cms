@@ -117,9 +117,6 @@ export const fadeVelocity = 300
 //   'mapbox': 'https://api.mapbox.com/styles/v1/drullan/ckqbpu0ia03ve17o4278zpw3f/tiles/256/{z}/{x}/{y}@2x?access_token='+mapboxKey
 // }
 
-// The origin of backoffice stuff for the app
-export const MyIP = 'localhost'
-
 // MAIN DEFAULTS !!
 
 export const RestStorage = apiUrl
@@ -130,13 +127,10 @@ export const formsOrigin = apiUrl + '/forms?slug='
 export const fieldsOrigin = apiUrl + '/fields?slug='
 export const menusOrigin = apiUrl + '/menus?slug='
 
-// OVERRIDE FROM THE CMS!!!! TODO TODO TODO TODO
-
-export const HOME_PATH = '/tabs/schedule'
+export const HOME_PATH = '/login'
 export const ADD_DATA = '/add-user-data'
 export const APP_ICON = '/add-user-data'
 
-export const TUTORIAL = '/tutorial'
 export const LOGIN_PATH = '/login'
 export const SIGNUP_PATH = '/signup'
 
@@ -152,9 +146,6 @@ export const timeout = {
 export const paginator = {
   'size' : 8
 }
-
-export const dataUrl           = '/assets/data/data.json'
-export const locationsUrl      = '/assets/data/locations.json'
 
 export const messages = {//TODO: ADD!!
   'Auth.form.error.invalid'           : { message: 'Identifier or password invalid.' },

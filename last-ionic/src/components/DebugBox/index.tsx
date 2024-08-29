@@ -1,21 +1,21 @@
 import React, { useRef, useState } from 'react';
 
 import { default as LoggerClass } from '../../classes/utils/LoggerUtils';
-import { IonButton, IonIcon, IonAccordionGroup, IonItem } from '@ionic/react';
-import * as icon from 'ionicons/icons';
-import Accordion from '../../components/Accordion';
+import { IonAccordionGroup, IonItem } from '@ionic/react';
+import DebugUtils from '../../classes/utils/DebugUtils';
 
 interface DebugBoxProps {
-  debug: boolean; // Flag to enable the DebugBox
+  debugThis: boolean; // Flag to enable the DebugBox
   children: any[]; // Content to display inside the DebugBox
 }
 
-const DebugBox: React.FC<DebugBoxProps> = ({ debug, children }) => {
+const DebugBox: React.FC<DebugBoxProps> = ({ debugThis, children }) => {
+  const debug = DebugUtils.setDebug(false);
   const [isOpen, setIsOpen] = useState(false);
 
   // Check if we are in a development environment and if debug is enabled
-  if (process.env.NODE_ENV !== 'development' || !debug) {
-    LoggerClass.log('DebugBox is not visible due to environment or debug flag.');
+  if (process.env.NODE_ENV !== 'development' || ! debugThis) {
+    if (debug) LoggerClass.log('DebugBox is not visible due to environment or debug flag.');
     return null;
   }
 
@@ -43,7 +43,7 @@ const DebugBox: React.FC<DebugBoxProps> = ({ debug, children }) => {
     <>
 			<IonAccordionGroup ref={accordionGroup}>
 				{children.map((child, index) => (
-<IonItem key={'accor-'+index}></IonItem>
+          <IonItem key={'accor-'+index}></IonItem>
 				))}
 			</IonAccordionGroup>
     </>

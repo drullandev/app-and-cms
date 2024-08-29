@@ -1,4 +1,4 @@
-import Rest, { CallProps } from './RestManager'
+import RestManager, { CallProps } from './RestManager'
 
 /**
  * FOS TRAPI PURPOSES, PRIMARY
@@ -13,7 +13,8 @@ export const StrapiCrud = ( operation: string, model: string, data?: any, onSucc
     ( operation === 'insert') ? 'PUT'     :
     ( operation === 'update') ? 'POST'    :
     ( operation === 'delete') ? 'DELETE'  :
-    ( operation === 'get'   ) ? 'GET'     : operation
+    ( operation === 'get'   ) ? 'GET'     : 
+    ( operation === 'options') ? 'OPTIONS' : operation
   
   let uri = model+'s' //XXX: Used to be plural under this context (Strapi calls)
 
@@ -38,7 +39,7 @@ export const StrapiCrud = ( operation: string, model: string, data?: any, onSucc
         ( operation === 'update')  ? 'POST'    :
         ( operation === 'delete')  ? 'DELETE'  :
         ( operation === 'get'   )  ? 'GET'     : 
-        ( operation === 'options') ? 'OPTIONS' : 'GET'
+        ( operation === 'options') ? 'OPTIONS' : operation
     },
 
     onSuccess: { 
@@ -55,6 +56,6 @@ export const StrapiCrud = ( operation: string, model: string, data?: any, onSucc
     delete call.req.data
   }
 
-  return Rest.restCall(call)
+  return RestManager.RestCall(call)
    
 };

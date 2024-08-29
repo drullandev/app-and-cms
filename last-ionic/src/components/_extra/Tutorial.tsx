@@ -12,7 +12,7 @@ import {
 import { arrowForward } from 'ionicons/icons';
 import { useHistory } from 'react-router';
 import useSessionStore from '../../stores/sessions.store';
-import useUserStore from '../../stores/user.store';
+import useUserStore from '../../classes/stores/user.store';
 import './Tutorial.scss';
 
 const Tutorial: React.FC = () => {

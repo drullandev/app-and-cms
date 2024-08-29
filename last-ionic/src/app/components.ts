@@ -7,7 +7,6 @@ export { default as ChangePassword } from './../pages/ChangePassword';
 export { default as Support } from './../pages/Support';
 export { default as ResetPassword } from './../pages/ChangePassword';
 export { default as Recover } from './../pages/Recover';
-export { default as Tutorial } from './../pages/Tutorial';
 
 // Page Components
 export { default as Menu } from './../components/Menu';

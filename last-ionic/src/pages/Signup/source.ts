@@ -5,12 +5,13 @@ import { useIonToast } from '@ionic/react'
 import * as icon from 'ionicons/icons';
 
 import { LOGIN_PATH, SIGNUP_PATH, apiUrl } from '../../app/config/env';
-import DebugUtil from '../../classes/utils/DebugUtils';
+import DebugUtils from '../../classes/utils/DebugUtils';
 import RestOutput from '../../classes/utils/RestOutput';
 
-import useUserStore from '../../stores/user.store';
+import useUserStore from '../../classes/stores/user.store';
 import Logger from '../../classes/utils/LoggerUtils';
 import { FormDataProps } from '../../components/Form/types';
+import RestManager from '../../classes/managers/RestManager';
 
 export const signupForm = ({
     setIsLogged
@@ -23,8 +24,8 @@ export const signupForm = ({
   const { t } = useTranslation();
   const history = useHistory();
   const [presentToast] = useIonToast();
-  const { setData, setLoading } = useUserStore();
-  const debug = DebugUtil.setDebug(false);
+  const { setData } = useUserStore();
+  const debug = DebugUtils.setDebug(false);
   
   return {
     id: 'signup-page',
@@ -108,9 +109,6 @@ export const signupForm = ({
       }
     ],
     onSuccess: async (data: any) => {
-      
-      setLoading(true);
-
       const signupSuccess = (res: any)=>{
         setIsLogged(true);
         var newRes = res;
@@ -136,7 +134,7 @@ export const signupForm = ({
         presentToast(toastProps);
       }
 
-      await apiUrl.restCallAsync({
+      await RestManager.RestCallAsync({
         req: {
           method: 'POST',
           url: `${apiUrl}/auth/local/register`,
@@ -168,7 +166,7 @@ export const signupForm = ({
           }
         },
         onFinally: () => {
-          setLoading(false);
+
         }
       });
     },
@@ -177,7 +175,6 @@ export const signupForm = ({
       const output = RestOutput.catchFormError(errors);
       output.header = 'Login error';
       presentToast(output);
-      setLoading(false);
     }
   };
 };

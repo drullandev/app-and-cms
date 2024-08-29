@@ -22,20 +22,19 @@ import {
   Account,
   Home,
   Logout,
-  Support,
-  Tutorial
+  Support  
 } from './components';
 
 // Store
-import useUserStore from '../stores/user.store';
+import useUserStore from '../classes/stores/user.store';
 
 // Classes
-import DebugUtil from '../classes/utils/DebugUtils';
+import DebugUtils from '../classes/utils/DebugUtils';
 import Logger from '../classes/utils/LoggerUtils';
 
 const AppComponent: React.FC = () => {
 
-  const debug = DebugUtil.setDebug(false);
+  const debug = DebugUtils.setDebug(false);
   
   const { darkMode } = useUserStore();
   const [ theme, setTheme ] = useState<string>('dark-mode');
@@ -55,7 +54,6 @@ const AppComponent: React.FC = () => {
             <Route path="/:slug" component={Page} />
             <Route path="/tabs/home/:id" render={() => <MainTabs />} />
             <Route path="/tabs/:slug" render={() => <MainTabs />} />
-            <Route path="/tutorial" component={Tutorial} />
             <Route path="/account" component={Account} />
             <Route path="/support" component={Support} />
             <Route path="/logout" render={() => <Logout />} />

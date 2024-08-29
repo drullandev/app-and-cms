@@ -6,7 +6,7 @@ import React, { useState, useCallback } from 'react'
 import { Home, ScheduleGroup, Session } from '../../interfaces/models/Schedule'
 import SessionListItem from './SessionListItem'
 
-import useUserStore from '../../stores/user.store'
+import useUserStore from '../../classes/stores/user.store'
 import { SessionGroup } from '../../interfaces/models/SessionGroup copy'
 
 const SessionList: React.FC<any> = ({ hide, listType }) => {
