@@ -1,0 +1,11 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "./dist/electron",
+    "rootDir": "./electron",
+    "module": "CommonJS",
+    "target": "ESNext"
+  },
+  "include": ["electron/**/*.ts"],
+  "exclude": ["node_modules"]
+}
