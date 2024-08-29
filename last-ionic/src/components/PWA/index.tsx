@@ -3,7 +3,7 @@ import { IBeforeInstallPromptEvent } from './types'
 import { IonButton, IonCol, IonContent, IonGrid, IonIcon, IonImg, IonLabel, IonModal, IonRow } from '@ionic/react'
 import { useTranslation } from 'react-i18next'
 import { closeOutline } from 'ionicons/icons'
-import { translations, splashScreen } from '../../config/env'
+import { translations, splashScreen } from '../../app/config/env'
 
 const useAddToHomescreenPrompt = (): [IBeforeInstallPromptEvent | null, () => void, boolean] => {
 

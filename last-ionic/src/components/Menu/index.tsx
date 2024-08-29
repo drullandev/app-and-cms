@@ -1,18 +1,15 @@
 import React from 'react'
-import { hammer, moonOutline } from 'ionicons/icons'
+import { moonOutline } from 'ionicons/icons'
 import { IonContent, IonIcon, IonItem, IonLabel, IonList, IonListHeader, IonMenu, IonMenuToggle } from '@ionic/react'
 
+import { Page } from '../../interfaces/models/Page'
 import { routes } from '../../config/routes'
-import useUserStore from '../../stores/user.store'
-import '../../styles/Menu.css'
+
 import './style.css'
-import { Page } from '../../models/Page'
 
 const Menu: React.FC<any> = () => {
 
-  const { isLoggedIn } = useUserStore();
-
-  const renderlistItems = (list: Page[])=>{
+  const renderMenuItems = (list: Page[])=>{
 
     return list
       .filter((route) => !!route.path)
@@ -38,16 +35,16 @@ const Menu: React.FC<any> = () => {
       <IonContent forceOverscroll={false}>
 
         <IonList role="list" lines="none">
-          {renderlistItems(routes.appPages)}
+          {renderMenuItems(routes.appPages)}
         </IonList>
 
         <IonList role="list" lines="none">
 
           <IonListHeader>Account</IonListHeader>
 
-          {isLoggedIn
-            ? renderlistItems(routes.loggedInPages)
-            : renderlistItems(routes.loggedOutPages)}
+          {true
+            ? renderMenuItems(routes.loggedOutPages)
+            : renderMenuItems(routes.loggedInPages)}
 
           <IonItem>
 
@@ -56,20 +53,6 @@ const Menu: React.FC<any> = () => {
               icon={moonOutline}
             ></IonIcon>
 
-          </IonItem>
-
-        </IonList>
-
-        <IonList lines="none">
-
-          <IonListHeader>Tutorial</IonListHeader>
-
-          <IonItem
-            button
-            onClick={() => {}}
-          >
-            <IonIcon slot="start" icon={hammer} />
-            <IonLabel>Show Tutorial</IonLabel>
           </IonItem>
 
         </IonList>

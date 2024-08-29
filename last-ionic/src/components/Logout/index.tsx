@@ -2,7 +2,7 @@ import React, { useEffect, useContext } from 'react'
 import { IonRouterContext } from '@ionic/react'
 
 import { RouteComponentProps, withRouter } from 'react-router';
-import useStore from '../../stores/user.store';
+import useStore from '../../classes/stores/user.store';
 
 const Logout: React.FC<any> = ({
   setData

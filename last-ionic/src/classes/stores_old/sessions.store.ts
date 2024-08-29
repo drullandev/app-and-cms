@@ -1,18 +1,18 @@
 import create from 'zustand';
 
-import Logger from '../classes/utils/LoggerUtils';
-import useUserStore from '../stores/user.store';
-import ConfState from '../stores/sessions.store';
-import { Schedule, Session } from '../models/Schedule';
-import { Speaker } from '../models/Speaker';
-import { Location } from '../models/Location';
+import Logger from '../utils/LoggerUtils';
+import useUserStore from './user.store';
+import AppState from './sessions.store';
+import { Schedule, Session } from '../../interfaces/models/Schedule';
+import { Speaker } from '../../interfaces/models/Speaker';
+import { Location } from '../../interfaces/models/Location';
 
 // Definición del tipo para las sesiones de los oradores
 interface SpeakerSessions {
   [key: string]: Session[]
 }
 
-export interface ConfState {
+export interface AppState {
   schedule: Schedule;
   sessions: Session[];
   speakers: Speaker[];
@@ -27,8 +27,8 @@ export interface ConfState {
 }
 
 
-// Extensión de ConfState para incluir el estado de la conferencia
-interface ConfStore extends ConfState {
+// Extensión de AppState para incluir el estado de la conferencia
+interface AppStore extends AppState {
   [x: string]: any;
   loading: boolean;
   favorites: number[];
@@ -48,7 +48,7 @@ interface ConfStore extends ConfState {
   mapCenterId?: number;
   speakerSessions: SpeakerSessions;
   setLoading: (isLoading: boolean) => void;
-  setData: (data: Partial<ConfState>) => void;
+  setData: (data: Partial<AppState>) => void;
   addFavorite: (sessionId: number) => void;
   removeFavorite: (sessionId: number) => void;
   updateFilteredTracks: (filteredTracks: string[]) => void;
@@ -66,11 +66,11 @@ interface ConfStore extends ConfState {
   setLocations: (locations: Location[]) => void;
   setMapCenterId: (mapCenterId?: number) => void;
   setSpeakerSessions: (speakerSessions: SpeakerSessions) => void;
-  loadConfData: () => Promise<void>;
+  loadAppData: () => Promise<void>;
 }
 
 // Crear el store usando Zustand
-const useConfStore = create<ConfStore>((set) => ({
+const useAppStore = create<AppStore>((set) => ({
   loading: false,
   favorites: [],
   filteredTracks: [],
@@ -107,9 +107,9 @@ const useConfStore = create<ConfStore>((set) => ({
   setMapCenterId: (mapCenterId) => set({ mapCenterId }),
   setSpeakerSessions: (speakerSessions) => set({ speakerSessions }),
   // Función para cargar datos
-  loadConfData: async () => {
-    const { getConfData } = useConfStore();
-    Logger.log(' • loadConfData');
+  loadAppData: async () => {
+    const { getConfData } = useAppStore();
+    Logger.log(' • loadAppData');
     set({ loading: true });
     try {
       const data = getConfData();
@@ -122,4 +122,4 @@ const useConfStore = create<ConfStore>((set) => ({
   },
 }));
 
-export default useConfStore;
+export default useAppStore;

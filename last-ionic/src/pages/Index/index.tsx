@@ -1,4 +1,4 @@
-import { HOME_PATH, LOGIN_PATH } from '../../config/env'
+import { HOME_PATH, LOGIN_PATH } from '../../app/config/env'
 
 import React from 'react'
 import { Redirect } from 'react-router'

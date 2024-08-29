@@ -1,32 +1,34 @@
 import create from 'zustand';
 import { Preferences } from '@capacitor/preferences';
-import { Schedule, Session, ScheduleGroup } from '../models/Schedule';
-import { Speaker } from '../models/Speaker';
-import { Location } from '../models/Location';
-import { parseSessions } from '../classes/utils/DataUtils';
-import {
-  BLOCKED,
-  CARET,
-  CONFIRMED,
-  CREATED_AT,
-  DARK_MODE,
-  dataUrl,
-  EMAIL,
-  HAS_LOGGED_IN,
-  HAS_SEEN_TUTORIAL,
-  ID,
-  JWT,
-  locationsUrl,
-  PROVIDER,
-  ROLE,
-  SESSION_ID,
-  UPDATED_AT,
-  USERNAME
-} from './constants';
-import Logger from '../classes/utils/LoggerUtils';
-import DebugUtil from '../classes/utils/DebugUtils';
+import { Schedule, Session, ScheduleGroup } from '../../interfaces/models/Schedule';
+import { Speaker } from '../../interfaces/models/Speaker';
+import { Location } from '../../interfaces/models/Location';
+import { parseSessions } from '../utils/DataUtils';
 
-const debug = DebugUtil.setDebug(false);
+import Logger from '../utils/LoggerUtils';
+import DebugUtils from '../utils/DebugUtils';
+
+export const dataUrl = '/assets/data/data.json' //TODO: REMOVE THIS
+export const locationsUrl = '/assets/data/locations.json'  //TODO: REMOVE THIS
+
+// Propio del usuario
+export const ID = 'id'
+export const JWT = 'jwt'
+export const SESSION_ID = 'sessionId'
+export const USERNAME = 'username'
+export const EMAIL = 'email'
+export const BLOCKED = 'blocked'
+export const CONFIRMED = 'confirmed'
+export const CREATED_AT = 'createdAt'
+export const UPDATED_AT = 'updatedAt'
+export const PROVIDER = 'provider'
+export const DARK_MODE = 'darkMode'
+export const HAS_SEEN_TUTORIAL = 'hasSeenTutorial'
+export const HAS_LOGGED_IN = 'hasLoggedIn'
+export const CARET = 'caret'
+export const ROLE = 'role'
+
+const debug = DebugUtils.setDebug(false);
 
 // Define la interfaz del estado del usuario
 interface UserState {
@@ -48,7 +50,7 @@ interface UserState {
 }
 
 // Define la interfaz del estado de la conferencia
-export interface ConfState {
+export interface AppState {
   schedule: Schedule;
   sessions: Session[];
   session: Session;
@@ -73,10 +75,10 @@ export interface ConfState {
 }
 
 // Define la interfaz del store con Zustand
-interface StoreState extends UserState, ConfState {
+interface StoreState extends UserState, AppState {
   setUserState: (user: Partial<UserState>) => void;
-  setConfState: (conf: Partial<ConfState>) => void;
-  loadConfData: () => Promise<void>;
+  setConfState: (conf: Partial<AppState>) => void;
+  loadAppData: () => Promise<void>;
   loadUserData: () => Promise<void>;
 
   // Setters
@@ -169,7 +171,7 @@ const useUserStore = create<StoreState>((set, get) => ({
     return data;
   },
 
-  loadConfData: async () => {
+  loadAppData: async () => {
     set({ loading: true });
     try {
       const response = await Promise.all([

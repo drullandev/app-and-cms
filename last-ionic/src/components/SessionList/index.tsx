@@ -1,8 +1,8 @@
 import { IonItemDivider, IonItemGroup, IonLabel, IonList, IonListHeader, IonAlert, AlertButton } from '@ionic/react';
 import React, { useState, useCallback } from 'react';
-import { Schedule, Session } from '../../models/Schedule';
+import { Schedule, Session } from '../../interfaces/models/Schedule';
 import SessionListItem from '../SessionListItem';
-import useUserStore from '../../stores/user.store';
+import useUserStore from '../../classes/stores/user.store';
 ;
 const SessionList: React.FC<any> = ({hide, listType, favoriteSessions}) => {
 

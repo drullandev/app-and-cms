@@ -28,10 +28,10 @@ import axios, { AxiosRequestConfig } from 'axios';
  * };
  *
  * // Perform a synchronous call
- * Rest.restCall(callProps);
+ * Rest.RestCall(callProps);
  *
  * // Perform an asynchronous call
- * Rest.restCallAsync(callProps);
+ * Rest.RestCallAsync(callProps);
  *
  * This code is designed to be reusable and maintainable, ensuring default values are set and errors are properly handled.
  */
@@ -50,14 +50,14 @@ export interface CallProps {
 /**
  * Class encapsulating operations for making REST calls.
  */
-class RestManager {
+class RestCall {
 
   /**
    * Performs an asynchronous REST call.
    * @param call - The properties of the API call.
    * @returns A promise with the result of the call.
    */
-  static async restCallAsync(call: CallProps) {
+  static async RestCallAsync(call: CallProps) {
     return this.setCall(this.commonCall(call));
   }
 
@@ -66,7 +66,7 @@ class RestManager {
    * @param call - The properties of the API call.
    * @returns A promise with the result of the call.
    */
-  static restCall(call: CallProps) {
+  static RestCall(call: CallProps) {
     return this.setCall(this.commonCall(call));
   }
 
@@ -115,4 +115,4 @@ class RestManager {
 
 }
 
-export default RestManager;
+export default RestCall;

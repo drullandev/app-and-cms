@@ -1,9 +1,16 @@
+import DebugUtils from "./DebugUtils";
 import Logger from "./LoggerUtils";
 import DOMPurify from "dompurify";
 
 class SecurityUtils {
 
   private csrfTokens: Map<string, string> = new Map();
+
+  private debug: boolean = DebugUtils.setDebug(false);
+
+  constructor(debug = true){
+    if(this.debug) Logger.info('SecurityUtils initialized');
+  }
 
   /**
    * Generates a random token for CSRF protection.
@@ -19,9 +26,9 @@ class SecurityUtils {
    * @param sessionId - The session ID for which the CSRF token is generated.
    * @returns The generated CSRF token.
    */
-  public generateCsrfToken(sessionId: string): string {
+  public generateCsrfToken(keyValue: string): string {
     const token = this.generateRandomToken();
-    this.csrfTokens.set(sessionId, token);
+    this.csrfTokens.set(keyValue, token);
     return token;
   }
 
@@ -53,10 +60,11 @@ class SecurityUtils {
   }
 
   public approveFormData(data: any, sessionId: string): any | boolean {
+    
     const submittedCsrfToken = data.csrf;
 
     if (this.validateCsrfToken(sessionId, submittedCsrfToken)) {
-      Logger.info('• CSRF Token approved!.');
+      if (this.debug) Logger.info('• CSRF Token approved!.');
 
       const sanitizedData: any = {};
       for (const key in data) {

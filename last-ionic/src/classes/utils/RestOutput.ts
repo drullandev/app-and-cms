@@ -3,11 +3,11 @@ import i18n from 'i18next';
 import { MyExtraOutputOptions } from '../../interfaces/ModalToastProps';
 import Logger from './LoggerUtils';
 import { AxiosError, AxiosResponse } from 'axios';
-import DebugUtil from './DebugUtils';
+import DebugUtils from './DebugUtils';
 
 class RestOutput {
 
-  private debug = DebugUtil.setDebug(false);
+  private debug = DebugUtils.setDebug(false);
 
   private defaultMessages = {
     success: {

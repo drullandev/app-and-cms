@@ -8,14 +8,14 @@ import * as yup from 'yup';
 // Importing components
 import Overlay from './components/Overlay';
 import Field from './components/Field';
-import GA4Tracker from '../../classes/integrations/GA4Integration';
+//import GA4Tracker from '../../classes/integrations/GA4Integration';
 import DebugBox from '../DebugBox';
 import Accordion from '../Accordion';
 
 // Importing utilities and helper functions
 import Logger from '../../classes/utils/LoggerUtils';
 import Security from '../../classes/utils/SecurityUtils';
-import DebugUtil from '../../classes/utils/DebugUtils';
+import DebugUtils from '../../classes/utils/DebugUtils';
 import { buildValidationSchema, buildInitialValues } from '../../classes/utils/ValidationUtil';
 import CaptchaManager from '../../classes/managers/CaptchaManager'; // Importar CaptchaManager
 
@@ -24,11 +24,10 @@ import { FieldProps, FormComponentProps, FormDataProps } from './types';
 
 // Importing styles
 import './style.css';
-import { IonButtons, IonMenuButton, IonToolbar } from '@ionic/react';
 
 const Form: React.FC<FormComponentProps> = (formProps: FormComponentProps): JSX.Element | null => {
   
-  const debug = DebugUtil.setDebug(true);
+  const debug = DebugUtils.setDebug(false);
   const { t } = useTranslation();
   
   const [csrfToken, setCsrfToken] = useState<string>(''); // CSRF token for security
@@ -113,11 +112,11 @@ const Form: React.FC<FormComponentProps> = (formProps: FormComponentProps): JSX.
         formData?.onError({ message: ' • Invalid CSRF token' });
       }
 
-      GA4Tracker.trackEvent('submit', formProps.ga4);
+      //GA4Tracker.trackEvent('submit', formProps.ga4);
 
     } catch (error) {
       if (debug) Logger.error('Submission error:', error);
-      GA4Tracker.trackEvent('error', formProps.ga4);
+      //GA4Tracker.trackEvent('error', formProps.ga4);
     } finally {
       setIsSubmitting(false);
     }
@@ -188,13 +187,14 @@ const Form: React.FC<FormComponentProps> = (formProps: FormComponentProps): JSX.
         settings: formProps?.settings || {}
       };
 
-      Logger.log(' • Updated formData ():', fields);
+      if (debug) Logger.log(' • Updated formData ():', fields);
+
       return newData;
     };
 
     setFormData(setInitialForm(formProps) as FormDataProps);
     getUserIP();
-    GA4Tracker.trackEvent('load', formProps.ga4);
+    //GA4Tracker.trackEvent('load', formProps.ga4);
     setTimeout(() => setIsLoading(false), 500);
 
   }, [csrfToken, captcha, showCaptcha]);
@@ -257,7 +257,7 @@ const Form: React.FC<FormComponentProps> = (formProps: FormComponentProps): JSX.
         </div>
         {
         <>
-          <DebugBox debug={debug}>          
+          <DebugBox debugThis={debug}>          
             <Accordion title="Errors" sections={[{ title: 'Errors', content: errors }]} data={undefined} />
             <Accordion title="Form Data" sections={[{ title: 'Form Data', content: formData }]} data={formData} />
             <Accordion title="CSRF Token" sections={[{ title: 'CSRF Token', content: csrfToken }]} data={csrfToken} />

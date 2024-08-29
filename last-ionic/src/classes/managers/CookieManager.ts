@@ -1,4 +1,4 @@
-import DebugUtil from '../utils/DebugUtils';
+import DebugUtils from '../utils/DebugUtils';
 import Logger from '../utils/LoggerUtils';
 import TimeUtils from '../utils/TimeUtils';
 
@@ -6,7 +6,7 @@ class CookieManager {
 
   private defaultTimeString = '12months';
   private maxAge = '99999999';
-  private debug = DebugUtil.setDebug(false);
+  private debug = DebugUtils.setDebug(false);
   
   private static instance: CookieManager;
   

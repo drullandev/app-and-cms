@@ -1,10 +1,10 @@
 import RestUtils from '../managers/RestManager';
 import { AxiosRequestConfig } from 'axios';
 import StringUtil from './StringUtil';
-import { useTranslation } from 'react-i18next';
-import DebugUtil from './DebugUtils';
+import DebugUtils from './DebugUtils';
+import RestManager from '../../classes/managers/RestManager'; // Importa la clase RestCall
 
-const debug = DebugUtil.setDebug(false);
+const debug = DebugUtils.setDebug(false);
 
 export interface WhereProps {
   type: string;
@@ -176,7 +176,7 @@ export class GraphQLService {
 
   // Performs a synchronous GraphQL call for both mutations and queries
   private graphqlCall = (call: string): any => {
-    return RestUtils.restCall({
+    return RestUtils.RestCall({
       req: {
         method: 'POST',
         url: 'graphql',
@@ -193,7 +193,7 @@ export class GraphQLService {
 
   // Performs an asynchronous GraphQL call for both mutations and queries
   private graphqlCallAsync = async (call: string): Promise<any> => {
-    return await RestUtils.restCallAsync({
+    return await RestManager.RestCallAsync({
       req: {
         method: 'POST',
         url: 'graphql',
