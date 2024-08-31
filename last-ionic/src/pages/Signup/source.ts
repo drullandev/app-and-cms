@@ -12,6 +12,7 @@ import useUserStore from '../../classes/stores/user.store';
 import Logger from '../../classes/utils/LoggerUtils';
 import { FormDataProps } from '../../components/Form/types';
 import RestManager from '../../classes/managers/RestManager';
+import mainRest from '../../integrations/RestIntegration';
 
 export const signupForm = ({
     setIsLogged
@@ -116,7 +117,7 @@ export const signupForm = ({
         newRes.header = t('Greate! Now validate on emaii!');
         newRes.message = t('Now you are a new honor guest!');
         var toastProps = RestOutput.catchSuccess(res, newRes);
-        if (debug) Logger.log(toastProps)
+        //if (debug) Logger.log(toastProps)
         presentToast(toastProps)
           .then(() => {
             history.push(LOGIN_PATH);
@@ -130,11 +131,11 @@ export const signupForm = ({
         newRes.message = t('Error trying to sing-up!');
         newRes.showInnerMessage = true;
         var toastProps = RestOutput.catchDanger(res, newRes);
-        if (debug) Logger.log(toastProps)
+        //if (debug) Logger.log(toastProps)
         presentToast(toastProps);
       }
 
-      await RestManager.RestCallAsync({
+      await mainRest.makeAsyncCall({
         req: {
           method: 'POST',
           url: `${apiUrl}/auth/local/register`,

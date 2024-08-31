@@ -13,6 +13,7 @@ import { FormDataProps } from '../../components/Form/types';
 
 import useUserStore from '../../classes/stores/user.store';
 import Logger from '../../classes/utils/LoggerUtils';
+import mainRest from '../../integrations/RestIntegration';
 
 export const loginFormData = ({}): FormDataProps => {
 
@@ -87,7 +88,7 @@ export const loginFormData = ({}): FormDataProps => {
         newRes.header = t('Wellcome to the app!');
         newRes.message = 'Hello '+res.data.user.username+'!';
         var toastProps = RestOutput.catchSuccess(res, newRes);
-        if (debug) Logger.log(toastProps)
+        //if (debug) Logger.log(toastProps)
         presentToast(toastProps)
           .then(() => {
             history.push(HOME_PATH);
@@ -100,11 +101,11 @@ export const loginFormData = ({}): FormDataProps => {
         newRes.showInnerMessage = true;
         newRes.message = 'Was an error!', res;
         var toastProps = RestOutput.catchDanger(res, newRes)
-        if (debug) Logger.log(toastProps)
+        //if (debug) Logger.log(toastProps)
         presentToast(toastProps)
       }
 
-      await RestManager.RestCallAsync({
+      await mainRest.makeAsyncCall({
         req: {
           method: 'POST',
           url: `${apiUrl}/auth/local`,

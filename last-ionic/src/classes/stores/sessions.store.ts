@@ -1,5 +1,5 @@
-import create from 'zustand';
-import Logger from '../utils/LoggerUtils';
+import { create } from 'zustand';
+import Logger, { initializeLogger } from '../utils/LoggerUtils';
 
 export interface AppState {
   loading?: boolean;
@@ -17,6 +17,9 @@ interface AppStore extends AppState {
   getConfData: () => AppState;
   loadAppData: () => Promise<void>;
 }
+
+// Initialize Logger
+const logger = initializeLogger('AppStoreLogger');
 
 const useAppStore = create<AppStore>((set, get) => ({
 
@@ -42,7 +45,7 @@ const useAppStore = create<AppStore>((set, get) => ({
 
   // Function to load application data and update the state accordingly
   loadAppData: async () => {
-    Logger.log(' • loadAppData');
+    logger.log(' • loadAppData');
     set({ loading: true });
     try {
       const data = get().getConfData();

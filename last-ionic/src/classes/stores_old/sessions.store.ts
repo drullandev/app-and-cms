@@ -1,6 +1,6 @@
 import create from 'zustand';
 
-import Logger from '../utils/LoggerUtils';
+import Logger, { initializeLogger } from '../utils/LoggerUtils';
 import useUserStore from './user.store';
 import AppState from './sessions.store';
 import { Schedule, Session } from '../../interfaces/models/Schedule';
@@ -25,7 +25,6 @@ export interface AppState {
   allTracks: string[];
   menuEnabled: boolean;
 }
-
 
 // Extensión de AppState para incluir el estado de la conferencia
 interface AppStore extends AppState {
@@ -68,6 +67,9 @@ interface AppStore extends AppState {
   setSpeakerSessions: (speakerSessions: SpeakerSessions) => void;
   loadAppData: () => Promise<void>;
 }
+
+// Initialize Logger
+const logger = initializeLogger('SessionStore');
 
 // Crear el store usando Zustand
 const useAppStore = create<AppStore>((set) => ({

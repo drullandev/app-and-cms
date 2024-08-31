@@ -19,7 +19,7 @@ import './styles.css'
 const Page: React.FC<PagePropsData> = (pageProps) => {
   const debug = DebugUtils.setDebug(false);
   useEffect(()=> {
-    if (debug) Logger.info(' • Loading page!');
+    //if (debug) Logger.info(' • Loading page!');
     //GA4Tracker.trackEvent('load', pageProps.ga4)
   },[ pageProps ])
 

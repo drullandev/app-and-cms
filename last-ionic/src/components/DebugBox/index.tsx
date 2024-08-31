@@ -15,14 +15,14 @@ const DebugBox: React.FC<DebugBoxProps> = ({ debugThis, children }) => {
 
   // Check if we are in a development environment and if debug is enabled
   if (process.env.NODE_ENV !== 'development' || ! debugThis) {
-    if (debug) LoggerClass.log('DebugBox is not visible due to environment or debug flag.');
+    //if (debug) LoggerClass.log('DebugBox is not visible due to environment or debug flag.');
     return null;
   }
 
   // Toggle the state of the DebugBox
   const toggleDebugBox = () => {
     setIsOpen(!isOpen);
-    LoggerClass.log('DebugBox toggled:', isOpen ? 'closed' : 'open');
+    //LoggerClass.log('DebugBox toggled:', isOpen ? 'closed' : 'open');
   };
 
 	const accordionGroup = useRef<null | HTMLIonAccordionGroupElement>(null);

@@ -26,12 +26,12 @@ export const parseSessions = (schedule: Schedule): Session[] => {
  */
 export const setOrRemove = async (key: string, value: any, def: any, string: boolean = true) => {
   try {
-    if (debug) Logger.log(' • DataApi::setOrRemove', { key: key, value: value, string: string });
+    //if (debug) Logger.log(' • DataApi::setOrRemove', { key: key, value: value, string: string });
     return ! value
       ? await Preferences.remove({ key: key })
       : await Preferences.set({ key: key, value: value });
   } catch (error) {
-    Logger.error('• Error setting or removing preference:', error);
+    //Logger.error('• Error setting or removing preference:', error);
     throw error; // Propagate the error for higher-level handling
   }
 };
@@ -46,10 +46,10 @@ export const setOrRemove = async (key: string, value: any, def: any, string: boo
  */
 export const toggleBool = async (key: string, value: any, def: boolean = true) => {
   try {
-    if (debug) Logger.log(' • DataApi::toggleBool', { key: key, value: value });
+    //if (debug) Logger.log(' • DataApi::toggleBool', { key: key, value: value });
     await Preferences.set({ key: key, value: value });
   } catch (error) {
-    if (debug) Logger.error('• Error toggling boolean preference:', error);
+    //if (debug) Logger.error('• Error toggling boolean preference:', error);
     throw error; // Propagate the error for higher-level handling
   }
 };

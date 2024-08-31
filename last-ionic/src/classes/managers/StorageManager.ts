@@ -11,6 +11,7 @@ import DebugUtils from "../utils/DebugUtils";
  * @date Agoust 31, 2024
  */
 class StorageManager {
+
   private static instance: StorageManager | null = null;
   private logger: LoggerClass;
   private debug: boolean;

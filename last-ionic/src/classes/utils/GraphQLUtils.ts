@@ -3,6 +3,7 @@ import { AxiosRequestConfig } from 'axios';
 import StringUtil from './StringUtil';
 import DebugUtils from './DebugUtils';
 import RestManager from '../../classes/managers/RestManager'; // Importa la clase RestCall
+import mainRest from '../../integrations/RestIntegration';
 
 const debug = DebugUtils.setDebug(false);
 
@@ -176,7 +177,7 @@ export class GraphQLService {
 
   // Performs a synchronous GraphQL call for both mutations and queries
   private graphqlCall = (call: string): any => {
-    return RestUtils.RestCall({
+    return mainRest.makeCall({
       req: {
         method: 'POST',
         url: 'graphql',
@@ -193,7 +194,7 @@ export class GraphQLService {
 
   // Performs an asynchronous GraphQL call for both mutations and queries
   private graphqlCallAsync = async (call: string): Promise<any> => {
-    return await RestManager.RestCallAsync({
+    return await mainRest.makeAsyncCall({
       req: {
         method: 'POST',
         url: 'graphql',

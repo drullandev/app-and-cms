@@ -1,132 +1,171 @@
-import TimeUtils from "../utils/TimeUtils";
-
-export interface TrustConfig {
-  maxFailedAttempts: number;
-  maxActions: number;
-  maxRequests: number;
-  timeWindow: string; // Use string format for duration (e.g., "15minutes", "2hours")
-  blockDuration: string; // Use string format for duration (e.g., "1h", "30m")
-  trustScoreThreshold: number; // Threshold for showing CAPTCHA based on trust score
-}
-
 /**
- * CheckTrustManager is responsible for managing and evaluating the trustworthiness of users
- * based on their actions, failed attempts, requests, and other criteria provided in TrustConfig.
- *
- * This class performs validations on the TrustConfig to ensure that values are within expected ranges.
- *
- * @author David Rullán - https://github.com/drullandev
- * @date August 31, 2024
+ * CheckTrustManager is responsible for evaluating the trustworthiness of users based on their behavior 
+ * and activity within a specified time window. It keeps track of failed login attempts, user actions, 
+ * request times, and maintains a list of suspicious IP addresses.
  */
 class CheckTrustManager {
-  private maxFailedAttempts: number;
-  private maxActions: number;
-  private maxRequests: number;
-  private timeWindow: number;
-  private blockDuration: number;
-  private trustScoreThreshold: number;
+
+  private static instance: CheckTrustManager | null = null; // Singleton instance
+
+  private failedAttempts: number = 0; // Count of failed login attempts
+  private userActions: number[] = []; // Timestamps of user actions
+  private requestTimes: number[] = []; // Timestamps of requests made
+  private suspiciousIPs: string[] = []; // List of suspicious IP addresses
+  // TODO: No se hace nada con blocked IP, hay que hacerlo!
+  private blockedIPs: { [key: string]: number } = {}; // Dictionary of blocked IPs with unblock timestamp
+  private maxFailedAttempts: number; // Maximum allowed failed attempts
+  private maxActions: number; // Maximum allowed user actions
+  private maxRequests: number; // Maximum allowed requests in the time window
+  private timeWindow: number; // Time window in milliseconds for tracking actions
+  private blocked = false;
+  private blockDuration: number; // Default block duration in milliseconds
 
   /**
-   * Constructs a new CheckTrustManager with the provided configuration.
-   * Validates the configuration to ensure that all values are within expected ranges.
-   *
-   * @param config - The configuration object containing limits and thresholds for trust management.
-   * @throws {Error} If any configuration value is out of the expected range.
+   * Constructor to initialize the CheckTrustManager with specific limits for failed attempts, 
+   * user actions, requests, the time window, and block duration.
+   * 
+   * @param maxFailedAttempts - Maximum number of failed login attempts allowed.
+   * @param maxActions - Maximum number of actions allowed within the time window.
+   * @param maxRequests - Maximum number of requests allowed within the time window.
+   * @param timeWindow - Time window in milliseconds for tracking user actions.
+   * @param blockDuration - Duration in milliseconds for blocking IPs.
    */
-  constructor(config: TrustConfig) {
-    this.maxFailedAttempts = this.validateNumberInRange(config.maxFailedAttempts, 1, 100, 'maxFailedAttempts');
-    this.maxActions = this.validateNumberInRange(config.maxActions, 1, 1000, 'maxActions');
-    this.maxRequests = this.validateNumberInRange(config.maxRequests, 1, 1000, 'maxRequests');
-    this.timeWindow = this.validateTimeString(config.timeWindow, 'timeWindow');
-    this.blockDuration = this.validateTimeString(config.blockDuration, 'blockDuration');
-    this.trustScoreThreshold = this.validateNumberInRange(config.trustScoreThreshold, 1, 10, 'trustScoreThreshold');
+  // TODO: Copy and move the rules to some kind of env
+  private constructor(
+      maxFailedAttempts = 3,
+      maxActions = 20,
+      maxRequests = 60,
+      timeWindow = 60000,
+      blockDuration = 31536000000
+  ) {
+      this.maxFailedAttempts = maxFailedAttempts;
+      this.maxActions = maxActions;
+      this.maxRequests = maxRequests;
+      this.timeWindow = timeWindow; 
+      this.blockDuration = blockDuration;
   }
 
   /**
-   * Validates that a number is within a specified range.
-   *
-   * @param value - The number to validate.
-   * @param min - The minimum acceptable value.
-   * @param max - The maximum acceptable value.
-   * @param fieldName - The name of the field being validated (for error messages).
-   * @returns The validated number if it is within the range.
-   * @throws {Error} If the number is out of range.
+   * Get the singleton instance of CheckTrustManager.
+   * 
+   * @returns The singleton instance of CheckTrustManager.
    */
-  private validateNumberInRange(value: number, min: number, max: number, fieldName: string): number {
-    if (isNaN(value) || value < min || value > max) {
-      throw new Error(`Invalid value for ${fieldName}. Expected a number between ${min} and ${max}, but received ${value}.`);
-    }
-    return value;
+  public static getInstance(): CheckTrustManager {
+      if (this.instance === null) {
+          this.instance = new CheckTrustManager();
+      }
+      return this.instance;
   }
 
-  /**
-   * Validates that a time string is in the correct format and converts it to milliseconds.
-   *
-   * @param timeStr - The time string to validate (e.g., "15minutes", "2hours").
-   * @param fieldName - The name of the field being validated (for error messages).
-   * @returns The time in milliseconds.
-   * @throws {Error} If the time string is in an invalid format.
+  /** 
+   * Records a failed login attempt by incrementing the failed attempts counter.
    */
-  private validateTimeString(timeStr: string, fieldName: string): number {
-    try {
-      return TimeUtils.parseTime(timeStr); // Assuming TimeUtils.parseTime converts the string to milliseconds
-    } catch (error) {
-      throw new Error(`Invalid value for ${fieldName}. Expected a valid time string (e.g., "15minutes", "2hours"), but received "${timeStr}".`);
-    }
+  private recordFailedAttempt() {
+      this.failedAttempts++;
   }
 
-  /**
-   * Example method to evaluate trust score (this is a placeholder, add your logic).
-   * This method would typically compare the user's activity against thresholds
-   * to determine if they are trustworthy.
-   *
-   * @param userActions - Number of actions the user has performed.
-   * @param failedAttempts - Number of failed attempts by the user.
-   * @returns A trust score based on the user's activity.
+  /** 
+   * Resets the failed attempts counter to zero.
    */
-  public evaluateTrust(userActions: number, failedAttempts: number): number {
-    // Example logic: You might deduct points for each failed attempt and each action.
-    let score = 10; // Start with a perfect score of 10
-
-    // Deduct points based on failed attempts
-    if (failedAttempts > this.maxFailedAttempts) {
-      score -= (failedAttempts - this.maxFailedAttempts);
-    }
-
-    // Deduct points based on actions
-    if (userActions > this.maxActions) {
-      score -= (userActions - this.maxActions) / 10; // Example deduction
-    }
-
-    return Math.max(score, 0); // Ensure score doesn't go below 0
+  private resetFailedAttempts() {
+      this.failedAttempts = 0;
   }
 
-  /**
-   * Placeholder method for blocking a user based on trust score.
-   * This method would implement the logic to block a user when their trust score is too low.
-   *
-   * @param userId - The ID of the user to block.
-   * @param trustScore - The user's trust score.
-   * @returns True if the user is blocked, false otherwise.
+  /** 
+   * Records a user action by capturing the current timestamp and filtering out old actions 
+   * that fall outside the time window.
    */
-  public blockUserIfNecessary(userId: string, trustScore: number): boolean {
-    if (trustScore < this.trustScoreThreshold) {
-      // Block user logic goes here...
-      console.log(`User ${userId} is blocked due to low trust score of ${trustScore}.`);
-      return true;
-    }
-    return false;
+  private recordUserAction() {
+      const now = Date.now();
+      this.userActions.push(now);
+      this.userActions = this.userActions.filter(timestamp => now - timestamp <= this.timeWindow);
   }
 
-  /**
-   * Placeholder method to reset the trust metrics for a user.
-   * This could be useful after a certain time period or after the user takes corrective actions.
-   *
-   * @param userId - The ID of the user to reset.
+  /** 
+   * Records a request by capturing the current timestamp and filtering out old requests 
+   * that fall outside the time window.
    */
-  public resetTrustMetrics(userId: string): void {
-    // Reset logic goes here...
-    console.log(`Trust metrics for user ${userId} have been reset.`);
+  private recordRequest() {
+      const now = Date.now();
+      this.requestTimes.push(now);
+      this.requestTimes = this.requestTimes.filter(timestamp => now - timestamp <= this.timeWindow);
+  }
+
+  /** 
+   * Checks if the provided IP address is in the list of suspicious IPs.
+   * 
+   * @param ip - The IP address to check.
+   * @returns boolean - True if the IP address is suspicious, false otherwise.
+   */
+  private checkIPAddress(ip: string): boolean {
+      return this.suspiciousIPs.includes(ip);
+  }
+      
+  /** 
+   * Checks if the provided IP address is in the list of suspicious IPs.
+   * 
+   * @param ip - The IP address to check.
+   * @returns boolean - True if the IP address is suspicious, false otherwise.
+   */
+  public getTrustScore(ip: string): number {
+
+      let score = 10; // Iniciamos con la máxima puntuación
+
+      // Penaliza la puntuación según los criterios
+      if (this.failedAttempts >= this.maxFailedAttempts) {
+          score -= 5; // Reduce la puntuación si se alcanzan los intentos fallidos
+      }
+
+      if (this.userActions.length >= this.maxActions) {
+          score -= 3; // Reduce la puntuación si se alcanzan las acciones
+      }
+
+      if (this.checkIPAddress(ip)) {
+          score -= 4; // Reduce la puntuación si la IP es sospechosa
+      }
+
+      if (this.requestTimes.length > this.maxRequests) {
+          score -= 2; // Reduce la puntuación si se alcanzan las solicitudes
+      }
+
+      // Aseguramos que la puntuación esté entre 0 y 10
+      if (score == 0) {
+          this.blocked = true;
+      }
+
+      return Math.max(0, Math.min(10, score));
+  }
+
+  public handleUserAction(ip: string, success: boolean): void {
+      if (!success) {
+          this.recordFailedAttempt();
+      } else {
+          this.resetFailedAttempts();
+      }
+
+      this.recordUserAction();
+      this.recordRequest();
+  }
+
+  public addSuspiciousIP(ip: string): void {
+      if (!this.suspiciousIPs.includes(ip)) {
+          this.suspiciousIPs.push(ip);
+          // TODO: Save to database
+      }
+  }
+
+  public removeSuspiciousIP(ip: string): void {
+      this.suspiciousIPs = this.suspiciousIPs.filter(suspiciousIP => suspiciousIP !== ip);
+  }
+
+  // Método adicional para mostrar el estado de confianza
+  public displayTrustStatus(ip: string): void {
+      const trustScore = this.getTrustScore(ip);
+      console.log(`El usuario tiene un puntaje de confianza de: ${trustScore}`);
+  }
+
+  public isBlocked(ip: string): boolean {
+      return this.blockedIPs[ip]!== undefined;
   }
 }
 
