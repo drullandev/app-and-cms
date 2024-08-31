@@ -1,95 +1,118 @@
-import { CallProps } from "./RestManager";
-import mainRest from "../../integrations/RestIntegration";
-import LoggerClass from "../utils/LoggerUtils";
-import DebugUtils from "../utils/DebugUtils";
+import axios from 'axios';
+import NodeCache from 'node-cache';
+import LoggerClass, { initializeLogger } from '../utils/LoggerUtils';
 
 /**
- * StrapiCrud provides a utility function for performing CRUD operations on a Strapi model.
- * It abstracts the HTTP method and URL construction, allowing for easy interaction with
- * Strapi's REST API. The function supports the following operations: insert, update, delete, get, and options.
- *
- * @param operation - The CRUD operation to perform. Valid options are 'insert', 'update', 'delete', 'get', and 'options'.
- * @param model - The name of the Strapi model to operate on. This should be the singular form of the model name.
- * @param data - Optional. The data to be sent with the request, typically for 'insert', 'update', and 'delete' operations.
- * @param onSuccess - Optional. A callback function to be executed if the request is successful.
- * @param onError - Optional. A callback function to be executed if the request fails.
- * @returns A promise that resolves with the result of the RestManager's makeCall function.
- *
- * @example
- * // Example usage of StrapiCrud to fetch an article with ID 1:
- * StrapiCrud('get', 'article', { id: 1 }, (data) => console.log(data), (err) => console.error(err));
+ * StrapiManager provides functionality to interact with the Strapi API, including 
+ * caching, retry mechanisms, and support for webhooks. It is designed to improve 
+ * performance and resiliency when communicating with Strapi.
  *
  * @author David Rullán - https://github.com/drullandev
- * @date Agoust 31, 2024
+ * @date August 31, 2024
  */
-type HttpMethod = "GET" | "POST" | "PUT" | "DELETE" | "OPTIONS";
-type StrapiOperations = "insert" | "update" | "delete" | "get" | "options";
+class StrapiManager {
+  private static instance: StrapiManager | null = null;
+  private logger: LoggerClass;
+  private cache: NodeCache;
 
-export const StrapiCrud = (
-  operation: StrapiOperations,
-  model: string,
-  data?: any,
-  onSuccess?: Function,
-  onError?: Function
-) => {
-  const debug = DebugUtils.setDebug(false);
-  const logger = LoggerClass.getInstance("StrapiCrud", debug, 100);
-
-  // Determine the appropriate HTTP method based on the operation
-  const method: HttpMethod =
-    operation === "insert"
-      ? "PUT"
-      : operation === "update"
-      ? "POST"
-      : operation === "delete"
-      ? "DELETE"
-      : operation === "get"
-      ? "GET"
-      : operation === "options"
-      ? "OPTIONS"
-      : "GET"; // Default to GET if no match
-
-  // Construct the API endpoint URI, pluralizing the model name according to Strapi's convention
-  let uri = `${model}s`;
-
-  // If the method is GET, construct a query string with the provided data
-  if (method === "GET") {
-    let queryStr = "/";
-    Object.entries(data || {}).forEach(([key, value]) => {
-      queryStr =
-        key === "id" ? `${queryStr}${value}` : `${queryStr}${key}=${value}&`;
-    });
-    queryStr = queryStr.replace(/&+$/, ""); // Remove trailing ampersand
-    uri += queryStr;
+  /**
+   * Private constructor to enforce Singleton pattern. Initializes the logger 
+   * and cache for storing Strapi API responses.
+   */
+  private constructor() {
+    this.logger = initializeLogger(this.constructor.name, false, 100);
+    this.cache = new NodeCache({ stdTTL: 600 }); // Cache TTL set to 10 minutes
   }
 
-  logger.info("Preparing Strapi CRUD operation", { operation, model, method, uri, data });
+  /**
+   * Returns the singleton instance of StrapiManager, creating it if it doesn't exist.
+   *
+   * @returns The singleton instance of StrapiManager.
+   */
+  public static getInstance(): StrapiManager {
+    if (this.instance === null) {
+      this.instance = new StrapiManager();
+    }
+    return this.instance;
+  }
 
-  // Prepare the call properties for the RestManager
-  let call: CallProps = {
-    req: {
-      url: `api/${uri}`,
-      data: method !== "GET" ? data : undefined, // Only include data for non-GET requests
-      method: method,
-    },
-    onSuccess: {
-      default: onSuccess
-        ? (ret: any) => {
-            logger.info("Strapi CRUD operation successful", { data: ret });
-            onSuccess(ret);
-          }
-        : () => {},
-    },
-    onError: {
-      default: onError
-        ? (err: Error) => {
-            logger.error("Strapi CRUD operation failed", err);
-            onError(err);
-          }
-        : () => {},
-    },
-  };
+  /**
+   * Registers a webhook listener in Strapi.
+   *
+   * @param url - The URL of the webhook to register.
+   * @param events - Array of events to listen to.
+   */
+  public async registerWebhook(url: string, events: string[]): Promise<void> {
+    try {
+      const response = await axios.post('/strapi/webhooks', {
+        url,
+        events,
+      });
+      this.logger.info('Webhook registered successfully', response.data);
+    } catch (error) {
+      this.logger.error('Error registering webhook', error);
+    }
+  }
 
-  // Call the RestManager's makeCall function using the prepared call properties
-  return mainRest.makeCall(call);
-};
+  /**
+   * Handles incoming webhook events from Strapi.
+   * This method should be called by the route that receives the webhooks.
+   *
+   * @param event - The event data sent by Strapi.
+   */
+  public handleWebhookEvent(event: any): void {
+    this.logger.info('Received Strapi webhook event', event);
+    // Add your logic to handle the event here.
+  }
+
+  /**
+   * Fetches data from Strapi with caching and retry logic.
+   *
+   * @param endpoint - The Strapi endpoint to query.
+   * @param retries - Number of retry attempts in case of failure.
+   * @returns The data from Strapi, either from cache or fresh.
+   */
+  public async fetchDataWithRetry(endpoint: string, retries: number = 3): Promise<any> {
+    const cacheKey = `strapi_${endpoint}`;
+    const cachedData = this.cache.get(cacheKey);
+
+    if (cachedData) {
+      this.logger.info(`Cache hit for ${endpoint}`);
+      return cachedData;
+    }
+
+    for (let attempt = 1; attempt <= retries; attempt++) {
+      try {
+        const response = await axios.get(endpoint);
+        this.cache.set(cacheKey, response.data);
+        this.logger.info(`Cache miss for ${endpoint}, data cached`);
+        return response.data;
+      } catch (error) {
+        this.logger.warn(`Attempt ${attempt} failed for ${endpoint}`);
+        if (attempt === retries) {
+          this.logger.error('Max retries reached, unable to fetch data', error);
+          throw error;
+        }
+      }
+    }
+  }
+
+  /**
+   * Fetches data from Strapi with caching, retry logic, and fallback.
+   *
+   * @param endpoint - The Strapi endpoint to query.
+   * @param retries - Number of retry attempts in case of failure.
+   * @param fallbackData - Optional fallback data to return in case of failure.
+   * @returns The data from Strapi, either from cache, fresh, or fallback.
+   */
+  public async fetchDataWithFallback(endpoint: string, retries: number = 3, fallbackData?: any): Promise<any> {
+    try {
+      return await this.fetchDataWithRetry(endpoint, retries);
+    } catch (error) {
+      this.logger.warn(`Returning fallback data for ${endpoint}`);
+      return fallbackData || null;
+    }
+  }
+}
+
+export default StrapiManager;
