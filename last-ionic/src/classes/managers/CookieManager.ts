@@ -1,91 +1,98 @@
-import DebugUtils from '../utils/DebugUtils';
-import Logger from '../utils/LoggerUtils';
-import TimeUtils from '../utils/TimeUtils';
+import LoggerClass from "../utils/LoggerUtils";
+import DebugUtils from "../utils/DebugUtils";
 
+/**
+ * CookieManager is a utility class for managing browser cookies.
+ * It provides methods to set, get, and remove cookies in a simple and efficient manner.
+ *
+ * @author David Rullán - https://github.com/drullandev
+ * @date August 30, 2024
+ */
 class CookieManager {
+  private domain: string;
+  private path: string;
+  private logger: LoggerClass;
+  private debug: boolean;
 
-  private defaultTimeString = '12months';
-  private maxAge = '99999999';
-  private debug = DebugUtils.setDebug(false);
-  
-  private static instance: CookieManager;
-  
-  // Private constructor to prevent instantiation
-  private constructor() {}
+  /**
+   * Constructs a new CookieManager instance with the specified domain and path.
+   *
+   * @param domain - The domain for which cookies will be managed.
+   * @param path - The path for which cookies will be managed.
+   */
+  constructor(domain: string, path: string) {
+    this.domain = domain;
+    this.path = path;
+    this.debug = DebugUtils.setDebug(false); // Ajusta el modo de depuración según sea necesario
+    this.logger = LoggerClass.getInstance(this.constructor.name, this.debug, 100);
 
-  // Method to get the singleton instance
-  public static getInstance(): CookieManager {
-    if (!CookieManager.instance) {
-      CookieManager.instance = new CookieManager();
+    if (this.debug) {
+      this.logger.info("CookieManager initialized", { domain, path });
     }
-    return CookieManager.instance;
   }
 
   /**
-   * Sets a cookie with the specified name, value and expiration days.
-   * @param {string} name - The name of the cookie.
-   * @param {string} value - The value of the cookie.
-   * @param {string} timeString - The number of days until the cookie expires.
+   * Sets a cookie with the specified name, value, and options.
+   *
+   * @param name - The name of the cookie.
+   * @param value - The value of the cookie.
+   * @param options - Optional. An object containing additional options such as expires, secure.
    */
-  public set(name: string, value: any, timeString?: string): void {
-    let expires = '';
-    if (timeString) {
-      const date = new Date();
-      date.setTime(TimeUtils.parseTime(timeString ?? this.defaultTimeString));
-      expires = '; expires=' + date.toUTCString();
+  public setCookie(
+    name: string,
+    value: string,
+    options: { expires?: Date; secure?: boolean } = {}
+  ): void {
+    try {
+      let cookieString = `${encodeURIComponent(name)}=${encodeURIComponent(value)}; path=${this.path}; domain=${this.domain}`;
+
+      if (options.expires) {
+        cookieString += `; expires=${options.expires.toUTCString()}`;
+      }
+      if (options.secure) {
+        cookieString += `; secure`;
+      }
+
+      document.cookie = cookieString;
+      this.logger.info(`Cookie "${name}" set successfully`, { value, options });
+    } catch (error) {
+      this.logger.error(`Failed to set cookie "${name}":`, error);
     }
-    const cookie = name + '=' + value + expires + '; path=/';
-    document.cookie = cookie;
-    if (this.debug) Logger.log(' • Setting cookie', cookie);
   }
 
   /**
-   * Gets the value of the specified cookie.
-   * @param {string} name - The name of the cookie.
-   * @returns {string | null} - The value of the cookie or null if not found.
+   * Gets the value of a cookie by name.
+   *
+   * @param name - The name of the cookie to retrieve.
+   * @returns The value of the cookie, or null if the cookie does not exist.
    */
-  public get(name: string): string | null {
-    const nameEQ = name + '=';
-    const ca = document.cookie.split(';');
-    for (let i = 0; i < ca.length; i++) {
-      let c = ca[i];
-      while (c.charAt(0) === ' ') c = c.substring(1, c.length);
-      if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+  public getCookie(name: string): string | null {
+    try {
+      const match = document.cookie.match(
+        new RegExp(`(^| )${encodeURIComponent(name)}=([^;]+)`)
+      );
+      const value = match ? decodeURIComponent(match[2]) : null;
+      this.logger.info(`Cookie "${name}" retrieved`, { value });
+      return value;
+    } catch (error) {
+      this.logger.error(`Failed to retrieve cookie "${name}":`, error);
+      return null;
     }
-    if (this.debug) Logger.log(' • Getting cookie', name);
-    return null;
   }
 
   /**
-   * Erases the specified cookie.
-   * @param {string} name - The name of the cookie.
+   * Removes a cookie by name.
+   *
+   * @param name - The name of the cookie to remove.
    */
-  public erase(name: string): void {
-    document.cookie = name + '=; Max-Age=-' + this.maxAge + '; path=/';
-    if (this.debug) Logger.log(' • Erasing cookie', name);
-  }
-
-  /**
-   * Erases aliases of the specified cookie.
-   * @param {string} name - The name of the cookie.
-   */
-  public delete(name: string): void {
-    this.erase(name);
-  }
-
-  /**
-   * Clears all cookies from the document.
-   */
-  public clearAll(): void {
-    const cookies = document.cookie.split(';');
-    for (let i = 0; i < cookies.length; i++) {
-      const cookie = cookies[i];
-      const cookieName = cookie.split('=')[0].trim(); // Get cookie name
-      this.erase(cookieName); // Erase the cookie
+  public removeCookie(name: string): void {
+    try {
+      this.setCookie(name, "", { expires: new Date(0) });
+      this.logger.info(`Cookie "${name}" removed`);
+    } catch (error) {
+      this.logger.error(`Failed to remove cookie "${name}":`, error);
     }
-    if (this.debug) Logger.log(' • Clearing cookies', cookies);
   }
 }
 
-// Export the singleton instance
-export default CookieManager.getInstance();
+export default CookieManager;

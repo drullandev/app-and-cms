@@ -30,7 +30,7 @@ const Menu: React.FC<any> = () => {
   }
 
   return (
-    <IonMenu type="overlay" disabled={true} menuId="main" contentId="main">
+    <IonMenu type="overlay" disabled={false} menuId="main" contentId="main">
 
       <IonContent forceOverscroll={false}>
 

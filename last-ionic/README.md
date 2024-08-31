@@ -35,6 +35,12 @@
 - Cookies consent (cookie banner)
 - Password view switch customizable
 - GA4 Integration
-- Trackings
+- Trackers all around
+- Debug al you want when you want!
 - Better logi distribution with reducers
 - ... A lot of new classes to do everything you need!
+
+
+About repo:
+- Please, commit packages-lock.json, because normmaly is a better idea!!!
+- If you wanna contribute, please let me know!

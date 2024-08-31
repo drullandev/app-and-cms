@@ -5,7 +5,7 @@
  * Usage example:
  * 
  * const debugUtil = DebugUtils.getInstance();
- * DebugUtils.setDebug(true);
+ * DebugUtils.setDebug(false);
  * DebugUtils.logInfo('Debug mode is enabled.');
  * const debouncedFunction = DebugUtils.debounce(() => console.log('Debounced function called'), 1000);
  * debouncedFunction();

@@ -1,111 +1,122 @@
 import axios from "axios";
-import Logger from "../utils/LoggerUtils";
+import LoggerClass, { initializeLogger } from "../utils/LoggerUtils";
+import DebugUtils from "../utils/DebugUtils";
 
+interface AgreementData {
+  id: number;
+  agreement: boolean;
+  [key: string]: any;
+}
+
+interface CleanedData {
+  cleanData: Record<string, any>;
+  agreementApproval: boolean;
+}
+
+/**
+ * AgreementManager handles the logic related to user agreements, such as processing
+ * and validating agreement data. This class is implemented as a singleton to ensure
+ * that only one instance exists throughout the application lifecycle.
+ *
+ * @example
+ * const agreementManager = AgreementManager.getInstance();
+ * const { cleanData, agreement } = agreementManager.processAgreement(formData);
+ *
+ * @author David Rullán - https://github.com/drullandev
+ * @date Agoust 31, 2024
+ */
 export class AgreementManager {
-
   private static instance: AgreementManager | null = null; // Singleton instance
+  private logger: LoggerClass;
+  private debug: boolean;
+
+  private constructor() {
+    this.debug = DebugUtils.setDebug(false); // Establece el modo debug según la configuración
+    this.logger = initializeLogger(this.constructor.name, this.debug, 100);
+    if (this.debug) {
+      this.logger.info(this.constructor.name + " initialized!!");
+    }
+  }
 
   /**
-   * Gets the singleton instance of Agreement.
+   * Gets the singleton instance of AgreementManager.
+   * If no instance exists, it creates one.
    *
    * @returns The singleton instance of AgreementManager.
-   * Get the singleton instance of CheckTrustManager.
-   * 
-   * @returns The singleton instance of CheckTrustManager.
    */
   public static getInstance(): AgreementManager {
     if (this.instance === null) {
-      /**
-       * Creates a new instance of AgreementManager.
-       *
-       * This is a singleton class, so we should not create multiple instances.
-       */
       this.instance = new AgreementManager();
     }
     return this.instance;
   }
 
   /**
-   * Processes agreement data by cleaning it and returning the cleaned form data.
+   * Processes agreement data by cleaning it and returning the cleaned form data
+   * along with the agreement object.
+   *
    * @param data - The form data to be processed.
-   * @returns The cleaned form data.
+   * @returns An object containing the cleaned form data and the agreement object.
    */
-  public checkAgreement(data: any): any {
-    // TODO: Implement actual CRM validation logic here.
+  public processAgreement(data: AgreementData): CleanedData {
     const returnData = this.cleanFormData(data);
-    return returnData.cleanData;
+    this.logger.info("Processing agreement", { cleanData: returnData.cleanData, agreement: data.agreement });
+    return { cleanData: returnData.cleanData, agreementApproval: data.agreement };
   }
 
   /**
    * Cleans form data by removing the "agreement" field and returning the rest.
+   *
    * @param formData - The form data that includes an "agreement" field.
    * @returns An object containing cleaned data without the "agreement" field and the agreement status.
    */
-  public cleanFormData(formData: any) {
-    // Destructure the form data to separate "agreement" from the rest of the fields
+  public cleanFormData(formData: AgreementData): CleanedData {
     const { agreement, ...cleanData } = formData;
-
-    // Store the agreement value in a constant
     const agreementApproval = agreement;
-
-    // Return the cleaned data and the agreement approval status
+    this.logger.debug("Cleaned form data", cleanData);
     return { cleanData, agreementApproval };
   }
 
   /**
    * Generates a random boolean value.
+   * This can be useful for simulating random outcomes or for testing purposes.
+   *
    * @returns A boolean that is true 50% of the time.
    */
-  public getRandomBoolean() {
-    return Math.random() >= 0.5;
+  public getRandomBoolean(): boolean {
+    const randomBoolean = Math.random() >= 0.5;
+    this.logger.debug("Generated random boolean", randomBoolean);
+    return randomBoolean;
   }
 
   /**
-   * Checks if the user exists in the CRM system.
-   * In production, this checks against the actual CRM.
-   * In development, it returns a random boolean for testing purposes.
-   * @param username - The username to check in the CRM.
-   * @returns A promise that resolves to true if the user exists, otherwise false.
+   * Placeholder method for checking if the user exists in the CRM system.
+   * The implementation should be added as per the requirements.
+   *
+   * @param userId - The ID of the user to check.
+   * @returns A boolean indicating whether the user exists.
    */
-  public checkUserInCRM = async (username: any) => {
-    try {
-      if (process.env.NODE_ENV === 'production') {
-        const response = await axios.get(`/crm/check-user?username=${username}`);
-        return response.data.exists;
-      }
-      // In non-production environments, return a random boolean
-      return this.getRandomBoolean();
-    } catch (error) {
-      // Log the error if the CRM check fails
-      Logger.error(' • Error checking user in CRM:', error);
-      return false;
-    }
-  };
+  public checkUserExists(userId: string): boolean {
+    this.logger.log("Checking if user exists in CRM:", userId);
+    return this.getRandomBoolean(); // Temporary implementation
+  }
 
   /**
-   * Registers a new user in the CRM system.
-   * In production, this sends the data to the actual CRM.
-   * In development, it returns a random boolean for testing purposes.
-   * @param userData - The user data to register in the CRM.
-   * @returns A promise that resolves to true if registration is successful, otherwise false.
+   * Retrieves CRM validation information for a given user ID.
+   *
+   * @param userId - The ID of the user to validate.
+   * @returns A promise that resolves with the validation status.
    */
-  public registerUserInCRM = async (userData: any) => {
+  public async getCRMValidation(userId: string): Promise<boolean> {
     try {
-      if (process.env.NODE_ENV === 'production') {
-        await axios.post('/crm/register-user', userData);
-        Logger.log(' • User registered successfully');
-      }
-      // In non-production environments, return a random boolean
-      return this.getRandomBoolean();
+      const response = await axios.get(`/crm/validate/${userId}`);
+      this.logger.log("CRM validation response:", response.data);
+      return response.data.isValid;
     } catch (error) {
-      // Log the error if the registration fails
-      Logger.error(' • Error registering user in CRM:', error);
+      this.logger.error("Error fetching CRM validation:", error);
+      return false;
     }
-  };
-
+  }
 }
 
-// Create and export a singleton instance of Agreement
-const AgreementInstance = new AgreementManager();
-
-export default AgreementInstance;
+export default AgreementManager;

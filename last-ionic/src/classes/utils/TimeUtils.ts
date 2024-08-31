@@ -1,8 +1,9 @@
 /**
  * TimeUtils provides methods to convert various time units 
  * (days, weeks, months, years, centuries, hours, and minutes) to milliseconds.
+ * @author David Rullán - https://github.com/drullandev
  */
- class TimeUtils {
+class TimeUtils {
 
     private millisecondsInSecond = 1000;
     private secondsInMinute = 60;
@@ -31,7 +32,7 @@
      * Returns the current timestamp in milliseconds.
      * @returns {number} - Current timestamp in milliseconds.
      */
-    public getCurrentTimestamp(): number {
+    public static getCurrentTimestamp(): number {
         return Date.now();
     }
 
@@ -40,7 +41,7 @@
      * @param {number} timestamp - The timestamp to convert.
      * @returns {string} - The readable date string.
      */
-    public convertTimestampToDate(timestamp: number): string {
+    public static convertTimestampToDate(timestamp: number): string {
         const date = new Date(timestamp);
         return date.toString();
     }
@@ -50,17 +51,26 @@
      * @param {number} expiration - The end timestamp.
      * @returns {number} - The elapsed time in milliseconds.
      */
-    public getElapsedTimeFromNow(expiration: number): number {
+    public static getElapsedTimeFromNow(expiration: number): number {
         return expiration - this.getCurrentTimestamp();
     }
 
     /**
      * Checks if the specified end time has already passed.
-     * @param {number} expiration - The end timestamp.
+     * @param {number} timestamp - The timestamp to check.
      * @returns {boolean} - True if the end time has passed, false otherwise.
      */
-    public hasElapsed(expiration: number): boolean {
-        return this.getElapsedTimeFromNow(expiration) < 0;
+    public static hasElapsed(timestamp: number): boolean {
+        return this.getCurrentTimestamp() > timestamp;
+    }
+
+    /**
+     * Adds a duration to the current time and returns the future timestamp.
+     * @param {number} duration - The duration in milliseconds to add.
+     * @returns {number} - The future timestamp in milliseconds.
+     */
+    public static addDurationToNow(duration: number): number {
+        return this.getCurrentTimestamp() + duration;
     }
 
     /**
@@ -69,7 +79,7 @@
      * @returns {number} - The future timestamp.
      */
     public parseFutureTimeString(timeString: string): number {
-        return this.getCurrentTimestamp() + this.parseTime(timeString);
+        return TimeUtils.getCurrentTimestamp() + this.parseTime(timeString);
     }
 
     /**
@@ -78,9 +88,9 @@
      * @returns {number} - The equivalent milliseconds or 0 if invalid input.
      */
     public parseTime(input: string): number {
-        const regex = /(\d+)\s*(hours?|minutes?|days?|weeks?|months?|years?|centuries?)/gi;
+        const regex = /(\d+)\s*(hours?|minutes?|days?|weeks?|months?|years?|centuries?|seconds?)/gi;
         let totalMilliseconds = 0;
-        let match;
+        let match: RegExpExecArray | null;
 
         while ((match = regex.exec(input)) !== null) {
             const value = parseInt(match[1], 10);
@@ -88,7 +98,7 @@
 
             switch (unit) {
                 case 'now':
-                    totalMilliseconds += Date.now();
+                    totalMilliseconds += TimeUtils.getCurrentTimestamp();
                     break;
                 case 'day':
                 case 'days':
@@ -118,16 +128,25 @@
                 case 'minutes':
                     totalMilliseconds += this.minutesToMilliseconds(value);
                     break;
-				case 'second':
-				case 'seconds':
-					totalMilliseconds += this.minutesToMilliseconds(value/60);
-					break;
+                case 'second':
+                case 'seconds':
+                    totalMilliseconds += this.secondsToMilliseconds(value);
+                    break;
                 default:
                     break;
             }
         }
 
         return totalMilliseconds;
+    }
+
+    /**
+     * Converts a given number of seconds to milliseconds.
+     * @param {number} seconds - The number of seconds.
+     * @returns {number} - The equivalent milliseconds.
+     */
+    public secondsToMilliseconds(seconds: number): number {
+        return seconds * this.millisecondsInSecond;
     }
 
     /**
@@ -194,7 +213,7 @@
     }
 
     /**
-     * Converts a combination of days, weeks, months, years, centuries, hours, and minutes to milliseconds.
+     * Converts a combination of days, weeks, months, years, centuries, hours, minutes, and seconds to milliseconds.
      * @param {number} days - The number of days.
      * @param {number} weeks - The number of weeks.
      * @param {number} months - The number of months.
@@ -202,6 +221,7 @@
      * @param {number} centuries - The number of centuries.
      * @param {number} hours - The number of hours.
      * @param {number} minutes - The number of minutes.
+     * @param {number} seconds - The number of seconds.
      * @returns {number} - The total time in milliseconds.
      */
     public convertToMilliseconds(
@@ -211,7 +231,8 @@
         years: number = 0,
         centuries: number = 0,
         hours: number = 0,
-        minutes: number = 0
+        minutes: number = 0,
+        seconds: number = 0
     ): number {
         return (
             this.daysToMilliseconds(days) +
@@ -220,9 +241,10 @@
             this.yearsToMilliseconds(years) +
             this.centuriesToMilliseconds(centuries) +
             this.hoursToMilliseconds(hours) +
-            this.minutesToMilliseconds(minutes)
+            this.minutesToMilliseconds(minutes) +
+            this.secondsToMilliseconds(seconds)
         );
     }
 }
 
-export default new TimeUtils(); // Export the class instance directly
+export default new TimeUtils(); // Export a single instance

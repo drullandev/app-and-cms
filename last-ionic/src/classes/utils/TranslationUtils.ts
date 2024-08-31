@@ -9,7 +9,7 @@ export interface KeyTranslations {
 class TranslationUtils {
 
   private myTranslations: KeyTranslations | null = null;
-  private debug = DebugUtils.setDebug(true);
+  private debug = DebugUtils.setDebug(false);
 
   getInstance = (): KeyTranslations => {
     if (!this.myTranslations) {

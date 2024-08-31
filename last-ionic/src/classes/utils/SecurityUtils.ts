@@ -1,15 +1,22 @@
 import DebugUtils from "./DebugUtils";
-import Logger from "./LoggerUtils";
+import LoggerClass from "./LoggerUtils"; // Asegúrate de importar LoggerClass correctamente
 import DOMPurify from "dompurify";
 
 class SecurityUtils {
-
   private csrfTokens: Map<string, string> = new Map();
+  private debug: boolean = false;
+  private logger: LoggerClass;
 
-  private debug: boolean = DebugUtils.setDebug(false);
-
-  constructor(debug = true){
-    if(this.debug) Logger.info('SecurityUtils initialized');
+  constructor(debug: boolean = true) {
+    this.debug = DebugUtils.setDebug(debug); // Asume que `setDebug` establece el estado de depuración
+    this.logger = LoggerClass.getInstance(
+      this.constructor.name,
+      this.debug,
+      100
+    ); // Usa getInstance para crear una instancia de LoggerClass
+    if (this.debug) {
+      this.logger.info(this.constructor.name + " initialized !!");
+    }
   }
 
   /**
@@ -17,8 +24,10 @@ class SecurityUtils {
    * @returns A random string token.
    */
   private generateRandomToken(): string {
-    return Math.random().toString(36).substring(2, 15) +
-           Math.random().toString(36).substring(2, 15);
+    return (
+      Math.random().toString(36).substring(2, 15) +
+      Math.random().toString(36).substring(2, 15)
+    );
   }
 
   /**
@@ -26,21 +35,21 @@ class SecurityUtils {
    * @param sessionId - The session ID for which the CSRF token is generated.
    * @returns The generated CSRF token.
    */
-  public generateCsrfToken(keyValue: string): string {
+  public generateCsrfToken(sessionId: string): string {
     const token = this.generateRandomToken();
-    this.csrfTokens.set(keyValue, token);
+    this.csrfTokens.set(sessionId, token);
     return token;
   }
 
   /**
-   * Generates a Captcha
-   * Is mixed with recaptcha for production environment only.
-   * @param sessionId - The session ID for which the CSRF token is generated.
+   * Generates a Captcha token.
+   * @param length - The length of the captcha token.
    * @returns The generated Captcha token.
    */
-  public generateCaptcha(length = 8): string {
-    const characters = 'ABCDEFGHIJKLMNÑOPQRSTUVWXYZabcdefghijklmnñopqrstuvwxyz0123456789';
-    let captcha = '';
+  public generateCaptcha(length: number = 8): string {
+    const characters =
+      "ABCDEFGHIJKLMNÑOPQRSTUVWXYZabcdefghijklmnñopqrstuvwxyz0123456789";
+    let captcha = "";
     for (let i = 0; i < length; i++) {
       const randomIndex = Math.floor(Math.random() * characters.length);
       captcha += characters[randomIndex];
@@ -59,24 +68,34 @@ class SecurityUtils {
     return storedToken === token;
   }
 
+  /**
+   * Approves and sanitizes form data based on CSRF token validation.
+   * @param data - The form data to be validated and sanitized.
+   * @param sessionId - The session ID used to validate the CSRF token.
+   * @returns Sanitized data if valid, otherwise false.
+   */
   public approveFormData(data: any, sessionId: string): any | boolean {
-    
     const submittedCsrfToken = data.csrf;
 
     if (this.validateCsrfToken(sessionId, submittedCsrfToken)) {
-      if (this.debug) Logger.info('• CSRF Token approved!.');
+      if (this.debug) {
+        this.logger.info("• CSRF Token approved!");
+      }
 
       const sanitizedData: any = {};
       for (const key in data) {
-        if (key !== 'csrf' && key !== 'privacy' && key!== 'publicity') {
+        if (
+          Object.prototype.hasOwnProperty.call(data, key) &&
+          !["csrf", "privacy", "publicity"].includes(key)
+        ) {
           sanitizedData[key] = DOMPurify.sanitize(data[key]);
         }
       }
 
-      Logger.log('• sanitizedData', sanitizedData);
+      this.logger.log("• sanitizedData", sanitizedData);
       return sanitizedData;
     } else {
-      Logger.error('• Invalid CSRF Token', data);
+      this.logger.error("• Invalid CSRF Token", data);
       return false;
     }
   }

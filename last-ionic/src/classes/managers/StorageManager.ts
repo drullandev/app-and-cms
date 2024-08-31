@@ -1,15 +1,31 @@
-import { Preferences } from '@capacitor/preferences';
+import { Preferences } from "@capacitor/preferences";
+import LoggerClass from "../utils/LoggerUtils";
+import DebugUtils from "../utils/DebugUtils";
 
+/**
+ * StorageManager is a singleton class designed to handle key-value storage operations.
+ * It provides methods to set, get, and remove values from storage, as well as utilities
+ * for parsing and stringifying data.
+ *
+ * @author David Rullán - https://github.com/drullandev
+ * @date Agoust 31, 2024
+ */
 class StorageManager {
-
-  // Singleton instance of StorageManager
   private static instance: StorageManager | null = null;
+  private logger: LoggerClass;
+  private debug: boolean;
 
-  // Private constructor to prevent direct instantiation
-  private constructor() {}
+  private constructor() {
+    this.debug = DebugUtils.setDebug(false);
+    this.logger = LoggerClass.getInstance(this.constructor.name, this.debug, 100);
+
+    if (this.debug) {
+      this.logger.info("StorageManager initialized");
+    }
+  }
 
   /**
-   * Retrieves the singleton instance of StorageManager.
+   * Returns the singleton instance of StorageManager.
    * If no instance exists, it creates one.
    * @returns The singleton instance of StorageManager.
    */
@@ -26,7 +42,12 @@ class StorageManager {
    * @param value - The value to store.
    */
   public async set(key: string, value: any): Promise<void> {
-    await Preferences.set({ key: key, value: this.stringify(value) });
+    try {
+      await Preferences.set({ key: key, value: this.stringify(value) });
+      this.logger.info(`Value set in storage for key: ${key}`, { value });
+    } catch (error) {
+      this.logger.error(`Failed to set value in storage for key: ${key}`, error);
+    }
   }
 
   /**
@@ -35,8 +56,15 @@ class StorageManager {
    * @returns The parsed value from storage.
    */
   public async get(key: string): Promise<any> {
-    const { value } = await Preferences.get({ key: key });
-    return this.parse(value);
+    try {
+      const { value } = await Preferences.get({ key: key });
+      const parsedValue = this.parse(value);
+      this.logger.info(`Value retrieved from storage for key: ${key}`, { value: parsedValue });
+      return parsedValue;
+    } catch (error) {
+      this.logger.error(`Failed to retrieve value from storage for key: ${key}`, error);
+      return null;
+    }
   }
 
   /**
@@ -44,46 +72,53 @@ class StorageManager {
    * @param key - The key of the value to remove.
    */
   public async remove(key: string): Promise<void> {
-    await Preferences.remove({ key: key });
+    try {
+      await Preferences.remove({ key: key });
+      this.logger.info(`Value removed from storage for key: ${key}`);
+    } catch (error) {
+      this.logger.error(`Failed to remove value from storage for key: ${key}`, error);
+    }
   }
 
   /**
    * Parses a value from storage, assuming it may be JSON.
+   * If parsing fails, logs the error and returns null or a default value if provided.
    * @param value - The value to parse.
-   * @returns The parsed object or the raw value if parsing fails.
+   * @param defaultValue - The default value to return in case of a parse error (optional).
+   * @returns The parsed object or the default value if parsing fails.
    */
-  private parse(value: any): any {
+  private parse(value: any, defaultValue: any = null): any {
     try {
       return JSON.parse(value);
     } catch (e) {
-      return value; // Return as-is if not JSON
+      this.logger.error(`Failed to parse value from storage`, e);
+      return defaultValue;
     }
   }
 
   /**
    * Stringifies a value for storage.
+   * If stringification fails, logs the error and returns an empty string or a default value.
    * @param value - The value to stringify.
-   * @returns The stringified value.
+   * @returns The stringified value or an empty string if stringification fails.
    */
   private stringify(value: any): string {
-    return this.getType(value) === 'string' ? value : JSON.stringify(value);
+    try {
+      return this.getType(value) === "string" ? value : JSON.stringify(value);
+    } catch (e) {
+      this.logger.error(`Failed to stringify value for storage`, e);
+      return "";
+    }
   }
 
   /**
    * Determines the type of a variable.
-   * @param p - The variable to check.
-   * @returns A string representing the type of the variable.
+   * @param value - The value to check the type of.
+   * @returns The type of the value as a string.
    */
-  private getType(p: any): string {
-    if (Array.isArray(p)) return 'array';
-    else if (typeof p == 'string') return 'string';
-    else if (p != null && typeof p == 'object') return 'object';
-    else return 'other';
+  private getType(value: any): string {
+    return Object.prototype.toString.call(value).slice(8, -1).toLowerCase();
   }
-
 }
 
-// Export the singleton instance of StorageManager
-const StorageInstance = StorageManager.getInstance();
-
-export default StorageInstance;
+export default StorageManager;
