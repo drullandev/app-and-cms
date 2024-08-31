@@ -1,81 +1,69 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Route } from 'react-router-dom';
 import { IonApp, IonRouterOutlet, IonSplitPane } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 
-// Importing centraliced configs
-import './config';  // Importing centraliced app configs
-import './styles'; // Importing centraliced styles
-import './types';  // Importing centraliced types
+// Importar configuraciones centralizadas
+import './config';  // Configuraciones centralizadas de la aplicación
+import './styles'; // Estilos centralizados
+import './types';  // Tipos centralizados
 
-// Reducer settings
-import { connect } from './../reducer/src/connect';
+// Páginas
+import {
+  NotFound,
+  ChangePassword,
+  Login,
+  Menu,
+  Recover,
+  ResetPassword,
+  Signup,
+  MainTabs,
+  Page,
+  Account,
+  Home,
+  Logout,
+  Support  
+} from './components';
 
-// Reducer options
-import { initialUser, OwnProps, ComponentProps, StateProps, DispatchProps, mapStateToProps, mapDispatchToProps } from './reducer';
-
-// Pages
-import { NotFound, Account, ChangePassword, Home, Login, Logout, MainTabs, Menu, Page, Recover, ResetPassword, Signup, Support, TestForm, Tutorial } from './components'
+// Store
+import useUserStore from '../classes/stores/user.store';
 
 // Classes
-import DebugUtil from './../classes/DebugUtil';
-import Logger from '../classes/LoggerClass';
+import DebugUtils from '../classes/utils/DebugUtils';
+import Logger from '../classes/utils/LoggerUtils';
 
-// Interfaces
-import { withLifecycleHooks, LifecycleHooks } from '../interfaces/LifecycleHooks';
+const AppComponent: React.FC = () => {
 
-/**
- * 
- * @param param0 {ComponentProps & ComponentProps}
- * @returns 
- */
-const AppComponent: React.FC<ComponentProps & LifecycleHooks> = ({
-  darkMode,
-  setData,
-  schedule,
-  loadConfData,
-  loadUserData,
-  onLoad,
-  afterMount,
-  beforeUpdate,
-  afterUpdate,
-  beforeDismount,
-  onError
-}) => {
+  const debug = DebugUtils.setDebug(false);
+  
+  const { darkMode } = useUserStore();
+  const [ theme, setTheme ] = useState<string>('dark-mode');
 
-  // Configura el modo de depuración
-  let debug = DebugUtil.setDebug(false);
-
-  // Inicializa configuraciones y datos
-  onLoad = () => {
-    Logger.log(' • Loading App!')
-    loadConfData();
-    loadUserData();
-    setData(initialUser);
-  };
+  useEffect(() => {
+    if (debug) Logger.log(' • Loading App!');
+    setTheme(darkMode ? 'dark-theme' : '')
+  }, [darkMode]);
 
   return (
-    <IonApp className={`${darkMode ? 'dark-theme' : ''}`}>
+    <IonApp className={theme}>
       <IonReactRouter>
-        <IonSplitPane contentId='main'>
+        <IonSplitPane contentId="main">
           <Menu />
-          <IonRouterOutlet id='main'>
-            <Route path='/tabs' render={() => <MainTabs />} />
-            <Route path='/:slug' component={Page} />
-            <Route path='/tabs/home/:id' render={() => <MainTabs />} />
-            <Route path='/tabs/:slug' render={() => <MainTabs />} />
-            <Route path='/tutorial' component={Tutorial} />
-            <Route path='/login' component={Login} />
-            <Route path='/test' component={TestForm} />
-            <Route path='/sign-up' component={Signup} />
-            <Route path='/reset' component={ResetPassword} />
-            <Route path='/recover' component={Recover} />
-            <Route path='/support' component={Support} />
-            <Route path='/account' component={Account} />
-            <Route path='/change-password' component={ChangePassword} />
-            <Route path='/logout' render={() => <Logout />} />
-            <Route path='/' component={Home} exact />
-            <Route path='/not-found' component={NotFound} />
+          <IonRouterOutlet id="main">
+            <Route path="/tabs" render={() => <MainTabs />} />
+            <Route path="/:slug" component={Page} />
+            <Route path="/tabs/home/:id" render={() => <MainTabs />} />
+            <Route path="/tabs/:slug" render={() => <MainTabs />} />
+            <Route path="/account" component={Account} />
+            <Route path="/support" component={Support} />
+            <Route path="/logout" render={() => <Logout />} />
+            <Route path="/login" component={Login} />
+            <Route path="/sign-up" component={Signup} />
+            <Route path="/reset" component={ResetPassword} />
+            <Route path="/recover" component={Recover} />
+            <Route path="/change-password" component={ChangePassword} />
+            <Route path="/" component={Home} exact />
+            <Route path="/not-found" component={NotFound} />
             <Route component={NotFound} />
           </IonRouterOutlet>
         </IonSplitPane>
@@ -84,14 +72,4 @@ const AppComponent: React.FC<ComponentProps & LifecycleHooks> = ({
   );
 };
 
-// Envuelve el componente App con los hooks de ciclo de vida
-//const AppWithLifecycleHooks = withLifecycleHooks(App);
-
-//const ConnectedApp: React.FC = () => <AppWithLifecycleHooks />;
-
-// Conecta el componente AppWithLifecycleHooks con Redux
-export default connect<OwnProps, StateProps, DispatchProps>({
-  mapStateToProps,
-  mapDispatchToProps,
-  component: withLifecycleHooks(AppComponent),
-});
+export default AppComponent;

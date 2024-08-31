@@ -3,7 +3,7 @@ import { IBeforeInstallPromptEvent } from './types'
 import { IonButton, IonCol, IonContent, IonGrid, IonIcon, IonImg, IonLabel, IonModal, IonRow } from '@ionic/react'
 import { useTranslation } from 'react-i18next'
 import { closeOutline } from 'ionicons/icons'
-import { translations, splashScreen } from '../../../../env'
+import { translations, splashScreen } from '../../app/config/env'
 
 const useAddToHomescreenPrompt = (): [IBeforeInstallPromptEvent | null, () => void, boolean] => {
 
@@ -70,7 +70,7 @@ const PWA: React.FC = () => {
         return () => ac.abort()
       }, [prompt])
 
-      return <IonModal isOpen={isVisible} cssClass='groc' >
+      return <IonModal isOpen={isVisible} className='groc' >
         <IonContent className='no-scroll groc' style={{ height: '100vh' }}>
 
           <IonGrid id='place-grid' className='groc' style={{ height: '100vh' }}>

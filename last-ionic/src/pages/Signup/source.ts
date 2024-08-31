@@ -4,30 +4,28 @@ import { useHistory } from 'react-router';
 import { useIonToast } from '@ionic/react'
 import * as icon from 'ionicons/icons';
 
-import { LOGIN_PATH, SIGNUP_PATH, apiUrl } from '../../config/env';
-import DebugUtil from '../../classes/DebugUtil';
-import RestAPI from '../../classes/Rest';
-import RestOutput from '../../classes/RestOutput';
+import { LOGIN_PATH, SIGNUP_PATH, apiUrl } from '../../app/config/env';
+import DebugUtils from '../../classes/utils/DebugUtils';
+import RestOutput from '../../classes/utils/RestOutput';
 
-import { ComponentProps } from './reducer';
-
-import { setData, setLoading, setisLogged } from '../../reducer/data/user/user.actions';
-import Logger from '../../classes/LoggerClass';
+import useUserStore from '../../classes/stores/user.store';
+import Logger from '../../classes/utils/LoggerUtils';
 import { FormDataProps } from '../../components/Form/types';
+import RestManager from '../../classes/managers/RestManager';
 
 export const signupForm = ({
-    setisLogged
+    setIsLogged
   }: {
     setLoading: (loading: boolean) => void;
     setData: (data: any) => void;
-    setisLogged: (isLoggedIn: boolean) => void;
+    setIsLogged: (isLoggedIn: boolean) => void;
   }): FormDataProps => {
 
   const { t } = useTranslation();
   const history = useHistory();
   const [presentToast] = useIonToast();
-  
-  const debug = DebugUtil.setDebug(false);
+  const { setData } = useUserStore();
+  const debug = DebugUtils.setDebug(false);
   
   return {
     id: 'signup-page',
@@ -111,11 +109,8 @@ export const signupForm = ({
       }
     ],
     onSuccess: async (data: any) => {
-      
-      setLoading(true);
-
       const signupSuccess = (res: any)=>{
-        setisLogged(true);
+        setIsLogged(true);
         var newRes = res;
         setData(res.data.user);
         newRes.header = t('Greate! Now validate on emaii!');
@@ -129,7 +124,7 @@ export const signupForm = ({
       }
 
       const signupError = (res:any)=>{
-        setisLogged(false);
+        setIsLogged(false);
         var newRes = res;
         newRes.header = t('Sign-up warning!');
         newRes.message = t('Error trying to sing-up!');
@@ -139,7 +134,7 @@ export const signupForm = ({
         presentToast(toastProps);
       }
 
-      await RestAPI.restCallAsync({
+      await RestManager.RestCallAsync({
         req: {
           method: 'POST',
           url: `${apiUrl}/auth/local/register`,
@@ -171,16 +166,15 @@ export const signupForm = ({
           }
         },
         onFinally: () => {
-          setLoading(false);
+
         }
       });
     },
     onError: (errors: any) => {
-      setisLogged(false);
+      setIsLogged(false);
       const output = RestOutput.catchFormError(errors);
       output.header = 'Login error';
       presentToast(output);
-      setLoading(false);
     }
   };
 };

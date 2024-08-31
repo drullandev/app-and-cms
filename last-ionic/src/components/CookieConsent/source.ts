@@ -1,6 +1,6 @@
-import Storage from '../../classes/Storage'
+import Storage from '../../classes/managers/StorageManager'
 import { COOKIE_CONSENT_KEY, COOKIE_EXPIRATION_TIME } from './env';
-import CookieManager from '../../classes/CookieManager';
+import CookieManager from '../../classes/managers/CookieManager';
 
 class CookieConsentSource {
 

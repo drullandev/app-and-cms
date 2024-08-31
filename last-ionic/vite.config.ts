@@ -20,5 +20,12 @@ export default defineConfig({
       include: ['src/**'],
       exclude: ['stuff/**'] // Excluir la carpeta 'stuff' de la entrada de Rollup
     },
+    output: {
+      manualChunks: true, // 2000 kB (2 MB)
+    }
   },
+  build: {
+
+    chunkSizeWarningLimit: 2000,
+  }
 });

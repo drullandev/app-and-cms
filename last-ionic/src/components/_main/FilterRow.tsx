@@ -1,28 +1,19 @@
 import React, { useEffect, useState } from 'react'
-import { connect } from '../../../reducer/src/connect'
-import { commonFilter } from '../../config/env'
+
+import { GraphQLFilter } from '../../classes/assets/GraphQLFilter'
 import { IonSelect, IonSelectOption, IonCol, IonRow, IonDatetime, IonTextarea, IonItem, IonInput, IonButton } from '@ionic/react'
-import { setFilter } from '../../../reducer/data/sessions/sessions.actions'
-import { Filter } from '../../core/main/interfaces/Filter'
+import useConfStore from '../../stores/sessions.store'
+import { Filter } from '../../interfaces/Filter'
 
-interface OwnProps { 
-}
-interface StateProps {
-  filter: Filter[]
-}
-interface DispatchProps {
-  setFilter: typeof setFilter
-}
-type ThisProps = OwnProps & StateProps & DispatchProps
-
-const FilterRow: React.FC<ThisProps> = ({ filter }) => {
+const FilterRow: React.FC<any> = ({ filter }) => {
 
   const [key, setKey] = useState(Date.now())
 
-  const [filterField, setFilterField] = useState(commonFilter.fields.default)
-  const [filterCondition, setFilterCondition] = useState(commonFilter.conditions.default)
+  const [filterField, setFilterField] = useState(GraphQLFilter.fields.default)
+  const [filterCondition, setFilterCondition] = useState(GraphQLFilter.conditions.default)
   const [filterType, setFilterType] = useState('date')
   const [filterValue, setFilterValue] = useState('')
+  const { } = useConfStore();
 
   const resetFilterField = (fieldName: string) => {
     setFilterField(fieldName)
@@ -34,7 +25,7 @@ const FilterRow: React.FC<ThisProps> = ({ filter }) => {
   }
 
   const resetFilter = (filterField: string) => {
-    commonFilter.fields.options.forEach((field: any) => {
+    GraphQLFilter.fields.options.forEach((field: any) => {
       if(field.value === filterField ){
         setFilterType(field.type)
       } 
@@ -77,7 +68,7 @@ const FilterRow: React.FC<ThisProps> = ({ filter }) => {
           placeholder='Field'
           value={filterField}
           onIonChange={(e: CustomEvent) => resetFilterField(e.detail.value)}>
-          {commonFilter.fields.options.map((option: any, index: number) => (
+          {GraphQLFilter.fields.options.map((option: any, index: number) => (
             <IonSelectOption key={'filter-field-' + index} value={option.value}>
               {option.label}
             </IonSelectOption>
@@ -91,7 +82,7 @@ const FilterRow: React.FC<ThisProps> = ({ filter }) => {
           value={filterCondition}
           placeholder='Condition'
           onIonChange={(e: CustomEvent) => resetFilterCondition(e.detail.value)}>
-          {commonFilter.conditions.options.map((option: any, index: number) => (
+          {GraphQLFilter.conditions.options.map((option: any, index: number) => (
             <IonSelectOption key={'filter-field-condition-' + index} value={option.value}>
               {option.label}
             </IonSelectOption>
@@ -110,7 +101,6 @@ const FilterRow: React.FC<ThisProps> = ({ filter }) => {
           </IonItem>
         : <IonDatetime
             //displayFormat="DD:MM:YY - mm:ss"
-            placeholder="Select Date"
             value={filterValue}
             //</IonCol>onIonChange={e => setFilterValue(e.detail.value!)}
           >
@@ -125,12 +115,4 @@ const FilterRow: React.FC<ThisProps> = ({ filter }) => {
   </>
 }
 
-export default connect<ThisProps>({
-  mapStateToProps: (state) => ({
-    filter: state.data.filter
-  }),
-  mapDispatchToProps: {
-    setFilter,
-  },
-  component: FilterRow
-})
+export default FilterRow;

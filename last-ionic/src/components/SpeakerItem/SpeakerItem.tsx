@@ -1,7 +1,8 @@
 import React from 'react';
-import { Session } from '../../reducer/models/Schedule';
-import { Speaker } from '../../reducer/models/Speaker';
+import { Session } from '../../interfaces/models/Schedule';
+import { Speaker } from '../../interfaces/models/Speaker';
 import { IonCard, IonCardHeader, IonItem, IonLabel, IonAvatar, IonCardContent, IonList } from '@ionic/react';
+import useUserStore from '../../classes/stores/user.store';
 
 
 interface SpeakerItemProps {
@@ -9,7 +10,8 @@ interface SpeakerItemProps {
   sessions: Session[];
 }
 
-const SpeakerItem: React.FC<SpeakerItemProps> = ({ speaker, sessions }) => {
+const SpeakerItem: React.FC<any> = () => {
+  const { speaker, sessions } = useUserStore();
   return (
     <>
       <IonCard className="speaker-card">

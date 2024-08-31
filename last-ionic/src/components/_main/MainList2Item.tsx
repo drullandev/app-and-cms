@@ -1,115 +1,60 @@
-//import * as AppConst from '../../../static/constants'
+import React, { useRef, useEffect, useState } from 'react';
+import { IonItemSliding, IonItem, IonLabel, IonItemOptions, IonItemOption, IonSkeletonText, IonThumbnail } from '@ionic/react';
+import useSessionStore from '../../stores/sessions.store';
+import Icon from './Icon';
+import { ListRowProps } from '../../models/ListRowProps';
 
-import React, { useRef, useEffect, useState } from 'react'
-import { IonItemSliding, IonItem, IonLabel, IonItemOptions, IonItemOption, IonSkeletonText, IonThumbnail } from '@ionic/react'
-import { connect } from '../../../reducer/src/connect'
-//import { restGet } from '../../../data/utils/rest/rest.utils'
-
-import Icon from './Icon'
-import { ListRowProps } from '../../../reducer/models/ListRowProps'
- 
 interface LineProps {
-  id: string,
-  content: string,
-  created_at: string,
-  published_at: string,
+  id: string;
+  content: string;
+  created_at: string;
+  published_at: string;
 }
 
 interface OwnProps {
-  row: ListRowProps
-  //timestamp: number
+  row: ListRowProps;
 }
 
-interface StateProps {
-  //favoriteSessions: number[]
-  searchString?: string
-}
+const SessionListItem: React.FC<OwnProps> = ({ row }) => {
+  const [line, setLine] = useState<LineProps | undefined>(undefined);
+  const ionItemSlidingRef = useRef<HTMLIonItemSlidingElement>(null);
 
-interface DispatchProps {
-  //addFavorite: typeof addFavorite
-  //removeFavorite: typeof removeFavorite
-}
+  // Usa Zustand para obtener el estado
+  const { searchString } = useSessionStore(state => ({
+    searchString: state.searchString,
+  }));
 
-interface SessionListItemProps extends OwnProps, StateProps, DispatchProps { }
-
-const SessionListItem: React.FC<SessionListItemProps> = ({ row, searchString }) => {
-  
-  const [line, setLine] = useState<LineProps>()
-
-  const ionItemSlidingRef = useRef<HTMLIonItemSlidingElement>(null)
-
-  const dismissAlert = () => {
-    ionItemSlidingRef.current && ionItemSlidingRef.current.close()
-  }
-
+  // Simula una llamada para obtener datos. Reemplaza esto con tu lógica real.
   useEffect(() => {
     /*restGet('user-contents', { id: row.id })
-    .then(res=>{
-      //console.log(res)
-      switch(res.status){
-        case 200:
-          setLine(res.data[0])
-          break
-        default:
-          //setLine()
-          break
+    .then(res => {
+      if (res.status === 200) {
+        setLine(res.data[0]);
       }
-    }).catch(res=>{
-      console.log(res)
-    })
+    }).catch(err => {
+      console.log(err);
+    });
     */
-  },[row?.id, searchString])
+  }, [row?.id, searchString]);
 
-  /*
-  const removeFavoriteSession = () => {
-    onAddFavorite(session.id);
-    onShowAlert('Favorite already added', [
-      {
-        text: 'Cancel',
-        handler: dismissAlert
-      },
-      {
-        text: 'Remove',
-        handler: () => {
-          onRemoveFavorite(session.id);
-          dismissAlert();
-        }
-      }
-    ]);
-  }
-
-  const addFavoriteSession = () => {
-    if (isFavorite) {
-      // woops, they already favorited it! What shall we do!?
-      // prompt them to remove it
-      removeFavoriteSession();
-    } else {
-      // remember this session as a user favorite
-      onAddFavorite(session.id);
-      onShowAlert('Favorite Added', [
-        {
-          text: 'OK',
-          handler: dismissAlert
-        }
-      ]);
-    }
+  const dismissAlert = () => {
+    ionItemSlidingRef.current && ionItemSlidingRef.current.close();
   };
-  */
 
-  const removeLine = () =>{
-    console.log('You pretend to remove this from the list or including from the database ^^')
-  }
-  
-  const putTimeline = (line:any) => {
-    return <p>{line.created_at}&mdash;&nbsp;{line.published_at}&mdash;&nbsp;{line.published_at}</p>
-  }
+  const removeLine = () => {
+    console.log('You pretend to remove this from the list or including from the database ^^');
+  };
 
-  const putContent = (line:any) => {
-    return <h3>{line.id+' - '+line.content}</h3>
-  }
+  const putTimeline = (line: LineProps) => {
+    return <p>{line.created_at}&mdash;&nbsp;{line.published_at}&mdash;&nbsp;{line.published_at}</p>;
+  };
 
-  return line 
-  ? <IonItemSliding ref={ionItemSlidingRef} class={'track-'+row.id} >    
+  const putContent = (line: LineProps) => {
+    return <h3>{line.id + ' - ' + line.content}</h3>;
+  };
+
+  return line ? (
+    <IonItemSliding ref={ionItemSlidingRef} className={'track-' + row.id}>
       <IonItem routerLink={`/tabs/list/asdfasdfas/${line.id}`}>
         <IonLabel>
           {putContent(line)}
@@ -117,11 +62,16 @@ const SessionListItem: React.FC<SessionListItemProps> = ({ row, searchString }) 
         </IonLabel>
       </IonItem>
       <IonItemOptions>
-        <IonItemOption color="danger" onClick={((e:any) => {console.log(e)})}><Icon slot='' name='trashoutline'/></IonItemOption>
-        <IonItemOption color="favorite" onClick={((e:any) => {console.log(e)})}><Icon slot='' name='staroutline'/></IonItemOption>
+        <IonItemOption color="danger" onClick={() => removeLine()}>
+          <Icon slot='' name='trashoutline' />
+        </IonItemOption>
+        <IonItemOption color="favorite" onClick={() => console.log('Favorite clicked')}>
+          <Icon slot='' name='staroutline' />
+        </IonItemOption>
       </IonItemOptions>
     </IonItemSliding>
-  : <IonItem>
+  ) : (
+    <IonItem>
       <IonThumbnail slot="start">
         <IonSkeletonText animated />
       </IonThumbnail>
@@ -130,22 +80,8 @@ const SessionListItem: React.FC<SessionListItemProps> = ({ row, searchString }) 
         <p><IonSkeletonText animated style={{ width: '80%' }} /></p>
         <p><IonSkeletonText animated style={{ width: '60%' }} /></p>
       </IonLabel>
-    </IonItem>      
-}
+    </IonItem>
+  );
+};
 
-
-export default connect<OwnProps, StateProps, DispatchProps>({
-
-  mapStateToProps: (state) => ({
-    searchString: state.data.searchString
-    //favoriteSessions: state.listData.favorites
-  }),
-
-  mapDispatchToProps: ({
-    //addFavorite,
-    //removeFavorite
-  }),
-
-  component: SessionListItem
-  
-})
+export default SessionListItem;

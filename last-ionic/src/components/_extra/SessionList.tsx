@@ -1,44 +1,20 @@
-import * as AppConst from '../../config/env'
+import * as AppConst from '../../app/config/env'
 
 import { IonItemDivider, IonItemGroup, IonLabel, IonList, IonListHeader, IonAlert, AlertButton } from '@ionic/react'
 import React, { useState, useCallback } from 'react'
 
-import { Home, Session } from '../../reducer/models/Schedule'
+import { Home, ScheduleGroup, Session } from '../../interfaces/models/Schedule'
 import SessionListItem from './SessionListItem'
 
-import { connect } from '../../reducer/src/connect'
-import { addFavorite, removeFavorite } from '../../reducer/data/sessions/sessions.actions'
+import useUserStore from '../../classes/stores/user.store'
+import { SessionGroup } from '../../interfaces/models/SessionGroup copy'
 
-interface OwnProps {
-  schedule: Home
-  listType: 'all' | 'favorites'
-  hide: boolean
-}
-
-interface StateProps {
-  favoriteSessions: number[]
-}
-
-interface DispatchProps {
-  addFavorite: typeof addFavorite
-  removeFavorite: typeof removeFavorite
-}
-
-interface SessionListProps extends OwnProps, StateProps, DispatchProps { }
-
-const SessionList: React.FC<SessionListProps> = ({
-  addFavorite,
-  removeFavorite,
-  favoriteSessions,
-  hide,
-  schedule,
-  listType
-}) => {
+const SessionList: React.FC<any> = ({ hide, listType }) => {
 
   const [showAlert, setShowAlert] = useState(false)
   const [alertHeader, setAlertHeader] = useState('')
   const [alertButtons, setAlertButtons] = useState<(AlertButton | string)[]>([])
-
+  const { schedule, addFavorite, removeFavorite, favoriteSessions } = useUserStore()
   const handleShowAlert = useCallback((header: string, buttons: AlertButton[]) => {
     setAlertHeader(header)
     setAlertButtons(buttons)
@@ -57,7 +33,7 @@ const SessionList: React.FC<SessionListProps> = ({
   return <>
     <IonList style={hide ? { display: 'none' } : {}}>
 
-      {schedule.groups.map((group, index: number) => (
+      {schedule.groups.map((group: ScheduleGroup, index: number) => (
 
         <IonItemGroup key={`group-${index}`}>
 
@@ -96,17 +72,4 @@ const SessionList: React.FC<SessionListProps> = ({
 
 }
 
-export default connect<OwnProps, StateProps, DispatchProps>({
-
-  mapStateToProps: (state) => ({
-    favoriteSessions: state.data.favorites
-  }),
-
-  mapDispatchToProps: ({
-    addFavorite,
-    removeFavorite
-  }),
-
-  component: SessionList
-  
-})
+export default  SessionList;

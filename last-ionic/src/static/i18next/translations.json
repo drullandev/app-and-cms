@@ -1,0 +1,12 @@
+{
+    "en": {
+        "translation": {
+            "user-wellcome": "{{username}}, has logged in!!"
+        }
+    },
+    "en-GB": {
+        "translation": {
+            "user-wellcome": "{{username}}, has logged in!!"
+        }
+    }
+}

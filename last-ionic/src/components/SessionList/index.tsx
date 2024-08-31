@@ -1,33 +1,15 @@
 import { IonItemDivider, IonItemGroup, IonLabel, IonList, IonListHeader, IonAlert, AlertButton } from '@ionic/react';
 import React, { useState, useCallback } from 'react';
-import { Schedule, Session } from '../../reducer/models/Schedule';
+import { Schedule, Session } from '../../interfaces/models/Schedule';
 import SessionListItem from '../SessionListItem';
-import { connect } from '../../reducer/src/connect';
-import { addFavorite, removeFavorite } from '../../reducer/data/sessions/sessions.actions';
-
-interface OwnProps {
-  schedule: Schedule;
-  listType: 'all' | 'favorites';
-  hide: boolean;
-}
-
-interface StateProps {
-  favoriteSessions: number[];
-}
-
-interface DispatchProps {
-  addFavorite: typeof addFavorite;
-  removeFavorite: typeof removeFavorite;
-}
-
-interface SessionListProps extends OwnProps, StateProps, DispatchProps { };
-
-const SessionList: React.FC<SessionListProps> = ({ addFavorite, removeFavorite, favoriteSessions, hide, schedule, listType }) => {
+import useUserStore from '../../classes/stores/user.store';
+;
+const SessionList: React.FC<any> = ({hide, listType, favoriteSessions}) => {
 
   const [showAlert, setShowAlert] = useState(false);
   const [alertHeader, setAlertHeader] = useState('');
   const [alertButtons, setAlertButtons] = useState<(AlertButton | string)[]>([]);
-
+const { addFavorite, removeFavorite, schedule } = useUserStore();
   const handleShowAlert = useCallback((header: string, buttons: AlertButton[]) => {
     setAlertHeader(header);
     setAlertButtons(buttons);
@@ -78,13 +60,4 @@ const SessionList: React.FC<SessionListProps> = ({ addFavorite, removeFavorite, 
   );
 };
 
-export default connect<OwnProps, StateProps, DispatchProps>({
-  mapStateToProps: (state) => ({
-    favoriteSessions: state.data.favorites
-  }),
-  mapDispatchToProps: ({
-    addFavorite,
-    removeFavorite
-  }),
-  component: SessionList
-});
+export default SessionList;

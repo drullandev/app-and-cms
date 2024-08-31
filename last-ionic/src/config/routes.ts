@@ -1,6 +1,5 @@
 // This way was an awsome one!
-import i18n from 'i18next'
-import { keyTrans } from '../classes/i18nextClass'
+
 import * as icon from 'ionicons/icons'
 
 // TODO: MOVE TO A ENV FILE OR SOMETHING!!!

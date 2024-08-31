@@ -1,93 +1,103 @@
-import React from 'react'
+import * as AppConst from '../../app/config/env';
+import React from 'react';
+import { getMode } from '@ionic/core';
+import {
+  IonHeader,
+  IonToolbar,
+  IonButtons,
+  IonButton,
+  IonTitle,
+  IonContent,
+  IonList,
+  IonListHeader,
+  IonItem,
+  IonLabel,
+  IonCheckbox,
+  IonFooter,
+  IonIcon,
+} from '@ionic/react';
+import {
+  logoAngular,
+  call,
+  document,
+  logoIonic,
+  hammer,
+  restaurant,
+  cog,
+  colorPalette,
+  construct,
+  compass,
+} from 'ionicons/icons';
 
-import { getMode } from '@ionic/core'
-import { IonHeader, IonToolbar, IonButtons, IonButton, IonTitle, IonContent, IonList, IonListHeader, IonItem, IonLabel, IonCheckbox, IonFooter, IonIcon } from '@ionic/react'
-import { logoAngular, call, document, logoIonic, hammer, restaurant, cog, colorPalette, construct, compass } from 'ionicons/icons'
-
-import '../../styles/SessionListFilter.css'
-
-import { connect } from '../../reducer/src/connect'
-import { updateFilteredTracks } from '../../reducer/data/sessions/sessions.actions'
+import useAppStore from '../../stores/sessions.store';
 
 interface OwnProps {
-  onDismissModal: () => void
+  onDismissModal: () => void;
 }
 
-interface StateProps {
-  allTracks: string[],
-  filteredTracks: string[]
-}
+const SessionListFilter: React.FC<OwnProps> = ({ onDismissModal }) => {
+  const ios = getMode() === 'ios';
 
-interface DispatchProps {
-  updateFilteredTracks: typeof updateFilteredTracks
-}
-
-type SessionListFilterProps = OwnProps & StateProps & DispatchProps
-
-const SessionListFilter: React.FC<SessionListFilterProps> = ({ allTracks, filteredTracks, onDismissModal, updateFilteredTracks }) => {
-  const ios = getMode() === 'ios'
+  // Acceder al estado y acciones usando zustand
+  const allTracks = useAppStore((state) => state.allTracks);
+  const filteredTracks = useAppStore((state) => state.filteredTracks);
+  const updateFilteredTracks = useAppStore((state) => state.updateFilteredTracks);
 
   const toggleTrackFilter = (track: string) => {
     if (filteredTracks.indexOf(track) > -1) {
-      updateFilteredTracks(filteredTracks.filter(x => x !== track))
+      updateFilteredTracks(filteredTracks.filter((x) => x !== track));
     } else {
-      updateFilteredTracks([...filteredTracks, track])
+      updateFilteredTracks([...filteredTracks, track]);
     }
-  }
+  };
 
   const handleDeselectAll = () => {
-    updateFilteredTracks([])
-  }
+    updateFilteredTracks([]);
+  };
 
   const handleSelectAll = () => {
-    updateFilteredTracks([...allTracks])
-  }
+    updateFilteredTracks([...allTracks]);
+  };
 
   const iconMap: { [key: string]: any } = {
-    'Angular': logoAngular,
-    'Documentation': document,
-    'Food': restaurant,
-    'Ionic': logoIonic,
-    'Tooling': hammer,
-    'Design': colorPalette,
-    'Services': cog,
-    'Workshop': construct,
-    'Navigation': compass,
-    'Communication': call
-  }
+    Angular: logoAngular,
+    Documentation: document,
+    Food: restaurant,
+    Ionic: logoIonic,
+    Tooling: hammer,
+    Design: colorPalette,
+    Services: cog,
+    Workshop: construct,
+    Navigation: compass,
+    Communication: call,
+  };
 
   return (
     <>
-      <IonHeader translucent={true} className="session-list-filter">
+      <IonHeader translucent={true}>
         <IonToolbar>
           <IonButtons slot="start">
-            { ios &&
+            {ios ? (
               <IonButton onClick={onDismissModal}>Cancel</IonButton>
-            }
-            { !ios &&
+            ) : (
               <IonButton onClick={handleDeselectAll}>Reset</IonButton>
-            }
+            )}
           </IonButtons>
-
-          <IonTitle>
-            Filter Sessions
-          </IonTitle>
-
+          <IonTitle>Filter Sessions</IonTitle>
           <IonButtons slot="end">
-            <IonButton onClick={onDismissModal} strong>Done</IonButton>
+            <IonButton onClick={onDismissModal} strong>
+              Done
+            </IonButton>
           </IonButtons>
         </IonToolbar>
       </IonHeader>
 
-      <IonContent className="session-list-filter">
-        <IonList lines={ ios ? 'inset' : 'full'}>
+      <IonContent>
+        <IonList lines={ios ? 'inset' : 'full'}>
           <IonListHeader>Tracks</IonListHeader>
-
-          {allTracks.map((track, index) => (
+          {allTracks.map((track) => (
             <IonItem key={track}>
-              { ios &&
-                <IonIcon slot="start" icon={iconMap[track]} color="medium" />
-              }
+              {ios && <IonIcon slot="start" icon={iconMap[track]} color="medium" />}
               <IonLabel>{track}</IonLabel>
               <IonCheckbox
                 onClick={() => toggleTrackFilter(track)}
@@ -100,7 +110,7 @@ const SessionListFilter: React.FC<SessionListFilterProps> = ({ allTracks, filter
         </IonList>
       </IonContent>
 
-      { ios &&
+      {ios && (
         <IonFooter>
           <IonToolbar>
             <IonButtons slot="start">
@@ -111,18 +121,9 @@ const SessionListFilter: React.FC<SessionListFilterProps> = ({ allTracks, filter
             </IonButtons>
           </IonToolbar>
         </IonFooter>
-      }
+      )}
     </>
-  )
-}
+  );
+};
 
-export default connect<OwnProps, StateProps, DispatchProps>({
-  mapStateToProps: (state) => ({
-    allTracks: state.data.allTracks,
-    filteredTracks: state.data.filteredTracks
-  }),
-  mapDispatchToProps: {
-    updateFilteredTracks
-  },
-  component: SessionListFilter
-})
+export default SessionListFilter;

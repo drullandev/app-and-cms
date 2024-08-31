@@ -2,13 +2,13 @@ import React, { useEffect, useState } from 'react'; // Importing React and hooks
 import { useTranslation } from 'react-i18next'; // Importing translation hook for internationalization
 import { IonButton, IonContent, IonModal } from '@ionic/react'; // Importing Ionic components for UI
 
-import Storage from '../../classes/Storage'; // Importing a custom storage class for handling consent storage
-import CookieManager from '../../classes/CookieManager';
+import Storage from '../../classes/managers/StorageManager'; // Importing a custom storage class for handling consent storage
+import CookieManager from '../../classes/managers/CookieManager';
 
 import './style.css'; // Importing styles for the component
 import CookieConsentSource from './source'; // Importing the component source
 import { COOKIE_CONSENT_KEY, COOKIE_EXPIRATION_TIME, COOKIE_CONSENT_KEY_EXPIRE } from './env';
-import TimeClass from '../../classes/TimeClass';
+import TimeUtils from '../../classes/utils/TimeUtils';
 
 /**
  * CookieConsent Component
@@ -39,14 +39,14 @@ const CookieConsent: React.FC = () => {
 	*/
 	const load = () => {
 		Storage.get(COOKIE_CONSENT_KEY)
-		.then((selected) => {
+		.then((selected:boolean) => {
 			// If no consent has been recorded, display the consent modal
 			if (selected === null) {
 				setShowModal(true);
 			} else {
 				Storage.get(COOKIE_CONSENT_KEY_EXPIRE)
-					.then((expiration) => {
-						if (TimeClass.hasElapsed(expiration)) {
+					.then((expiration: number) => {
+						if (TimeUtils.hasElapsed(expiration)) {
 							reset()
 						}
 					});
@@ -62,7 +62,7 @@ const CookieConsent: React.FC = () => {
 		// Evaluate by cookie consent selection made before during 12 months...
 		Storage.set(COOKIE_CONSENT_KEY, consent)
 			.then(() => {
-				Storage.set(COOKIE_CONSENT_KEY_EXPIRE, TimeClass.parseFutureTimeString(COOKIE_EXPIRATION_TIME))
+				Storage.set(COOKIE_CONSENT_KEY_EXPIRE, TimeUtils.parseFutureTimeString(COOKIE_EXPIRATION_TIME))
 					.then(() => {
 						setShowModal(false); // Close the modal after saving the user's choice
 					})
@@ -82,7 +82,7 @@ const CookieConsent: React.FC = () => {
 		<IonModal
 			isOpen={showModal} // Controls the visibility of the modal based on state
 			onDidDismiss={() => setShowModal(false)} // Closes the modal when dismissed
-			trigger="open-modal" // Trigger element to open the modal
+			 // Trigger element to open the modal
 			initialBreakpoint={0.25} // Initial height of the modal
 			breakpoints={[0, 0.25, 0.5, 0.75]} // Responsive breakpoints for the modal
 			handleBehavior="cycle" // Defines the swipe behavior for the modal

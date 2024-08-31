@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react'
 import { IonPage, IonContent } from '@ionic/react'
 
-import Logger from '../../classes/LoggerClass'
-import GA4Tracker  from '../../classes/GA4'
-
+import Logger from '../../classes/utils/LoggerUtils'
+//import GA4Tracker  from '../../classes/integrations/GA4Integration'
+import DebugUtils from '../../classes/utils/DebugUtils'
 import CookieConsent from '../CookieConsent'
 
 import PagePropsData from './types'
@@ -17,11 +17,11 @@ import './styles.css'
  * @returns JSX.IonPage
  */
 const Page: React.FC<PagePropsData> = (pageProps) => {
-
+  const debug = DebugUtils.setDebug(false);
   useEffect(()=> {
-    Logger.info(' • Loading page!');
-    GA4Tracker.trackEvent('load', pageProps.ga4)
-  })
+    if (debug) Logger.info(' • Loading page!');
+    //GA4Tracker.trackEvent('load', pageProps.ga4)
+  },[ pageProps ])
 
   return (
     <IonPage {...pageProps.settings}>
@@ -35,4 +35,4 @@ const Page: React.FC<PagePropsData> = (pageProps) => {
   );
 };
 
-export default React.memo(Page)
+export default Page;

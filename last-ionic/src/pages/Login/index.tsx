@@ -1,7 +1,7 @@
 // Global imports
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { IonIcon, IonItem, IonText, IonFooter, IonToolbar, IonButtons, IonButton } from '@ionic/react';
+import { IonIcon, IonItem, IonText, IonFooter } from '@ionic/react';
 
 // Used Components
 import PagePropsData from '../../components/Page/types';
@@ -9,16 +9,12 @@ import Page from '../../components/Page';
 import Header from '../../components/Header';
 import Form from '../../components/Form';
 
-// Component Reducer
-import { connect } from '../../reducer/src/connect';
-import { OwnProps, ComponentProps, StateProps, DispatchProps, mapStateToProps, mapDispatchToProps } from './reducer'
-
-// Component imports
+// Page imports
 import { loginFormData } from './source';
 import './styles.scss';
 import './style.css';
 
-const LoginPage: React.FC<ComponentProps> = (pageProps) => {
+const LoginPage: React.FC<any> = (pageProps) => {
   
   const { t } = useTranslation();
 
@@ -38,6 +34,7 @@ const LoginPage: React.FC<ComponentProps> = (pageProps) => {
     header: () => {
       const headerProps = {
         title: t('Login'),
+        showMenuButton: true, // Asegúrate de que esto es true
         slot: 'start',
         loading: pageProps.loading || false
       }
@@ -68,7 +65,7 @@ const LoginPage: React.FC<ComponentProps> = (pageProps) => {
     footer: () => {
       return (
         <IonFooter className="login-footer">
-          <IonToolbar>
+          {/*<IonToolbar>
             <IonText className="footer-text">
               <p>{t('Need help?')}</p>
               <p>{t('Contact us at support@festivore.com')}</p>
@@ -85,7 +82,7 @@ const LoginPage: React.FC<ComponentProps> = (pageProps) => {
                 <IonIcon name="logo-instagram" />
               </IonButton>
             </IonButtons>
-          </IonToolbar>
+          </IonToolbar>*/}
         </IonFooter>
       );
     }
@@ -95,4 +92,4 @@ const LoginPage: React.FC<ComponentProps> = (pageProps) => {
 
 };
 
-export default connect<OwnProps, StateProps, DispatchProps>({ mapStateToProps, mapDispatchToProps, component: LoginPage });
+export default LoginPage;

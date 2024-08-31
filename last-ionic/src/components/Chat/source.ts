@@ -4,30 +4,29 @@ import { useHistory } from 'react-router';
 import { useIonToast } from '@ionic/react'
 import * as icon from 'ionicons/icons';
 
-import { HOME_PATH, apiUrl } from '../../config/env';
-import DebugUtil from '../../classes/DebugUtil';
-import RestAPI from '../../classes/Rest';
-import RestOutput from '../../classes/RestOutput';
+import { HOME_PATH, apiUrl } from '../../app/config/env';
+import DebugUtils from '../../classes/utils/DebugUtils';
+import RestOutput from '../../classes/utils/RestOutput';
 
 import { FormDataProps } from '../../components/Form/types';
 
-import { setData, setLoading, setisLogged } from '../../reducer/data/user/user.actions';
-import Logger from '../../classes/LoggerClass';
+//import { setData, setLoading, setIsLogged } from '../../classes/stores/user.store';
+import Logger from '../../classes/utils/LoggerUtils';
 
 /*
 export const loginFormData = ({
-  setisLogged
+  setIsLogged
 }: {
   setLoading: (loading: boolean) => void;
   setData: (data: any) => void;
-  setisLogged: (isLoggedIn: boolean) => void;
+  setIsLogged: (isLoggedIn: boolean) => void;
 }): FormDataProps => {
 
   const { t } = useTranslation();
   const history = useHistory();
   const [presentToast] = useIonToast();
   
-  const debug = DebugUtil.setDebug(false);
+  const debug = DebugUtils.setDebug(false);
   
   return {
     id: 'login-page',
@@ -108,7 +107,7 @@ export const loginFormData = ({
     onSuccess: async (data: any) => {
       
       setLoading(true);
-      await RestAPI.restCallAsync({
+      await RestCall.RestCallAsync({
         req: {
           method: 'POST',
           url: `${apiUrl}/auth/local`,
@@ -122,7 +121,7 @@ export const loginFormData = ({
 
             if (res.status === 200) {
               setData(res.data.user);
-              setisLogged(true);
+              setIsLogged(true);
 
               presentToast(RestOutput.catchSuccess(res))
                 .then(() => {
@@ -137,7 +136,7 @@ export const loginFormData = ({
         },
         onError: {
           default: (error: any) => {
-            setisLogged(false);
+            setIsLogged(false);
             setLoading(false);
 
             RestOutput.catchDanger(error)
@@ -152,7 +151,7 @@ export const loginFormData = ({
     },
     onError: (errors: any) => {
       // This is when the form have some error...
-      setisLogged(false);
+      setIsLogged(false);
       setLoading(false);
       // Set Form errors output
       // TODO: Prepare the html errors junmp when form errors...

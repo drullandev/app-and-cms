@@ -8,14 +8,14 @@ import * as yup from 'yup';
 import * as icon from 'ionicons/icons';
 
 // Used classes
-import DebugUtil from '../../classes/DebugUtil';
-import RestAPI from '../../classes/Rest';
+import DebugUtils from '../../classes/utils/DebugUtils';
+import RestManager from '../../classes/managers/RestManager';
 
 // Local dependencies
 import { FormDataProps } from '../../components/Form/types';
 
 // Reducer dependencies
-import { setisLogged } from '../../reducer/data/user/user.actions';
+import useUserStore from '../../classes/stores/user.store';
 
 /**
  * This is the information for the reset page main form
@@ -26,8 +26,7 @@ export const resetFormData = (): FormDataProps => {
   const { t } = useTranslation();
   const history = useHistory();
   const [presentToast] = useIonToast();
-  
-  const debug = DebugUtil.setDebug(false);
+  const debug = DebugUtils.setDebug(false);
   
   return {
     id: 'reset-page',
@@ -100,7 +99,7 @@ export const resetFormData = (): FormDataProps => {
     ],
     onSuccess: async (data: any) => {
 
-      await RestAPI.restCallAsync({
+      await RestManager.RestCallAsync({
         req: {
           url: '/auth/reset-password',
           method: 'POST',
@@ -116,7 +115,7 @@ export const resetFormData = (): FormDataProps => {
             const onSuccess = async (ret: any) => {
               let user = ret.user
               user.jwt = ret.jwt // Attaching the JWT to the user level and state...
-              await setisLogged(true)
+
               return user
             } 
 

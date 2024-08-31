@@ -1,7 +1,7 @@
 import React, { useRef,
   // useEffect
  } from 'react';
-import { Location } from '../../reducer/models/Location';
+import { Location } from '../../interfaces/models/Location';
 
 interface MapProps {
   locations: Location[]

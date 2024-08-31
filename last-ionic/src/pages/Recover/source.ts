@@ -4,22 +4,21 @@ import { useHistory } from 'react-router';
 import { useIonToast } from '@ionic/react'
 import * as icon from 'ionicons/icons';
 
-import { HOME_PATH, apiUrl } from '../../config/env';
-import DebugUtil from '../../classes/DebugUtil';
-import RestAPI from '../../classes/Rest';
-import RestOutput from '../../classes/RestOutput';
+import { HOME_PATH, apiUrl } from '../../app/config/env';
+import DebugUtils from '../../classes/utils/DebugUtils';
+import RestOutput from '../../classes/utils/RestOutput';
 
 import { FormDataProps } from '../../components/Form/types';
 
-import { setData, setLoading, setisLogged } from '../../reducer/data/user/user.actions';
+import useUserStore from '../../classes/stores/user.store';
+import RestManager from '../../classes/managers/RestManager';
 
 export const recoverFormData = (): FormDataProps => {
 
   const { t } = useTranslation();
   const history = useHistory();
   const [presentToast] = useIonToast();
-  
-  const debug = DebugUtil.setDebug(false);
+  const debug = DebugUtils.setDebug(false);
   
   return {
     id: 'recover-page',
@@ -70,11 +69,10 @@ export const recoverFormData = (): FormDataProps => {
       const onSuccess = async (ret: any) => {
         let user = ret.user
         user.jwt = ret.jwt // Attaching the JWT to the user level and state...
-        await setisLogged(true)
         return user
       }  
 
-      await RestAPI.restCallAsync({
+      await RestManager.RestCallAsync({
         req: {
           url: '/auth/forgot-password',
           method: 'POST',

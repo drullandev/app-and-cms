@@ -1,9 +1,8 @@
 import { IonModal, IonButton, IonContent, IonSpinner } from '@ionic/react';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';//TODO: Change by utils
-import { ModalProps } from './types';
 
-const Modal: React.FC<ModalProps> = ({ open, showButton, model, slug, contentIn }) => {
+const Modal: React.FC<any> = ({ open, showButton, model, slug, contentIn }) => {
     
   const [showModal, setShowModal] = useState(false);
   const [content, setContent] = useState<string | null>(null);
