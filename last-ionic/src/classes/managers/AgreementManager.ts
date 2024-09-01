@@ -2,6 +2,7 @@ import axios from "axios";
 import LoggerClass, { initializeLogger } from "../utils/LoggerUtils";
 import DebugUtils from "../utils/DebugUtils";
 
+// Define AgreementData and CleanedData interfaces
 interface AgreementData {
   id: number;
   agreement: boolean;
@@ -11,6 +12,15 @@ interface AgreementData {
 interface CleanedData {
   cleanData: Record<string, any>;
   agreementApproval: boolean;
+}
+
+// Define AgreementManagerInterface
+export interface AgreementManagerInterface {
+  processAgreement(data: AgreementData): CleanedData;
+  cleanFormData(formData: AgreementData): CleanedData;
+  getRandomBoolean(): boolean;
+  checkUserExists(userId: string): boolean;
+  getCRMValidation(userId: string): Promise<boolean>;
 }
 
 /**
@@ -25,7 +35,7 @@ interface CleanedData {
  * @author David Rullán - https://github.com/drullandev
  * @date Agoust 31, 2024
  */
-export class AgreementManager {
+export class AgreementManager implements AgreementManagerInterface {
   private static instance: AgreementManager | null = null; // Singleton instance
   private logger: LoggerClass;
   private debug: boolean;
@@ -60,8 +70,14 @@ export class AgreementManager {
    */
   public processAgreement(data: AgreementData): CleanedData {
     const returnData = this.cleanFormData(data);
-    this.logger.info("Processing agreement", { cleanData: returnData.cleanData, agreement: data.agreement });
-    return { cleanData: returnData.cleanData, agreementApproval: data.agreement };
+    this.logger.info("Processing agreement", {
+      cleanData: returnData.cleanData,
+      agreement: data.agreement,
+    });
+    return {
+      cleanData: returnData.cleanData,
+      agreementApproval: data.agreement,
+    };
   }
 
   /**

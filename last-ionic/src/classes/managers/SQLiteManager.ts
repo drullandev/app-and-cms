@@ -4,6 +4,18 @@ import LoggerClass from "../utils/LoggerUtils";
 import DebugUtils from "../utils/DebugUtils";
 
 /**
+ * SQLiteManagerInterface defines the contract for SQLiteManager operations.
+ * This interface ensures that the SQLiteManager can handle SQLite database management consistently.
+ */
+export interface SQLiteManagerInterface {
+  connect(): Promise<void>;
+  createTable(tableName: string, columns: string): Promise<void>;
+  insert(tableName: string, data: Record<string, any>): Promise<void>;
+  query(tableName: string, columns?: string): Promise<any[]>;
+  close(): Promise<void>;
+}
+
+/**
  * SQLiteManager provides a simple interface for interacting with an SQLite database.
  * It includes methods for connecting to a database, creating tables, inserting data,
  * querying tables, and closing the connection.
@@ -19,18 +31,12 @@ import DebugUtils from "../utils/DebugUtils";
  * const users = await dbManager.query('users');
  * await dbManager.close();
  *
- *
  * @author David Rullán - https://github.com/drullandev
- * @date Agoust 31, 2024
+ * @date August 31, 2024
  */
-class SQLiteManager {
-  // The SQLite database instance
+class SQLiteManager implements SQLiteManagerInterface {
   private db: Database | null = null;
-
-  // Path to the SQLite database file
   private dbPath: string;
-
-  // Logger instance
   private logger: LoggerClass;
   private debug: boolean;
 
@@ -146,15 +152,3 @@ class SQLiteManager {
 }
 
 export default SQLiteManager;
-
-/* 
-// Example usage:
-(async () => {
-    const dbManager = new SQLiteManager('./my-database.db');
-    await dbManager.connect();
-    await dbManager.createTable('users', 'id INTEGER PRIMARY KEY, name TEXT, email TEXT');
-    await dbManager.insert('users', { name: 'John Doe', email: 'john@example.com' });
-    const users = await dbManager.query('users');
-    await dbManager.close();
-})();
- */

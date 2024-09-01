@@ -24,6 +24,6 @@ const COOKIE_PATH = process.env.COOKIE_PATH || '/';
  * @author David Rullán - https://github.com/drullandev
  * @date August 30, 2024
  */
-export const cookies = new CookieManager(COOKIE_DOMAIN, COOKIE_PATH);
+export const Cookies = new CookieManager(COOKIE_DOMAIN, COOKIE_PATH);
 
-export default cookies;
+export default Cookies;

@@ -62,7 +62,9 @@ class GA4Manager {
         page_path: pagePath,
         page_title: pageTitle,
       });
-      this.logger.info(`Pageview sent for ${pagePath} with title ${pageTitle}.`);
+      this.logger.info(
+        `Pageview sent for ${pagePath} with title ${pageTitle}.`
+      );
     } else {
       this.logger.warn("GA4 is not initialized yet.");
     }

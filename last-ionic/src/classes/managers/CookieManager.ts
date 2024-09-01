@@ -24,7 +24,11 @@ class CookieManager {
     this.domain = domain;
     this.path = path;
     this.debug = DebugUtils.setDebug(false); // Ajusta el modo de depuración según sea necesario
-    this.logger = LoggerClass.getInstance(this.constructor.name, this.debug, 100);
+    this.logger = LoggerClass.getInstance(
+      this.constructor.name,
+      this.debug,
+      100
+    );
 
     if (this.debug) {
       this.logger.info("CookieManager initialized", { domain, path });
@@ -38,17 +42,31 @@ class CookieManager {
    * @param value - The value of the cookie.
    * @param options - Optional. An object containing additional options such as expires, secure.
    */
-  public setCookie(
+  public set(
     name: string,
     value: string,
-    options: { expires?: Date; secure?: boolean } = {}
+    options: {
+      expires?: Date | string | number;
+      secure?: boolean;
+      path?: string;
+    } = {}
   ): void {
     try {
-      let cookieString = `${encodeURIComponent(name)}=${encodeURIComponent(value)}; path=${this.path}; domain=${this.domain}`;
+      let cookieString = `${encodeURIComponent(name)}=${encodeURIComponent(value)}; path=${options.path || this.path}; domain=${this.domain}`;
 
+      // Handle different types of expiration input
       if (options.expires) {
-        cookieString += `; expires=${options.expires.toUTCString()}`;
+        let expires: Date;
+        if (typeof options.expires === "number") {
+          expires = new Date(Date.now() + options.expires);
+        } else if (typeof options.expires === "string") {
+          expires = new Date(options.expires);
+        } else {
+          expires = options.expires;
+        }
+        cookieString += `; expires=${expires.toUTCString()}`;
       }
+
       if (options.secure) {
         cookieString += `; secure`;
       }
@@ -66,7 +84,7 @@ class CookieManager {
    * @param name - The name of the cookie to retrieve.
    * @returns The value of the cookie, or null if the cookie does not exist.
    */
-  public getCookie(name: string): string | null {
+  public get(name: string): string | null {
     try {
       const match = document.cookie.match(
         new RegExp(`(^| )${encodeURIComponent(name)}=([^;]+)`)
@@ -85,13 +103,18 @@ class CookieManager {
    *
    * @param name - The name of the cookie to remove.
    */
-  public removeCookie(name: string): void {
+  public remove(name: string): void {
     try {
-      this.setCookie(name, "", { expires: new Date(0) });
+      this.set(name, "", { expires: new Date(0), path: '/' });
       this.logger.info(`Cookie "${name}" removed`);
     } catch (error) {
       this.logger.error(`Failed to remove cookie "${name}":`, error);
     }
+  }
+
+  // Remove common alias untuitive extra helper or something ;)
+  public delete(name: string): void {
+    this.remove(name);
   }
 }
 
