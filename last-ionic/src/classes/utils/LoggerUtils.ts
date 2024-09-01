@@ -1,6 +1,3 @@
-import fs from 'fs';
-import path from 'path';
-
 interface LoggerInstances {
   [name: string]: LoggerClass;
 }
@@ -16,7 +13,6 @@ class LoggerClass {
   public logLevel: LogLevel;
   private archivedLogs: string[][] = [];
   private maxArchivedLogs: number = 5;
-  private logFilePath: string;
 
   /**
    * Private constructor to prevent direct instantiation.
@@ -33,7 +29,6 @@ class LoggerClass {
     this.maxLogs = maxLogs;
     this.logLevel = logLevel;
     this.shouldLog = shouldLog || (() => process.env.NODE_ENV === "development");
-    this.logFilePath = path.join(__dirname, `${prefix}.log`);
   }
 
   /**
@@ -66,7 +61,7 @@ class LoggerClass {
    *
    * @param {...any} args - The message(s) to log.
    */
-  public log(...args: any[]): void {
+  public log = (...args: any[]): void => {
     this.logMessage('debug', args);
   }
 
@@ -76,7 +71,7 @@ class LoggerClass {
    *
    * @param {...any} args - The warning message(s) to log.
    */
-  public warn(...args: any[]): void {
+  public warn = (...args: any[]): void => {
     this.logMessage('warn', args);
   }
 
@@ -86,7 +81,7 @@ class LoggerClass {
    *
    * @param {...any} args - The error message(s) to log.
    */
-  public error(...args: any[]): void {
+  public error = (...args: any[]): void => {
     this.logMessage('error', args);
   }
 
@@ -96,7 +91,7 @@ class LoggerClass {
    *
    * @param {...any} args - The informational message(s) to log.
    */
-  public info(...args: any[]): void {
+  public info = (...args: any[]): void => {
     this.logMessage('info', args);
   }
 
@@ -106,7 +101,7 @@ class LoggerClass {
    *
    * @param {...any} args - The debug message(s) to log.
    */
-  public debug(...args: any[]): void {
+  public debug = (...args: any[]): void => {
     this.logMessage('debug', args);
   }
 
@@ -116,7 +111,7 @@ class LoggerClass {
    *
    * @param {...any} args - The message(s) to log.
    */
-  public show(...args: any[]): void {
+  public show = (...args: any[]): void => {
     console.info(`[SHOW] [${this.prefix}] ${args.join(" ")}`);
   }
 
@@ -126,7 +121,7 @@ class LoggerClass {
    *
    * @returns {string[]} A copy of the current logs.
    */
-  public getLogs(): string[] {
+  public getLogs = (): string[] => {
     return this.shouldLog() ? [...this.logs] : [];
   }
 
@@ -137,7 +132,7 @@ class LoggerClass {
    * @param level - The log level of the current message.
    * @returns {boolean} - True if the message should be logged, otherwise false.
    */
-  private shouldLogMessage(level: LogLevel): boolean {
+  private shouldLogMessage = (level: LogLevel): boolean => {
     const levels: { [key in LogLevel]: number } = { 'error': 0, 'warn': 1, 'info': 2, 'debug': 3 };
     return this.shouldLog() && levels[level] <= levels[this.logLevel];
   }
@@ -150,7 +145,7 @@ class LoggerClass {
    * @param level - The log level of the message.
    * @param args - The message(s) to log.
    */
-  private logMessage(level: LogLevel, args: any[]): void {
+  private logMessage = (level: LogLevel, args: any[]): void => {
     if (this.shouldLogMessage(level)) {
       const message = `[${level.toUpperCase()}] [${this.prefix}] ${args.join(" ")}`;
       this.logs.push(message);
@@ -158,7 +153,6 @@ class LoggerClass {
         this.archiveLogs();
       }
       console.log(message);
-      this.saveLogToFile(message);
     }
   }
 
@@ -166,39 +160,12 @@ class LoggerClass {
    * Archives current logs when the maximum size is reached and clears the log.
    * This prevents unbounded memory growth and simulates a basic log rotation mechanism.
    */
-  private archiveLogs(): void {
+  private archiveLogs = (): void => {
     this.archivedLogs.push([...this.logs]);
     if (this.archivedLogs.length > this.maxArchivedLogs) {
       this.archivedLogs.shift(); // Remove the oldest archived logs if over the limit
     }
     this.logs = []; // Clear current logs
-    this.rotateLogFiles(); // Rotate log files on disk
-  }
-
-  /**
-   * Saves the current log message to a file on disk.
-   *
-   * @param message - The log message to save.
-   */
-  private saveLogToFile(message: string): void {
-    fs.appendFile(this.logFilePath, message + '\n', (err) => {
-      if (err) {
-        console.error('Failed to write log to file:', err);
-      }
-    });
-  }
-
-  /**
-   * Rotates the log files when the log size exceeds the maximum allowed.
-   */
-  private rotateLogFiles(): void {
-    const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
-    const archivePath = path.join(__dirname, `${this.prefix}-${timestamp}.log`);
-    fs.rename(this.logFilePath, archivePath, (err) => {
-      if (err) {
-        console.error('Failed to rotate log file:', err);
-      }
-    });
   }
 
   /**
@@ -206,7 +173,7 @@ class LoggerClass {
    *
    * @param level - The new log level to set.
    */
-  public setLogLevel(level: LogLevel): void {
+  public setLogLevel = (level: LogLevel): void => {
     this.logLevel = level;
     this.info(`Log level set to ${level}`);
   }
@@ -221,13 +188,13 @@ class LoggerClass {
    * @param shouldLog - Optional custom function to determine if logging should occur.
    * @returns {LoggerClass} The initialized LoggerClass instance.
    */
-  public initializeLogger(
+  public initializeLogger = (
     className: string,
     debug: boolean = false,
     maxLogs: number = 100,
     logLevel: LogLevel = 'debug',
     shouldLog?: () => boolean
-  ): LoggerClass {
+  ): LoggerClass => {
     return LoggerClass.getInstance(className, debug, maxLogs, logLevel, shouldLog);
   }
 
@@ -235,7 +202,7 @@ class LoggerClass {
    * Allows developers to disable logging entirely.
    * This can be useful in production environments to reduce performance overhead.
    */
-  public disableLogging(): void {
+  public disableLogging = (): void => {
     this.shouldLog = () => false;
   }
 }

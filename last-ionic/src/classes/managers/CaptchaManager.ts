@@ -1,178 +1,113 @@
-import { initializeLogger } from "../utils/LoggerUtils";
+import LoggerClass, { initializeLogger } from "../utils/LoggerUtils";
+import crypto from 'crypto';
 
 /**
- * CheckTrustManager is responsible for evaluating the trustworthiness of users based on their behavior 
- * and activity within a specified time window. It keeps track of failed login attempts, user actions, 
- * request times, and maintains a list of suspicious IP addresses.
+ * CaptchaManager is responsible for managing CAPTCHAs, including generating, validating, and tracking CAPTCHAs.
+ * This class provides methods to generate CAPTCHAs and validate user responses.
  */
- class CheckTrustManager {
+class CaptchaManager {
+  private static instance: CaptchaManager | null = null; // Singleton instance
+  private logger: LoggerClass;
+  private captchaStore: Map<string, { answer: string, timestamp: number }>; // Stores CAPTCHA tokens, their answers, and creation timestamps
+  private captchaExpiry: number; // Expiry time for CAPTCHA in milliseconds
+  private cleanupInterval: number; // Interval time for periodic cleanup in milliseconds
+  private cleanupTimer: NodeJS.Timeout | null = null; // Timer for cleanup interval
 
-    private static instance: CheckTrustManager | null = null; // Singleton instance
+  /**
+   * Private constructor to initialize CaptchaManager with CAPTCHA expiry settings.
+   *
+   * @param captchaExpiry - Expiry time for CAPTCHA in milliseconds.
+   * @param cleanupInterval - Interval time for periodic cleanup in milliseconds.
+   */
+  private constructor(captchaExpiry: number = 300000, cleanupInterval: number = 60000) { // Default cleanup interval is 1 minute
+    this.captchaStore = new Map();
+    this.captchaExpiry = captchaExpiry;
+    this.cleanupInterval = cleanupInterval;
+    this.logger = initializeLogger(this.constructor.name, false, 100);
 
-    private failedAttempts: number = 0; // Count of failed login attempts
-    private userActions: number[] = []; // Timestamps of user actions
-    private requestTimes: number[] = []; // Timestamps of requests made
-    private suspiciousIPs: string[] = []; // List of suspicious IP addresses
-    // TODO: No se hace nada con blocked IP, hay que hacerlo!
-    private blockedIPs: { [key: string]: number } = {}; // Dictionary of blocked IPs with unblock timestamp
-    private maxFailedAttempts: number; // Maximum allowed failed attempts
-    private maxActions: number; // Maximum allowed user actions
-    private maxRequests: number; // Maximum allowed requests in the time window
-    private timeWindow: number; // Time window in milliseconds for tracking actions
-    private blocked = false;
-    private blockDuration: number; // Default block duration in milliseconds
+    // Start the periodic cleanup
+    this.startCleanup();
+  }
 
-    /**
-     * Constructor to initialize the CheckTrustManager with specific limits for failed attempts, 
-     * user actions, requests, the time window, and block duration.
-     * 
-     * @param maxFailedAttempts - Maximum number of failed login attempts allowed.
-     * @param maxActions - Maximum number of actions allowed within the time window.
-     * @param maxRequests - Maximum number of requests allowed within the time window.
-     * @param timeWindow - Time window in milliseconds for tracking user actions.
-     * @param blockDuration - Duration in milliseconds for blocking IPs.
-     */
-    // TODO: Copy and move the rules to some kind of env
-    private constructor(
-        maxFailedAttempts = 3,
-        maxActions = 20,
-        maxRequests = 60,
-        timeWindow = 60000,
-        blockDuration = 31536000000
-    ) {
-        this.maxFailedAttempts = maxFailedAttempts;
-        this.maxActions = maxActions;
-        this.maxRequests = maxRequests;
-        this.timeWindow = timeWindow; 
-        this.blockDuration = blockDuration;
+  /**
+   * Get the singleton instance of CaptchaManager.
+   * 
+   * @returns The singleton instance of CaptchaManager.
+   */
+  public static getInstance(): CaptchaManager {
+    if (this.instance === null) {
+      this.instance = new CaptchaManager();
     }
+    return this.instance;
+  }
 
-    /**
-     * Get the singleton instance of CheckTrustManager.
-     * 
-     * @returns The singleton instance of CheckTrustManager.
-     */
-    public static getInstance(): CheckTrustManager {
-        if (this.instance === null) {
-            this.instance = new CheckTrustManager();
-        }
-        this.logger = initializeLogger(this.constructor.name, this.debug, 100);
-        return this.instance;
+  /**
+   * Generates a new CAPTCHA token and answer. The CAPTCHA is a simple numeric token for demonstration purposes.
+   * 
+   * @returns An object containing the CAPTCHA token and the answer.
+   */
+  public generateCaptcha(): { token: string, answer: string } {
+    const token = crypto.randomBytes(3).toString('hex'); // Generate a random 6-character hex string
+    const answer = token; // For simplicity, use the token itself as the answer
+    const timestamp = Date.now(); // Store the current time as the timestamp
+    this.captchaStore.set(token, { answer, timestamp });
+    
+    // Set expiry time for the CAPTCHA
+    setTimeout(() => this.captchaStore.delete(token), this.captchaExpiry);
+    
+    this.logger.info("CAPTCHA generated", { token });
+    return { token, answer };
+  }
+
+  /**
+   * Validates the provided CAPTCHA token and answer.
+   * 
+   * @param token - The CAPTCHA token to validate.
+   * @param answer - The answer to check against the CAPTCHA.
+   * @returns boolean - True if the CAPTCHA is valid, false otherwise.
+   */
+  public validateCaptcha(token: string, answer: string): boolean {
+    const captcha = this.captchaStore.get(token);
+    if (captcha && captcha.answer === answer) {
+      this.logger.info("CAPTCHA validated successfully", { token });
+      this.captchaStore.delete(token); // Remove CAPTCHA after validation
+      return true;
+    } else {
+      this.logger.warn("CAPTCHA validation failed", { token, answer });
+      return false;
     }
-   static debug(name: string, debug: any, arg2: number): any {
-     throw new Error("Method not implemented.");
-   }
+  }
 
-    /** 
-     * Records a failed login attempt by incrementing the failed attempts counter.
-     */
-    private recordFailedAttempt() {
-        this.failedAttempts++;
+  /**
+   * Removes expired CAPTCHAs from the store.
+   */
+  private cleanUpExpiredCaptchas(): void {
+    const now = Date.now();
+    for (const [token, { timestamp }] of this.captchaStore.entries()) {
+      if (now - timestamp > this.captchaExpiry) { // Check if CAPTCHA has expired
+        this.captchaStore.delete(token);
+        this.logger.info("Expired CAPTCHA removed", { token });
+      }
     }
+  }
 
-    /** 
-     * Resets the failed attempts counter to zero.
-     */
-    private resetFailedAttempts() {
-        this.failedAttempts = 0;
+  /**
+   * Starts a periodic cleanup of expired CAPTCHAs.
+   */
+  private startCleanup(): void {
+    this.cleanupTimer = setInterval(() => this.cleanUpExpiredCaptchas(), this.cleanupInterval);
+    this.logger.info("Started CAPTCHA cleanup interval", { interval: this.cleanupInterval });
+  }
+
+  /**
+   * Stops the periodic cleanup of expired CAPTCHAs.
+   */
+  public stopCleanup(): void {
+    if (this.cleanupTimer) {
+      clearInterval(this.cleanupTimer);
+      this.logger.info("Stopped CAPTCHA cleanup interval");
     }
-
-    /** 
-     * Records a user action by capturing the current timestamp and filtering out old actions 
-     * that fall outside the time window.
-     */
-    private recordUserAction() {
-        const now = Date.now();
-        this.userActions.push(now);
-        this.userActions = this.userActions.filter(timestamp => now - timestamp <= this.timeWindow);
-    }
-
-    /** 
-     * Records a request by capturing the current timestamp and filtering out old requests 
-     * that fall outside the time window.
-     */
-    private recordRequest() {
-        const now = Date.now();
-        this.requestTimes.push(now);
-        this.requestTimes = this.requestTimes.filter(timestamp => now - timestamp <= this.timeWindow);
-    }
-
-    /** 
-     * Checks if the provided IP address is in the list of suspicious IPs.
-     * 
-     * @param ip - The IP address to check.
-     * @returns boolean - True if the IP address is suspicious, false otherwise.
-     */
-    private checkIPAddress(ip: string): boolean {
-        return this.suspiciousIPs.includes(ip);
-    }
-        
-    /** 
-     * Checks if the provided IP address is in the list of suspicious IPs.
-     * 
-     * @param ip - The IP address to check.
-     * @returns boolean - True if the IP address is suspicious, false otherwise.
-     */
-    public getTrustScore(ip: string): number {
-
-        let score = 10; // Iniciamos con la máxima puntuación
-
-        // Penaliza la puntuación según los criterios
-        if (this.failedAttempts >= this.maxFailedAttempts) {
-            score -= 5; // Reduce la puntuación si se alcanzan los intentos fallidos
-        }
-
-        if (this.userActions.length >= this.maxActions) {
-            score -= 3; // Reduce la puntuación si se alcanzan las acciones
-        }
-
-        if (this.checkIPAddress(ip)) {
-            score -= 4; // Reduce la puntuación si la IP es sospechosa
-        }
-
-        if (this.requestTimes.length > this.maxRequests) {
-            score -= 2; // Reduce la puntuación si se alcanzan las solicitudes
-        }
-
-        // Aseguramos que la puntuación esté entre 0 y 10
-        if (score == 0) {
-            this.blocked = true;
-        }
-
-        return Math.max(0, Math.min(10, score));
-    }
-
-    public handleUserAction(ip: string, success: boolean): void {
-        if (!success) {
-            this.recordFailedAttempt();
-        } else {
-            this.resetFailedAttempts();
-        }
-
-        this.recordUserAction();
-        this.recordRequest();
-    }
-
-    public addSuspiciousIP(ip: string): void {
-        if (!this.suspiciousIPs.includes(ip)) {
-            this.suspiciousIPs.push(ip);
-            // TODO: Save to database
-        }
-    }
-
-    public removeSuspiciousIP(ip: string): void {
-        this.suspiciousIPs = this.suspiciousIPs.filter(suspiciousIP => suspiciousIP !== ip);
-    }
-
-    // Método adicional para mostrar el estado de confianza
-    public displayTrustStatus(ip: string): void {
-        const trustScore = this.getTrustScore(ip);
-        console.log(`El usuario tiene un puntaje de confianza de: ${trustScore}`);
-    }
-
-    public isBlocked(ip: string): boolean {
-        return this.blockedIPs[ip]!== undefined;
-    }
+  }
 }
 
-export default CheckTrustManager;
+export default CaptchaManager;
