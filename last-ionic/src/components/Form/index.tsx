@@ -9,15 +9,15 @@ import * as yup from 'yup';
 import Overlay from './components/Overlay';
 import Field from './components/Field';
 //import GA4Tracker from '../../classes/integrations/GA4Integration';
-import DebugBox from '../DebugBox';
-import Accordion from '../Accordion';
+//import DebugBox from '../DebugBox';
+//import Accordion from '../Accordion';
 
 // Importing utilities and helper functions
-import Logger from '../../classes/utils/LoggerUtils';
+import LoggerClass from '../../classes/utils/LoggerUtils';
 import Security from '../../classes/utils/SecurityUtils';
 import DebugUtils from '../../classes/utils/DebugUtils';
 import { buildValidationSchema, buildInitialValues } from '../../classes/utils/ValidationUtil';
-import CaptchaManager from '../../classes/managers/CaptchaManager'; // Importar CaptchaManager
+import CaptchaManager from '../../classes/managers/CaptchaManager';
 
 // Importing types
 import { FieldProps, FormComponentProps, FormDataProps } from './types';
@@ -25,9 +25,14 @@ import { FieldProps, FormComponentProps, FormDataProps } from './types';
 // Importing styles
 import './style.css';
 
+// Initialize logger
+const logger = LoggerClass.getInstance('FormComponent', DebugUtils.setDebug(false));
+
+// Initialize CaptchaManager (provide your CAPTCHA verification endpoint)
+const captchaManager = CaptchaManager.getInstance('/api/verify-captcha');
+
 const Form: React.FC<FormComponentProps> = (formProps: FormComponentProps): JSX.Element | null => {
   
-  const debug = DebugUtils.setDebug(false);
   const { t } = useTranslation();
   
   const [csrfToken, setCsrfToken] = useState<string>(''); // CSRF token for security
@@ -54,14 +59,14 @@ const Form: React.FC<FormComponentProps> = (formProps: FormComponentProps): JSX.
 
   const generateCsrfToken = () => {
     const token = Security.generateCsrfToken('sessionId');
-    if (debug) Logger.log(' • Generated CSRF Token:', token);
+    logger.debug('Generated CSRF Token:', token);
     setCsrfToken(token);
   };
 
   const generateCaptcha = () => {
     if (formProps.captcha) {
       const captcha = Security.generateCaptcha();
-      if (debug) Logger.log(' • Generated CAPTCHA:', captcha);
+      logger.debug('Generated CAPTCHA:', captcha);
       setCaptcha(captcha);
     }
   };
@@ -70,20 +75,20 @@ const Form: React.FC<FormComponentProps> = (formProps: FormComponentProps): JSX.
     try {
       const response = await fetch('https://api.ipify.org?format=json');
       const data = await response.json();
-      if (debug) Logger.log(` • Tu IP es: ${data.ip}`);
+      logger.debug(`Tu IP es: ${data.ip}`);
       setIpAddress(data.ip);
     } catch (error) {
-      if (debug) Logger.error('Error al capturar la IP:', error);
+      logger.error('Error al capturar la IP:', error);
     }
     return '';
   };
 
   const onFormChange = (fieldName: string, value: any) => {
-    if (debug) Logger.log(' • Field change:', { name: fieldName, value });
+    logger.debug('Field change:', { name: fieldName, value });
   };
 
   const onSubmit = async (data: FieldValues) => {
-    if (debug) Logger.log(' • Data to submit (initial):', data);
+    logger.debug('Data to submit (initial):', data);
 
     try {
       setIsSubmitting(true);
@@ -100,22 +105,22 @@ const Form: React.FC<FormComponentProps> = (formProps: FormComponentProps): JSX.
       const approvedData = Security.approveFormData(filteredData, 'sessionId'); // TODO: algo sobre sessionId jejeje
       if (approvedData) {
         // Verificar si se debe mostrar el CAPTCHA antes de proceder
-        const captchaRequired = CaptchaManager.handleLoginAttempt(ipAddress, true); // Suponiendo que el inicio de sesión fue exitoso
+        const captchaRequired = await captchaManager.verifyCaptcha(captcha);
         if (captchaRequired) {
           setShowCaptcha(true);
-          CaptchaManager.showCaptcha(); // Lógica para mostrar el CAPTCHA
+          logger.info('Showing CAPTCHA due to verification requirement');
         } else {
           await formData?.onSuccess(approvedData);
         }
       } else {
-        if (debug) Logger.error(' • Invalid CSRF token');
-        formData?.onError({ message: ' • Invalid CSRF token' });
+        logger.error('Invalid CSRF token');
+        formData?.onError({ message: 'Invalid CSRF token' });
       }
 
       //GA4Tracker.trackEvent('submit', formProps.ga4);
 
     } catch (error) {
-      if (debug) Logger.error('Submission error:', error);
+      logger.error('Submission error:', error);
       //GA4Tracker.trackEvent('error', formProps.ga4);
     } finally {
       setIsSubmitting(false);
@@ -187,7 +192,7 @@ const Form: React.FC<FormComponentProps> = (formProps: FormComponentProps): JSX.
         settings: formProps?.settings || {}
       };
 
-      if (debug) Logger.log(' • Updated formData ():', fields);
+      logger.debug('Updated formData ():', fields);
 
       return newData;
     };
@@ -255,7 +260,7 @@ const Form: React.FC<FormComponentProps> = (formProps: FormComponentProps): JSX.
             </motion.div>
           ))}
         </div>
-        {
+        {/*
         <>
           <DebugBox debugThis={debug}>          
             <Accordion title="Errors" sections={[{ title: 'Errors', content: errors }]} data={undefined} />
@@ -263,7 +268,7 @@ const Form: React.FC<FormComponentProps> = (formProps: FormComponentProps): JSX.
             <Accordion title="CSRF Token" sections={[{ title: 'CSRF Token', content: csrfToken }]} data={csrfToken} />
           </DebugBox>
         </>
-        }
+        */}
       </form>
     </motion.div>
   );

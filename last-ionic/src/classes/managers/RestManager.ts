@@ -96,7 +96,11 @@ class RestManager {
     this.baseUrl = baseUrl;
     this.headers = headers || {};
     this.debug = DebugUtils.setDebug(false); // Set debug mode based on environment
-    this.logger = LoggerClass.getInstance(this.constructor.name, this.debug, 100);
+    this.logger = LoggerClass.getInstance(
+      this.constructor.name,
+      this.debug,
+      100
+    );
 
     if (this.debug) {
       this.logger.info("RestManager initialized", { baseUrl, headers });
@@ -143,7 +147,10 @@ class RestManager {
     let attempts = 0;
     while (attempts < this.maxRetries) {
       try {
-        this.logger.info("Making API call", { url: call.req.url, method: call.req.method });
+        this.logger.info("Making API call", {
+          url: call.req.url,
+          method: call.req.method,
+        });
         const response = await axios(call.req); // Execute the API request using Axios
         call.onSuccess.default(response); // Call the success handler with the response
         this.logger.info("API call successful", { response: response.data });
@@ -177,7 +184,7 @@ class RestManager {
    * @returns A promise that resolves after the specified delay.
    */
   private sleep(ms: number): Promise<void> {
-    return new Promise(resolve => setTimeout(resolve, ms));
+    return new Promise((resolve) => setTimeout(resolve, ms));
   }
 
   /**
@@ -200,7 +207,10 @@ class RestManager {
       call.req.url = `${this.baseUrl}${call.req.url}`;
     }
 
-    this.logger.debug("Prepared API call", { url: call.req.url, headers: call.req.headers });
+    this.logger.debug("Prepared API call", {
+      url: call.req.url,
+      headers: call.req.headers,
+    });
     return call;
   }
 
@@ -214,7 +224,10 @@ class RestManager {
     if (axios.isCancel(error)) {
       this.logger.warn("Request was canceled", error.message);
     } else if (error.response) {
-      this.logger.error(`Server responded with status ${error.response.status}`, error.response.data);
+      this.logger.error(
+        `Server responded with status ${error.response.status}`,
+        error.response.data
+      );
     } else if (error.request) {
       this.logger.error("No response received from server", error.request);
     } else {

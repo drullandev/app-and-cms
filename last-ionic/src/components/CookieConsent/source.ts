@@ -1,15 +1,21 @@
-import Storage from '../../classes/managers/StorageManager'
+import Storage from '../../classes/managers/StorageManager';
 import { COOKIE_CONSENT_KEY, COOKIE_EXPIRATION_TIME } from './env';
-import CookieManager from '../../classes/managers/CookieManager';
+import Cookies from '../../integrations/CookiesIntegration';
 
 class CookieConsentSource {
 
-	public setCookieConsent(consent: boolean): void {
-		Storage.set(COOKIE_CONSENT_KEY, consent);
-		CookieManager.set(COOKIE_CONSENT_KEY, consent, COOKIE_EXPIRATION_TIME);
-		document.cookie = 
-				`${COOKIE_CONSENT_KEY}=${consent}; expires=${new Date(Date.now() + COOKIE_EXPIRATION_TIME).toUTCString()}; path=/`;
-	}
+    public setCookieConsent(consent: boolean): void {
+        Storage.set(COOKIE_CONSENT_KEY, consent);
+        
+        // Uso del método setCookie en lugar de set
+        Cookies.setCookie(COOKIE_CONSENT_KEY, consent.toString(), {
+            expires: new Date(Date.now() + COOKIE_EXPIRATION_TIME),
+            path: '/',
+        });
+
+        document.cookie = 
+            `${COOKIE_CONSENT_KEY}=${consent}; expires=${new Date(Date.now() + COOKIE_EXPIRATION_TIME).toUTCString()}; path=/`;
+    }
 
 }
 

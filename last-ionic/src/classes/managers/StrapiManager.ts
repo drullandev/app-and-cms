@@ -1,10 +1,10 @@
-import axios from 'axios';
-import NodeCache from 'node-cache';
-import LoggerClass, { initializeLogger } from '../utils/LoggerUtils';
+import axios from "axios";
+import NodeCache from "node-cache";
+import LoggerClass, { initializeLogger } from "../utils/LoggerUtils";
 
 /**
- * StrapiManager provides functionality to interact with the Strapi API, including 
- * caching, retry mechanisms, and support for webhooks. It is designed to improve 
+ * StrapiManager provides functionality to interact with the Strapi API, including
+ * caching, retry mechanisms, and support for webhooks. It is designed to improve
  * performance and resiliency when communicating with Strapi.
  *
  * @author David Rullán - https://github.com/drullandev
@@ -16,7 +16,7 @@ class StrapiManager {
   private cache: NodeCache;
 
   /**
-   * Private constructor to enforce Singleton pattern. Initializes the logger 
+   * Private constructor to enforce Singleton pattern. Initializes the logger
    * and cache for storing Strapi API responses.
    */
   private constructor() {
@@ -44,13 +44,13 @@ class StrapiManager {
    */
   public async registerWebhook(url: string, events: string[]): Promise<void> {
     try {
-      const response = await axios.post('/strapi/webhooks', {
+      const response = await axios.post("/strapi/webhooks", {
         url,
         events,
       });
-      this.logger.info('Webhook registered successfully', response.data);
+      this.logger.info("Webhook registered successfully", response.data);
     } catch (error) {
-      this.logger.error('Error registering webhook', error);
+      this.logger.error("Error registering webhook", error);
     }
   }
 
@@ -61,7 +61,7 @@ class StrapiManager {
    * @param event - The event data sent by Strapi.
    */
   public handleWebhookEvent(event: any): void {
-    this.logger.info('Received Strapi webhook event', event);
+    this.logger.info("Received Strapi webhook event", event);
     // Add your logic to handle the event here.
   }
 
@@ -72,7 +72,10 @@ class StrapiManager {
    * @param retries - Number of retry attempts in case of failure.
    * @returns The data from Strapi, either from cache or fresh.
    */
-  public async fetchDataWithRetry(endpoint: string, retries: number = 3): Promise<any> {
+  public async fetchDataWithRetry(
+    endpoint: string,
+    retries: number = 3
+  ): Promise<any> {
     const cacheKey = `strapi_${endpoint}`;
     const cachedData = this.cache.get(cacheKey);
 
@@ -90,7 +93,7 @@ class StrapiManager {
       } catch (error) {
         this.logger.warn(`Attempt ${attempt} failed for ${endpoint}`);
         if (attempt === retries) {
-          this.logger.error('Max retries reached, unable to fetch data', error);
+          this.logger.error("Max retries reached, unable to fetch data", error);
           throw error;
         }
       }
@@ -105,7 +108,11 @@ class StrapiManager {
    * @param fallbackData - Optional fallback data to return in case of failure.
    * @returns The data from Strapi, either from cache, fresh, or fallback.
    */
-  public async fetchDataWithFallback(endpoint: string, retries: number = 3, fallbackData?: any): Promise<any> {
+  public async fetchDataWithFallback(
+    endpoint: string,
+    retries: number = 3,
+    fallbackData?: any
+  ): Promise<any> {
     try {
       return await this.fetchDataWithRetry(endpoint, retries);
     } catch (error) {

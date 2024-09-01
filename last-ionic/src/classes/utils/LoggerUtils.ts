@@ -1,5 +1,12 @@
-import fs from 'fs';
-import path from 'path';
+let fs: typeof import('fs') | null = null;
+let path: typeof import('path') | null = null;
+
+try {
+  fs = require('fs');
+  path = require('path');
+} catch (error) {
+  console.warn('fs and path modules are not available. Logger will not perform file operations.');
+}
 
 interface LoggerInstances {
   [name: string]: LoggerClass;
@@ -16,7 +23,7 @@ class LoggerClass {
   public logLevel: LogLevel;
   private archivedLogs: string[][] = [];
   private maxArchivedLogs: number = 5;
-  private logFilePath: string;
+  private logFilePath: string | null = null;
 
   /**
    * Private constructor to prevent direct instantiation.
@@ -33,7 +40,10 @@ class LoggerClass {
     this.maxLogs = maxLogs;
     this.logLevel = logLevel;
     this.shouldLog = shouldLog || (() => process.env.NODE_ENV === "development");
-    this.logFilePath = path.join(__dirname, `${prefix}.log`);
+    
+    if (path) {
+      this.logFilePath = path.join(__dirname, `${prefix}.log`);
+    }
   }
 
   /**
@@ -158,7 +168,9 @@ class LoggerClass {
         this.archiveLogs();
       }
       console.log(message);
-      this.saveLogToFile(message);
+      if (fs && this.logFilePath) {
+        this.saveLogToFile(message);
+      }
     }
   }
 
@@ -172,7 +184,9 @@ class LoggerClass {
       this.archivedLogs.shift(); // Remove the oldest archived logs if over the limit
     }
     this.logs = []; // Clear current logs
-    this.rotateLogFiles(); // Rotate log files on disk
+    if (fs) {
+      this.rotateLogFiles(); // Rotate log files on disk
+    }
   }
 
   /**
@@ -181,24 +195,28 @@ class LoggerClass {
    * @param message - The log message to save.
    */
   private saveLogToFile(message: string): void {
-    fs.appendFile(this.logFilePath, message + '\n', (err) => {
-      if (err) {
-        console.error('Failed to write log to file:', err);
-      }
-    });
+    if (fs && this.logFilePath) {
+      fs.appendFile(this.logFilePath, message + '\n', (err) => {
+        if (err) {
+          console.error('Failed to write log to file:', err);
+        }
+      });
+    }
   }
 
   /**
    * Rotates the log files when the log size exceeds the maximum allowed.
    */
   private rotateLogFiles(): void {
-    const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
-    const archivePath = path.join(__dirname, `${this.prefix}-${timestamp}.log`);
-    fs.rename(this.logFilePath, archivePath, (err) => {
-      if (err) {
-        console.error('Failed to rotate log file:', err);
-      }
-    });
+    if (fs && path && this.logFilePath) {
+      const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+      const archivePath = path.join(__dirname, `${this.prefix}-${timestamp}.log`);
+      fs.rename(this.logFilePath, archivePath, (err) => {
+        if (err) {
+          console.error('Failed to rotate log file:', err);
+        }
+      });
+    }
   }
 
   /**
@@ -212,26 +230,6 @@ class LoggerClass {
   }
 
   /**
-   * Initializes and returns a LoggerClass instance.
-   *
-   * @param className - The name or prefix for the logger instance.
-   * @param debug - Flag to determine if the logger should be created in debug mode.
-   * @param maxLogs - Maximum number of logs to store in memory.
-   * @param logLevel - The logging level (error, warn, info, debug).
-   * @param shouldLog - Optional custom function to determine if logging should occur.
-   * @returns {LoggerClass} The initialized LoggerClass instance.
-   */
-  public initializeLogger(
-    className: string,
-    debug: boolean = false,
-    maxLogs: number = 100,
-    logLevel: LogLevel = 'debug',
-    shouldLog?: () => boolean
-  ): LoggerClass {
-    return LoggerClass.getInstance(className, debug, maxLogs, logLevel, shouldLog);
-  }
-
-  /**
    * Allows developers to disable logging entirely.
    * This can be useful in production environments to reduce performance overhead.
    */
@@ -241,15 +239,15 @@ class LoggerClass {
 }
 
 /**
- * Initializes and returns a LoggerClass instance.
- *
- * @param className - The name or prefix for the logger instance.
- * @param debug - Flag to determine if the logger should be created in debug mode.
- * @param maxLogs - Maximum number of logs to store in memory.
- * @param logLevel - The logging level (error, warn, info, debug).
- * @param shouldLog - Optional custom function to determine if logging should occur.
- * @returns {LoggerClass} The initialized LoggerClass instance.
- */
+   * Initializes and returns a LoggerClass instance.
+   *
+   * @param className - The name or prefix for the logger instance.
+   * @param debug - Flag to determine if the logger should be created in debug mode.
+   * @param maxLogs - Maximum number of logs to store in memory.
+   * @param logLevel - The logging level (error, warn, info, debug).
+   * @param shouldLog - Optional custom function to determine if logging should occur.
+   * @returns {LoggerClass} The initialized LoggerClass instance.
+   */
 export const initializeLogger = (
   className: string = 'LoggerStart',
   debug: boolean = false,

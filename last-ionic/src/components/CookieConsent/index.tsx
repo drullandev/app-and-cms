@@ -1,110 +1,88 @@
-import React, { useEffect, useState } from 'react'; // Importing React and hooks for managing state and side effects
-import { useTranslation } from 'react-i18next'; // Importing translation hook for internationalization
-import { IonButton, IonContent, IonModal } from '@ionic/react'; // Importing Ionic components for UI
+import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { IonButton, IonContent, IonModal } from '@ionic/react';
 
-import Storage from '../../classes/managers/StorageManager'; // Importing a custom storage class for handling consent storage
-import CookieManager from '../../classes/managers/CookieManager';
-
-import './style.css'; // Importing styles for the component
-import CookieConsentSource from './source'; // Importing the component source
-import { COOKIE_CONSENT_KEY, COOKIE_EXPIRATION_TIME, COOKIE_CONSENT_KEY_EXPIRE } from './env';
+import Storage from '../../classes/managers/StorageManager';
 import TimeUtils from '../../classes/utils/TimeUtils';
 
-/**
- * CookieConsent Component
- * 
- * This component displays a modal dialog prompting the user to accept or reject the use of cookies 
- * for enhancing their experience on the application. It stores the user's choice in local storage
- * and manages the visibility of the modal based on whether the user has already made a selection.
- *
- * Dependencies:
- * - React
- * - React-I18next (for internationalization)
- * - Ionic React (for UI components)
- * - Custom Storage class (for handling local storage)
- *
- * Usage:
- * Include <CookieConsent /> in your main application component to prompt users for cookie consent.
- */
+import './style.css';
+import { COOKIE_CONSENT_KEY, COOKIE_EXPIRATION_TIME, COOKIE_CONSENT_KEY_EXPIRE } from './env';
+
 const CookieConsent: React.FC = () => {
+    const { t } = useTranslation();
+    const [showModal, setShowModal] = useState(false);
 
-	// Using the translation hook to support multiple languages
-	const { t } = useTranslation();
-	
-	// State variable to control the visibility of the consent modal
-	const [showModal, setShowModal] = useState(false);
+    const load = async () => {
+        try {
+            const selected = await Storage.get(COOKIE_CONSENT_KEY);
 
-	/**
-	* Function to get the user's cookie consent choice in storage.
-	*/
-	const load = () => {
-		Storage.get(COOKIE_CONSENT_KEY)
-		.then((selected:boolean) => {
-			// If no consent has been recorded, display the consent modal
-			if (selected === null) {
-				setShowModal(true);
-			} else {
-				Storage.get(COOKIE_CONSENT_KEY_EXPIRE)
-					.then((expiration: number) => {
-						if (TimeUtils.hasElapsed(expiration)) {
-							reset()
-						}
-					});
-			}
-		});
-	}
+            if (selected === null) {
+                setShowModal(true);
+            } else {
+                const consentGiven = selected === "true";
+                const expiration = await Storage.get(COOKIE_CONSENT_KEY_EXPIRE);
+                const expirationTime = Number(expiration);
 
-	/**
-	* Function to set the user's cookie consent choice in storage.
-	* @param {boolean} value - The user's choice regarding cookie consent.
-	*/
-	const set = (consent: boolean) => {
-		// Evaluate by cookie consent selection made before during 12 months...
-		Storage.set(COOKIE_CONSENT_KEY, consent)
-			.then(() => {
-				Storage.set(COOKIE_CONSENT_KEY_EXPIRE, TimeUtils.parseFutureTimeString(COOKIE_EXPIRATION_TIME))
-					.then(() => {
-						setShowModal(false); // Close the modal after saving the user's choice
-					})
-			});
-	};
+                if (expirationTime && TimeUtils.hasElapsed(expirationTime)) { // Aquí se usa el método estático directamente desde la clase
+                    reset();
+                } else if (!consentGiven) {
+                    setShowModal(true);
+                }
+            }
+        } catch (error) {
+            console.error("Error loading cookie consent data:", error);
+            setShowModal(true);
+        }
+    };
 
-	const reset = () => {
-		Storage.remove(COOKIE_CONSENT_KEY);
-		Storage.remove(COOKIE_CONSENT_KEY_EXPIRE);
-		setShowModal(true);
-	}
+    const set = async (consent: boolean) => {
+        try {
+            await Storage.set(COOKIE_CONSENT_KEY, consent.toString());
+            await Storage.set(COOKIE_CONSENT_KEY_EXPIRE, TimeUtils.parseFutureTimeString(COOKIE_EXPIRATION_TIME).toString());
+            setShowModal(false);
+        } catch (error) {
+            console.error("Error setting cookie consent data:", error);
+        }
+    };
 
-	// Effect hook to check the user's cookie consent status when the component mounts
-	useEffect(load);
+    const reset = async () => {
+        try {
+            await Storage.remove(COOKIE_CONSENT_KEY);
+            await Storage.remove(COOKIE_CONSENT_KEY_EXPIRE);
+            setShowModal(true);
+        } catch (error) {
+            console.error("Error resetting cookie consent data:", error);
+        }
+    };
 
-	return (
-		<IonModal
-			isOpen={showModal} // Controls the visibility of the modal based on state
-			onDidDismiss={() => setShowModal(false)} // Closes the modal when dismissed
-			 // Trigger element to open the modal
-			initialBreakpoint={0.25} // Initial height of the modal
-			breakpoints={[0, 0.25, 0.5, 0.75]} // Responsive breakpoints for the modal
-			handleBehavior="cycle" // Defines the swipe behavior for the modal
-		>
-			<IonContent className="cookie-modal"> {/* Main content of the modal */}
-				<h2>Cookies</h2> {/* Header for the modal */}
-				<p>
-					This application uses cookies to enhance the user experience. 
-					By clicking "Accept," you consent to the use of cookies. 
-					You may refuse the use of cookies, but some functionalities may not be available.
-				</p>
-				{/* Button for accepting cookies */}
-				<IonButton onClick={() => set(true)} expand="full">
-					{t('Accept')}
-				</IonButton>
-				{/* Button for refusing cookies */}
-				<IonButton onClick={() => set(false)} expand="full">
-					{t('Refuse')}
-				</IonButton>
-			</IonContent>
-		</IonModal>
-	);
+    useEffect(() => {
+        load();
+    }, []);
+
+    return (
+        <IonModal
+            isOpen={showModal}
+            onDidDismiss={() => setShowModal(false)}
+            initialBreakpoint={0.25}
+            breakpoints={[0, 0.25, 0.5, 0.75]}
+            handleBehavior="cycle"
+        >
+            <IonContent className="cookie-modal">
+                <h2>Cookies</h2>
+                <p>
+                    This application uses cookies to enhance the user experience. 
+                    By clicking "Accept," you consent to the use of cookies. 
+                    You may refuse the use of cookies, but some functionalities may not be available.
+                </p>
+                <IonButton onClick={() => set(true)} expand="full">
+                    {t('Accept')}
+                </IonButton>
+                <IonButton onClick={() => set(false)} expand="full">
+                    {t('Refuse')}
+                </IonButton>
+            </IonContent>
+        </IonModal>
+    );
 };
 
 export default CookieConsent;

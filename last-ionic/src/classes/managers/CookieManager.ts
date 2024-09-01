@@ -24,7 +24,11 @@ class CookieManager {
     this.domain = domain;
     this.path = path;
     this.debug = DebugUtils.setDebug(false); // Ajusta el modo de depuración según sea necesario
-    this.logger = LoggerClass.getInstance(this.constructor.name, this.debug, 100);
+    this.logger = LoggerClass.getInstance(
+      this.constructor.name,
+      this.debug,
+      100
+    );
 
     if (this.debug) {
       this.logger.info("CookieManager initialized", { domain, path });
@@ -41,14 +45,28 @@ class CookieManager {
   public setCookie(
     name: string,
     value: string,
-    options: { expires?: Date; secure?: boolean } = {}
+    options: {
+      expires?: Date | string | number;
+      secure?: boolean;
+      path?: string;
+    } = {}
   ): void {
     try {
-      let cookieString = `${encodeURIComponent(name)}=${encodeURIComponent(value)}; path=${this.path}; domain=${this.domain}`;
+      let cookieString = `${encodeURIComponent(name)}=${encodeURIComponent(value)}; path=${options.path || this.path}; domain=${this.domain}`;
 
+      // Handle different types of expiration input
       if (options.expires) {
-        cookieString += `; expires=${options.expires.toUTCString()}`;
+        let expires: Date;
+        if (typeof options.expires === "number") {
+          expires = new Date(Date.now() + options.expires);
+        } else if (typeof options.expires === "string") {
+          expires = new Date(options.expires);
+        } else {
+          expires = options.expires;
+        }
+        cookieString += `; expires=${expires.toUTCString()}`;
       }
+
       if (options.secure) {
         cookieString += `; secure`;
       }
