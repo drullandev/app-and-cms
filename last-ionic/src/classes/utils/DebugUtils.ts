@@ -1,21 +1,18 @@
 /**
- * Utility class for debugging operations including logging and debouncing functions.
- * Provides methods for setting debug mode, logging messages, and debouncing callbacks.
- *
+ * Utility class for debugging operations including logging and tracking.
+ * Provides methods for setting debug mode, logging messages, and timing execution.
+ * 
  * Usage example:
  * 
  * const debugUtil = DebugUtils.getInstance();
  * DebugUtils.setDebug(false);
  * DebugUtils.logInfo('Debug mode is enabled.');
- * const debouncedFunction = DebugUtils.debounce(() => console.log('Debounced function called'), 1000);
- * debouncedFunction();
  * 
  * @author David Rullán - https://github.com/drullandev
  * @date September 3, 2024
  */
 class DebugUtils {
   private static instance: DebugUtils | null = null;
-  private timer: ReturnType<typeof setTimeout> | null = null;
   public debug: boolean = false;
 
   /**
@@ -29,11 +26,21 @@ class DebugUtils {
     return this.instance;
   }
 
-  public isProduction() {
+  /**
+   * Checks if the current environment is production.
+   *
+   * @returns {boolean} True if the environment is production, false otherwise.
+   */
+  public isProduction(): boolean {
     return import.meta.env.NODE_ENV === 'production';
   }
 
-  public isDevelopment() {
+  /**
+   * Checks if the current environment is development.
+   *
+   * @returns {boolean} True if the environment is development, false otherwise.
+   */
+  public isDevelopment(): boolean {
     return import.meta.env.NODE_ENV === 'development';
   }
 
@@ -73,34 +80,7 @@ class DebugUtils {
    */
   public logError(message: string, error: any) {
     if (this.debug) {
-      console.error(`[ERROR]: ${message}`);
-    }
-  }
-
-  /**
-   * Debounce function: ensures a function is called only after a certain amount of time has passed since the last call.
-   * @param callback The function to debounce.
-   * @param delay The debounce delay in milliseconds.
-   * @returns A debounced function.
-   */
-  public debounce(callback: (...args: any[]) => void, delay: number) {
-    return (...args: any[]) => {
-      if (this.timer) {
-        clearTimeout(this.timer);
-      }
-      this.timer = setTimeout(() => {
-        callback(...args);
-      }, delay);
-    };
-  }
-
-  /**
-   * Clears the debounce timer if it exists.
-   */
-  public clear() {
-    if (this.timer) {
-      clearTimeout(this.timer);
-      this.timer = null;
+      console.error(`[ERROR]: ${message}`, error);
     }
   }
 
@@ -125,12 +105,11 @@ class DebugUtils {
   }
 
   /**
-   * Stops a debug timer with a given label.
+   * A placeholder for tracking elements (future implementation).
    * @param label The label for the timer.
    */
   public trackElement(element: Element) {
-    // Implementation of trackElement logic
-    // TODO: If you gonna implement tracking, then must to reestydu everything from here ;)
+    // TODO: Implementation of trackElement logic
   }
 }
 

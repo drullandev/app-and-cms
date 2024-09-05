@@ -37,4 +37,4 @@ export const AppRest = (token?: string): RestManager => {
     : RestManager.getInstance(API_BASE_URL);
 };
 
-export default AppRest();
+export default AppRest;

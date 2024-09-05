@@ -1,4 +1,4 @@
-import RestManager from '../../classes/managers/RestManager'; // Importa la clase RestManager
+import RestManager from '../../classes/managers/RestManager';
 import { AxiosRequestConfig } from 'axios';
 import StringUtil from './StringUtil';
 import DebugUtils from './DebugUtils';
@@ -50,18 +50,20 @@ export interface CallProps {
 }
 
 /**
+ * Utility class for performing GraphQL operations, including
+ * mutations and queries with proper error handling and support for
+ * GraphQL variables.
  * 
  * @author David Rullán - https://github.com/drullandev
- * @date September 3, 2024
+ * @date September 5, 2024
  */
 export class GraphQLService {
   private static instance: GraphQLService | null = null;
-  private debug = DebugUtils.setDebug(false);
-  private restManager: RestManager; // Instance of RestManager
+  private restManager: RestManager;
 
   /**
-   * Returns the single instance of DebugUtils.
-   * @returns {DebugUtils} The singleton instance.
+   * Returns the single instance of GraphQLService.
+   * @returns {GraphQLService} The singleton instance.
    */
   public static getInstance(restManager: RestManager): GraphQLService {
     if (!this.instance) {
@@ -75,115 +77,102 @@ export class GraphQLService {
     this.restManager = restManager;
   }
 
-  // Generates a GraphQL mutation query string and performs the mutation
-  public getMutation = (p: GqlMutationModel): any => {
-    return this.graphqlCall(this.setMutation(p));
+  /**
+   * Generates a GraphQL mutation query string and performs the mutation.
+   * @param {GqlMutationModel} p - The mutation model.
+   * @returns The result of the mutation.
+   */
+  public getMutation = async (p: GqlMutationModel): Promise<any> => {
+    const mutation = this.setMutation(p);
+    return await this.graphqlCallAsync(mutation);
   };
 
-  // Asynchronously generates a GraphQL mutation query string and performs the mutation
-  public getMutationAsync = async (p: GqlMutationModel): Promise<any> => {
-    return await this.graphqlCallAsync(this.setMutation(p));
-  };
-
-  // Constructs the GraphQL mutation query string based on the provided mutation model
-  private setMutation = (p: GqlMutationModel): string => {
-    let qs = `mutation {\t`;
-
-    // Determine the mutation action and model
-    if (p.model !== undefined && p.action !== undefined) {
-      qs += StringUtil.camelCase(p.action + ' ' + p.model);
-    } else if (p.action) {
-      qs += StringUtil.camelCase(p.action);
-    } else if (p.model) {
-      qs += p.model;
-    }
-
-    // Add input data if provided
-    if (p.data?.input !== undefined) {
-      let inputString = '';
-      qs += '(input:';
-      Object.entries(p.data?.input).forEach(([key, value]) => {
-        inputString += ` ${key}: `;
-        inputString += typeof value === 'boolean' ? `${value},` : `"${value}",`;
-      });
-      qs += '{ ' + inputString.replace(/,+$/, '') + ' }';
-      qs += ')';
-    }
-
-    // Add output fields if provided
-    if (p.data?.output !== undefined) {
-      if (p.data.output) {
-        qs += JSON.stringify(p.data?.output, null, ' ')
-          .replace(/number|string|date|true|,/g, '')
-          .replace(/[":]/g, '');
+  /**
+   * Generates a GraphQL mutation query string with variables and performs the mutation.
+   * @param {GqlMutationModel} p - The mutation model.
+   * @param {any} variables - The variables for the GraphQL mutation.
+   * @returns The result of the mutation.
+   */
+  public getMutationWithVariables = async (p: GqlMutationModel, variables: any): Promise<any> => {
+    const mutation = `mutation MyMutation($input: MyInputType!) {
+      ${p.action}(input: $input) {
+        field1
+        field2
       }
+    }`;
+    return await this.graphqlCallAsync(mutation, variables);
+  };
+
+  /**
+   * Constructs the GraphQL mutation query string based on the provided mutation model.
+   * @param {GqlMutationModel} p - The mutation model.
+   * @returns {string} The mutation query string.
+   */
+  private setMutation = (p: GqlMutationModel): string => {
+    let qs = `mutation {`;
+
+    const actionModel = p.model && p.action ? StringUtil.camelCase(`${p.action} ${p.model}`) : p.model || p.action || '';
+    qs += actionModel;
+
+    if (p.data?.input) {
+      const inputString = Object.entries(p.data.input)
+        .map(([key, value]) => `${key}: ${typeof value === 'boolean' ? value : `"${value}"`}`)
+        .join(', ');
+      qs += `(input: { ${inputString} })`;
     }
 
-    qs += `}`;
-    return qs;
+    if (p.data?.output) {
+      const outputString = JSON.stringify(p.data.output, null, ' ').replace(/number|string|date|true|,/g, '').replace(/[":]/g, '');
+      qs += ` { ${outputString} }`;
+    }
+
+    return qs + `}`;
   };
 
-  // Generates a GraphQL query string and performs the query
-  public setQuery = (p: GqlQueryModel): any => {
-    return this.graphqlCall(this.getQuery(p));
+  /**
+   * Generates a GraphQL query string and performs the query.
+   * @param {GqlQueryModel} p - The query model.
+   * @returns The result of the query.
+   */
+  public setQuery = async (p: GqlQueryModel): Promise<any> => {
+    const query = this.getQuery(p);
+    return await this.graphqlCallAsync(query);
   };
 
-  // Constructs the GraphQL query string based on the provided query model
+  /**
+   * Constructs the GraphQL query string based on the provided query model.
+   * @param {GqlQueryModel} p - The query model.
+   * @returns {string} The query string.
+   */
   private getQuery = (p: GqlQueryModel): string => {
-    let qs = `query `;
+    let qs = `query ${p.model} {\n\t${p.model}(`;
 
-    qs += p.model + ` {\n\t` + p.model;
-    qs += `( `;
-
-    // Add pagination if provided
     if (p.paginator) {
       qs += JSON.stringify(p.paginator, null, '')
         .replace(',', ', ')
         .replace(/["{}]/g, '');
     }
 
-    // Add where conditions if provided
     const where: string[] = [];
     if (!StringUtil.empty(p.where)) {
-      p.where.map((row: any) => {
-        if (row.value !== undefined && row.value !== '') {
-          let whereType = row.value;
-          switch (row.type) {
-            case 'string':
-              whereType = '["' + whereType + '"]';
-              where.push(row.key + '_' + row.action + ' : ' + whereType);
-              break;
-            case 'array':
-              // Assuming row.value is an array
-              const stringedWhere = (row.value as string[]).join(',');
-              whereType = '["' + stringedWhere + '"]';
-              where.push(row.key + '_' + row.action + ' : ' + whereType);
-              break;
-            default:
-              whereType = '["' + whereType + '"]';
-              where.push(row.key + '_' + row.action + ' : ' + whereType);
-              break;
-          }
+      p.where.forEach((row: any) => {
+        if (row.value) {
+          let whereType = row.type === 'string' ? `"${row.value}"` : row.value;
+          where.push(`${row.key}_${row.action}: ${whereType}`);
         }
       });
     }
 
-    // Add filter conditions if provided
-    if (p.filterField !== undefined) {
-      if (p.filterCondition !== undefined && typeof p.searchString !== undefined) {
-        where.push(p.filterField + '_' + p.filterCondition + ' : ' + p.searchString);
-      }
+    if (p.filterField && p.filterCondition) {
+      where.push(`${p.filterField}_${p.filterCondition}: "${p.searchString}"`);
     }
 
-    // Include where clause if any conditions are present
-    if (!StringUtil.empty(where)) qs += ', where: { ' + where.join(',') + ' }';
+    if (!StringUtil.empty(where)) {
+      qs += `, where: { ${where.join(',')} }`;
+    }
 
-    // Add sorting details
-    qs += `, sort: "` + p.orderField + `:` + (p.searchOrder ? p.searchOrder : p.direction) + `"`;
+    qs += `, sort: "${p.orderField}:${p.searchOrder || p.direction}" )`;
 
-    qs += ` )`;
-
-    // Add the structure of the query result
     if (p.struct) {
       qs += JSON.stringify(p.struct, null, '\t')
         .replace(/number|string|date/g, '')
@@ -195,77 +184,26 @@ export class GraphQLService {
     return qs;
   };
 
-  // Performs a synchronous GraphQL call for both mutations and queries
-  private graphqlCall = (call: string): any => {
-    return this.restManager.makeCall({
-      req: {
-        method: 'POST',
-        url: 'graphql',
-        data: { query: `${call}` }
-      },
-      onSuccess: {
-        default: () => { }
-      },
-      onError: {
-        default: () => { }
-      }
-    });
-  };
-
-  // Performs an asynchronous GraphQL call for both mutations and queries
-  private graphqlCallAsync = async (call: string): Promise<any> => {
-    return await this.restManager.makeAsyncCall({
-      req: {
-        method: 'POST',
-        url: 'graphql',
-        data: { query: `${call}` }
-      },
-      onSuccess: {
-        default: () => { }
-      },
-      onError: {
-        default: () => { }
-      }
-    });
+  /**
+   * Performs an asynchronous GraphQL call for both mutations and queries.
+   * @param {string} call - The GraphQL query or mutation string.
+   * @param {any} variables - The variables for the GraphQL call (optional).
+   * @returns The result of the GraphQL call.
+   */
+  private graphqlCallAsync = async (call: string, variables?: any): Promise<any> => {
+    try {
+      const response = await this.restManager.makeAsyncCall({
+        req: {
+          method: 'POST',
+          url: 'graphql',
+          data: { query: call, variables }
+        }
+      });
+      return response;
+    } catch (error) {
+      throw new Error("GraphQL call failed: " + error);
+    }
   };
 }
 
-// Example usage of the GraphQLService class with an injected RestManager instance
-const restManagerInstance = RestManager.getInstance('https://api.example.com');
-const gqlService = new GraphQLService(restManagerInstance);
-
-const mutationModel: GqlMutationModel = {
-  model: 'User',
-  action: 'create',
-  data: {
-    input: {
-      identifier: 'exampleUser',
-      password: 'password123'
-    }
-  }
-};
-
-// Execute a mutation asynchronously and handle the response
-gqlService.getMutationAsync(mutationModel).then(response => {
-  console.log(response);
-}).catch(error => {
-  console.error(error);
-});
-
-const queryModel: GqlQueryModel = {
-  model: 'User',
-  paginator: { limit: 10, start: 0 },
-  where: [],
-  filter: {},
-  struct: {},
-  sort: 'createdAt',
-  searchString: '',
-  orderField: 'createdAt',
-  searchOrder: 'ASC',
-  filterField: '',
-  filterCondition: '',
-  direction: 'ASC'
-};
-
-// Execute a query and handle the response
-gqlService.setQuery(queryModel);
+export default GraphQLService;

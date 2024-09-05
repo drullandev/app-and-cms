@@ -1,22 +1,21 @@
-import TypesUtils from "./TypesUtils";
+import CryptoJS from 'crypto-js';
 
 /**
  * Utility class for cryptographic operations such as encryption and decryption.
- * This class provides methods to encrypt and decrypt text using a XOR operation
- * with a salt value.
+ * This class provides methods to encrypt and decrypt text using AES encryption
+ * with a secret key.
  * 
  * @author David Rullán - https://github.com/drullandev
- * @date September 3, 2024
+ * @date September 5, 2024
  */
 class CryptoUtils {
   private static instance: CryptoUtils | null = null;
 
   /**
-   * Returns the singleton instance of CacheManager.
-   * If no instance exists, it creates one with the provided TTL.
+   * Returns the singleton instance of CryptoUtils.
+   * If no instance exists, it creates one.
    *
-   * @param ttlSeconds - The default time-to-live (TTL) for cache entries.
-   * @returns The singleton instance of CacheManager.
+   * @returns The singleton instance of CryptoUtils.
    */
   public static getInstance(): CryptoUtils {
     if (!this.instance) {
@@ -26,39 +25,26 @@ class CryptoUtils {
   }
 
   /**
-   * Encrypts text using XOR operation with a salt value.
+   * Encrypts text using AES encryption with a secret key.
    *
-   * @param {string} salt - The salt value used for encryption.
+   * @param {string} secretKey - The secret key used for encryption.
    * @param {string} text - The text to encrypt.
-   * @returns {string} The encrypted text.
+   * @returns {string} The encrypted text in base64 format.
    */
-  public encrypt(salt: string, text: string): string {
-    return text
-      .split("")
-      .map(TypesUtils.textToChars)
-      .map((code: number[]) =>
-        TypesUtils.textToChars(salt).reduce((a: any, b: any) => a ^ b, code)
-      )
-      .map((code: number) => TypesUtils.byteToHex(code))
-      .join("");
+  public encrypt(secretKey: string, text: string): string {
+    return CryptoJS.AES.encrypt(text, secretKey).toString();
   }
 
   /**
-   * Decrypts encoded text using XOR operation with a salt value.
+   * Decrypts AES encrypted text using a secret key.
    *
-   * @param {string} salt - The salt value used for decryption.
-   * @param {string} encoded - The encoded text to decrypt.
+   * @param {string} secretKey - The secret key used for decryption.
+   * @param {string} encryptedText - The encrypted text to decrypt.
    * @returns {string} The decrypted text.
    */
-  public decrypt(salt: string, encoded: any): string {
-    return encoded
-      .match(/.{1,2}/g)
-      .map((hex: string) => parseInt(hex, 16))
-      .map((code: number) =>
-        TypesUtils.textToChars(salt).reduce((a: any, b: any) => a ^ b, code)
-      )
-      .map((charCode: number) => String.fromCharCode(charCode))
-      .join("");
+  public decrypt(secretKey: string, encryptedText: string): string {
+    const decryptedBytes = CryptoJS.AES.decrypt(encryptedText, secretKey);
+    return decryptedBytes.toString(CryptoJS.enc.Utf8);
   }
 }
 
