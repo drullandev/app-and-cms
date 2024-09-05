@@ -1,13 +1,13 @@
 import sqlite3 from "sqlite3";
 import { open, Database } from "sqlite";
-import LoggerClass from "../utils/LoggerUtils";
+import LoggerUtils from "../utils/LoggerUtils";
 import DebugUtils from "../utils/DebugUtils";
 
 /**
- * SQLiteManagerInterface defines the contract for SQLiteManager operations.
+ * ISQLiteManager defines the contract for SQLiteManager operations.
  * This interface ensures that the SQLiteManager can handle SQLite database management consistently.
  */
-export interface SQLiteManagerInterface {
+export interface ISQLiteManager {
   connect(): Promise<void>;
   createTable(tableName: string, columns: string): Promise<void>;
   insert(tableName: string, data: Record<string, any>): Promise<void>;
@@ -23,8 +23,11 @@ export interface SQLiteManagerInterface {
  * This class is designed to be easy to use and provides basic database management
  * functionality for Node.js applications using SQLite.
  *
+ * It supports multiple instances based on the database path (dbPath), meaning
+ * that each path corresponds to a unique SQLiteManager instance.
+ *
  * @example
- * const dbManager = new SQLiteManager('./my-database.db');
+ * const dbManager = SQLiteManager.getInstance('./my-database.db');
  * await dbManager.connect();
  * await dbManager.createTable('users', 'id INTEGER PRIMARY KEY, name TEXT, email TEXT');
  * await dbManager.insert('users', { name: 'John Doe', email: 'john@example.com' });
@@ -34,25 +37,41 @@ export interface SQLiteManagerInterface {
  * @author David Rullán - https://github.com/drullandev
  * @date August 31, 2024
  */
-class SQLiteManager implements SQLiteManagerInterface {
+class SQLiteManager implements ISQLiteManager {
+  private static instances: Map<string, SQLiteManager> = new Map(); // Store instances by dbPath
   private db: Database | null = null;
   private dbPath: string;
-  private logger: LoggerClass;
-  private debug: boolean;
+  private logger: LoggerUtils;
+  private debug: boolean = false; // Debug mode flag
 
   /**
-   * Constructs a new SQLiteManager instance.
+   * Private constructor to enforce instantiation control.
    *
    * @param dbPath - The path to the SQLite database file.
+   * @param debug - Optional flag to enable or disable debug mode.
    */
-  constructor(dbPath: string) {
+  private constructor(dbPath: string, debug?: boolean) {
+    this.debug = DebugUtils.setDebug(debug ?? this.debug);
+    this.logger = LoggerUtils.getInstance(this.constructor.name, this.debug, 100);
     this.dbPath = dbPath;
-    this.debug = DebugUtils.setDebug(false); // Set debug mode based on environment
-    this.logger = LoggerClass.getInstance(this.constructor.name, this.debug, 100);
 
     if (this.debug) {
       this.logger.info("SQLiteManager initialized", { dbPath });
     }
+  }
+
+  /**
+   * Retrieves or creates a new SQLiteManager instance for the given database path.
+   *
+   * @param dbPath - The path to the SQLite database file.
+   * @param debug - Optional flag to enable or disable debug mode.
+   * @returns {SQLiteManager} The SQLiteManager instance for the specified path.
+   */
+  public static getInstance(dbPath: string, debug?: boolean): SQLiteManager {
+    if (!this.instances.has(dbPath)) {
+      this.instances.set(dbPath, new SQLiteManager(dbPath, debug));
+    }
+    return this.instances.get(dbPath)!;
   }
 
   /**
@@ -76,12 +95,19 @@ class SQLiteManager implements SQLiteManagerInterface {
 
   /**
    * Creates a new table in the SQLite database if it does not already exist.
+   * This operation can only be executed when debug mode is enabled.
    *
    * @param tableName - The name of the table to create.
    * @param columns - A string defining the columns and their types, e.g., 'id INTEGER PRIMARY KEY, name TEXT'.
    * @returns A promise that resolves when the table creation is complete.
+   * @throws Error if debug mode is disabled.
    */
   async createTable(tableName: string, columns: string): Promise<void> {
+    if (!this.debug) {
+      this.logger.error("Attempted to create a table while debug mode is disabled.");
+      throw new Error("Table creation is only allowed in debug mode.");
+    }
+
     try {
       const query = `CREATE TABLE IF NOT EXISTS ${tableName} (${columns});`;
       await this.db!.run(query);

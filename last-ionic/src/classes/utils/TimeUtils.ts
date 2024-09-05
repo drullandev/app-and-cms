@@ -1,7 +1,9 @@
 /**
  * TimeUtils provides methods to convert various time units
  * (days, weeks, months, years, centuries, hours, and minutes) to milliseconds.
+ *
  * @author David Rullán - https://github.com/drullandev
+ * @date September 3, 2024
  */
 class TimeUtils {
   private static instance: TimeUtils | null = null;
@@ -19,10 +21,13 @@ class TimeUtils {
   private millisecondsInYear: number;
   private millisecondsInCentury: number;
 
+  private regex =
+    /(\d+)\s*(h|hours?|min|minutes?|d|days?|w|weeks?|m|months?|y|years?|c|centuries?|s|sec|secs|seconds?)/gi;
+
   // Private constructor to prevent direct instantiation
   private constructor() {
     this.millisecondsInMinute =
-      this.millisecondsInSecond * this.secondsInMinute;
+    this.millisecondsInSecond * this.secondsInMinute;
     this.millisecondsInHour = this.millisecondsInMinute * this.minutesInHour;
     this.millisecondsInDay = this.millisecondsInHour * this.hoursInDay;
     this.millisecondsInWeek = this.millisecondsInDay * 7;
@@ -69,12 +74,10 @@ class TimeUtils {
   }
 
   public parseTime(input: string): number {
-    const regex =
-      /(\d+)\s*(hours?|minutes?|days?|weeks?|months?|years?|centuries?|seconds?)/gi;
     let totalMilliseconds = 0;
     let match: RegExpExecArray | null;
 
-    while ((match = regex.exec(input)) !== null) {
+    while ((match = this.regex.exec(input)) !== null) {
       const value = parseInt(match[1], 10);
       const unit = match[2].toLowerCase();
 
@@ -86,6 +89,7 @@ class TimeUtils {
         case "days":
           totalMilliseconds += this.daysToMilliseconds(value);
           break;
+        case "w":
         case "week":
         case "weeks":
           totalMilliseconds += this.weeksToMilliseconds(value);
@@ -94,6 +98,7 @@ class TimeUtils {
         case "months":
           totalMilliseconds += this.monthsToMilliseconds(value);
           break;
+        case "y":  
         case "year":
         case "years":
           totalMilliseconds += this.yearsToMilliseconds(value);
@@ -102,14 +107,19 @@ class TimeUtils {
         case "centuries":
           totalMilliseconds += this.centuriesToMilliseconds(value);
           break;
+        case "h":  
         case "hour":
         case "hours":
           totalMilliseconds += this.hoursToMilliseconds(value);
           break;
+        case "min":
         case "minute":
         case "minutes":
           totalMilliseconds += this.minutesToMilliseconds(value);
           break;
+        case "s":  
+        case "sec": 
+        case "secs": 
         case "second":
         case "seconds":
           totalMilliseconds += this.secondsToMilliseconds(value);

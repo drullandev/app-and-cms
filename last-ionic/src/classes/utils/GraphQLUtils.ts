@@ -1,11 +1,7 @@
-import RestUtils from '../managers/RestManager';
+import RestManager from '../../classes/managers/RestManager'; // Importa la clase RestManager
 import { AxiosRequestConfig } from 'axios';
 import StringUtil from './StringUtil';
 import DebugUtils from './DebugUtils';
-import RestManager from '../../classes/managers/RestManager'; // Importa la clase RestCall
-import mainRest from '../../integrations/RestIntegration';
-
-const debug = DebugUtils.setDebug(false);
 
 export interface WhereProps {
   type: string;
@@ -53,7 +49,31 @@ export interface CallProps {
   onFinally?: Function;
 }
 
+/**
+ * 
+ * @author David Rullán - https://github.com/drullandev
+ * @date September 3, 2024
+ */
 export class GraphQLService {
+  private static instance: GraphQLService | null = null;
+  private debug = DebugUtils.setDebug(false);
+  private restManager: RestManager; // Instance of RestManager
+
+  /**
+   * Returns the single instance of DebugUtils.
+   * @returns {DebugUtils} The singleton instance.
+   */
+  public static getInstance(restManager: RestManager): GraphQLService {
+    if (!this.instance) {
+      this.instance = new this(restManager);
+    }
+    return this.instance;
+  }
+
+  // Constructor accepts a RestManager instance
+  constructor(restManager: RestManager) {
+    this.restManager = restManager;
+  }
 
   // Generates a GraphQL mutation query string and performs the mutation
   public getMutation = (p: GqlMutationModel): any => {
@@ -177,7 +197,7 @@ export class GraphQLService {
 
   // Performs a synchronous GraphQL call for both mutations and queries
   private graphqlCall = (call: string): any => {
-    return mainRest.makeCall({
+    return this.restManager.makeCall({
       req: {
         method: 'POST',
         url: 'graphql',
@@ -194,7 +214,7 @@ export class GraphQLService {
 
   // Performs an asynchronous GraphQL call for both mutations and queries
   private graphqlCallAsync = async (call: string): Promise<any> => {
-    return await mainRest.makeAsyncCall({
+    return await this.restManager.makeAsyncCall({
       req: {
         method: 'POST',
         url: 'graphql',
@@ -210,8 +230,9 @@ export class GraphQLService {
   };
 }
 
-// Example usage of the GraphQLService class
-const gqlService = new GraphQLService();
+// Example usage of the GraphQLService class with an injected RestManager instance
+const restManagerInstance = RestManager.getInstance('https://api.example.com');
+const gqlService = new GraphQLService(restManagerInstance);
 
 const mutationModel: GqlMutationModel = {
   model: 'User',

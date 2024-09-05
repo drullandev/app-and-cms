@@ -1,4 +1,11 @@
-import RestManager, { CallProps } from '../classes/managers/RestManager';
+import RestManager, { CallProps } from '../managers/RestManager';
+
+/**
+ * The base URL for all API requests.
+ * - Purpose: This is specifically configured for use with a Strapi backoffice in an Ionic application template.
+ * This is configured using an environment variable, with a fallback to a default URL.
+ */
+const API_BASE_URL = process.env.API_URL || 'http://localhost:1337/';
 
 /**
  * Interface defining the contract for RestManager operations.
@@ -8,13 +15,6 @@ export interface RestManagerInterface {
   makeAsyncCall(call: CallProps): Promise<void>;
   makeCall(call: CallProps): Promise<void>;
 }
-
-/**
- * The base URL for all API requests.
- * - Purpose: This is specifically configured for use with a Strapi backoffice in an Ionic application template.
- * This is configured using an environment variable, with a fallback to a default URL.
- */
-const API_BASE_URL = process.env.API_URL || 'http://localhost:1337/';
 
 /**
  * Retrieves an instance of RestManager with an optional Bearer token for authorization.
@@ -27,7 +27,8 @@ const API_BASE_URL = process.env.API_URL || 'http://localhost:1337/';
  * @author David Rullán - https://github.com/drullandev
  * @date Agoust 31, 2024
  */
-export const mainRest = (token?: string): RestManagerInterface => {
+export const AppRest = (token?: string): RestManager => {
+  // TODO: Well, get the token from zustand jijij well... In another moment!
   // If a token is provided, include it in the Authorization header
   return token
     ? RestManager.getInstance(API_BASE_URL, {
@@ -36,4 +37,4 @@ export const mainRest = (token?: string): RestManagerInterface => {
     : RestManager.getInstance(API_BASE_URL);
 };
 
-export default mainRest();
+export default AppRest();

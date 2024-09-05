@@ -1,6 +1,7 @@
 import axios from "axios";
 import NodeCache from "node-cache";
-import LoggerClass, { initializeLogger } from "../utils/LoggerUtils";
+import LoggerUtils, { initializeLogger } from "../utils/LoggerUtils";
+import DebugUtils from "../utils/DebugUtils";
 
 /**
  * StrapiManager provides functionality to interact with the Strapi API, including
@@ -12,26 +13,33 @@ import LoggerClass, { initializeLogger } from "../utils/LoggerUtils";
  */
 class StrapiManager {
   private static instance: StrapiManager | null = null;
-  private logger: LoggerClass;
+  private logger: LoggerUtils;
   private cache: NodeCache;
+  private baseUrl: string;
+  private debug: boolean = false; // Debug mode flag
 
   /**
-   * Private constructor to enforce Singleton pattern. Initializes the logger
-   * and cache for storing Strapi API responses.
+   * Private constructor to enforce Singleton pattern. Initializes the logger,
+   * cache for storing Strapi API responses, and sets the base URL for the Strapi API.
+   * 
+   * @param baseUrl - The base URL of the Strapi backoffice API.
    */
-  private constructor() {
+  private constructor(baseUrl: string, debug: boolean = false) {
+    this.debug = DebugUtils.setDebug(debug ?? this.debug);
     this.logger = initializeLogger(this.constructor.name, false, 100);
     this.cache = new NodeCache({ stdTTL: 600 }); // Cache TTL set to 10 minutes
+    this.baseUrl = baseUrl;
   }
 
   /**
    * Returns the singleton instance of StrapiManager, creating it if it doesn't exist.
    *
+   * @param baseUrl - The base URL of the Strapi backoffice API.
    * @returns The singleton instance of StrapiManager.
    */
-  public static getInstance(): StrapiManager {
+  public static getInstance(baseUrl: string): StrapiManager {
     if (this.instance === null) {
-      this.instance = new StrapiManager();
+      this.instance = new StrapiManager(baseUrl);
     }
     return this.instance;
   }
@@ -44,7 +52,7 @@ class StrapiManager {
    */
   public async registerWebhook(url: string, events: string[]): Promise<void> {
     try {
-      const response = await axios.post("/strapi/webhooks", {
+      const response = await axios.post(`${this.baseUrl}/webhooks`, {
         url,
         events,
       });
@@ -86,7 +94,7 @@ class StrapiManager {
 
     for (let attempt = 1; attempt <= retries; attempt++) {
       try {
-        const response = await axios.get(endpoint);
+        const response = await axios.get(`${this.baseUrl}${endpoint}`);
         this.cache.set(cacheKey, response.data);
         this.logger.info(`Cache miss for ${endpoint}, data cached`);
         return response.data;

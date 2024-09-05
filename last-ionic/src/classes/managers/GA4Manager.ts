@@ -1,4 +1,14 @@
-import LoggerClass from "../utils/LoggerUtils";
+import DebugUtils from "../utils/DebugUtils";
+import LoggerUtils, { initializeLogger } from "../utils/LoggerUtils";
+
+/**
+ * Interface defining the contract for GA4Manager operations.
+ * This interface ensures that the GA4Manager can handle Google Analytics 4 tracking consistently.
+ */
+export interface IGA4Manager {
+  sendPageview(pagePath: string, pageTitle?: string): void;
+  sendEvent(eventName: string, eventParams?: { [key: string]: any }): void;
+}
 
 /**
  * GA4Manager is a utility class for managing Google Analytics 4 (GA4) tracking.
@@ -10,19 +20,23 @@ import LoggerClass from "../utils/LoggerUtils";
 class GA4Manager {
   private trackingId: string;
   private initialized: boolean = false;
-  private logger: LoggerClass;
+  private logger: LoggerUtils;
+  private src: string = 'https://www.googletagmanager.com/gtag/js?id=';
+  private debug: boolean = false; // Debug mode flag
 
   /**
    * Constructs a new GA4Manager instance with the specified tracking ID.
    *
    * @param trackingId - The GA4 tracking ID to be used for sending data.
    */
-  constructor(trackingId: string) {
+  constructor(trackingId: string, debug?: boolean) {
+    this.debug = DebugUtils.setDebug(debug ?? this.debug);
+    this.logger = initializeLogger(this.constructor.name, this.debug, 100);
     if (!trackingId) {
       throw new Error("Tracking ID must be provided.");
     }
     this.trackingId = trackingId;
-    this.logger = LoggerClass.getInstance(this.constructor.name);
+    this.logger = LoggerUtils.getInstance(this.constructor.name);
     this.initializeGA4();
   }
 
@@ -31,7 +45,7 @@ class GA4Manager {
    */
   private initializeGA4(): void {
     const script = document.createElement("script");
-    script.src = `https://www.googletagmanager.com/gtag/js?id=${this.trackingId}`;
+    script.src = `${this.src}${this.trackingId}`;
     script.async = true;
     script.onload = () => {
       // Ensure that gtag is properly set up

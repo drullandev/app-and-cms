@@ -1,6 +1,5 @@
 // This way was an awsome one!
 import i18n from 'i18next'
-import { keyTrans } from '../../classes/utils/TranslationUtils'
 import * as icon from 'ionicons/icons'
 
 export const all = import.meta.env
@@ -45,17 +44,14 @@ export const mapboxKey = import.meta.env.REACT_APP_MAPBOX_KEY
 // FOR STRAPI INTEGRERATION
 
 // Strapi image sizes names
-export const imgSizes = ['thumbnail', 'small', 'medium', 'large'];// TODO: Move to a interface or model related with this images kind!!
+export const imgSizes = ['thumbnail', 'small', 'medium', 'large'];
+// TODO: Move to a interface or model related with this images kind!!
 
 // Strapi images location
 export const apiUploads = apiUrl + '/uploads/'
 
 // Local assets o.o!
 export const appAssets = publicUrl + '/assets/'
-
-// PROVISIONAL:: //TODO: Improve somhow!!
-export const translations = keyTrans
-
 
 // TODO: try to verfy why it gets throw, from where and why!!!
 export const appIconSplash = appAssets + ''

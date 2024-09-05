@@ -1,13 +1,4 @@
-import GA4Manager from "../classes/managers/GA4Manager";
-
-/**
- * Interface defining the contract for GA4Manager operations.
- * This interface ensures that the GA4Manager can handle Google Analytics 4 tracking consistently.
- */
-export interface GA4ManagerInterface {
-  sendPageview(pagePath: string, pageTitle?: string): void;
-  sendEvent(eventName: string, eventParams?: { [key: string]: any }): void;
-}
+import GA4Manager from "../managers/GA4Manager";
 
 /**
  * The GA4 tracking ID settings for analytics.

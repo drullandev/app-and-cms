@@ -12,7 +12,7 @@ import { FormDataProps } from '../../components/Form/types';
 
 import useUserStore from '../../classes/stores/user.store';
 import RestManager from '../../classes/managers/RestManager';
-import mainRest from '../../integrations/RestIntegration';
+import AppRest from '../../classes/integrations/RestIntegration';
 
 export const recoverFormData = (): FormDataProps => {
 
@@ -73,7 +73,7 @@ export const recoverFormData = (): FormDataProps => {
         return user
       }  
 
-      await mainRest.makeAsyncCall({
+      await AppRest.makeAsyncCall({
         req: {
           url: '/auth/forgot-password',
           method: 'POST',

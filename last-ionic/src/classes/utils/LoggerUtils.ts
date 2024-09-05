@@ -1,10 +1,18 @@
 interface LoggerInstances {
-  [name: string]: LoggerClass;
+  [name: string]: LoggerUtils;
 }
 
 export type LogLevel = 'error' | 'warn' | 'info' | 'debug';
 
-class LoggerClass {
+/**
+ * LoggerUtils is a utility class that provides advanced logging capabilities for applications.
+ * It supports multiple logging levels, log rotation, and custom logging conditions.
+ * This class is designed to be used as a singleton, providing consistent logging behavior across the application.
+ * 
+ * @author David Rullán
+ * @date September 3, 2024
+ */
+class LoggerUtils {
   private static instances: LoggerInstances = {};
   private logs: string[] = [];
   private maxLogs: number;
@@ -16,12 +24,12 @@ class LoggerClass {
 
   /**
    * Private constructor to prevent direct instantiation.
-   * Initializes the logger with a prefix, debug flag, max log size, log level, and a custom shouldLog function.
+   * Initializes the logger with a prefix, debug flag, maximum log size, log level, and a custom shouldLog function.
    *
    * @param prefix - The prefix or name for the logger instance.
    * @param debug - Flag to determine if the logger should be created in debug mode.
-   * @param maxLogs - Maximum number of logs to store in memory.
-   * @param logLevel - The logging level (error, warn, info, debug).
+   * @param maxLogs - Maximum number of logs to store in memory before rotating.
+   * @param logLevel - The logging level ('error', 'warn', 'info', 'debug').
    * @param shouldLog - Optional custom function to determine if logging should occur.
    */
   private constructor(prefix: string, debug: boolean = false, maxLogs: number = 100, logLevel: LogLevel = 'debug', shouldLog?: () => boolean) {
@@ -32,15 +40,15 @@ class LoggerClass {
   }
 
   /**
-   * Returns the singleton instance of LoggerClass for a specific name.
+   * Returns the singleton instance of LoggerUtils for a specific name.
    * If a logger for the specified name does not exist, or if debug is true and the existing logger configuration differs, a new instance is created.
    *
    * @param name - The name or prefix for the logger.
    * @param debug - Flag to determine if the logger should be created in debug mode.
    * @param maxLogs - Maximum number of logs to store in memory.
-   * @param logLevel - The logging level (error, warn, info, debug).
+   * @param logLevel - The logging level ('error', 'warn', 'info', 'debug').
    * @param shouldLog - Optional custom function to determine if logging should occur.
-   * @returns {LoggerClass} The LoggerClass instance.
+   * @returns {LoggerUtils} The LoggerUtils instance.
    */
   public static getInstance(
     name: string,
@@ -48,11 +56,11 @@ class LoggerClass {
     maxLogs: number = 100,
     logLevel: LogLevel = 'debug',
     shouldLog?: () => boolean
-  ): LoggerClass {
-    if (!LoggerClass.instances[name] || (debug && LoggerClass.instances[name].maxLogs !== maxLogs)) {
-      LoggerClass.instances[name] = new LoggerClass(name, debug, maxLogs, logLevel, shouldLog);
+  ): LoggerUtils {
+    if (!LoggerUtils.instances[name] || (debug && LoggerUtils.instances[name].maxLogs !== maxLogs)) {
+      LoggerUtils.instances[name] = new LoggerUtils(name, debug, maxLogs, logLevel, shouldLog);
     }
-    return LoggerClass.instances[name];
+    return LoggerUtils.instances[name];
   }
 
   /**
@@ -170,6 +178,7 @@ class LoggerClass {
 
   /**
    * Dynamically sets the log level for the logger.
+   * Allows adjusting the verbosity of the logger at runtime.
    *
    * @param level - The new log level to set.
    */
@@ -179,14 +188,15 @@ class LoggerClass {
   }
 
   /**
-   * Initializes and returns a LoggerClass instance.
+   * Initializes and returns a LoggerUtils instance.
+   * Ensures that the logger is properly configured before use.
    *
    * @param className - The name or prefix for the logger instance.
    * @param debug - Flag to determine if the logger should be created in debug mode.
    * @param maxLogs - Maximum number of logs to store in memory.
    * @param logLevel - The logging level (error, warn, info, debug).
    * @param shouldLog - Optional custom function to determine if logging should occur.
-   * @returns {LoggerClass} The initialized LoggerClass instance.
+   * @returns {LoggerUtils} The initialized LoggerUtils instance.
    */
   public initializeLogger = (
     className: string,
@@ -194,8 +204,8 @@ class LoggerClass {
     maxLogs: number = 100,
     logLevel: LogLevel = 'debug',
     shouldLog?: () => boolean
-  ): LoggerClass => {
-    return LoggerClass.getInstance(className, debug, maxLogs, logLevel, shouldLog);
+  ): LoggerUtils => {
+    return LoggerUtils.getInstance(className, debug, maxLogs, logLevel, shouldLog);
   }
 
   /**
@@ -208,23 +218,24 @@ class LoggerClass {
 }
 
 /**
-   * Initializes and returns a LoggerClass instance.
-   *
-   * @param className - The name or prefix for the logger instance.
-   * @param debug - Flag to determine if the logger should be created in debug mode.
-   * @param maxLogs - Maximum number of logs to store in memory.
-   * @param logLevel - The logging level (error, warn, info, debug).
-   * @param shouldLog - Optional custom function to determine if logging should occur.
-   * @returns {LoggerClass} The initialized LoggerClass instance.
-   */
+ * Initializes and returns a LoggerUtils instance.
+ * This is a convenience function for quick logger setup.
+ *
+ * @param className - The name or prefix for the logger instance.
+ * @param debug - Flag to determine if the logger should be created in debug mode.
+ * @param maxLogs - Maximum number of logs to store in memory.
+ * @param logLevel - The logging level (error, warn, info, debug).
+ * @param shouldLog - Optional custom function to determine if logging should occur.
+ * @returns {LoggerUtils} The initialized LoggerUtils instance.
+ */
 export const initializeLogger = (
   className: string = 'LoggerStart',
   debug: boolean = false,
   maxLogs: number = 100,
   logLevel: LogLevel = 'debug',
   shouldLog?: () => boolean
-): LoggerClass => {
-  return LoggerClass.getInstance(className, debug, maxLogs, logLevel, shouldLog);
+): LoggerUtils => {
+  return LoggerUtils.getInstance(className, debug, maxLogs, logLevel, shouldLog);
 }
 
-export default LoggerClass;
+export default LoggerUtils;

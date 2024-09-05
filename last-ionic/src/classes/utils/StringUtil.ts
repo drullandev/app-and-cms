@@ -2,6 +2,9 @@
  * Utility class for string manipulation operations such as converting string to camelCase,
  * checking if an object is empty, capitalizing the first letter of a string, and generating
  * random strings.
+ *
+ * @author David Rullán - https://github.com/drullandev
+ * @date September 3, 2024
  */
  class StringUtil {
 

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Accordion from '../Accordion'; // Ensure the path is correct
-import { default as LoggerClass } from '../../classes/utils/LoggerUtils'; // Ensure the path is correct
+import { default as LoggerUtils } from '../../classes/utils/LoggerUtils'; // Ensure the path is correct
 
 interface LoggerProps {
   children: React.ReactNode; // Content to render inside the Logger
@@ -10,9 +10,9 @@ const Logger: React.FC<LoggerProps> = ({ children }) => {
   const [logs, setLogs] = useState<string[]>([]);
 
   useEffect(() => {
-    // Function to update the logs from LoggerClass
+    // Function to update the logs from LoggerUtils
     const updateLogs = () => {
-      setLogs(LoggerClass.getLogs());
+      setLogs(LoggerUtils.getLogs());
     };
 
     // Set up an interval to periodically update the logs

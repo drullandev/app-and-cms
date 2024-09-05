@@ -1,31 +1,28 @@
-import DebugUtils from "./DebugUtils";
+import TypesUtils from "./TypesUtils";
 
 /**
  * Utility class for cryptographic operations such as encryption and decryption.
  * This class provides methods to encrypt and decrypt text using a XOR operation
  * with a salt value.
+ * 
+ * @author David Rullán - https://github.com/drullandev
+ * @date September 3, 2024
  */
-class CryptoUtil {
-  private debug = DebugUtils.setDebug(false);
+class CryptoUtils {
+  private static instance: CryptoUtils | null = null;
 
   /**
-   * Converts a text string to an array of character codes.
+   * Returns the singleton instance of CacheManager.
+   * If no instance exists, it creates one with the provided TTL.
    *
-   * @param {string} text - The text string to convert.
-   * @returns {number[]} An array of character codes representing the input text.
+   * @param ttlSeconds - The default time-to-live (TTL) for cache entries.
+   * @returns The singleton instance of CacheManager.
    */
-  private textToChars(text: string): number[] {
-    return text.split("").map((c) => c.charCodeAt(0));
-  }
-
-  /**
-   * Converts a byte to its hexadecimal representation.
-   *
-   * @param {number} n - The byte to convert to hexadecimal.
-   * @returns {string} The hexadecimal representation of the input byte.
-   */
-  private byteToHex(n: number): string {
-    return ("0" + Number(n).toString(16)).substr(-2);
+  public static getInstance(): CryptoUtils {
+    if (!this.instance) {
+      this.instance = new this();
+    }
+    return this.instance;
   }
 
   /**
@@ -38,11 +35,11 @@ class CryptoUtil {
   public encrypt(salt: string, text: string): string {
     return text
       .split("")
-      .map(this.textToChars)
+      .map(TypesUtils.textToChars)
       .map((code: number[]) =>
-        this.textToChars(salt).reduce((a: any, b: any) => a ^ b, code)
+        TypesUtils.textToChars(salt).reduce((a: any, b: any) => a ^ b, code)
       )
-      .map((code: number) => this.byteToHex(code))
+      .map((code: number) => TypesUtils.byteToHex(code))
       .join("");
   }
 
@@ -58,11 +55,11 @@ class CryptoUtil {
       .match(/.{1,2}/g)
       .map((hex: string) => parseInt(hex, 16))
       .map((code: number) =>
-        this.textToChars(salt).reduce((a: any, b: any) => a ^ b, code)
+        TypesUtils.textToChars(salt).reduce((a: any, b: any) => a ^ b, code)
       )
       .map((charCode: number) => String.fromCharCode(charCode))
       .join("");
   }
 }
 
-export default new CryptoUtil();
+export default CryptoUtils.getInstance();

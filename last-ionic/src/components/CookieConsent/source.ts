@@ -1,6 +1,6 @@
-import Storage from '../../integrations/StorageIntegration';
+import AppStorage from '../../classes/integrations/StorageIntegration';
 import { COOKIE_CONSENT_KEY, COOKIE_EXPIRATION_TIME } from './env';
-import Cookies from '../../integrations/CookiesIntegration';
+import Cookies from '../../classes/integrations/CookiesIntegration';
 
 class CookieConsentSource {
 
@@ -11,7 +11,7 @@ class CookieConsentSource {
      */
     public async setCookieConsent(consent: boolean): Promise<void> {
         // Almacena el consentimiento en el almacenamiento local
-        await Storage.set(COOKIE_CONSENT_KEY, consent.toString());
+        await AppStorage.set(COOKIE_CONSENT_KEY, consent.toString());
 
         // Almacena el consentimiento en una cookie con una fecha de expiración
         Cookies.set(COOKIE_CONSENT_KEY, consent.toString(), {
@@ -30,7 +30,7 @@ class CookieConsentSource {
      * @returns The user's consent status as a boolean.
      */
     public async getCookieConsent(): Promise<boolean> {
-        const storedConsent = await Storage.get(COOKIE_CONSENT_KEY);
+        const storedConsent = await AppStorage.get(COOKIE_CONSENT_KEY);
         if (storedConsent !== null) {
             return storedConsent === 'true';
         }
@@ -43,11 +43,8 @@ class CookieConsentSource {
      * Clears the cookie consent status from both local storage and cookies.
      */
     public async clearCookieConsent(): Promise<void> {
-        await Storage.remove(COOKIE_CONSENT_KEY);
-
+        await AppStorage.remove(COOKIE_CONSENT_KEY);
         Cookies.delete(COOKIE_CONSENT_KEY);
-
-        // Alternativamente, se puede usar document.cookie para eliminar la cookie manualmente
         document.cookie = 
             `${COOKIE_CONSENT_KEY}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/`;
     }

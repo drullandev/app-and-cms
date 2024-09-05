@@ -16,7 +16,7 @@ import { FormDataProps } from '../../components/Form/types';
 
 // Reducer dependencies
 import useUserStore from '../../classes/stores/user.store';
-import mainRest from '../../integrations/RestIntegration';
+import AppRest from '../../classes/integrations/RestIntegration';
 
 /**
  * This is the information for the reset page main form
@@ -100,7 +100,7 @@ export const resetFormData = (): FormDataProps => {
     ],
     onSuccess: async (data: any) => {
 
-      await mainRest.makeAsyncCall({
+      await AppRest.makeAsyncCall({
         req: {
           url: '/auth/reset-password',
           method: 'POST',

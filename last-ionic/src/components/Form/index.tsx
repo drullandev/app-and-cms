@@ -13,11 +13,11 @@ import Field from './components/Field';
 //import Accordion from '../Accordion';
 
 // Importing utilities and helper functions
-import LoggerClass from '../../classes/utils/LoggerUtils';
+import LoggerUtils from '../../classes/utils/LoggerUtils';
 import Security from '../../classes/utils/SecurityUtils';
 import DebugUtils from '../../classes/utils/DebugUtils';
-import { buildValidationSchema, buildInitialValues } from '../../classes/utils/ValidationUtil';
-import Captcha from '../../integrations/CaptchaIntegration';
+import ValidationManagers from '../../classes/managers/ValidationsManager';
+import Captcha from '../../classes/integrations/CaptchaIntegration';
 
 // Importing types
 import { FieldProps, FormComponentProps, FormDataProps } from './types';
@@ -26,7 +26,7 @@ import { FieldProps, FormComponentProps, FormDataProps } from './types';
 import './style.css';
 
 // Initialize logger
-const logger = LoggerClass.getInstance('FormComponent', DebugUtils.setDebug(false));
+const logger = LoggerUtils.getInstance('FormComponent', DebugUtils.setDebug(false));
 
 const Form: React.FC<FormComponentProps> = (formProps: FormComponentProps): JSX.Element | null => {
   
@@ -43,10 +43,18 @@ const Form: React.FC<FormComponentProps> = (formProps: FormComponentProps): JSX.
   const initialValuesRef = useRef<FieldValues>({});
   const firstFieldRef = useRef<HTMLInputElement | null>(null);
 
+
   const setFormResolver = (fields?: FieldProps[]) => {
-    const validationSchema = fields ? buildValidationSchema(fields) : yup.object().shape({});
+    if (fields) {
+      const ValidationManager = new ValidationManagers(fields);
+      const validationSchema = ValidationManager.buildValidationSchema();
+      return {
+        resolver: yupResolver(validationSchema),
+        defaultValues: initialValuesRef.current,
+      };
+    }
     return {
-      resolver: yupResolver(validationSchema),
+      resolver: yupResolver(yup.object().shape({})), // Empty schema if no fields
       defaultValues: initialValuesRef.current,
     };
   };
@@ -202,8 +210,9 @@ const Form: React.FC<FormComponentProps> = (formProps: FormComponentProps): JSX.
   }, [csrfToken, captcha, showCaptcha]);
 
   useEffect(() => {
-    if (formData) {
-      const newInitialValues = buildInitialValues(formData.fields);
+    if (formData?.fields) {
+      const ValidationManager = new ValidationManagers(formData.fields);
+      const newInitialValues = ValidationManager.buildInitialValues();
       initialValuesRef.current = newInitialValues;
       reset(newInitialValues);
       if (firstFieldRef.current) {

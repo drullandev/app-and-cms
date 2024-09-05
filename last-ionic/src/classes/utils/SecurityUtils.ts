@@ -1,19 +1,23 @@
 import DebugUtils from "./DebugUtils";
-import LoggerClass from "./LoggerUtils"; // Asegúrate de importar LoggerClass correctamente
+import LoggerUtils from "./LoggerUtils"; // Asegúrate de importar LoggerUtils correctamente
 import DOMPurify from "dompurify";
 
+/**
+ * @author David Rullán - https://github.com/drullandev
+ * @date September 3, 2024
+ */
 class SecurityUtils {
   private csrfTokens: Map<string, string> = new Map();
   private debug: boolean = false;
-  private logger: LoggerClass;
+  private logger: LoggerUtils;
 
   constructor(debug: boolean = true) {
     this.debug = DebugUtils.setDebug(debug); // Asume que `setDebug` establece el estado de depuración
-    this.logger = LoggerClass.getInstance(
+    this.logger = LoggerUtils.getInstance(
       this.constructor.name,
       this.debug,
       100
-    ); // Usa getInstance para crear una instancia de LoggerClass
+    ); // Usa getInstance para crear una instancia de LoggerUtils
     if (this.debug) {
       this.logger.info(this.constructor.name + " initialized !!");
     }

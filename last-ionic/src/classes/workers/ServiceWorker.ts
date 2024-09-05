@@ -1,4 +1,4 @@
-import LoggerClass from '../utils/LoggerUtils';
+import LoggerUtils from '../utils/LoggerUtils';
 import DebugUtils from '../utils/DebugUtils';
 
 type Config = {
@@ -42,7 +42,7 @@ export class ServiceWorker {
     window.location.hostname === '[::1]' ||
     window.location.hostname.match(/^127(?:\.(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)){3}$/)
   );
-  private logger: LoggerClass;
+  private logger: LoggerUtils;
   private debug: boolean;
 
   /**
@@ -53,7 +53,7 @@ export class ServiceWorker {
    */
   constructor(private config?: Config) {
     this.debug = DebugUtils.setDebug(true); // Adjust debug mode as needed
-    this.logger = LoggerClass.getInstance(this.constructor.name, this.debug, 100);
+    this.logger = LoggerUtils.getInstance(this.constructor.name, this.debug, 100);
 
     if (this.debug) {
       this.logger.info("ServiceWorker initialized", { config });

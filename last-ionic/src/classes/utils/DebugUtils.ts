@@ -9,27 +9,32 @@
  * DebugUtils.logInfo('Debug mode is enabled.');
  * const debouncedFunction = DebugUtils.debounce(() => console.log('Debounced function called'), 1000);
  * debouncedFunction();
+ * 
+ * @author David Rullán - https://github.com/drullandev
+ * @date September 3, 2024
  */
 class DebugUtils {
-
-  private static instance: DebugUtils;
-
+  private static instance: DebugUtils | null = null;
   private timer: ReturnType<typeof setTimeout> | null = null;
-
   public debug: boolean = false;
-
-  // Private constructor to prevent direct instantiation
-  private constructor() {}
 
   /**
    * Returns the single instance of DebugUtils.
    * @returns {DebugUtils} The singleton instance.
    */
   public static getInstance(): DebugUtils {
-    if (!DebugUtils.instance) {
-      DebugUtils.instance = new DebugUtils();
+    if (!this.instance) {
+      this.instance = new this();
     }
-    return DebugUtils.instance;
+    return this.instance;
+  }
+
+  public isProduction() {
+    return import.meta.env.NODE_ENV === 'production';
+  }
+
+  public isDevelopment() {
+    return import.meta.env.NODE_ENV === 'development';
   }
 
   /**
@@ -119,20 +124,13 @@ class DebugUtils {
     }
   }
 
-  public isProduction() {
-    return import.meta.env.NODE_ENV === 'production';
-  }
-
-  public isDevelopment() {
-    return import.meta.env.NODE_ENV === 'development';
-  }
-
   /**
    * Stops a debug timer with a given label.
    * @param label The label for the timer.
    */
   public trackElement(element: Element) {
     // Implementation of trackElement logic
+    // TODO: If you gonna implement tracking, then must to reestydu everything from here ;)
   }
 }
 

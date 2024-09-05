@@ -1,25 +1,29 @@
-import LoggerClass, { initializeLogger } from "../utils/LoggerUtils";
+import DebugUtils from "../utils/DebugUtils";
+import LoggerUtils, { initializeLogger } from "../utils/LoggerUtils";
 
 /**
  * CheckTrustManager is responsible for evaluating the trustworthiness of users based on their behavior 
  * and activity within a specified time window. It keeps track of failed login attempts, user actions, 
  * request times, and maintains a list of suspicious IP addresses.
+ * 
+ * @author David Rullán - https://github.com/drullandev
+ * @date August 30, 2024
  */
 class CheckTrustManager {
 
     private static instance: CheckTrustManager | null = null; // Singleton instance
-    private logger: LoggerClass; // Logger instance
-    private debug: boolean; // Debug flag
+    private logger: LoggerUtils; // Logger instance
+    private debug: boolean = false; // Debug mode flag
 
     private failedAttempts: number = 0; // Count of failed login attempts
     private userActions: number[] = []; // Timestamps of user actions
     private requestTimes: number[] = []; // Timestamps of requests made
     private suspiciousIPs: string[] = []; // List of suspicious IP addresses
-    private blockedIPs: { [key: string]: number } = {}; // Dictionary of blocked IPs with unblock timestamp
     private maxFailedAttempts: number; // Maximum allowed failed attempts
     private maxActions: number; // Maximum allowed user actions
     private maxRequests: number; // Maximum allowed requests in the time window
     private timeWindow: number; // Time window in milliseconds for tracking actions
+    private blockedIPs: { [key: string]: number } = {}; // Dictionary of blocked IPs with unblock timestamp
     private blocked = false;
     private blockDuration: number; // Default block duration in milliseconds
 
@@ -40,17 +44,15 @@ class CheckTrustManager {
         maxRequests = 60,
         timeWindow = 60000,
         blockDuration = 31536000000,
-        debug = false
+        debug?: boolean
     ) {
+        this.debug = DebugUtils.setDebug(debug ?? this.debug);
+        this.logger = LoggerUtils.getInstance(this.constructor.name, this.debug, 100);
         this.maxFailedAttempts = maxFailedAttempts;
         this.maxActions = maxActions;
         this.maxRequests = maxRequests;
         this.timeWindow = timeWindow;
         this.blockDuration = blockDuration;
-        this.debug = debug;
-
-        // Initialize logger
-        this.logger = initializeLogger(this.constructor.name, this.debug, 100);
     }
 
     /**
@@ -198,7 +200,7 @@ class CheckTrustManager {
      */
     public displayTrustStatus(ip: string): void {
         const trustScore = this.getTrustScore(ip);
-        console.log(`El usuario con IP ${ip} tiene un puntaje de confianza de: ${trustScore}`);
+        this.logger.log(`El usuario con IP ${ip} tiene un puntaje de confianza de: ${trustScore}`);
     }
 }
 

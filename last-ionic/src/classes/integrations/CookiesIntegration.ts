@@ -1,8 +1,11 @@
-import CookieManager from "../classes/managers/CookieManager";
+import CookieManager from "../managers/CookieManager";
 
 /**
  * Interface defining the contract for CookieManager operations.
  * This interface ensures that the CookieManager can handle cookie management consistently.
+ *
+ * @author David Rullán - https://github.com/drullandev
+ * @date August 30, 2024
  */
 export interface CookieManagerInterface {
   // Define methods if any are needed, e.g., getCookie, setCookie, deleteCookie
@@ -20,10 +23,7 @@ const COOKIE_PATH = process.env.COOKIE_PATH || '/';
  * Creates and exports an instance of CookieManager configured with the specified domain and path.
  * 
  * @returns An instance of CookieManager configured with the domain and path settings.
- * 
- * @author David Rullán - https://github.com/drullandev
- * @date August 30, 2024
  */
-export const Cookies = new CookieManager(COOKIE_DOMAIN, COOKIE_PATH);
+export const Cookies = CookieManager.getInstance(COOKIE_DOMAIN, COOKIE_PATH);
 
 export default Cookies;

@@ -1,7 +1,7 @@
 import { checkboxOutline, warningOutline, skullOutline, closeCircle } from 'ionicons/icons';
 import i18n from 'i18next';
 import { MyExtraOutputOptions } from '../../interfaces/ModalToastProps';
-import LoggerClass from './LoggerUtils';
+import LoggerUtils from './LoggerUtils';
 import { AxiosError, AxiosResponse } from 'axios';
 import DebugUtils from './DebugUtils';
 
@@ -12,12 +12,12 @@ import DebugUtils from './DebugUtils';
  * the application. This class also integrates logging and debugging features.
  *
  * @author David Rullán - https://github.com/drullandev
- * @date September 1, 2024
+ * @date September 3, 2024
  */
 class RestOutput {
 
   private debug: boolean;
-  private logger: LoggerClass;
+  private logger: LoggerUtils;
 
   // Default messages for different types of responses
   private defaultMessages = {
@@ -60,7 +60,7 @@ class RestOutput {
    */
   constructor() {
     this.debug = DebugUtils.setDebug(false); // Configure debug mode as needed
-    this.logger = LoggerClass.getInstance(this.constructor.name, this.debug, 100);
+    this.logger = LoggerUtils.getInstance(this.constructor.name, this.debug, 100);
 
     if (this.debug) {
       this.logger.info("RestOutput initialized");

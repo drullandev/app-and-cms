@@ -1,4 +1,4 @@
-import SQLiteManager, { SQLiteManagerInterface } from "../classes/managers/SQLiteManager";
+import SQLiteManager, { ISQLiteManager } from "../managers/SQLiteManager";
 
 /**
  * The path to the SQLite database file.
@@ -15,6 +15,7 @@ const DB_PATH = process.env.DB_PATH || './default-database.db';
  * @author David Rullán - https://github.com/drullandev
  * @date September 1, 2024
  */
-export const Database: SQLiteManagerInterface = new SQLiteManager(DB_PATH);
 
-export default Database;
+const AppDatabase: ISQLiteManager = SQLiteManager.getInstance(DB_PATH);
+
+export default AppDatabase;
