@@ -56,7 +56,7 @@ const Header: React.FC<any> = (HeaderProps) => {
         <IonToolbar>
           <IonSearchbar
             value={searchQuery}
-            onIonInput={(e) => handleSearch((e.target as unknown as HTMLInputElement).value)}
+            onIonInput={(e: any) => handleSearch((e.target as unknown as HTMLInputElement).value)}
             placeholder="Search"
           />
         </IonToolbar>

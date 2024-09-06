@@ -122,9 +122,12 @@ class GraphQLManager implements GraphQLManagerInterface {
  * @param token - Optional. The Bearer token to be used for authorization.
  * @returns An instance of GraphQLManager configured for GraphQL operations.
  */
-export const AppGraphQLManager = (token?: string): GraphQLManager => {
-  const restManager = AppRest(token); // Reutilizamos la instancia de RestManager desde AppRest
-  return new GraphQLManager(restManager);
-};
+// TODO: Revisar
+//export const AppGraphQLManager = (token?: string): GraphQLManager => {
+  //const restManager = AppRest; // Reutilizamos la instancia de RestManager desde AppRest
+  //return new GraphQLManager();
+//};
 
-export default AppGraphQLManager;
+//export default AppGraphQLManager;
+
+

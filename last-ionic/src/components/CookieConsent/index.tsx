@@ -22,12 +22,14 @@ const CookieConsent: React.FC = () => {
                 const consentGiven = selected === "true";
                 const expiration = await AppStorage.get(COOKIE_CONSENT_KEY_EXPIRE);
                 const expirationTime = Number(expiration);
-
+//TODO: Fix
+/* 
                 if (expirationTime && TimeUtils.hasElapsed(expirationTime)) { 
                     reset();
                 } else if (!consentGiven) {
                     setShowModal(true);
                 }
+*/
             }
         } catch (error) {
             console.error("Error loading cookie consent data:", error);

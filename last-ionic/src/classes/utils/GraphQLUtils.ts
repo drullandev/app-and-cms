@@ -197,6 +197,16 @@ export class GraphQLService {
           method: 'POST',
           url: 'graphql',
           data: { query: call, variables }
+        },
+        onSuccess: {
+          default: ()=>{
+            
+          }
+        },
+        onError: {
+          default: ()=>{
+
+          }
         }
       });
       return response;

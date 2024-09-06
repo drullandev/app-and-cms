@@ -6,7 +6,7 @@ import DebugUtils from '../utils/DebugUtils';   // Debugging helper
 type PushNotificationConfig = {
   onRegister?: (token: string) => void;
   onNotificationReceived?: (notification: PushNotification) => void;
-  onNotificationActionPerformed?: (action: any) => void; // 'any' for now, customize based on your notification action
+  onNotificationActionPerformed?: (action: any) => void;
   onError?: (error: any) => void;
   onPermissionDenied?: () => void;
 };
@@ -96,7 +96,7 @@ export class PushNotificationManager {
         });
 
         // Handle registration errors
-        PushNotifications.addListener('registrationError', (error:  any) => {
+        PushNotifications.addListener('registrationError', (error) => {
           this.logger.error('Error during push registration:', error);
           this.retryRegistration();
         });
@@ -176,10 +176,10 @@ export class PushNotificationManager {
             body,
             id: new Date().getTime(), // Unique ID for the notification
             schedule: { at: scheduleDate },
-            sound: undefined,
-            attachments: [],
-            actionTypeId: '',
-            extra: null,
+            sound: undefined, // Omit sound property or set to undefined if not needed
+            attachments: [],  // Empty array for no attachments
+            actionTypeId: '',  // Set a valid actionTypeId if needed
+            extra: {},         // Additional data if needed
           },
         ],
       });
@@ -215,7 +215,7 @@ export class PushNotificationManager {
     });
 
     // Listen for actions performed on push notifications
-    PushNotifications.addListener('pushNotificationActionPerformed', (action: any) => { // Using `any` for now
+    PushNotifications.addListener('pushNotificationActionPerformed', (action: any) => {
       this.logger.info('Push notification action performed:', action);
       this.config?.onNotificationActionPerformed?.(action);
     });

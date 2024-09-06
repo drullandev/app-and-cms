@@ -1,26 +1,21 @@
 import * as yup from 'yup';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router';
-import { useIonToast } from '@ionic/react'
+import { useIonToast } from '@ionic/react';
 import * as icon from 'ionicons/icons';
 
-import { HOME_PATH, apiUrl } from '../../app/config/env';
+import { HOME_PATH } from '../../app/config/env';
 import DebugUtils from '../../classes/utils/DebugUtils';
-import RestOutput from '../../classes/utils/RestOutput';
-
 import { FormDataProps } from '../../components/Form/types';
 
-import useUserStore from '../../classes/stores/user.store';
-import RestManager from '../../classes/managers/RestManager';
 import AppRest from '../../classes/integrations/RestIntegration';
 
 export const recoverFormData = (): FormDataProps => {
-
   const { t } = useTranslation();
   const history = useHistory();
   const [presentToast] = useIonToast();
   const debug = DebugUtils.setDebug(false);
-  
+
   return {
     id: 'recover-page',
     settings: {
@@ -47,8 +42,8 @@ export const recoverFormData = (): FormDataProps => {
         className: 'col-span-12'
       }
     ],
-    buttons:[      
-      { 
+    buttons: [
+      {
         name: 'submit',
         label: t('Submit'),
         type: 'submit',
@@ -66,50 +61,48 @@ export const recoverFormData = (): FormDataProps => {
       }
     ],
     onSuccess: async (data: any) => {
+      try {
+        await AppRest.makeAsyncCall({
+          req: {
+            url: '/auth/forgot-password',
+            method: 'POST',
+            data: { email: data.email }
+          },
+          onSuccess: {
+            default: async (ret: any) => {
+              const user = ret.user;
+              user.jwt = ret.jwt;
 
-      const onSuccess = async (ret: any) => {
-        let user = ret.user
-        user.jwt = ret.jwt // Attaching the JWT to the user level and state...
-        return user
-      }  
-
-      await AppRest.makeAsyncCall({
-        req: {
-          url: '/auth/forgot-password',
-          method: 'POST',
-          data: {
-            email: data.email
+              presentToast({
+                message: t('user-welcome', { username: user.username }),
+                duration: 2000
+              }).then(() => {
+                history.push('/tabs/schedule', { direction: 'none' });
+              });
+            }
+          },
+          onError: {
+            default: (err: any) => {
+              presentToast({
+                message: t(err.response?.data?.error?.message || 'Error during recovery process'),
+                duration: 2000,
+                color: 'danger'
+              });
+            }
           }
-        },
-        onSuccess: {
-          default: async (ret: any) => {
-            await onSuccess(ret.data)
-              .then((ret: any) => {
-                switch (ret.status) {
-                  case 200:
-                    presentToast({ 
-                      message: t('user-wellcome', { username: ret.data.user.username }) 
-                    }).then(()=> 
-                      history.push('/tabs/schedule', { direction: 'none' })
-                    )
-                }            
-              })
-          }
-        },
-        onError:{
-          default: (err: any)=> {
-            presentToast({ 
-              message: t(err.response.data.error.message) ?? t(err.response.data.message[0].messages[0].message)
-            })
-          }
-        }
-      })
-      
+        });
+      } catch (error) {
+        presentToast({
+          message: 'Error during recovery process',
+          duration: 2000,
+          color: 'danger',
+        });
+      }
     },
 
-    onError: (errors: any) =>{
+    onError: (errors: any) => {
       presentToast({
-        message: 'Login error!',
+        message: t('Login error!'),
         duration: 2000,
         color: 'warning',
       });

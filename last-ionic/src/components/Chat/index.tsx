@@ -59,8 +59,8 @@ const Chat: React.FC = () => {
           <IonInput
             value={input}
             placeholder="Type a message"
-            onIonChange={e => setInput(e.detail.value!)}
-            onKeyPress={e => e.key === 'Enter' ? handleSendMessage() : null}
+            onIonChange={(e: any) => setInput(e.detail.value!)}
+            onKeyDown={e => e.key === 'Enter' ? handleSendMessage() : null}
           />
         </IonItem>
         <IonButton onClick={handleSendMessage} color="primary">

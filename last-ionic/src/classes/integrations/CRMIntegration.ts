@@ -5,7 +5,7 @@ import RestManager from '../managers/RestManager';
  * This interface ensures that the CRMManager can perform both synchronous and asynchronous REST API calls,
  * as well as CRM-specific operations.
  */
-export interface CrmManagerInterface extends RestManager {
+export interface CrmManagerInterface {
   validateUser(userId: string): Promise<boolean>;
   getUserData(userId: string): Promise<any>;
   updateUserData(userId: string, data: any): Promise<any>;
@@ -29,6 +29,10 @@ const CRM_API_BASE_URL = process.env.CRM_API_URL || 'http://localhost:1337/';
  * @date September 5, 2024
  */
 class CRMManager extends RestManager implements CrmManagerInterface {
+
+  constructor(token?: string) {
+    super(CRM_API_BASE_URL, token ? { 'Authorization': `Bearer ${token}` } : undefined);
+  }
 
   /**
    * Validates if the user exists in the CRM system by making a request to the CRM's user validation endpoint.
@@ -78,25 +82,6 @@ class CRMManager extends RestManager implements CrmManagerInterface {
       throw error;
     }
   }
-  
 }
 
-/**
- * Function to create an instance of CRMManager with optional authorization token.
- * 
- * @param token - Optional. The Bearer token to be used for authorization.
- * @returns An instance of CRMManager configured for CRM operations.
- */
-/**
- * Function to create an instance of CRMManager with optional authorization token.
- * 
- * @param token - Optional. The Bearer token to be used for authorization.
- * @returns An instance of CRMManager configured for CRM operations.
- */
-export const AppCrm = (token?: string): CRMManager => {
-  return token
-    ? new CRMManager(CRM_API_BASE_URL, { 'Authorization': `Bearer ${token}` })
-    : new CRMManager(CRM_API_BASE_URL);
-};
-
-export default AppCrm;
+export default CRMManager;
