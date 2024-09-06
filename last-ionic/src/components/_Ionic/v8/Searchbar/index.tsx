@@ -1,20 +1,29 @@
-// This file has been automatically generated from a script
-// by the component generation script.
 import React from 'react';
 import { IonSearchbar } from '@ionic/react';
-import { IonSearchbarProps } from './types';
+import { AccessibleIonSearchbar } from '../interfaces/ionicAccesibility';
 
 /**
  * Component Searchbar
- * @author David Rullán Díaz * @href http://github.com/drullandev
+ * A custom wrapper around IonSearchbar that enforces accessibility attributes.
+ * 
+ * @author David Rullán Díaz
+ * @href http://github.com/drullandev
  * @date 
  *
- * @param {IonSearchbarProps} props Props of the component
+ * @param {AccessibleIonSearchbar} props Props of the component, enforcing accessibility attributes
  * @returns React component wrapping IonSearchbar
  */
-const Searchbar: React.FC<IonSearchbarProps> = (props: IonSearchbarProps) => {
-    return <IonSearchbar {...props} />
+const Searchbar: React.FC<AccessibleIonSearchbar> = (props: AccessibleIonSearchbar) => {
+    const { ariaLabel, role = 'search', ...restProps } = props;
 
+    // Ensure accessibility attributes are passed down to IonSearchbar
+    return (
+        <IonSearchbar
+            aria-label={ariaLabel}
+            role={role}
+            {...restProps}
+        />
+    );
 };
 
 export default React.memo(Searchbar);

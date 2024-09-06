@@ -1,20 +1,29 @@
-// This file has been automatically generated from a script
-// by the component generation script.
 import React from 'react';
 import { IonSkeletonText } from '@ionic/react';
-import { IonSkeletonTextProps } from './types';
+import { AccessibleIonSkeletonText } from '../interfaces/ionicAccesibility';
 
 /**
  * Component SkeletonText
- * @author David Rullán Díaz * @href http://github.com/drullandev
+ * A custom wrapper around IonSkeletonText that enforces accessibility attributes.
+ * 
+ * @author David Rullán Díaz
+ * @href http://github.com/drullandev
  * @date 
  *
- * @param {IonSkeletonTextProps} props Props of the component
+ * @param {AccessibleIonSkeletonText} props Props of the component, enforcing accessibility attributes
  * @returns React component wrapping IonSkeletonText
  */
-const SkeletonText: React.FC<IonSkeletonTextProps> = (props: IonSkeletonTextProps) => {
-    return <IonSkeletonText {...props} />
+const SkeletonText: React.FC<AccessibleIonSkeletonText> = (props: AccessibleIonSkeletonText) => {
+    const { ariaLabel, role = 'status', ...restProps } = props;
 
+    // Ensure accessibility attributes are passed down to IonSkeletonText
+    return (
+        <IonSkeletonText
+            aria-label={ariaLabel}
+            role={role}
+            {...restProps}
+        />
+    );
 };
 
 export default React.memo(SkeletonText);

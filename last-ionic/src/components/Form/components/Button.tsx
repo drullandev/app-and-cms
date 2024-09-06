@@ -24,7 +24,7 @@ const Button = forwardRef<HTMLIonButtonElement, FieldProps>((field, ref) => {
     <>
       {loading 
         ? <IonSpinner name="lines-small" />
-        : (field.icon ? <Icon slot="start" icon={field.icon || icon.star} /> : null)
+        : (field.icon ? <Icon ariaLabel={'test label'} slot="start" icon={field.icon || icon.star} /> : null)
       }
       <IonLabel>{field.label}</IonLabel>
     </>

@@ -1,20 +1,23 @@
-// This file has been automatically generated from a script
-// by the component generation script.
 import React from 'react';
 import { IonPicker } from '@ionic/react';
-import { IonPickerProps } from './types';
+import { AccessibleIonPicker } from '../interfaces/ionicAccesibility';
 
 /**
  * Component Picker
- * @author David Rullán Díaz * @href http://github.com/drullandev
+ * A custom wrapper around IonPicker that enforces accessibility attributes.
+ * 
+ * @author David Rullán Díaz
+ * @href http://github.com/drullandev
  * @date 
  *
- * @param {IonPickerProps} props Props of the component
+ * @param {AccessibleIonPicker} props Props of the component, enforcing accessibility attributes
  * @returns React component wrapping IonPicker
  */
-const Picker: React.FC<IonPickerProps> = (props: IonPickerProps) => {
-    return <IonPicker {...props} />
+const Picker: React.FC<AccessibleIonPicker> = (props: AccessibleIonPicker) => {
+    const { ariaLabel, role = 'dialog', ...restProps } = props;
 
+    // Ensure accessibility attributes are passed down to IonPicker
+    return <IonPicker aria-label={ariaLabel} role={role} {...restProps} />;
 };
 
 export default React.memo(Picker);

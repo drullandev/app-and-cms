@@ -1,20 +1,23 @@
-// This file has been automatically generated from a script
-// by the component generation script.
 import React from 'react';
 import { IonLoading } from '@ionic/react';
-import { IonLoadingProps } from './types';
+import { AccessibleIonLoading } from '../interfaces/ionicAccesibility';
 
 /**
  * Component Loading
- * @author David Rullán Díaz * @href http://github.com/drullandev
+ * A custom wrapper around IonLoading that enforces accessibility attributes.
+ * 
+ * @author David Rullán Díaz
+ * @href http://github.com/drullandev
  * @date 
  *
- * @param {IonLoadingProps} props Props of the component
+ * @param {AccessibleIonLoading} props Props of the component, enforcing accessibility attributes
  * @returns React component wrapping IonLoading
  */
-const Loading: React.FC<IonLoadingProps> = (props: IonLoadingProps) => {
-    return <IonLoading {...props} />
+const Loading: React.FC<AccessibleIonLoading> = (props: AccessibleIonLoading) => {
+    const { ariaLabel = 'Loading...', ...restProps } = props;
 
+    // Ensure accessibility attributes are passed down to IonLoading
+    return <IonLoading aria-label={ariaLabel} {...restProps} />;
 };
 
 export default React.memo(Loading);

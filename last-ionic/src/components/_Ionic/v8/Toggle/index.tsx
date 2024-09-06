@@ -1,20 +1,29 @@
-// This file has been automatically generated from a script
-// by the component generation script.
 import React from 'react';
 import { IonToggle } from '@ionic/react';
-import { IonToggleProps } from './types';
+import { AccessibleIonToggle } from '../interfaces/ionicAccesibility';
 
 /**
  * Component Toggle
- * @author David Rullán Díaz * @href http://github.com/drullandev
+ * A custom wrapper around IonToggle that enforces accessibility attributes.
+ * 
+ * @author David Rullán Díaz
+ * @href http://github.com/drullandev
  * @date 
  *
- * @param {IonToggleProps} props Props of the component
+ * @param {AccessibleIonToggle} props Props of the component, enforcing accessibility attributes
  * @returns React component wrapping IonToggle
  */
-const Toggle: React.FC<IonToggleProps> = (props: IonToggleProps) => {
-    return <IonToggle {...props} />
+const Toggle: React.FC<AccessibleIonToggle> = (props: AccessibleIonToggle) => {
+    const { ariaLabel, role = 'switch', ...restProps } = props;
 
+    // Ensure accessibility attributes are passed down to IonToggle
+    return (
+        <IonToggle
+            aria-label={ariaLabel}
+            role={role}
+            {...restProps}
+        />
+    );
 };
 
 export default React.memo(Toggle);

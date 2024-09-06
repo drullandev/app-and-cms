@@ -1,20 +1,29 @@
-// This file has been automatically generated from a script
-// by the component generation script.
 import React from 'react';
 import { IonSegment } from '@ionic/react';
-import { IonSegmentProps } from './types';
+import { AccessibleIonSegment } from '../interfaces/ionicAccesibility';
 
 /**
  * Component Segment
- * @author David Rullán Díaz * @href http://github.com/drullandev
+ * A custom wrapper around IonSegment that enforces accessibility attributes.
+ * 
+ * @author David Rullán Díaz
+ * @href http://github.com/drullandev
  * @date 
  *
- * @param {IonSegmentProps} props Props of the component
+ * @param {AccessibleIonSegment} props Props of the component, enforcing accessibility attributes
  * @returns React component wrapping IonSegment
  */
-const Segment: React.FC<IonSegmentProps> = (props: IonSegmentProps) => {
-    return <IonSegment {...props} />
+const Segment: React.FC<AccessibleIonSegment> = (props: AccessibleIonSegment) => {
+    const { ariaLabel, role = 'tablist', ...restProps } = props;
 
+    // Ensure accessibility attributes are passed down to IonSegment
+    return (
+        <IonSegment
+            aria-label={ariaLabel}
+            role={role}
+            {...restProps}
+        />
+    );
 };
 
 export default React.memo(Segment);

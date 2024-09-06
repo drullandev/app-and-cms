@@ -1,20 +1,23 @@
-// This file has been automatically generated from a script
-// by the component generation script.
 import React from 'react';
 import { IonLabel } from '@ionic/react';
-import { IonLabelProps } from './types';
+import { AccessibleIonLabel } from '../interfaces/ionicAccesibility';
 
 /**
  * Component Label
- * @author David Rullán Díaz * @href http://github.com/drullandev
+ * A custom wrapper around IonLabel that enforces accessibility attributes.
+ * 
+ * @author David Rullán Díaz
+ * @href http://github.com/drullandev
  * @date 
  *
- * @param {IonLabelProps} props Props of the component
+ * @param {AccessibleIonLabel} props Props of the component, enforcing accessibility attributes
  * @returns React component wrapping IonLabel
  */
-const Label: React.FC<IonLabelProps> = (props: IonLabelProps) => {
-    return <IonLabel {...props} />
+const Label: React.FC<AccessibleIonLabel> = (props: AccessibleIonLabel) => {
+    const { ariaLabel, ...restProps } = props;
 
+    // Ensure accessibility attributes are passed down to IonLabel
+    return <IonLabel aria-label={ariaLabel} {...restProps} />;
 };
 
 export default React.memo(Label);

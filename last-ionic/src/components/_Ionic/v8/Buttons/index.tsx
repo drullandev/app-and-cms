@@ -1,20 +1,25 @@
-// This file has been automatically generated from a script
-// by the component generation script.
 import React from 'react';
 import { IonButtons } from '@ionic/react';
-import { IonButtonsProps } from './types';
+import { AccessibleIonButtons } from '../interfaces/ionicAccesibility';
 
 /**
  * Component Buttons
- * @author David Rullán Díaz * @href http://github.com/drullandev
+ * A custom wrapper around IonButtons that enforces accessibility attributes.
+ * 
+ * @author David Rullán Díaz
+ * @href http://github.com/drullandev
  * @date 
  *
- * @param {IonButtonsProps} props Props of the component
+ * @param {AccessibleIonButtons} props Props of the component, enforcing accessibility attributes
  * @returns React component wrapping IonButtons
  */
-const Buttons: React.FC<IonButtonsProps> = (props: IonButtonsProps) => {
-    return <IonButtons {...props} />
-
+const Buttons: React.FC<AccessibleIonButtons> = ({ ariaLabel, role = 'toolbar', children, ...restProps }) => {
+    // Force the accessibility attributes to be passed down to IonButtons
+    return (
+        <IonButtons aria-label={ariaLabel} role={role} {...restProps}>
+            {children}
+        </IonButtons>
+    );
 };
 
 export default React.memo(Buttons);

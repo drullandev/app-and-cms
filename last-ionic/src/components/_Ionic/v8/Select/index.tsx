@@ -1,20 +1,29 @@
-// This file has been automatically generated from a script
-// by the component generation script.
 import React from 'react';
 import { IonSelect } from '@ionic/react';
-import { IonSelectProps } from './types';
+import { AccessibleIonSelect } from '../interfaces/ionicAccesibility';
 
 /**
  * Component Select
- * @author David Rullán Díaz * @href http://github.com/drullandev
+ * A custom wrapper around IonSelect that enforces accessibility attributes.
+ * 
+ * @author David Rullán Díaz
+ * @href http://github.com/drullandev
  * @date 
  *
- * @param {IonSelectProps} props Props of the component
+ * @param {AccessibleIonSelect} props Props of the component, enforcing accessibility attributes
  * @returns React component wrapping IonSelect
  */
-const Select: React.FC<IonSelectProps> = (props: IonSelectProps) => {
-    return <IonSelect {...props} />
+const Select: React.FC<AccessibleIonSelect> = (props: AccessibleIonSelect) => {
+    const { ariaLabel, role = 'listbox', ...restProps } = props;
 
+    // Ensure accessibility attributes are passed down to IonSelect
+    return (
+        <IonSelect
+            aria-label={ariaLabel}
+            role={role}
+            {...restProps}
+        />
+    );
 };
 
 export default React.memo(Select);

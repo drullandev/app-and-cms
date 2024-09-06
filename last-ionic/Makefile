@@ -6,6 +6,7 @@ NODE_MODULES := node_modules
 
 # Define commands
 NPM := npm
+NPM_INSTALL := npm i
 NPM_START := npm run dev
 YARN := yarn
 NODE := yarn
@@ -21,6 +22,7 @@ LINT := eslint
 
 up:
 start: 
+	$(NPM_INSTALL)
 	$(NPM_START)
 
 # Default target

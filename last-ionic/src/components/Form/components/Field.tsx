@@ -131,7 +131,7 @@ const Field = forwardRef<any, {
       const setIcon = (color?: string) => {
         if (field.secret) {
           return (
-            <Icon color={color ?? setColor()}
+            <Icon ariaLabel={'teslabelicon'} color={color ?? setColor()}
               onClick={() => setShowSecret(!showSecret)}
               icon={showSecret ? icon.eye : icon.eyeOff}
             />
@@ -139,29 +139,30 @@ const Field = forwardRef<any, {
         }
         switch (field.type) {
           case 'email':
-            return <Icon icon={icon.at} color={color ?? setColor()} />;
+            return <Icon ariaLabel={'teslabelicon'} icon={icon.at} color={color ?? setColor()} />;
           case 'date':
           case 'datetime':
           case 'datetime-local':
-            return <Icon icon={icon.calendar} color={color ?? setColor()} />;
+            return <Icon ariaLabel={'teslabelicon'} icon={icon.calendar} color={color ?? setColor()} />;
           case 'url':
-            return <Icon icon={icon.link} color={color ?? setColor()} />;
+            return <Icon ariaLabel={'teslabelicon'} icon={icon.link} color={color ?? setColor()} />;
           case 'tel':
-            return <Icon icon={icon.call} color={color ?? setColor()} />;
+            return <Icon ariaLabel={'teslabelicon'} icon={icon.call} color={color ?? setColor()} />;
           case 'password':
             return (
               <Icon
+                ariaLabel={'teslabelicon'}
                 color={color ?? setColor()}
                 onClick={() => setShowSecret(!showSecret)}
                 icon={showSecret ? icon.eyeOff : icon.eye}
               />
             );
           case 'number':
-            return <Icon icon={icon.calculator} color={color ?? setColor()} />;
+            return <Icon ariaLabel={'teslabelicon'} icon={icon.calculator} color={color ?? setColor()} />;
           case 'recaptcha':
-            return <Icon icon={icon.ribbonOutline} color={color ?? setColor()} />;
+            return <Icon ariaLabel={'teslabelicon'} icon={icon.ribbonOutline} color={color ?? setColor()} />;
           default:
-            return <Icon icon={icon.checkmarkCircle} color={color ?? setColor()} />;
+            return <Icon ariaLabel={'teslabelicon'} icon={icon.checkmarkCircle} color={color ?? setColor()} />;
         }
       };
 

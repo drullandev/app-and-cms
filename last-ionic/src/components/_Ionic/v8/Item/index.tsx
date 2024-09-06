@@ -1,20 +1,23 @@
-// This file has been automatically generated from a script
-// by the component generation script.
 import React from 'react';
 import { IonItem } from '@ionic/react';
-import { IonItemProps } from './types';
+import { AccessibleIonItem } from '../interfaces/ionicAccesibility';
 
 /**
  * Component Item
- * @author David Rullán Díaz * @href http://github.com/drullandev
+ * A custom wrapper around IonItem that enforces accessibility attributes.
+ * 
+ * @author David Rullán Díaz
+ * @href http://github.com/drullandev
  * @date 
  *
- * @param {IonItemProps} props Props of the component
+ * @param {AccessibleIonItem} props Props of the component, enforcing accessibility attributes
  * @returns React component wrapping IonItem
  */
-const Item: React.FC<IonItemProps> = (props: IonItemProps) => {
-    return <IonItem {...props} />
+const Item: React.FC<AccessibleIonItem> = (props: AccessibleIonItem) => {
+    const { ariaLabel, role = 'listitem', ...restProps } = props;
 
+    // Ensure accessibility attributes are passed down to IonItem
+    return <IonItem aria-label={ariaLabel} role={role} {...restProps} />;
 };
 
 export default React.memo(Item);

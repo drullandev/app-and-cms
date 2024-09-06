@@ -1,20 +1,23 @@
-// This file has been automatically generated from a script
-// by the component generation script.
 import React from 'react';
 import { IonIcon } from '@ionic/react';
-import { IonIconProps } from './types';
+import { AccessibleIonIcon } from '../interfaces/ionicAccesibility';
 
 /**
  * Component Icon
- * @author David Rullán Díaz * @href http://github.com/drullandev
+ * A custom wrapper around IonIcon that enforces accessibility attributes.
+ * 
+ * @author David Rullán Díaz
+ * @href http://github.com/drullandev
  * @date 
  *
- * @param {IonIconProps} props Props of the component
+ * @param {AccessibleIonIcon} props Props of the component, enforcing accessibility attributes
  * @returns React component wrapping IonIcon
  */
-const Icon: React.FC<IonIconProps> = (props: IonIconProps) => {
-    return <IonIcon {...props} />
+const Icon: React.FC<AccessibleIonIcon> = (props: AccessibleIonIcon) => {
+    const { ariaLabel, role = 'img', ...restProps } = props;
 
+    // Force the accessibility attributes to be passed down to IonIcon
+    return <IonIcon aria-label={ariaLabel} role={role} {...restProps} />;
 };
 
 export default React.memo(Icon);

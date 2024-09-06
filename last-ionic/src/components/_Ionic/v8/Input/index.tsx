@@ -1,20 +1,30 @@
-// This file has been automatically generated from a script
-// by the component generation script.
 import React from 'react';
 import { IonInput } from '@ionic/react';
-import { IonInputProps } from './types';
+import { AccessibleIonInput } from '../interfaces/ionicAccesibility';
 
 /**
  * Component Input
- * @author David Rullán Díaz * @href http://github.com/drullandev
+ * A custom wrapper around IonInput that enforces accessibility attributes.
+ * 
+ * @author David Rullán Díaz
+ * @href http://github.com/drullandev
  * @date 
  *
- * @param {IonInputProps} props Props of the component
+ * @param {AccessibleIonInput} props Props of the component, enforcing accessibility attributes
  * @returns React component wrapping IonInput
  */
-const Input: React.FC<IonInputProps> = (props: IonInputProps) => {
-    return <IonInput {...props} />
+const Input: React.FC<AccessibleIonInput> = (props: AccessibleIonInput) => {
+    const { ariaLabel, ariaRequired, ariaInvalid, ...restProps } = props;
 
+    // Ensure accessibility attributes are passed down to IonInput
+    return (
+        <IonInput
+          aria-label={ariaLabel}
+          aria-required={ariaRequired}
+          aria-invalid={ariaInvalid}
+          {...restProps}
+        />
+    );
 };
 
 export default React.memo(Input);

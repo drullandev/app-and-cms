@@ -1,20 +1,23 @@
-// This file has been automatically generated from a script
-// by the component generation script.
 import React from 'react';
 import { IonAlert } from '@ionic/react';
-import { IonAlertProps } from './types';
+import { AccessibleIonAlert } from '../interfaces/ionicAccesibility';
 
 /**
  * Component Alert
- * @author David Rullán Díaz * @href http://github.com/drullandev
+ * A custom wrapper around IonAlert that enforces accessibility attributes.
+ * 
+ * @author David Rullán Díaz
+ * @href http://github.com/drullandev
  * @date 
  *
- * @param {IonAlertProps} props Props of the component
+ * @param {AccessibleIonAlert} props Props of the component, enforcing accessibility attributes
  * @returns React component wrapping IonAlert
  */
-const Alert: React.FC<IonAlertProps> = (props: IonAlertProps) => {
-    return <IonAlert {...props} />
+const Alert: React.FC<AccessibleIonAlert> = (props: AccessibleIonAlert) => {
+    const { ariaLabel, role = 'alert', ...restProps } = props;
 
+    // Force the accessibility attributes to be passed down to IonAlert
+    return <IonAlert aria-label={ariaLabel} role={role} {...restProps} />;
 };
 
 export default React.memo(Alert);
