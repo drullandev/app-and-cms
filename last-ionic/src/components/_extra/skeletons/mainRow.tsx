@@ -1,4 +1,3 @@
-import * as AppConst from '../../../app/config/env'
 import React from 'react'
 import { IonList, IonItem, IonLabel } from '@ionic/react'
 

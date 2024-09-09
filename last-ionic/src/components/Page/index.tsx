@@ -4,7 +4,7 @@ import { IonPage, IonContent } from '@ionic/react'
 import Logger from '../../classes/utils/LoggerUtils'
 //import GA4Tracker  from '../../classes/integrations/GA4Integration'
 import DebugUtils from '../../classes/utils/DebugUtils'
-import CookieConsent from '../CookieConsent'
+//import CookieConsent from '../CookieConsent'
 
 import PagePropsData from './types'
 import './styles.css'
@@ -30,7 +30,7 @@ const Page: React.FC<PagePropsData> = (pageProps) => {
         {pageProps.content(pageProps)}
       </IonContent>
       {pageProps.footer !== undefined && pageProps.footer(pageProps)}
-      <CookieConsent />
+      {/*<CookieConsent />*/}
     </IonPage>
   );
 };

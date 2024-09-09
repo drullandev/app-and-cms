@@ -1,14 +1,16 @@
 import React, { useState, forwardRef, useEffect, useCallback } from 'react';
 import { Controller, DeepMap, FieldError } from 'react-hook-form';
-import { IonItem, IonInput, IonTextarea, IonSelect, IonSelectOption, IonCheckbox, IonDatetime, IonLabel, IonRadio, IonRadioGroup, IonRange, IonToggle, IonSkeletonText, IonSpinner, IonButton } from '@ionic/react';
+import {
+  IonItem, IonInput, IonTextarea, IonSelect, IonSelectOption, IonCheckbox,
+  IonDatetime, IonLabel, IonRadio, IonRadioGroup, IonRange, IonToggle,
+  IonSkeletonText, IonSpinner, IonButton
+} from '@ionic/react';
 import * as yup from 'yup';
 import * as icon from 'ionicons/icons';
 import { debounce } from 'lodash';
 
 import { FieldProps } from '../types';
-
 import DebugUtils from '../../../classes/utils/DebugUtils';
-
 import Label from './Label';
 import Skeleton from './Skeleton';
 import Error from './Error';
@@ -69,7 +71,7 @@ const Field = forwardRef<any, {
   const renderInput = (controller: any, errors: DeepMap<Record<string, any>, FieldError>): JSX.Element => {
     
     // Render skeleton if loading is true
-    if (loading && field?.type != 'hidden') {
+    if (loading && field?.type !== 'hidden') {
       return (
         <IonItem style={field.style}>
           <IonSkeletonText style={{ width: '100%', height: '45px', borderRadius: '15px' }} className={field.className} />
@@ -125,13 +127,13 @@ const Field = forwardRef<any, {
         } else if (!controller.value) {
           displayColor = 'medium';
         }
-        return displayColor
-      }
+        return displayColor;
+      };
 
       const setIcon = (color?: string) => {
         if (field.secret) {
           return (
-            <Icon ariaLabel={'teslabelicon'} color={color ?? setColor()}
+            <Icon ariaLabel={field.name} color={color ?? setColor()}
               onClick={() => setShowSecret(!showSecret)}
               icon={showSecret ? icon.eye : icon.eyeOff}
             />
@@ -139,30 +141,30 @@ const Field = forwardRef<any, {
         }
         switch (field.type) {
           case 'email':
-            return <Icon ariaLabel={'teslabelicon'} icon={icon.at} color={color ?? setColor()} />;
+            return <Icon ariaLabel={field.name} icon={icon.at} color={color ?? setColor()} />;
           case 'date':
           case 'datetime':
           case 'datetime-local':
-            return <Icon ariaLabel={'teslabelicon'} icon={icon.calendar} color={color ?? setColor()} />;
+            return <Icon ariaLabel={field.name} icon={icon.calendar} color={color ?? setColor()} />;
           case 'url':
-            return <Icon ariaLabel={'teslabelicon'} icon={icon.link} color={color ?? setColor()} />;
+            return <Icon ariaLabel={field.name} icon={icon.link} color={color ?? setColor()} />;
           case 'tel':
-            return <Icon ariaLabel={'teslabelicon'} icon={icon.call} color={color ?? setColor()} />;
+            return <Icon ariaLabel={field.name} icon={icon.call} color={color ?? setColor()} />;
           case 'password':
             return (
               <Icon
-                ariaLabel={'teslabelicon'}
+                ariaLabel={field.name}
                 color={color ?? setColor()}
                 onClick={() => setShowSecret(!showSecret)}
                 icon={showSecret ? icon.eyeOff : icon.eye}
               />
             );
           case 'number':
-            return <Icon ariaLabel={'teslabelicon'} icon={icon.calculator} color={color ?? setColor()} />;
+            return <Icon ariaLabel={field.name} icon={icon.calculator} color={color ?? setColor()} />;
           case 'recaptcha':
-            return <Icon ariaLabel={'teslabelicon'} icon={icon.ribbonOutline} color={color ?? setColor()} />;
+            return <Icon ariaLabel={field.name} icon={icon.ribbonOutline} color={color ?? setColor()} />;
           default:
-            return <Icon ariaLabel={'teslabelicon'} icon={icon.checkmarkCircle} color={color ?? setColor()} />;
+            return <Icon ariaLabel={field.name} icon={icon.checkmarkCircle} color={color ?? setColor()} />;
         }
       };
 
@@ -196,7 +198,6 @@ const Field = forwardRef<any, {
       return matchingCase ? matchingCase.icon : <></>;
     };
 
-
     const checkIfFieldIsRequired = (fieldName: string): boolean => {
       try {
         const fieldSchema = validationSchema.fields[fieldName] as yup.Schema;
@@ -209,6 +210,7 @@ const Field = forwardRef<any, {
       }
     };
 
+    // Input types handler
     switch (field.type) {
       case 'text':
       case 'url':
@@ -226,7 +228,7 @@ const Field = forwardRef<any, {
           <>
             <IonItem>
               <IonInput
-                type={ field.type == 'email' || showSecret ? 'text' : field.type}
+                type={field.type === 'email' || showSecret ? 'text' : field.type}
                 label={field.label + (checkIfFieldIsRequired(field.name) ? ' *' : '')}
                 labelPlacement="floating"
                 value={controller.value}
@@ -245,8 +247,8 @@ const Field = forwardRef<any, {
             <Error name={field.name} label={field.label} errors={errors} />
           </>
         );
-        break;
-
+      
+      // Additional field types like textarea, select, checkbox, etc., are handled here similarly.
       case 'textarea':
         return (
           <>

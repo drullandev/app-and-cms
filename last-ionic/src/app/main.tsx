@@ -2,6 +2,7 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import AppContainer from './index';
 import { ServiceWorker } from '../classes/workers/ServiceWorker';
+import i18n from '../components/i18n';
 
 const strictMode = false; // Set to `true` during development
 const registerSW = true; // Set to `false` if you don't want to register the service worker
@@ -28,23 +29,35 @@ const renderApp = () => {
   // Determine the environment
   const isProduction = import.meta.env.NODE_ENV === 'production';
 
-  if (isProduction) {
-    root.render(<AppContainer />);
-    if (registerSW) {
-      sw.register();
-    }
-  } else {
-    root.render(
-      strictMode
-        ? <StrictMode><AppContainer /></StrictMode>
-        : <AppContainer />
-    );
-    if (registerSW) {
-      sw.register();
-    } else {
-      sw.unregister();
-    }
-  }
+  // Verifica si `i18next` está listo antes de renderizar la aplicación
+  i18n
+    .init()
+    .then(() => {
+
+      if (isProduction) {
+        root.render(<AppContainer />);
+        sw.register();
+      } else {
+        root.render(
+          strictMode
+            ? <StrictMode>
+                <AppContainer />
+              </StrictMode>
+            : <AppContainer />
+        );
+
+        if (registerSW) {
+          sw.register();
+        } else {
+          sw.unregister();
+        }
+      }
+
+    })
+    .catch((error) => {
+      console.error('Error initializing i18next:', error);
+    });
+
 }
 
 renderApp();

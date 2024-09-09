@@ -5,7 +5,7 @@ import { setLocale } from 'yup'
 import AppContainer from '../../app'
 
 import detector from 'i18next-browser-languagedetector'
-import resources from '../../../static/i18next/translations.json'
+import resources from '../../static/i18next/translations.json'
 
 export function buildYupLocale(_: unknown, t: TFunction): void {
   setLocale({

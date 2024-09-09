@@ -13,6 +13,7 @@ import Form from '../../components/Form';
 import { loginFormData } from './source';
 import './styles.scss';
 import './style.css';
+import { checkmarkCircleOutline } from 'ionicons/icons';
 
 const LoginPage: React.FC<any> = (pageProps) => {
   
@@ -45,7 +46,7 @@ const LoginPage: React.FC<any> = (pageProps) => {
         <>
           <div className="login-content">
             <IonItem lines="none" className="welcome-item">
-              <IonIcon name="checkmark-circle-outline" color="success" className="welcome-icon" />
+              <IonIcon icon={checkmarkCircleOutline} color="success" className="welcome-icon" />
               <IonText>
                 <h2>{t('Welcome to Festivore!')}</h2>
                 <p>{t('Join the community and enjoy the best culinary experiences. Login to your account to continue.')}</p>

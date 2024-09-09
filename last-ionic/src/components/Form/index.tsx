@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useForm, FieldValues } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
@@ -42,7 +42,8 @@ const Form: React.FC<FormComponentProps> = (formProps: FormComponentProps): JSX.
 
   const initialValuesRef = useRef<FieldValues>({});
   const firstFieldRef = useRef<HTMLInputElement | null>(null);
-
+  // Memoize the formData for performance
+  const memoizedFormData = useMemo(() => formData?.fields || [], [formData]);
 
   const setFormResolver = (fields?: FieldProps[]) => {
     if (fields) {
@@ -92,7 +93,7 @@ const Form: React.FC<FormComponentProps> = (formProps: FormComponentProps): JSX.
     logger.debug('Field change:', { name: fieldName, value });
   };
 
-  const onSubmit = async (data: FieldValues) => {
+  const onSubmit = useCallback(async (data: FieldValues) => {
     logger.debug('Data to submit (initial):', data);
 
     try {
@@ -130,7 +131,7 @@ const Form: React.FC<FormComponentProps> = (formProps: FormComponentProps): JSX.
     } finally {
       setIsSubmitting(false);
     }
-  };
+  }, [captcha, formData, csrfToken]);
 
   useEffect(() => {
     generateCsrfToken();
@@ -225,30 +226,31 @@ const Form: React.FC<FormComponentProps> = (formProps: FormComponentProps): JSX.
     return null;
   }
 
+  {/*<motion.div {...formData.settings.animations}>*/}
   return (
-    <motion.div {...formData.settings.animations}>
+    <>
       <Overlay show={isSubmitting} duration={600} />
       <form
         key={formData.id}
         onSubmit={handleSubmit(onSubmit, formData.onError)}
         style={formData.settings.style}
       >
+        {/*<motion.div {...field?.animations}
+          key={'div-' + (field.name ?? 'div-' + field.id)}
+          className={`form-field ${field.className ?? 'col-span-12'} ${field.type === 'hidden' ? 'hidden' : ''}`}
+        >*/}
         {formData.fields && formData.fields.map((field: FieldProps, index: number) => (
-          <motion.div {...field?.animations}
-            key={'div-' + (field.name ?? 'div-' + field.id)}
-            className={`form-field ${field.className ?? 'col-span-12'} ${field.type === 'hidden' ? 'hidden' : ''}`}
-          >
             <Field
-              ref={index === 0 ? firstFieldRef : null}
-              key={'field-' + (field.name ?? 'field-' + field.id)}
-              field={field}
-              control={control}
-              errors={errors}
-              onFieldChange={onFormChange}
-              loading={isLoading}
+            ref={index === 0 ? firstFieldRef : null}
+            key={'field-' + (field.name ?? 'field-' + field.id)}
+            field={field}
+            control={control}
+            errors={errors}
+            onFieldChange={onFormChange}
+            loading={isLoading}
             />
-          </motion.div>
-        ))}
+            ))}
+            {/*</motion.div>*/}
         <div>
           {formData.buttons && formData.buttons.map((button: FieldProps, index: number) => (
             <motion.div {...button?.animations || {}}
@@ -276,8 +278,9 @@ const Form: React.FC<FormComponentProps> = (formProps: FormComponentProps): JSX.
         </>
         */}
       </form>
-    </motion.div>
+      </>
   );
+  {/*</motion.div>*/}
 };
 
 export default Form;

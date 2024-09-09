@@ -23,7 +23,6 @@
     <meta name="apple-mobile-web-app-title" content="Ionic App" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black" />
 
-
     <script async src="https://www.googletagmanager.com/gtag/js?id=YOUR_GA4_TRACKING_ID"></script>
     
     <script>
@@ -32,7 +31,27 @@
       gtag('js', new Date());
       gtag('config', 'YOUR_GA4_TRACKING_ID');
     </script>  
+    
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        // Obtén la etiqueta meta
+        const metaViewport = document.querySelector('meta[name="viewport"]');
 
+        // Detectar si estamos en una PWA en modo standalone o en un dispositivo móvil
+        const userAgent = navigator.userAgent.toLowerCase();
+        if (userAgent.includes('mobile')) {
+          // Para dispositivos móviles
+          metaViewport.setAttribute('content', 'width=device-width, initial-scale=1.0');
+        } else if (window.matchMedia('(display-mode: standalone)').matches) {
+          // Para PWA en modo standalone
+          metaViewport.setAttribute('content', 'width=device-width, initial-scale=1.0, user-scalable=no');
+        } else {
+          // Para otros entornos, como navegador
+          metaViewport.setAttribute('content', 'width=device-width, initial-scale=1.0');
+        }
+      });
+    </script>
+    
   </head>
   <body>
     <div id="root"></div>

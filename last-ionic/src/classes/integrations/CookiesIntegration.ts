@@ -16,7 +16,7 @@ export interface CookieManagerInterface {
  * - Purpose: These settings specify where cookies should be managed. 
  * - The domain is set to '.example.com' and the path is set to '/app'.
  */
-const COOKIE_DOMAIN =  process.env.API_URL || 'http://localhost:1337/';
+const COOKIE_DOMAIN =  process.env.API_URL || 'http://localhost:3000/';
 const COOKIE_PATH = process.env.COOKIE_PATH || '/';
 
 /**

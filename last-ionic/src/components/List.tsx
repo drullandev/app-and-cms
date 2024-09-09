@@ -1,24 +1,30 @@
-import React from 'react'
-import { IonMenuToggle, IonIcon, IonItem, IonLabel } from '@ionic/react'
+import React, { useMemo } from 'react';
+import { IonMenuToggle, IonIcon, IonItem, IonLabel } from '@ionic/react';
+import { ListProps } from '../interfaces/ListProps';
+import { ListRowProps } from '../interfaces/models/ListRowProps';
 
-import { ListProps } from '../interfaces/ListProps'
-import { ListRowProps } from '../interfaces/models/ListRowProps'
+const List: React.FC<ListProps> = ({ rows }) => {
+  // Memoize the current path to avoid recalculating in each render
+  const currentPath = useMemo(() => window.location.pathname, []);
 
-const List: React.FC<ListProps> = (rows) => {
-  return (<></>)// rows.map((row: ListRowProps) => (
-  /* <IonMenuToggle key={row.title} auto-hide='false'>
-     <IonItem       
-       key={row.title}     
-       detail={false}
-       routerLink={row.path}
-       routerDirection='none'
-       className={window.location.pathname.startsWith(row.path) ? 'selected' : undefined}
-     >
-       <IonIcon slot={row.slot} icon={row.icon} />
-       <IonLabel>{row.title}</IonLabel>
-     </IonItem>
-   </IonMenuToggle>
- ))*/
-}
+  return (
+    <>
+      {rows.map((row: ListRowProps) => (
+        <IonMenuToggle key={row.title} auto-hide="false">
+          <IonItem
+            key={row.title}
+            detail={false}
+            routerLink={row.path}
+            routerDirection="none"
+            className={currentPath.startsWith(row.path) ? 'selected' : undefined}
+          >
+            <IonIcon slot={row.slot} icon={row.icon} />
+            <IonLabel>{row.title}</IonLabel>
+          </IonItem>
+        </IonMenuToggle>
+      ))}
+    </>
+  );
+};
 
-export default List
+export default List;

@@ -60,8 +60,7 @@ const useAppStore = create<AppStore>((set, get) => ({
    * 
    * @param {boolean} isLoading - The new loading state.
    */
-  setLoading: (isLoading) => set((state) => ({
-    ...state,
+  setLoading: (isLoading) => set(() => ({
     loading: isLoading,
   })),
 
@@ -70,8 +69,7 @@ const useAppStore = create<AppStore>((set, get) => ({
    * 
    * @param {boolean} menuEnabled - The new menuEnabled state.
    */
-  setMenuEnabled: (menuEnabled) => set((state) => ({
-    ...state,
+  setMenuEnabled: (menuEnabled) => set(() => ({
     menuEnabled,
   })),
 
@@ -93,23 +91,20 @@ const useAppStore = create<AppStore>((set, get) => ({
    */
   loadAppData: async () => {
     logger.log(' • loadAppData');
-    set((state) => ({
-      ...state,
+    set(() => ({
       loading: true,
     }));
 
     try {
       // Simulate data fetching
       const data = await fetchDataFromServer();
-      set((state) => ({
-        ...state,
+      set(() => ({
         ...data,
       }));
     } catch (error) {
       logger.error('Error loading application data:', error);
     } finally {
-      set((state) => ({
-        ...state,
+      set(() => ({
         loading: false,
       }));
     }

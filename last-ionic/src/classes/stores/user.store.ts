@@ -1,4 +1,4 @@
-import create from 'zustand';
+import { create } from 'zustand';
 import { Preferences } from '@capacitor/preferences';
 import Logger from '../utils/LoggerUtils';
 import DebugUtils from '../utils/DebugUtils';
@@ -7,7 +7,7 @@ import { AppState } from './sessions.store';
 export const dataUrl = '/assets/data/data.json'; // TODO: REMOVE THIS
 export const locationsUrl = '/assets/data/locations.json'; // TODO: REMOVE THIS
 
-// Propio del usuario
+// Propiedades del usuario
 export const ID = 'id';
 export const JWT = 'jwt';
 export const USERNAME = 'username';
@@ -54,42 +54,24 @@ const useUserStore = create<StoreState>((set, get) => ({
   confirmed: false,
   darkMode: false,
   menuEnabled: true,
-  
-  // Métodos para actualizar el estado
-  setUserState: (user) => set((state) => ({ ...state, ...user })),
+
+  // Métodos para actualizar el estado, optimizados con comparaciones
+  setUserState: (user) => {
+    const currentState = get();
+    const updatedState = { ...currentState, ...user };
+    if (JSON.stringify(currentState) !== JSON.stringify(updatedState)) {
+      set({ ...updatedState });
+    }
+  },
+
   setAppState: (conf) => set((state) => ({ ...state, ...conf })),
 
   loadAppData: async () => {
     // Implementar la lógica de carga de datos si es necesario
     try {
-      /*
-      const response = await Promise.all([
-        fetch(dataUrl),
-        fetch(locationsUrl)
-      ]);
-
-      const responseData = await response[0].json();
-      const schedule = responseData.schedule[0] as Schedule;
-      const sessions = parseSessions(schedule);
-      const speakers = responseData.speakers as Speaker[];
-      const locations = await response[1].json() as Location[];
-
-      const allTracks = sessions
-        .reduce((all, session) => all.concat(session.tracks), [] as string[])
-        .filter((trackName, index, array) => array.indexOf(trackName) === index)
-        .sort();
-
-      set({
-        schedule,
-        sessions: parseSessions(schedule),
-        locations,
-        speakers,
-        allTracks,
-        filteredTracks: [...allTracks],
-      });
-      */
+      // Simulación de la carga de datos
     } catch (error) {
-      console.error('Error loading conference data:', error);
+      console.error('Error loading app data:', error);
     }
   },
 
@@ -120,38 +102,55 @@ const useUserStore = create<StoreState>((set, get) => ({
     }
   },
 
-  // Setters
-  setData: async (data: Partial<UserState>) => {
-    set((state) => ({ ...state, ...data }));
+  // Setters optimizados para comparaciones antes de actualizar el estado
+  setData: (data: Partial<UserState>) => {
+    const currentState = get();
+    if (JSON.stringify(currentState) !== JSON.stringify({ ...currentState, ...data })) {
+      set({ ...currentState, ...data });
+    }
   },
 
-  setId: async (id?: string) => {
-    set((state) => ({ ...state, id }));
+  setId: (id?: string) => {
+    if (get().id !== id) {
+      set({ id });
+    }
   },
 
   setDarkMode: async (darkMode: boolean) => {
     await Preferences.set({ key: DARK_MODE, value: darkMode.toString() });
-    set((state) => ({ ...state, darkMode }));
+    if (get().darkMode !== darkMode) {
+      set({ darkMode });
+    }
   },
 
-  setJwt: async (jwt?: string) => {
-    set((state) => ({ ...state, jwt }));
+  setJwt: (jwt?: string) => {
+    if (get().jwt !== jwt) {
+      set({ jwt });
+    }
   },
 
-  setUsername: async (username?: string) => {
-    set((state) => ({ ...state, username }));
+  setUsername: (username?: string) => {
+    if (get().username !== username) {
+      set({ username });
+    }
   },
-  
-  setEmail: async (email?: string) => {
-    set((state) => ({ ...state, email }));
+
+  setEmail: (email?: string) => {
+    if (get().email !== email) {
+      set({ email });
+    }
   },
-  
-  setBlocked: async (blocked?: boolean) => {
-    set((state) => ({ ...state, blocked }));
+
+  setBlocked: (blocked?: boolean) => {
+    if (get().blocked !== blocked) {
+      set({ blocked });
+    }
   },
-  
-  setConfirmed: async (confirmed?: boolean) => {
-    set((state) => ({ ...state, confirmed }));
+
+  setConfirmed: (confirmed?: boolean) => {
+    if (get().confirmed !== confirmed) {
+      set({ confirmed });
+    }
   },
 }));
 

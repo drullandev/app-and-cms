@@ -31,6 +31,7 @@ import useUserStore from '../classes/stores/user.store';
 // Classes
 import DebugUtils from '../classes/utils/DebugUtils';
 
+
 const AppComponent: React.FC = () => {
 
   const debug = DebugUtils.setDebug(false);
