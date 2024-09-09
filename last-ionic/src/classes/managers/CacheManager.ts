@@ -1,6 +1,53 @@
 import NodeCache from 'node-cache';
 
 /**
+ * Interface for the CacheManager class.
+ * Describes the methods and properties available in CacheManager.
+ */
+interface ICacheManager {
+  /**
+   * Caches a value associated with a specific key.
+   * @param key - The key to store the value under.
+   * @param value - The value to store in the cache.
+   * @param ttlSeconds - Optional TTL for the specific entry.
+   * @returns True if the value was stored successfully, otherwise false.
+   */
+  set<T>(key: string, value: T, ttlSeconds?: number): boolean;
+
+  /**
+   * Retrieves a value from the cache associated with the specified key.
+   * @param key - The key to retrieve the value for.
+   * @returns The cached value, or undefined if the key is not found or expired.
+   */
+  get<T>(key: string): T | undefined;
+
+  /**
+   * Removes a specific key from the cache.
+   * @param key - The key to remove from the cache.
+   * @returns The number of deleted entries (0 if the key doesn't exist).
+   */
+  remove(key: string): number;
+
+  /**
+   * Clears all entries from the cache.
+   */
+  flushAll(): void;
+
+  /**
+   * Checks if a specific key exists in the cache.
+   * @param key - The key to check in the cache.
+   * @returns True if the key exists and is not expired, otherwise false.
+   */
+  has(key: string): boolean;
+
+  /**
+   * Retrieves cache statistics such as hits, misses, and keys count.
+   * @returns The statistics object from NodeCache.
+   */
+  getStats(): NodeCache.Stats;
+}
+
+/**
  * CacheManager is a utility class that provides an interface for caching data using NodeCache.
  * It supports multiple named caches, each with its own TTL and data.
  * 

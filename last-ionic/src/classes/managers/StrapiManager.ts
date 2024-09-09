@@ -4,6 +4,42 @@ import LoggerUtils, { initializeLogger } from "../utils/LoggerUtils";
 import DebugUtils from "../utils/DebugUtils";
 
 /**
+ * Interface for the StrapiManager class.
+ * Describes the methods and properties available in StrapiManager.
+ */
+interface IStrapiManager {
+  /**
+   * Registers a webhook listener in Strapi.
+   * @param url - The URL of the webhook to register.
+   * @param events - Array of events to listen to.
+   */
+  registerWebhook(url: string, events: string[]): Promise<void>;
+
+  /**
+   * Handles incoming webhook events from Strapi.
+   * @param event - The event data sent by Strapi.
+   */
+  handleWebhookEvent(event: any): void;
+
+  /**
+   * Fetches data from Strapi with caching and retry logic.
+   * @param endpoint - The Strapi endpoint to query.
+   * @param retries - Number of retry attempts in case of failure.
+   * @returns The data from Strapi, either from cache or fresh.
+   */
+  fetchDataWithRetry(endpoint: string, retries?: number): Promise<any>;
+
+  /**
+   * Fetches data from Strapi with caching, retry logic, and fallback.
+   * @param endpoint - The Strapi endpoint to query.
+   * @param retries - Number of retry attempts in case of failure.
+   * @param fallbackData - Optional fallback data to return in case of failure.
+   * @returns The data from Strapi, either from cache, fresh, or fallback.
+   */
+  fetchDataWithFallback(endpoint: string, retries?: number, fallbackData?: any): Promise<any>;
+}
+
+/**
  * StrapiManager provides functionality to interact with the Strapi API, including
  * caching, retry mechanisms, and support for webhooks. It is designed to improve
  * performance and resiliency when communicating with Strapi.

@@ -1,21 +1,20 @@
 import create from 'zustand';
-
 import { Preferences } from '@capacitor/preferences';
-
 import Logger from '../utils/LoggerUtils';
 import DebugUtils from '../utils/DebugUtils';
 import { AppState } from './sessions.store';
 
-export const dataUrl = '/assets/data/data.json' //TODO: REMOVE THIS
-export const locationsUrl = '/assets/data/locations.json'  //TODO: REMOVE THIS
+export const dataUrl = '/assets/data/data.json'; // TODO: REMOVE THIS
+export const locationsUrl = '/assets/data/locations.json'; // TODO: REMOVE THIS
 
 // Propio del usuario
-export const ID = 'id'
-export const JWT = 'jwt'
-export const USERNAME = 'username'
-export const EMAIL = 'email'
-export const CONFIRMED = 'confirmed'
-export const BLOCKED = 'blocked'
+export const ID = 'id';
+export const JWT = 'jwt';
+export const USERNAME = 'username';
+export const EMAIL = 'email';
+export const CONFIRMED = 'confirmed';
+export const BLOCKED = 'blocked';
+export const DARK_MODE = 'darkMode';
 
 const debug = DebugUtils.setDebug(false);
 
@@ -27,6 +26,7 @@ interface UserState {
   email?: string;
   blocked: boolean;
   confirmed: boolean;
+  darkMode: boolean;
 }
 
 // Define la interfaz del store con Zustand
@@ -39,6 +39,7 @@ interface StoreState extends UserState, AppState {
   // Setters
   setData: (data: Partial<UserState>) => void;
   setId: (id?: string) => void;
+  setDarkMode: (darkMode: boolean) => void;
   setJwt: (jwt?: string) => void;
   setUsername: (username?: string) => void;
   setEmail: (email?: string) => void;
@@ -57,15 +58,9 @@ const useUserStore = create<StoreState>((set, get) => ({
   // Métodos para actualizar el estado
   setUserState: (user) => set((state) => ({ ...state, ...user })),
   setAppState: (conf) => set((state) => ({ ...state, ...conf })),
-  
-  getConfData: async () => {
-
-  },
 
   loadAppData: async () => {
-
-    //set({ loading: true });
-
+    // Implementar la lógica de carga de datos si es necesario
     try {
       /*
       const response = await Promise.all([
@@ -93,11 +88,9 @@ const useUserStore = create<StoreState>((set, get) => ({
         filteredTracks: [...allTracks],
       });
       */
-      
     } catch (error) {
       console.error('Error loading conference data:', error);
     }
-    //set({ loading: false });
   },
 
   loadUserData: async () => {
@@ -109,6 +102,7 @@ const useUserStore = create<StoreState>((set, get) => ({
         Preferences.get({ key: EMAIL }),
         Preferences.get({ key: BLOCKED }),
         Preferences.get({ key: CONFIRMED }),
+        Preferences.get({ key: DARK_MODE })
       ]);
 
       set({
@@ -118,6 +112,7 @@ const useUserStore = create<StoreState>((set, get) => ({
         email: response[3].value || undefined,
         blocked: response[4].value === 'true',
         confirmed: response[5].value === 'true',
+        darkMode: response[6].value === 'true'
       });
 
     } catch (error) {
@@ -127,41 +122,37 @@ const useUserStore = create<StoreState>((set, get) => ({
 
   // Setters
   setData: async (data: Partial<UserState>) => {
-    const { setUserState } = useUserStore.getState();
-    setUserState(data);
+    set((state) => ({ ...state, ...data }));
   },
 
   setId: async (id?: string) => {
-    const { setUserState } = useUserStore.getState();
-    setUserState({ id });
+    set((state) => ({ ...state, id }));
   },
 
-  
+  setDarkMode: async (darkMode: boolean) => {
+    await Preferences.set({ key: DARK_MODE, value: darkMode.toString() });
+    set((state) => ({ ...state, darkMode }));
+  },
+
   setJwt: async (jwt?: string) => {
-    const { setUserState } = useUserStore.getState();
-    setUserState({ jwt });
+    set((state) => ({ ...state, jwt }));
   },
 
   setUsername: async (username?: string) => {
-    const { setUserState } = useUserStore.getState();
-    setUserState({ username });
+    set((state) => ({ ...state, username }));
   },
   
   setEmail: async (email?: string) => {
-    const { setUserState } = useUserStore.getState();
-    setUserState({ email });
+    set((state) => ({ ...state, email }));
   },
   
   setBlocked: async (blocked?: boolean) => {
-    const { setUserState } = useUserStore.getState();
-    setUserState({ blocked });
+    set((state) => ({ ...state, blocked }));
   },
   
   setConfirmed: async (confirmed?: boolean) => {
-    const { setUserState } = useUserStore.getState();
-    setUserState({ confirmed });
+    set((state) => ({ ...state, confirmed }));
   },
-
 }));
 
 export default useUserStore;

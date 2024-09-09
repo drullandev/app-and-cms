@@ -1,8 +1,9 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { IonItemSliding, IonItem, IonLabel, IonItemOptions, IonItemOption, IonSkeletonText, IonThumbnail } from '@ionic/react';
-import useSessionStore from '../../stores/sessions.store';
+import useSessionStore from '../../classes/stores/sessions.store';
 import Icon from './Icon';
-import { ListRowProps } from '../../models/ListRowProps';
+import { ListRowProps } from '../../interfaces/ListRowProps';
+import useSearchStore from '../../classes/stores/searcher.store'; // Import the new search store
 
 interface LineProps {
   id: string;
@@ -18,11 +19,7 @@ interface OwnProps {
 const SessionListItem: React.FC<OwnProps> = ({ row }) => {
   const [line, setLine] = useState<LineProps | undefined>(undefined);
   const ionItemSlidingRef = useRef<HTMLIonItemSlidingElement>(null);
-
-  // Usa Zustand para obtener el estado
-  const { searchString } = useSessionStore(state => ({
-    searchString: state.searchString,
-  }));
+  const { searchString } = useSearchStore();
 
   // Simula una llamada para obtener datos. Reemplaza esto con tu lógica real.
   useEffect(() => {

@@ -12,7 +12,7 @@ const Logger: React.FC<LoggerProps> = ({ children }) => {
   useEffect(() => {
     // Function to update the logs from LoggerUtils
     const updateLogs = () => {
-      setLogs(LoggerUtils.getLogs());
+// TODO: Revisar      setLogs(LoggerUtils.getLogs());
     };
 
     // Set up an interval to periodically update the logs

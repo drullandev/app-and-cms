@@ -7,10 +7,10 @@ import Page from '../Page'
 import About from '../../pages/About'
 //import Account from '../../../pages/Account'
 
-import Home from '../../pages/Schedule'
-import SpeakerList from '../_extra/MatesList'
-import MateDetail from '../_extra/MateDetail'
-import MapView from '../_extra/MapView'
+//import Home from '../../pages/Schedule'
+//import SpeakerList from '../_extra/MatesList'
+//import MateDetail from '../_extra/MateDetail'
+//import MapView from '../_extra/MapView'
 //import Tutorial from '../../extra/Tutorial'
 //import Content from './Content'
 //import Main from './Main'
@@ -27,10 +27,10 @@ const MyComponent: React.FC<MyComponentProps> = ({ name, slug, params, content, 
       //case 'header': 
         //console.log({ name, slug, params, content })        
         //return <Header label={params.label} slot={params.slot}/>
-      case 'home': return jsx ? <Home /> : Home
-      case 'speakers': return <SpeakerList />
-      case 'MateDetail': return jsx ? <MateDetail /> : MateDetail
-      case 'map': return jsx ? <MapView /> : MapView
+      //case 'home': return jsx ? <Home /> : Home
+      //case 'speakers': return <SpeakerList />
+      //case 'MateDetail': return jsx ? <MateDetail /> : MateDetail
+      //case 'map': return jsx ? <MapView /> : MapView
       case 'about': return <About />
       //case 'tutorial': return <Tutorial/>
       //case 'account': return <Account/>

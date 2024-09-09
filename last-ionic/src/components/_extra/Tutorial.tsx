@@ -11,7 +11,7 @@ import {
 } from '@ionic/react';
 import { arrowForward } from 'ionicons/icons';
 import { useHistory } from 'react-router';
-import useSessionStore from '../../stores/sessions.store';
+import useSessionStore from '../../classes/stores/sessions.store';
 import useUserStore from '../../classes/stores/user.store';
 import './Tutorial.scss';
 
@@ -19,8 +19,8 @@ const Tutorial: React.FC = () => {
   const history = useHistory();
   
   // Usamos Zustand para acceder a las acciones
-  const setHasSeenTutorial = useUserStore((state) => state.setHasSeenTutorial);
-  const setMenuEnabled = useSessionStore((state) => state.setMenuEnabled);
+  const setHasSeenTutorial = useUserStore((state: any) => state.setHasSeenTutorial);
+  const setMenuEnabled = useSessionStore((state: any) => state.setMenuEnabled);
 
   useIonViewWillEnter(() => {
     setMenuEnabled(false);

@@ -54,7 +54,7 @@ const SessionListItem: React.FC<SessionListItemProps> = ({ isFavorite, onAddFavo
   };
 
   return (
-    <IonItemSliding ref={ionItemSlidingRef} class={'track-' + session.tracks[0].toLowerCase()}>
+    <IonItemSliding ref={ionItemSlidingRef} className={'track-' + session.tracks[0].toLowerCase()}>
       <IonItem routerLink={`/tabs/home/${session.id}`}>
         <IonLabel>
           <h3>{session.name}</h3>

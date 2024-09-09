@@ -3,7 +3,7 @@ import { IBeforeInstallPromptEvent } from './types'
 import { IonButton, IonCol, IonContent, IonGrid, IonIcon, IonImg, IonLabel, IonModal, IonRow } from '@ionic/react'
 import { useTranslation } from 'react-i18next'
 import { closeOutline } from 'ionicons/icons'
-import { translations, splashScreen } from '../../app/config/env'
+import { splashScreen } from '../../app/config/env'
 
 const useAddToHomescreenPrompt = (): [IBeforeInstallPromptEvent | null, () => void, boolean] => {
 
@@ -111,7 +111,7 @@ const PWA: React.FC = () => {
               <IonCol size='1'></IonCol>
               <IonCol size='10' className='ion-text-center' >
                 <IonLabel className='bold fade-in-2' style={{ fontSize: '1.2rem' }}>
-                  {t(translations.wannaAddHomeScreen)}                  
+                  {/*t(translations.wannaAddHomeScreen)*/}                  
                 </IonLabel>
               </IonCol>
               <IonCol size='1'></IonCol>
@@ -125,7 +125,9 @@ const PWA: React.FC = () => {
                 <IonLabel className='bold fade-in-2'>
                   <IonButton
                     color='soft-blue' style={{ margin: '10% 0' }}
-                    onClick={promptToInstall} strong={undefined} disabled={undefined} size={undefined} fill={undefined} mode={undefined} href={undefined} routerAnimation={undefined} rel={undefined} target={undefined} buttonType={undefined} download={undefined} expand={undefined} onIonBlur={undefined} onIonFocus={undefined} shape={undefined} type={undefined}>{t(translations.addHomescreen)}</IonButton>
+                    onClick={promptToInstall} strong={undefined} disabled={undefined} size={undefined} fill={undefined} mode={undefined} href={undefined} routerAnimation={undefined} rel={undefined} target={undefined} buttonType={undefined} download={undefined} expand={undefined} onIonBlur={undefined} onIonFocus={undefined} shape={undefined} type={undefined}>
+                      {/*t(translations.addHomescreen)*/}
+                    </IonButton>
                 </IonLabel>
               </IonCol>
               <IonCol size='1'></IonCol>

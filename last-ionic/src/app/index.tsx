@@ -30,7 +30,6 @@ import useUserStore from '../classes/stores/user.store';
 
 // Classes
 import DebugUtils from '../classes/utils/DebugUtils';
-import Logger from '../classes/utils/LoggerUtils';
 
 const AppComponent: React.FC = () => {
 
@@ -40,7 +39,6 @@ const AppComponent: React.FC = () => {
   const [ theme, setTheme ] = useState<string>('dark-mode');
 
   useEffect(() => {
-    if (debug) Logger.log(' • Loading App!');
     setTheme(darkMode ? 'dark-theme' : '')
   }, [darkMode]);
 

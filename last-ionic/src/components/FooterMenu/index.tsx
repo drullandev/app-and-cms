@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { IonFooter, IonGrid, IonRow, IonCol, IonToolbar, IonImg, IonLabel, getConfig } from '@ionic/react'
 //import { MenuProps } from '../../../data/models/Menu'
-import Storage from '../../classes/Storage'
+//import Storage from '../../classes/Storage'
 import { useHistory } from "react-router"
 //import { translate } from '../../../data/utils/translations'
 import { appAssets } from '../../app/config/env'

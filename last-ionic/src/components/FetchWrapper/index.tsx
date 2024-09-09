@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useQuery, UseQueryOptions } from '@tanstack/react-query';
-import RestCall, { CallProps } from '../../classes/managers/RestCall'; // Importa la clase RestCall
+import RestCall, { CallProps } from '../../classes/managers/RestManager'; // Importa la clase RestCall
+import AppRest from '../../classes/integrations/RestIntegration';
 
 interface FetchDataWrapperProps<T> {
   url: string;
@@ -51,7 +52,7 @@ const FetchDataWrapper: React.FC<FetchDataWrapperProps<any>> = ({
       },
     };
 
-    return RestCall.RestCallAsync(callProps);
+    return AppRest.makeAsyncCall(callProps);
   };
 
   // Usa useQuery con queryKey, queryFn y opcionalmente, queryOptions

@@ -24,6 +24,7 @@ export interface CallProps<T = any> {
  * along with the standard REST methods (GET, POST, PUT, DELETE).
  */
 export interface IRestManager {
+  
   /**
    * Makes an asynchronous API call using the given configuration.
    * 

@@ -85,7 +85,7 @@ const About: React.FC<AboutProps> = () => {
               <IonLabel>
                 Location
               </IonLabel>
-              <IonSelect value={location} interfaceOptions={selectOptions} onIonChange={(e) => setLocation(e.detail.value as any)}>
+              <IonSelect value={location} interfaceOptions={selectOptions} onIonChange={(e: any) => setLocation(e.detail.value as any)}>
                 <IonSelectOption value='madison'>Madison, WI</IonSelectOption>
                 <IonSelectOption value='austin'>Austin, TX</IonSelectOption>
                 <IonSelectOption value='chicago'>Chicago, IL</IonSelectOption>
@@ -100,7 +100,7 @@ const About: React.FC<AboutProps> = () => {
                 //displayFormat='MMM DD, YYYY'
                 max='2056'
                 value={conferenceDate}
-                onIonChange={(e) => setConferenceDate(e.detail.value as any)}>
+                onIonChange={(e: any) => setConferenceDate(e.detail.value as any)}>
               </IonDatetime>
             </IonItem>
           </IonList>

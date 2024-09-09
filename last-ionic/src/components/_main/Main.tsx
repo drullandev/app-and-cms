@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { IonToolbar, IonContent, IonButtons, IonMenuButton, IonTitle, IonButton, IonSelect, IonSelectOption, IonSearchbar, IonGrid, IonCol, IonRow, IonDatetime, IonTextarea, IonLabel, IonItem, IonToast, IonModal, IonHeader } from '@ionic/react';
 import { GraphQLFilter } from '../../classes/assets/GraphQLFilter';
-import useConfStore from '../../stores/sessions.store';
+import useConfStore from '../../classes/stores/sessions.store';
 import Icon from './Icon';
 import FilterRow from './FilterRow';
 import MainList from './MainList2';

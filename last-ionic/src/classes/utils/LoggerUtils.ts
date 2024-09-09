@@ -80,7 +80,7 @@ class LoggerUtils {
    * @param {...any} args - The warning message(s) to log.
    */
   public warn = (...args: any[]): void => {
-    this.logMessage('warn', args);
+    this.log('warn', args);
   }
 
   /**

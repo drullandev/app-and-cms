@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 
 import { GraphQLFilter } from '../../classes/assets/GraphQLFilter'
 import { IonSelect, IonSelectOption, IonCol, IonRow, IonDatetime, IonTextarea, IonItem, IonInput, IonButton } from '@ionic/react'
-import useConfStore from '../../stores/sessions.store'
+import useConfStore from '../../classes/stores/sessions.store'
 import { Filter } from '../../interfaces/Filter'
 
 const FilterRow: React.FC<any> = ({ filter }) => {
@@ -96,7 +96,7 @@ const FilterRow: React.FC<any> = ({ filter }) => {
         ? <IonItem>
             <IonTextarea
               placeholder={'Set extra filter...'}
-              onIonChange={e => setFilterValue(e.detail.value!)}>
+              onIonChange={(e: any) => setFilterValue(e.detail.value!)}>
             </IonTextarea>
           </IonItem>
         : <IonDatetime

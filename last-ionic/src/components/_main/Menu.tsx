@@ -3,10 +3,10 @@ import { RouteComponentProps, withRouter } from 'react-router'
 import { IonContent, IonIcon, IonItem, IonLabel, IonList, IonMenu, IonToggle } from '@ionic/react'
 import { moonOutline } from 'ionicons/icons'
 
-import useUserStore from '../../stores/user.store'
+import useUserStore from '../../classes/stores/user.store'
 import Header from '../Header'
 import SubMenu from './SubMenu'
-import useConfStore from '../../stores/sessions.store'
+import useConfStore from '../../classes/stores/sessions.store'
 
 interface MenuProps extends RouteComponentProps {
   slug: string
@@ -26,9 +26,6 @@ const Menu: React.FC<any> = ({ slug }) => {
   const {
     darkMode,
     menuEnabled,
-    isLoggedIn,
-    toogleDarkMode,
-    setIsLogged
   } = useUserStore()
 
   const {
@@ -56,7 +53,7 @@ const Menu: React.FC<any> = ({ slug }) => {
           <IonItem key='dark-mode-item'>
             <IonIcon slot={slot} icon={moonOutline} />
             <IonLabel>Dark Mode {darkMode ? 'true' : 'false'}</IonLabel>
-            <IonToggle checked={darkMode} onIonChange={() => toogleDarkMode()} />
+            <IonToggle checked={darkMode} onIonChange={() => null} />
           </IonItem>
         </IonList>
       </IonContent>

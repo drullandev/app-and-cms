@@ -58,14 +58,15 @@ const FieldStatusIcon: React.FC<FieldStatusIconProps> = ({
   const setIcon = (color?: 'medium' | 'danger' | 'success') => {
     return field.secret ? (
       <Icon 
+        ariaLabel={'Status icon: '+color}
         color={color ?? displayColor}
         onClick={() => setShowSecret(!showSecret)}
         icon={showSecret ? icon.eyeOff : icon.eye}
       />
     ) : fieldName.includes('email') ? (
-      <Icon icon={icon.at} color={color ?? displayColor} />
+      <Icon ariaLabel={'Status icon: '+color} icon={icon.at} color={color ?? displayColor} />
     ) : (
-      <Icon icon={icon.checkmarkCircle} color={color ?? displayColor} />
+      <Icon ariaLabel={'Status icon: '+color} icon={icon.checkmarkCircle} color={color ?? displayColor} />
     );
   };
 

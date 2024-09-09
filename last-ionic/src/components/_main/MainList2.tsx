@@ -1,13 +1,12 @@
-import * as AppConst from '../../config/env';
+import * as AppConst from '../../app/config/env';
 import { GraphQLFilter } from '../../classes/assets/GraphQLFilter';
 import { IonList, IonInfiniteScroll, IonInfiniteScrollContent, IonItem, IonLabel, IonRefresher, IonRefresherContent, useIonToast } from '@ionic/react';
 import React, { useState, useEffect, useRef } from 'react';
 import Spinner from './Spinner';
-import useMainStore from '../../stores/sessions.store';
+import useSearchStore from '../../classes/stores/searcher.store'; // Import the new search store
 
 const MainList: React.FC = () => {
-  
-  const { searchString, searchOrder, orderField, filter, setSearchString, setSearchOrder, setOrderField, setFilter } = useMainStore();
+  const { searchString, searchOrder, orderField, filter, setSearchString, setSearchOrder, setOrderField, setFilter } = useSearchStore();
 
   // List params!!! TODO: Move to params jeje!!
   const slug = 'user-contents';
@@ -28,7 +27,7 @@ const MainList: React.FC = () => {
         limit: AppConst.paginator.size,
         start: 0,
       },
-      direction: GraphQLFilter.order.default,
+      direction: searchOrder,
       where: [{
         type: 'string',
         key: 'content',
@@ -38,7 +37,7 @@ const MainList: React.FC = () => {
       searchString: searchString ? searchString : '',
       orderField: orderField ? orderField : GraphQLFilter.fields.default,
       searchOrder: searchOrder ? searchOrder : GraphQLFilter.order.default,
-      filter: [],
+      filter: filter, // Use filter from search store
       struct: {
         id: '',
         published_at: 'date',

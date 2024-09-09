@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { IonItem, IonLabel, IonSpinner } from '@ionic/react';
 import { useLocation } from 'react-router';
 import { useHistory } from 'react-router-dom';
-import useUserStore from '../../stores/user.store'; // Importa tu store de Zustand
+import useUserStore from '../../classes/stores/user.store'; // Importa tu store de Zustand
 
 import { PathProps } from '../../interfaces/PathProps';
 import { MenuRowProps } from '../../interfaces/MenuRowProps';
@@ -18,7 +18,7 @@ const MenuRow: React.FC<MenuRowProps> = ({ row }) => {
   const [menuClass, setMenuClass] = useState('');
   const [icon, setIcon] = useState('');
 
-  const isLoggedIn = useUserStore((state) => state.isLoggedIn); // Usando Zustand para acceder a `isLoggedIn`
+  const isLoggedIn = useUserStore((state: any) => state.isLoggedIn); // Usando Zustand para acceder a `isLoggedIn`
 
   useEffect(() => {
     if (row.path && row.path.slug) {

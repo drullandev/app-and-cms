@@ -9,7 +9,7 @@ const ContentCheck: FC<ContentCheckProps> = ({ label, slug }) => {
       HERES IS YOR MODAL; AND NOW H¿WHAT? TODO!!
       <IonButton slot='start' onClick={() => setShowModal(false)}>X</IonButton>
     </IonModal>
-    <IonButton key={slug} color='light' onClick={(e) => { setShowModal(true) }}>
+    <IonButton key={slug} color='light' onClick={(e: any) => { setShowModal(true) }}>
       <IonLabel color='primary'>{label}</IonLabel>
     </IonButton>
   </>

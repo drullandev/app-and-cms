@@ -29,7 +29,7 @@ import {
   compass,
 } from 'ionicons/icons';
 
-import useAppStore from '../../stores/sessions.store';
+import useAppStore from '../../classes/stores/sessions.store';
 
 interface OwnProps {
   onDismissModal: () => void;
@@ -39,13 +39,13 @@ const SessionListFilter: React.FC<OwnProps> = ({ onDismissModal }) => {
   const ios = getMode() === 'ios';
 
   // Acceder al estado y acciones usando zustand
-  const allTracks = useAppStore((state) => state.allTracks);
-  const filteredTracks = useAppStore((state) => state.filteredTracks);
-  const updateFilteredTracks = useAppStore((state) => state.updateFilteredTracks);
+  const allTracks = useAppStore((state: any) => state.allTracks);
+  const filteredTracks = useAppStore((state: any) => state.filteredTracks);
+  const updateFilteredTracks = useAppStore((state: any) => state.updateFilteredTracks);
 
   const toggleTrackFilter = (track: string) => {
     if (filteredTracks.indexOf(track) > -1) {
-      updateFilteredTracks(filteredTracks.filter((x) => x !== track));
+      updateFilteredTracks(filteredTracks.filter((x: any) => x !== track));
     } else {
       updateFilteredTracks([...filteredTracks, track]);
     }
@@ -95,7 +95,7 @@ const SessionListFilter: React.FC<OwnProps> = ({ onDismissModal }) => {
       <IonContent>
         <IonList lines={ios ? 'inset' : 'full'}>
           <IonListHeader>Tracks</IonListHeader>
-          {allTracks.map((track) => (
+          {allTracks.map((track: any) => (
             <IonItem key={track}>
               {ios && <IonIcon slot="start" icon={iconMap[track]} color="medium" />}
               <IonLabel>{track}</IonLabel>

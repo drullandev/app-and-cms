@@ -10,7 +10,7 @@ const SearchBar: React.FC = () => {
   }
 
   return (
-    <IonSearchbar value={searchString} onIonChange={e => setSearchString(e.detail.value!)}></IonSearchbar>
+    <IonSearchbar value={searchString} onIonChange={(e:any) => setSearchString(e.detail.value!)}></IonSearchbar>
   )
 }
 
