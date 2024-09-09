@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Route } from 'react-router-dom';
 import { IonApp, IonRouterOutlet, IonSplitPane } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-
+//import useWebSocket from '../classes/integrations/WebSocketIntegration';
 // Importar configuraciones centralizadas
 import './config';  // Configuraciones centralizadas de la aplicación
 import './styles'; // Estilos centralizados
@@ -31,8 +31,11 @@ import useUserStore from '../classes/stores/user.store';
 // Classes
 import DebugUtils from '../classes/utils/DebugUtils';
 
+const trackingId = process.env.REACT_APP_GA4_TRACKING_ID;
 
 const AppComponent: React.FC = () => {
+
+  //useWebSocket(); // Inicializa el hook de WebSocket
 
   const debug = DebugUtils.setDebug(false);
   
@@ -40,7 +43,24 @@ const AppComponent: React.FC = () => {
   const [ theme, setTheme ] = useState<string>('dark-mode');
 
   useEffect(() => {
-    setTheme(darkMode ? 'dark-theme' : '')
+    setTheme(darkMode ? 'dark-theme' : '');
+
+    if (trackingId) {
+      // Inyectar el script de Google Analytics dinámicamente
+      const script = document.createElement('script');
+      script.src = `https://www.googletagmanager.com/gtag/js?id=${trackingId}`;
+      script.async = true;
+      document.head.appendChild(script);
+
+      // Configuración de Google Analytics
+      window.dataLayer = window.dataLayer || [];
+      function gtag(...args: any[]) {
+        window.dataLayer.push(args);
+      }
+      gtag('js', new Date());
+      gtag('config', trackingId);
+    }
+    
   }, [darkMode]);
 
   return (

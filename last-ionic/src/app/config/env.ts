@@ -25,8 +25,8 @@ export const supportedLanguages = import.meta.env.REACT_APP_SUPPORTED_LANGS
   : ['en', 'es'];
 
 // This is the list of available langs, also the prior order along app.
-export const langsPriority = import.meta.env.REACT_APP_LANGS_PRIORITY 
-  ? import.meta.env.REACT_APP_LANGS_PRIORITY?.split('|')
+export const langsPriority = import.meta.env.REACT_APP_SUPPORTED_LANGS 
+  ? import.meta.env.REACT_APP_SUPPORTED_LANGS?.split('|')
   : ['en', 'es'];
 
 export const allowedDomains = import.meta.env.REACT_APP_ALLOWED_DOMAINS 
@@ -143,9 +143,3 @@ export const paginator = {
   'size' : 8
 }
 
-export const messages = {//TODO: ADD!!
-  'Auth.form.error.invalid'           : { message: 'Identifier or password invalid.' },
-  'Auth.form.error.email.provide'     : { message: 'Please provide your username or your e-mail.' },
-  'Auth.form.error.password.provide'  : { message: 'Please provide your password.' },
-  'Auth.form.error.username.taken'    : { message: 'Username already taken' }
-}

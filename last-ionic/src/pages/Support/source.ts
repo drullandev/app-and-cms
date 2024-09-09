@@ -11,7 +11,7 @@ import RestOutput from '../../classes/utils/RestOutput';
 import { FormDataProps } from '../../components/Form/types';
 import useUserStore from '../../classes/stores/user.store';  // Importa el store
 import RestManager from '../../classes/managers/RestManager';
-import AppRest from '../../classes/integrations/RestIntegration';
+import useAppRest from '../../classes/integrations/RestIntegration';
 
 export const loginFormData = (): FormDataProps => {
 
@@ -80,7 +80,7 @@ export const loginFormData = (): FormDataProps => {
       },
     ],
     onSuccess: async (data: any) => {
-      await AppRest.makeAsyncCall({
+      await useAppRest.makeAsyncCall({
         req: {
           method: 'POST',
           url: `${apiUrl}/auth/local`,

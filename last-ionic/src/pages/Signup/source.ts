@@ -12,7 +12,7 @@ import useUserStore from '../../classes/stores/user.store';
 import Logger from '../../classes/utils/LoggerUtils';
 import { FormDataProps } from '../../components/Form/types';
 import RestManager from '../../classes/managers/RestManager';
-import AppRest from '../../classes/integrations/RestIntegration';
+import useAppRest from '../../classes/integrations/RestIntegration';
 
 export const signupForm = ({
     setIsLogged
@@ -135,7 +135,7 @@ export const signupForm = ({
         presentToast(toastProps);
       }
 
-      await AppRest.makeAsyncCall({
+      await useAppRest.makeAsyncCall({
         req: {
           method: 'POST',
           url: `${apiUrl}/auth/local/register`,

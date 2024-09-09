@@ -13,7 +13,7 @@ import { FormDataProps } from '../../components/Form/types';
 
 import useUserStore from '../../classes/stores/user.store';
 import Logger from '../../classes/utils/LoggerUtils';
-import AppRest from '../../classes/integrations/RestIntegration';
+import useAppRest from '../../classes/integrations/RestIntegration';
 
 export const loginFormData = ({}): FormDataProps => {
 
@@ -105,7 +105,7 @@ export const loginFormData = ({}): FormDataProps => {
         presentToast(toastProps)
       }
 
-      await AppRest.makeAsyncCall({
+      await useAppRest.makeAsyncCall({
         req: {
           method: 'POST',
           url: `${apiUrl}/auth/local`,

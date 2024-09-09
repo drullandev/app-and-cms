@@ -1,6 +1,6 @@
 import GraphQLService, { GqlMutationModel, GqlQueryModel } from '../utils/GraphQLUtils';
 import RestManager from '../managers/RestManager';
-import AppRest from './RestIntegration';  // Tomamos la instancia de RestManager desde aquí
+import useAppRest from './RestIntegration';  // Tomamos la instancia de RestManager desde aquí
 
 /**
  * Interface defining the contract for GraphQLManager operations.
@@ -15,7 +15,7 @@ export interface GraphQLManagerInterface {
 }
 
 /**
- * GraphQLManager class uses the instance of RestManager provided by AppRest
+ * GraphQLManager class uses the instance of RestManager provided by useAppRest
  * to perform GraphQL queries and mutations. It also includes methods for application-specific
  * operations such as retrieving and updating user profiles.
  * 
@@ -124,7 +124,7 @@ class GraphQLManager implements GraphQLManagerInterface {
  */
 // TODO: Revisar
 //export const AppGraphQLManager = (token?: string): GraphQLManager => {
-  //const restManager = AppRest; // Reutilizamos la instancia de RestManager desde AppRest
+  //const restManager = useAppRest; // Reutilizamos la instancia de RestManager desde useAppRest
   //return new GraphQLManager();
 //};
 

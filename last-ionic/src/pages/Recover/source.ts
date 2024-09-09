@@ -8,7 +8,7 @@ import { HOME_PATH } from '../../app/config/env';
 import DebugUtils from '../../classes/utils/DebugUtils';
 import { FormDataProps } from '../../components/Form/types';
 
-import AppRest from '../../classes/integrations/RestIntegration';
+import useAppRest from '../../classes/integrations/RestIntegration';
 
 export const recoverFormData = (): FormDataProps => {
   const { t } = useTranslation();
@@ -62,7 +62,7 @@ export const recoverFormData = (): FormDataProps => {
     ],
     onSuccess: async (data: any) => {
       try {
-        await AppRest.makeAsyncCall({
+        await useAppRest.makeAsyncCall({
           req: {
             url: '/auth/forgot-password',
             method: 'POST',

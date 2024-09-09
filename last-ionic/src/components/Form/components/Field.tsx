@@ -1,22 +1,33 @@
-import React, { useState, forwardRef, useEffect, useCallback } from 'react';
+import { useState, forwardRef, useEffect, useCallback } from 'react';
 import { Controller, DeepMap, FieldError } from 'react-hook-form';
 import {
-  IonItem, IonInput, IonTextarea, IonSelect, IonSelectOption, IonCheckbox,
-  IonDatetime, IonLabel, IonRadio, IonRadioGroup, IonRange, IonToggle,
-  IonSkeletonText, IonSpinner, IonButton
+  IonItem,
+  IonInput,
+  IonTextarea,
+  IonSelect,
+  IonSelectOption,
+  IonCheckbox,
+  IonDatetime,
+  IonLabel,
+  IonRadio,
+  IonRadioGroup,
+  IonRange,
+  IonToggle,
+  IonSkeletonText,
+  IonSpinner
 } from '@ionic/react';
 import * as yup from 'yup';
 import * as icon from 'ionicons/icons';
-import { debounce } from 'lodash';
-
 import { FieldProps } from '../types';
-import DebugUtils from '../../../classes/utils/DebugUtils';
+
+//import DebugUtils from '../../../classes/utils/DebugUtils';
+//import Security from '../../../classes/utils/SecurityUtils';
+import FunctionUtils from '../../../classes/utils/FunctionUtils';
 import Label from './Label';
 import Skeleton from './Skeleton';
 import Error from './Error';
 import Button from './Button';
 import ReCAPTCHA from 'react-google-recaptcha';
-import Security from '../../../classes/utils/SecurityUtils';
 import Icon from '../../_Ionic/v8/Icon';
 
 /**
@@ -40,6 +51,7 @@ const Field = forwardRef<any, {
   // State to manage the loading status of the field
   const [loadingField, setLoadingField] = useState<{ [key: string]: boolean }>({});
   const [showSecret, setShowSecret] = useState(false);
+  const showSleketons = false;
 
   // Builds the validation schema for the fields using Yup
   const buildValidationSchema = (fields: FieldProps[]) => {
@@ -56,9 +68,9 @@ const Field = forwardRef<any, {
 
   // Debounces the field change handler to optimize performance
   const debouncedHandleFieldChange = useCallback(
-    debounce((value: any) => {
+    FunctionUtils.debounce((value: any) => {
       onFieldChange(field.name, value);
-    }, 700),
+    }, 700, { leading: false, trailing: true }), // Opciones: sólo al final del delay
     [field.name, onFieldChange]
   );
 
@@ -71,7 +83,7 @@ const Field = forwardRef<any, {
   const renderInput = (controller: any, errors: DeepMap<Record<string, any>, FieldError>): JSX.Element => {
     
     // Render skeleton if loading is true
-    if (loading && field?.type !== 'hidden') {
+    if (showSleketons && loading && field?.type !== 'hidden') {
       return (
         <IonItem style={field.style}>
           <IonSkeletonText style={{ width: '100%', height: '45px', borderRadius: '15px' }} className={field.className} />

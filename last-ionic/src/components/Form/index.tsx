@@ -240,7 +240,7 @@ const Form: React.FC<FormComponentProps> = (formProps: FormComponentProps): JSX.
           className={`form-field ${field.className ?? 'col-span-12'} ${field.type === 'hidden' ? 'hidden' : ''}`}
         >*/}
         {formData.fields && formData.fields.map((field: FieldProps, index: number) => (
-            <Field
+          <Field
             ref={index === 0 ? firstFieldRef : null}
             key={'field-' + (field.name ?? 'field-' + field.id)}
             field={field}
@@ -248,24 +248,24 @@ const Form: React.FC<FormComponentProps> = (formProps: FormComponentProps): JSX.
             errors={errors}
             onFieldChange={onFormChange}
             loading={isLoading}
-            />
-            ))}
-            {/*</motion.div>*/}
+          />
+          ))}
+          {/*</motion.div>*/}
         <div>
+          {/*<motion.div {...button?.animations || {}}
+            key={'div-' + (button.name ?? 'div-' + button.id)}
+            className={`form-button ${button.className ?? 'col-span-12'}`}
+          >*/}
+          {/*</motion.div>*/}
           {formData.buttons && formData.buttons.map((button: FieldProps, index: number) => (
-            <motion.div {...button?.animations || {}}
-              key={'div-' + (button.name ?? 'div-' + button.id)}
-              className={`form-button ${button.className ?? 'col-span-12'}`}
-            >
               <Field
-                key={'button-' + (button.name ?? 'button-' + button.id)}
+                key={'button-' + (button.name ?? 'button-' + button.id)+index}
                 field={button}
                 control={control}
                 errors={errors}
                 onFieldChange={onFormChange}
                 loading={isLoading}
               />
-            </motion.div>
           ))}
         </div>
         {/*
