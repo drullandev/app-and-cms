@@ -16,7 +16,7 @@ interface FieldPropsWithValidation extends FieldProps {
 }
 
 /**
- * ValidationManager is a utility class responsible for constructing Yup validation schemas 
+ * ValidationUtils is a utility class responsible for constructing Yup validation schemas 
  * and initial values for form fields based on the provided field properties.
  * 
  * The class ensures that each field is validated according to its defined schema, 
@@ -26,20 +26,20 @@ interface FieldPropsWithValidation extends FieldProps {
  * configurations are passed in and validation/initial values need to be constructed programmatically.
  * 
  * @example
- * const ValidationManager = new ValidationManager(fields);
- * const schema = ValidationManager.buildValidationSchema();
- * const initialValues = ValidationManager.buildInitialValues();
+ * const ValidationUtils = new ValidationUtils(fields);
+ * const schema = ValidationUtils.buildValidationSchema();
+ * const initialValues = ValidationUtils.buildInitialValues();
  * 
  * @author David Rullán - https://github.com/drullandev
  * @date September 3, 2024
  */
-class ValidationManager {
+class ValidationUtils {
   private fields: FieldProps[];
   private logger: LoggerUtils; // Logger instance
   private debug: boolean = false; // Debug mode flag
   
   /**
-   * Constructor to initialize the ValidationManager with the given form fields.
+   * Constructor to initialize the ValidationUtils with the given form fields.
    * 
    * @param {FieldProps[]} fields - An array of field properties that define the form's fields.
    */
@@ -105,4 +105,4 @@ class ValidationManager {
   };
 }
 
-export default ValidationManager;
+export default ValidationUtils;

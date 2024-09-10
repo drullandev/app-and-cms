@@ -139,9 +139,9 @@ export const loginFormData = ({}): FormDataProps => {
 
     },
     onError: (errors: any) => {
-      const output = RestOutput.catchFormError(errors);
-      output.header = 'Login error';
-      presentToast(output);
+      //const output = RestOutput.catchFormError(errors);
+      //output.header = 'Login error';
+      //presentToast(output);
     }
   };
 };

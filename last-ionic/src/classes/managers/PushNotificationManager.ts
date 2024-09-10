@@ -3,7 +3,7 @@ import { LocalNotifications } from '@capacitor/local-notifications';
 import LoggerUtils from '../utils/LoggerUtils'; // Logger for structured logging
 import DebugUtils from '../utils/DebugUtils';   // Debugging helper
 
-type PushNotificationConfig = {
+export type PushNotificationConfig = {
   onRegister?: (token: string) => void;
   onNotificationReceived?: (notification: PushNotification) => void;
   onNotificationActionPerformed?: (action: any) => void;

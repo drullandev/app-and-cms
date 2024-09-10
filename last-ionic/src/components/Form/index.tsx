@@ -16,7 +16,7 @@ import Field from './components/Field';
 import LoggerUtils from '../../classes/utils/LoggerUtils';
 import Security from '../../classes/utils/SecurityUtils';
 import DebugUtils from '../../classes/utils/DebugUtils';
-import ValidationManagers from '../../classes/managers/ValidationsManager';
+import ValidationUtilss from '../../classes/managers/ValidationsUtils';
 import Captcha from '../../classes/integrations/CaptchaIntegration';
 
 // Importing types
@@ -49,8 +49,8 @@ const Form: React.FC<FormComponentProps> = (formProps: FormComponentProps): JSX.
 
   const setFormResolver = (fields?: FieldProps[]) => {
     if (fields) {
-      const ValidationManager = new ValidationManagers(fields);
-      const validationSchema = ValidationManager.buildValidationSchema();
+      const ValidationUtils = new ValidationUtilss(fields);
+      const validationSchema = ValidationUtils.buildValidationSchema();
       return {
         resolver: yupResolver(validationSchema),
         defaultValues: initialValuesRef.current,
@@ -214,8 +214,8 @@ const Form: React.FC<FormComponentProps> = (formProps: FormComponentProps): JSX.
 
   useEffect(() => {
     if (formData?.fields) {
-      const ValidationManager = new ValidationManagers(formData.fields);
-      const newInitialValues = ValidationManager.buildInitialValues();
+      const ValidationUtils = new ValidationUtilss(formData.fields);
+      const newInitialValues = ValidationUtils.buildInitialValues();
       initialValuesRef.current = newInitialValues;
       reset(newInitialValues);
       if (firstFieldRef.current) {

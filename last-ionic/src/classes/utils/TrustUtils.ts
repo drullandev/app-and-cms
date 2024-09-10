@@ -1,5 +1,5 @@
-import DebugUtils from "../utils/DebugUtils";
-import LoggerUtils, { initializeLogger } from "../utils/LoggerUtils";
+import DebugUtils from "./DebugUtils";
+import LoggerUtils, { initializeLogger } from "./LoggerUtils";
 
 /**
  * CheckTrustManager is responsible for evaluating the trustworthiness of users based on their behavior 

@@ -93,21 +93,21 @@ export const loginFormData = (): FormDataProps => {
           default: (res: any) => {
             if (res.status === 200) {
               setData(res.data.user);
-              presentToast(RestOutput.catchSuccess(res))
-                .then(() => {
-                  history.push(HOME_PATH);
-                });
+              //presentToast(RestOutput.catchSuccess(res))
+              //  .then(() => {
+              //    history.push(HOME_PATH);
+              //  });
             } else {
-              presentToast(RestOutput.catchSuccess(res));
+              //presentToast(RestOutput.catchSuccess(res));
             }
           },
         },
         onError: {
           default: (error: any) => {
 
-            RestOutput.catchDanger(error);
+            //RestOutput.catchDanger(error);
 
-            presentToast(RestOutput.catchDanger(error));
+            //presentToast(RestOutput.catchDanger(error));
           },
         },
         onFinally: () => {
@@ -116,9 +116,9 @@ export const loginFormData = (): FormDataProps => {
       });
     },
     onError: (errors: any) => {
-      const output = RestOutput.catchFormError(errors);
-      output.header = 'Login error';
-      presentToast(output);
+      //const output = RestOutput.catchFormError(errors);
+      //output.header = 'Login error';
+      //presentToast(output);
     },
   };
 };

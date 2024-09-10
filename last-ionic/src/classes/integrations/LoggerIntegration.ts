@@ -1,4 +1,4 @@
-import LoggerUtils, { LogLevel } from '../utils/LoggerUtils';
+import LoggerUtils, { LogLevel } from "../utils/LoggerUtils";
 
 /**
  * Initializes and returns a LoggerUtils instance.
@@ -9,7 +9,7 @@ import LoggerUtils, { LogLevel } from '../utils/LoggerUtils';
  * @param logLevel - The logging level (error, warn, info, debug).
  * @param shouldLog - Optional custom function to determine if logging should occur.
  * @returns {LoggerUtils} The initialized LoggerUtils instance.
- * 
+ *
  * @author David Rullán - https://github.com/drullandev
  * @date Agoust 31, 2024
  */
@@ -17,8 +17,14 @@ export function initializeLogger(
   className: string,
   debug: boolean = false,
   maxLogs: number = 100,
-  logLevel: LogLevel = 'debug',
+  logLevel: LogLevel = "debug",
   shouldLog?: () => boolean
 ): LoggerUtils {
-  return LoggerUtils.getInstance(className, debug, maxLogs, logLevel, shouldLog);
+  return LoggerUtils.getInstance(
+    className,
+    debug,
+    maxLogs,
+    logLevel,
+    shouldLog
+  );
 }

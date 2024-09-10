@@ -116,12 +116,12 @@ export const signupForm = ({
         setData(res.data.user);
         newRes.header = t('Greate! Now validate on emaii!');
         newRes.message = t('Now you are a new honor guest!');
-        var toastProps = RestOutput.catchSuccess(res, newRes);
+        //var toastProps = RestOutput.catchSuccess(res, newRes);
         //if (debug) Logger.log(toastProps)
-        presentToast(toastProps)
-          .then(() => {
-            history.push(LOGIN_PATH);
-          });
+        //presentToast(toastProps)
+        //  .then(() => {
+        //    history.push(LOGIN_PATH);
+        //  });
       }
 
       const signupError = (res:any)=>{
@@ -130,9 +130,9 @@ export const signupForm = ({
         newRes.header = t('Sign-up warning!');
         newRes.message = t('Error trying to sing-up!');
         newRes.showInnerMessage = true;
-        var toastProps = RestOutput.catchDanger(res, newRes);
+        //var toastProps = RestOutput.catchDanger(res, newRes);
         //if (debug) Logger.log(toastProps)
-        presentToast(toastProps);
+        //presentToast(toastProps);
       }
 
       await useAppRest.makeAsyncCall({
@@ -173,9 +173,9 @@ export const signupForm = ({
     },
     onError: (errors: any) => {
       setIsLogged(false);
-      const output = RestOutput.catchFormError(errors);
-      output.header = 'Login error';
-      presentToast(output);
+      //const output = RestOutput.catchFormError(errors);
+      //output.header = 'Login error';
+      //presentToast(output);
     }
   };
 };
