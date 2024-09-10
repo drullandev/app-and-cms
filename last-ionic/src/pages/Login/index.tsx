@@ -1,7 +1,7 @@
 // Global imports
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { IonIcon, IonItem, IonText, IonFooter } from '@ionic/react';
+import { IonIcon, IonItem, IonText, IonFooter, IonContent } from '../../components/Ionic/basic';
 import { checkmarkCircleOutline } from 'ionicons/icons';
 
 // Used Components
@@ -22,6 +22,7 @@ const LoginPage: React.FC<any> = (pageProps) => {
   const pageSettings : PagePropsData = {
     settings: {
       id: 'login-page',
+      title: 'Login page',
       //skeleton: true,
       //animated: "true",
     },
@@ -43,24 +44,41 @@ const LoginPage: React.FC<any> = (pageProps) => {
     },
     content: () => {
       return (
-        <>
-          <div className="login-content">
-            <IonItem lines="none" className="welcome-item">
-              <IonIcon icon={checkmarkCircleOutline} color="success" className="welcome-icon" />
-              <IonText>
-                <h2>{t('Welcome to Festivore!')}</h2>
-                <p>{t('Join the community and enjoy the best culinary experiences. Login to your account to continue.')}</p>
-              </IonText>
-            </IonItem>
-            <IonItem lines="none" className="login-item">
-              <IonText>
-                <h3>{t('Login to your account')}</h3>
-                <p>{t('Enter your credentials to access your account and start exploring the world of Festivore.')}</p>
-              </IonText>
-            </IonItem>
-            <Form {...loginFormData(pageProps)} />
-          </div>
-        </>
+        <IonContent ariaLabel={t('Wellcome and login page!')} className="login-content">
+          {/* Welcome Item */}
+          <IonItem ariaLabel="Welcome item" lines="none" className="welcome-item" role="region" ariaLabelledby="welcome-heading welcome-text">
+            <IonIcon
+              icon={checkmarkCircleOutline}
+              color="success"
+              className="welcome-icon"
+            />
+            <IonText id="welcome-text">
+              <h2 id="welcome-heading">{t('Welcome to Festivore!')}</h2>
+              <p>
+                {t('Join the community and enjoy the best culinary experiences. Login to your account to continue.')}
+              </p>
+            </IonText>
+          </IonItem>
+
+          {/* Login Item */}
+          <IonItem
+            ariaLabel={t("Login item")}
+            lines="none"
+            className="login-item"
+            role="region"
+            ariaLabelledby="login-heading login-text"
+          >
+            <IonText id="login-text">
+              <h3 id="login-heading">{t('Login to your account')}</h3>
+              <p>
+                {t('Enter your credentials to access your account and start exploring the world of Festivore.')}
+              </p>
+            </IonText>
+          </IonItem>
+
+          {/* Login Form */}
+          <Form {...loginFormData(pageProps)} />
+        </IonContent>
       );
     },
     footer: () => {

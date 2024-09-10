@@ -8,6 +8,7 @@ export interface IonPageProps {
   animated?: boolean;
   routerDirection?: 'forward' | 'back' | 'root' | string; // Ajusta según las opciones reales de Ionic
   skeleton?: boolean | false;
+  title: string;
   ionViewWillEnter?: () => void;
   ionViewDidEnter?: () => void;
   ionViewWillLeave?: () => void;

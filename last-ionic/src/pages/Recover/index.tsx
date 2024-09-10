@@ -21,6 +21,7 @@ const RecoverPage: React.FC<any> = (pageProps) => {
   const recoverPageData: PagePropsData = {
     settings:{
       id: 'recover-page',
+      title: t('Recover your account'),
     },
     header: () => {
       const headerProps = {

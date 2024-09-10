@@ -47,7 +47,7 @@ build-translations:
 	$(node) ./src/classes/scripts/TranslationsKeeper.cjs
 
 build-files:
-	node ./src/components/_Ionic/generateComponents.cjs
+	node ./src/components/Ionic/generateComponents.cjs
 	
 # Build the project
 build:

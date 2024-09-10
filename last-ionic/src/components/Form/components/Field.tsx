@@ -28,7 +28,7 @@ import Skeleton from './Skeleton';
 import Error from './Error';
 import Button from './Button';
 import ReCAPTCHA from 'react-google-recaptcha';
-import Icon from '../../_Ionic/v8/Icon';
+import Icon from '../../Ionic/v8/Icon';
 
 /**
  * Field component that handles various types of form fields with validation, loading states, and error handling.

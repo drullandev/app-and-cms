@@ -20,6 +20,7 @@ const SignupPage: React.FC<any> = (pageProps) => {
   const pageSettings : PagePropsData = {
     settings: {
       id: 'signup-page',
+      title: t('Sign up a new account!'),
     },
     header: () => {
       const headerProps = {

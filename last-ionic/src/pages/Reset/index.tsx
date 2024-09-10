@@ -20,6 +20,7 @@ const ResetPage: React.FC<any> = (pageProps) => {
  
   const resetPageData: PagePropsData = {
     settings:{
+      title: t('Reset your password'),
       id: 'reset-page',
     },
     captcha: false,
