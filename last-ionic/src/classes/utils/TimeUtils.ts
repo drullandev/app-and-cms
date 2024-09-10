@@ -234,6 +234,16 @@ class TimeUtils {
   }
 
   /**
+   * Checks if a given timestamp has elapsed based on the current time.
+   * 
+   * @param {number} timestamp - The future timestamp to check.
+   * @returns {boolean} True if the timestamp has elapsed, false otherwise.
+   */
+  public hasElapsed(timestamp: number): boolean {
+    return this.getCurrentTimestamp() >= timestamp;
+  }
+
+  /**
    * Converts the given time units into milliseconds.
    * Supports converting multiple units such as days, weeks, months, and years in a single call.
    * 

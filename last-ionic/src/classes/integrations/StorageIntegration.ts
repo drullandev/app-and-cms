@@ -1,25 +1,12 @@
-import StorageManager, { StorageInterface } from "../managers/StorageManager";
-
-const STORAGE_KEY = process.env.STORAGE_KEY || 'app';
+import StorageManager from "../managers/StorageManager";
 
 /**
- * Creates and exports an instance of StorageManager.
- * This instance is configured to manage key-value storage operations.
+ * Function to create an instance of StorageManager with the storage key.
  * 
- * @returns An instance of StorageManager configured for the application.
- * 
- * @author David Rullán - https://github.com/drullandev
- * @date September 1, 2024
+ * @returns An instance of StorageManager configured for storage operations.
  */
-
-/**
- * Function to create an instance of CRMManager with optional authorization token.
- * 
- * @param key - Optional. The Bearer token to be used for authorization.
- * @returns An instance of CRMManager configured for CRM operations.
- */
-const AppStorage = (key: string = STORAGE_KEY): StorageManager => {
-  return StorageManager.getInstance(key);
+const useAppStorage = (): StorageManager => {
+  return StorageManager.getInstance(process.env.REACT_APP_STORAGE_KEY ?? 'defaultKey');
 };
 
-export default AppStorage();
+export default useAppStorage;

@@ -30,7 +30,7 @@ export const recoverFormData = (): FormDataProps => {
         borderRadius: '0%'
       }
     },
-    captcha: true,
+    captcha: false,
     fields: [
       {
         name: 'email',

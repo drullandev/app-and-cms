@@ -25,7 +25,7 @@ export const loginFormData = ({}): FormDataProps => {
   
   return {
     id: 'login-page',
-    captcha: true,
+    captcha: false,
     settings: {
       autoSendIfValid: false,
       animations: {
@@ -62,7 +62,7 @@ export const loginFormData = ({}): FormDataProps => {
         secret: true
       }
     ],
-    buttons:[      
+    buttons:[
       { 
         name: 'submit',
         label: t('Submit'),
@@ -81,8 +81,9 @@ export const loginFormData = ({}): FormDataProps => {
       }
     ],
     onSuccess: async (data: any) => {
-
-      const loginSuccess = (res: any)=>{
+      console.log('formdatasucces', data)
+      /*
+      const success = (res: any)=>{
         setData(res.data.user)
         var newRes = res;
         newRes.header = t('Wellcome to the app!');
@@ -95,7 +96,7 @@ export const loginFormData = ({}): FormDataProps => {
           });
       }
 
-      const loginError = (res: any) => {
+      const error = (res: any) => {
         var newRes = res;
         newRes.header = t('Login error!');
         newRes.showInnerMessage = true;
@@ -118,23 +119,24 @@ export const loginFormData = ({}): FormDataProps => {
           default: (res: any) => {
             switch(res.status){
               case 200:
-                loginSuccess(res);
+                success(res);
                 break;
               case 400:
               default:
-                loginError(res);
+                error(res);
             }
           }
         },
         onError: {
           default: (error: any) => {
-            loginError(error);
+            error(error);
           }
         },
         onFinally: () => {
 
         }
-      });
+      });*/
+
     },
     onError: (errors: any) => {
       const output = RestOutput.catchFormError(errors);

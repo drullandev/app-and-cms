@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useForm, FieldValues } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { motion } from 'framer-motion';
+//import { motion } from 'framer-motion';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 
@@ -26,10 +26,12 @@ import { FieldProps, FormComponentProps, FormDataProps } from './types';
 import './style.css';
 
 // Initialize logger
-const logger = LoggerUtils.getInstance('FormComponent', DebugUtils.setDebug(false));
-
 const Form: React.FC<FormComponentProps> = (formProps: FormComponentProps): JSX.Element | null => {
-  
+  const debug = DebugUtils.setDebug(true);
+  const logger = useMemo(() => {
+    return debug ? LoggerUtils.getInstance('FormComponent', debug) : console;
+  }, [debug]);
+
   const { t } = useTranslation();
   
   const [csrfToken, setCsrfToken] = useState<string>(''); // CSRF token for security
@@ -65,14 +67,14 @@ const Form: React.FC<FormComponentProps> = (formProps: FormComponentProps): JSX.
 
   const generateCsrfToken = () => {
     const token = Security.generateCsrfToken('sessionId');
-    logger.debug('Generated CSRF Token:', token);
+    if (debug) logger?.debug('Generated CSRF Token:', token);
     setCsrfToken(token);
   };
 
   const generateCaptcha = () => {
     if (formProps.captcha) {
       const captcha = Security.generateCaptcha();
-      logger.debug('Generated CAPTCHA:', captcha);
+      if (debug) logger?.debug('Generated CAPTCHA:', captcha);
       setCaptcha(captcha);
     }
   };
@@ -81,20 +83,20 @@ const Form: React.FC<FormComponentProps> = (formProps: FormComponentProps): JSX.
     try {
       const response = await fetch('https://api.ipify.org?format=json');
       const data = await response.json();
-      logger.debug(`Tu IP es: ${data.ip}`);
+      if (debug) logger?.debug(`Tu IP es: ${data.ip}`);
       setIpAddress(data.ip);
     } catch (error) {
-      logger.error('Error al capturar la IP:', error);
+      if (debug) logger?.error('Error al capturar la IP:', error);
     }
     return '';
   };
 
   const onFormChange = (fieldName: string, value: any) => {
-    logger.debug('Field change:', { name: fieldName, value });
+    if (debug) logger?.debug('Field change:', { name: fieldName, value });
   };
 
   const onSubmit = useCallback(async (data: FieldValues) => {
-    logger.debug('Data to submit (initial):', data);
+    if (debug) logger?.debug('Data to submit (initial):', data);
 
     try {
       setIsSubmitting(true);
@@ -114,19 +116,19 @@ const Form: React.FC<FormComponentProps> = (formProps: FormComponentProps): JSX.
         const captchaRequired = await Captcha.verifyCaptcha(captcha, approvedData);
         if (captchaRequired) {
           setShowCaptcha(true);
-          logger.info('Showing CAPTCHA due to verification requirement');
+          if (debug) logger?.info('Showing CAPTCHA due to verification requirement');
         } else {
           await formData?.onSuccess(approvedData);
         }
       } else {
-        logger.error('Invalid CSRF token');
+        if (debug) logger?.error('Invalid CSRF token');
         formData?.onError({ message: 'Invalid CSRF token' });
       }
 
       //GA4Tracker.trackEvent('submit', formProps.ga4);
 
     } catch (error) {
-      logger.error('Submission error:', error);
+      if (debug) logger?.error('Submission error:', error);
       //GA4Tracker.trackEvent('error', formProps.ga4);
     } finally {
       setIsSubmitting(false);
@@ -198,7 +200,7 @@ const Form: React.FC<FormComponentProps> = (formProps: FormComponentProps): JSX.
         settings: formProps?.settings || {}
       };
 
-      logger.debug('Updated formData ():', fields);
+      if (debug) logger?.debug('Updated formData ():', fields);
 
       return newData;
     };
@@ -242,7 +244,7 @@ const Form: React.FC<FormComponentProps> = (formProps: FormComponentProps): JSX.
         {formData.fields && formData.fields.map((field: FieldProps, index: number) => (
           <Field
             ref={index === 0 ? firstFieldRef : null}
-            key={'field-' + (field.name ?? 'field-' + field.id)}
+            key={'field-' + (field.name ?? 'field-' + field.id)+index}
             field={field}
             control={control}
             errors={errors}
@@ -278,7 +280,7 @@ const Form: React.FC<FormComponentProps> = (formProps: FormComponentProps): JSX.
         </>
         */}
       </form>
-      </>
+    </>
   );
   {/*</motion.div>*/}
 };

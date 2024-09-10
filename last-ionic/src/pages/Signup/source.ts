@@ -30,7 +30,7 @@ export const signupForm = ({
   
   return {
     id: 'signup-page',
-    captcha: true,
+    captcha: false,
     agreement: true,
     settings: {
       autoSendIfValid: false,

@@ -2,10 +2,10 @@ import RestManager from '../managers/RestManager';
 
 /**
  * Interface defining the contract for CRM operations.
- * This interface ensures that the CRMManager can perform both synchronous and asynchronous REST API calls,
+ * This interface ensures that the useCRMApi can perform both synchronous and asynchronous REST API calls,
  * as well as CRM-specific operations.
  */
-export interface CrmManagerInterface {
+export interface ICRMManager {
   validateUser(userId: string): Promise<boolean>;
   getUserData(userId: string): Promise<any>;
   updateUserData(userId: string, data: any): Promise<any>;
@@ -16,10 +16,9 @@ export interface CrmManagerInterface {
  * - Purpose: This URL is specifically configured for use with a CRM system in an Ionic application.
  * It is set using an environment variable, with a fallback to a default local URL.
  */
-const CRM_API_BASE_URL = process.env.CRM_API_URL || 'http://localhost:1337/';
 
 /**
- * CRMManager class extends RestManager to include operations specific to the CRM system.
+ * useCRMApi class extends RestManager to include operations specific to the CRM system.
  * It includes methods for validating users, retrieving user data, and updating user data.
  * 
  * This class leverages the existing functionality of RestManager for generic REST API calls,
@@ -28,10 +27,10 @@ const CRM_API_BASE_URL = process.env.CRM_API_URL || 'http://localhost:1337/';
  * @author David Rullán
  * @date September 5, 2024
  */
-class CRMManager extends RestManager implements CrmManagerInterface {
+class useCRMApi extends RestManager implements ICRMManager {
 
   constructor(token?: string) {
-    super(CRM_API_BASE_URL, token ? { 'Authorization': `Bearer ${token}` } : undefined);
+    super(process.env.REACT_APP_CRM_API_URL, token ? { 'Authorization': `Bearer ${token}` } : undefined);
   }
 
   /**
@@ -84,4 +83,4 @@ class CRMManager extends RestManager implements CrmManagerInterface {
   }
 }
 
-export default CRMManager;
+export default useCRMApi;

@@ -1,7 +1,7 @@
-import RestManager from '../../classes/managers/RestManager';
+import RestManager from './RestManager';
 import { AxiosRequestConfig } from 'axios';
-import StringUtil from './StringUtil';
-import DebugUtils from './DebugUtils';
+import StringUtil from '../utils/StringUtil';
+import DebugUtils from '../utils/DebugUtils';
 
 export interface WhereProps {
   type: string;
@@ -57,15 +57,15 @@ export interface CallProps {
  * @author David Rullán - https://github.com/drullandev
  * @date September 5, 2024
  */
-export class GraphQLService {
-  private static instance: GraphQLService | null = null;
+export class GraphQLManager {
+  private static instance: GraphQLManager | null = null;
   private restManager: RestManager;
 
   /**
-   * Returns the single instance of GraphQLService.
-   * @returns {GraphQLService} The singleton instance.
+   * Returns the single instance of GraphQLManager.
+   * @returns {GraphQLManager} The singleton instance.
    */
-  public static getInstance(restManager: RestManager): GraphQLService {
+  public static getInstance(restManager: RestManager): GraphQLManager {
     if (!this.instance) {
       this.instance = new this(restManager);
     }
@@ -216,4 +216,4 @@ export class GraphQLService {
   };
 }
 
-export default GraphQLService;
+export default GraphQLManager;
