@@ -22,7 +22,7 @@ const ResetPage: React.FC<any> = (pageProps) => {
     settings:{
       id: 'reset-page',
     },
-    captcha: true,
+    captcha: false,
     header: () => {
       const headerProps = {
         title: t('Reset Password'),

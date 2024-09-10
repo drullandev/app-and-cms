@@ -3,10 +3,10 @@ import LoggerUtils from "../utils/LoggerUtils";
 import DebugUtils from "../utils/DebugUtils";
 
 /**
- * StorageInterface defines the contract for StorageManager operations.
+ * IStorageManager defines the contract for StorageManager operations.
  * This interface ensures that the StorageManager can handle key-value storage operations consistently.
  */
-export interface StorageInterface {
+export interface IStorageManager {
   set(key: string, value: any): Promise<void>;
   get(key: string): Promise<any>;
   remove(key: string): Promise<void>;
@@ -21,7 +21,7 @@ export interface StorageInterface {
  * @author David Rullán - https://github.com/drullandev
  * @date August 31, 2024
  */
-class StorageManager implements StorageInterface {
+class StorageManager implements IStorageManager {
   private static instances: Record<string, StorageManager> = {}; // Stores instances by key
   private logger: LoggerUtils;
   private debug: boolean = false;

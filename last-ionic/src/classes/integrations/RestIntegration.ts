@@ -7,6 +7,6 @@ import RestManager, { IRestManager } from '../managers/RestManager';
  * @param token - Optional Bearer token to be used for authorization.
  * @returns A singleton instance of RestManager.
  */
-const useAppRest: IRestManager = RestManager.getInstance(process.env.REACT_APP_API_URL);
+const useAppRest: RestManager = RestManager.getInstance(process.env.REACT_APP_API_URL);
 
 export default useAppRest;

@@ -43,7 +43,7 @@ export const resetFormData = (): FormDataProps => {
         borderRadius: '0%'
       }
     },
-    captcha: true,
+    captcha: false,
     fields: [
       {
         name: 'email',

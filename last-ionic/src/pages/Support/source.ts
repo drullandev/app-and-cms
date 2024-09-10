@@ -24,7 +24,7 @@ export const loginFormData = (): FormDataProps => {
 
   return {
     id: 'login-page',
-    captcha: true,
+    captcha: false,
     settings: {
       autoSendIfValid: false,
       animations: {

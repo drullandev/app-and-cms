@@ -8,6 +8,7 @@ import DebugUtils from '../../classes/utils/DebugUtils'
 
 import PagePropsData from './types'
 import './styles.css'
+import PWA from '../PWA'
 
 /**
  * This component is helpfull to generate a Ionic Page
@@ -31,6 +32,7 @@ const Page: React.FC<PagePropsData> = (pageProps) => {
       </IonContent>
       {pageProps.footer !== undefined && pageProps.footer(pageProps)}
       {/*<CookieConsent />*/}
+      <PWA/>
     </IonPage>
   );
 };

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { IonButton, IonContent, IonModal } from '@ionic/react';
 
-import AppStorage from '../../classes/integrations/StorageIntegration';
+import useAppStorage from '../../classes/integrations/StorageIntegration';
 import TimeUtils from '../../classes/utils/TimeUtils';
 
 import './style.css';
@@ -12,24 +12,24 @@ const CookieConsent: React.FC = () => {
     const { t } = useTranslation();
     const [showModal, setShowModal] = useState(false);
 
+    // Obtén la instancia de StorageManager
+    const storageManager = useAppStorage();
+
     const load = async () => {
         try {
-            const selected = await AppStorage.get(COOKIE_CONSENT_KEY);
+            const selected = await storageManager.get(COOKIE_CONSENT_KEY);
 
             if (selected === null) {
                 setShowModal(true);
             } else {
                 const consentGiven = selected === "true";
-                const expiration = await AppStorage.get(COOKIE_CONSENT_KEY_EXPIRE);
+                const expiration = await storageManager.get(COOKIE_CONSENT_KEY_EXPIRE);
                 const expirationTime = Number(expiration);
-//TODO: Fix
-/* 
                 if (expirationTime && TimeUtils.hasElapsed(expirationTime)) { 
                     reset();
                 } else if (!consentGiven) {
                     setShowModal(true);
                 }
-*/
             }
         } catch (error) {
             console.error("Error loading cookie consent data:", error);
@@ -39,8 +39,8 @@ const CookieConsent: React.FC = () => {
 
     const set = async (consent: boolean) => {
         try {
-            await AppStorage.set(COOKIE_CONSENT_KEY, consent.toString());
-            await AppStorage.set(COOKIE_CONSENT_KEY_EXPIRE, TimeUtils.parseFutureTimeString(COOKIE_EXPIRATION_TIME).toString());
+            await storageManager.set(COOKIE_CONSENT_KEY, consent.toString());
+            await storageManager.set(COOKIE_CONSENT_KEY_EXPIRE, TimeUtils.parseFutureTimeString(COOKIE_EXPIRATION_TIME).toString());
             setShowModal(false);
         } catch (error) {
             console.error("Error setting cookie consent data:", error);
@@ -49,8 +49,8 @@ const CookieConsent: React.FC = () => {
 
     const reset = async () => {
         try {
-            await AppStorage.remove(COOKIE_CONSENT_KEY);
-            await AppStorage.remove(COOKIE_CONSENT_KEY_EXPIRE);
+            await storageManager.remove(COOKIE_CONSENT_KEY);
+            await storageManager.remove(COOKIE_CONSENT_KEY_EXPIRE);
             setShowModal(true);
         } catch (error) {
             console.error("Error resetting cookie consent data:", error);

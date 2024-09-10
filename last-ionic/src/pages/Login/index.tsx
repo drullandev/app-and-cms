@@ -2,6 +2,7 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { IonIcon, IonItem, IonText, IonFooter } from '@ionic/react';
+import { checkmarkCircleOutline } from 'ionicons/icons';
 
 // Used Components
 import PagePropsData from '../../components/Page/types';
@@ -13,7 +14,6 @@ import Form from '../../components/Form';
 import { loginFormData } from './source';
 import './styles.scss';
 import './style.css';
-import { checkmarkCircleOutline } from 'ionicons/icons';
 
 const LoginPage: React.FC<any> = (pageProps) => {
   
@@ -21,9 +21,9 @@ const LoginPage: React.FC<any> = (pageProps) => {
 
   const pageSettings : PagePropsData = {
     settings: {
-      id: 'login-page',//Concern css classes, for now!
-      //skeleton: true
-      //animated: "true"
+      id: 'login-page',
+      //skeleton: true,
+      //animated: "true",
     },
     ga4: {
       load: {
@@ -35,9 +35,9 @@ const LoginPage: React.FC<any> = (pageProps) => {
     header: () => {
       const headerProps = {
         title: t('Login'),
-        showMenuButton: true, // Asegúrate de que esto es true
+        showMenuButton: true,
         slot: 'start',
-        loading: pageProps.loading || false
+        loading: pageProps.loading || false,
       }
       return <Header {...headerProps} />
     },

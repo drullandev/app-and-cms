@@ -63,7 +63,7 @@ interface ICacheManager {
  * @author David Rullán - https://github.com/drullandev
  * @date September 3, 2024
  */
-class CacheManager {
+class CacheManager implements ICacheManager {
   // Singleton instances for different cache names
   private static instances: Map<string, CacheManager> = new Map();
   private cache: NodeCache;

@@ -67,7 +67,7 @@ class SQLiteManager implements ISQLiteManager {
    * @param debug - Optional flag to enable or disable debug mode.
    * @returns {SQLiteManager} The SQLiteManager instance for the specified path.
    */
-  public static getInstance(dbPath: string, debug?: boolean): SQLiteManager {
+  public static getInstance(dbPath: string = './default-database.db', debug?: boolean): SQLiteManager {
     if (!this.instances.has(dbPath)) {
       this.instances.set(dbPath, new SQLiteManager(dbPath, debug));
     }

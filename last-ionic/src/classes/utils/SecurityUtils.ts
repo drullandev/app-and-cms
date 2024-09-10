@@ -20,7 +20,7 @@ class SecurityUtils {
   private logger: LoggerUtils;
   private readonly CSRF_TOKEN_EXPIRATION = 1000 * 60 * 15; // 15 minutes
 
-  constructor(debug: boolean = true) {
+  constructor(debug: boolean = false) {
     this.debug = DebugUtils.setDebug(debug);
     this.logger = LoggerUtils.getInstance(this.constructor.name, this.debug, 100);
     if (this.debug) {
@@ -50,7 +50,7 @@ class SecurityUtils {
     const expiration = Date.now() + this.CSRF_TOKEN_EXPIRATION;
     this.csrfTokens.set(sessionId, { token, expiration });
     
-    this.logger.log(`CSRF token generated for session: ${sessionId}`);
+    if (this.debug) this.logger.log(`CSRF token generated for session: ${sessionId}`);
     
     return token;
   }
@@ -67,20 +67,20 @@ class SecurityUtils {
     const csrfData = this.csrfTokens.get(sessionId);
     
     if (!csrfData) {
-      this.logger.error(`CSRF token validation failed: no token found for session ${sessionId}`);
+      if (this.debug) this.logger.error(`CSRF token validation failed: no token found for session ${sessionId}`);
       return false;
     }
 
     if (csrfData.expiration < Date.now()) {
       this.csrfTokens.delete(sessionId);
-      this.logger.error(`CSRF token expired for session ${sessionId}`);
+      if (this.debug) this.logger.error(`CSRF token expired for session ${sessionId}`);
       return false;
     }
 
     const isValid = csrfData.token === token;
     
     if (!isValid) {
-      this.logger.error(`Invalid CSRF token for session ${sessionId}`);
+      if (this.debug) this.logger.error(`Invalid CSRF token for session ${sessionId}`);
     }
     
     return isValid;
@@ -98,7 +98,7 @@ class SecurityUtils {
 
     if (this.validateCsrfToken(sessionId, submittedCsrfToken)) {
       if (this.debug) {
-        this.logger.info("CSRF Token approved!");
+        if (this.debug) this.logger.info("CSRF Token approved!");
       }
 
       const sanitizedData: any = {};
@@ -111,7 +111,7 @@ class SecurityUtils {
         }
       }
 
-      this.logger.log("Sanitized data", sanitizedData);
+      if (this.debug) this.logger.log("Sanitized data", sanitizedData);
       return sanitizedData;
     } else {
       this.logger.error("Invalid CSRF Token", data);
