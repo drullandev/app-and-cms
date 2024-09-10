@@ -1,4 +1,4 @@
-import CookieManager from "../managers/CookieManager";
+import CookieManager, { ICookieManager } from "../managers/CookieManager";
 
 /**
  * Interface defining the contract for CookieManager operations.
@@ -7,10 +7,6 @@ import CookieManager from "../managers/CookieManager";
  * @author David Rullán - https://github.com/drullandev
  * @date August 30, 2024
  */
-export interface CookieManagerInterface {
-  // Define methods if any are needed, e.g., getCookie, setCookie, deleteCookie
-}
-
 /**
  * The domain and path settings for cookie management.
  * - Purpose: These settings specify where cookies should be managed. 

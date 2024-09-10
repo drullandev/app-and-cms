@@ -15,7 +15,7 @@ export interface StorageInterface {
  * Interface defining the contract for CaptchaManager operations.
  * This interface ensures that the CaptchaManager can handle CAPTCHA management consistently.
  */
-export interface CaptchaManagerInterface {
+export interface ICaptchaManager {
   generateCaptcha(): { token: string, answer: string };
   validateCaptcha(token: string, answer: string): Promise<boolean>;
   stopCleanup(): void;
@@ -30,7 +30,7 @@ export interface CaptchaManagerInterface {
  * @author David Rullán - https://github.com/drullandev
  * @date September 3, 2024
  */
-class CaptchaManager implements CaptchaManagerInterface {
+class CaptchaManager implements ICaptchaManager {
   private static instance: CaptchaManager | null = null; // Singleton instance
   private debug: boolean = false; // Debug mode flag
   private logger: LoggerUtils;
