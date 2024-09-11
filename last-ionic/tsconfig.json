@@ -11,7 +11,7 @@
     "typeRoots": ["./node_modules/@types", "./types", "globals.d.ts"],
     "useDefineForClassFields": true,
     "allowJs": true,
-    "rootDir": "./src",
+    "rootDir": "./",
     "outDir": "./dist",
     "forceConsistentCasingInFileNames": true,
     "moduleResolution": "Node",
@@ -19,6 +19,6 @@
     "noEmit": false,
     "jsx": "react-jsx",
   },
-  "include": ["src/**/*.ts", "src/**/*.tsx"],
+  "include": ["core//**/*.ts", "src/**/*.ts", "core//**/*.ts", "core//**/*.tsx"],
   "exclude": ["node_modules"]
 }
