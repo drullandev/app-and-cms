@@ -30,7 +30,7 @@ interface UserState {
 }
 
 // Define la interfaz del store con Zustand
-interface StoreState extends UserState, AppState {
+interface IStoreState extends UserState, AppState {
   setUserState: (user: Partial<UserState>) => void;
   setAppState: (conf: Partial<AppState>) => void;
   loadAppData: () => Promise<void>;
@@ -47,7 +47,7 @@ interface StoreState extends UserState, AppState {
   setConfirmed: (confirmed?: boolean) => void;
 }
 
-const useUserStore = create<StoreState>((set, get) => ({
+const useUserStore = create<IStoreState>((set, get) => ({
   id: '0',
   jwt: '',
   blocked: false,
@@ -77,26 +77,23 @@ const useUserStore = create<StoreState>((set, get) => ({
 
   loadUserData: async () => {
     try {
-      const response = await Promise.all([
-        Preferences.get({ key: ID }),
-        Preferences.get({ key: JWT }),
-        Preferences.get({ key: USERNAME }),
-        Preferences.get({ key: EMAIL }),
-        Preferences.get({ key: BLOCKED }),
-        Preferences.get({ key: CONFIRMED }),
-        Preferences.get({ key: DARK_MODE })
-      ]);
-
+      const keys = [ID, JWT, USERNAME, EMAIL, BLOCKED, CONFIRMED, DARK_MODE];
+      const userData = await Promise.all(
+        keys.map(key => Preferences.get({ key }))
+      );
+  
+      const [id, jwt, username, email, blocked, confirmed, darkMode] = userData.map(item => item.value);
+  
       set({
-        id: response[0].value || '0',
-        jwt: response[1].value || undefined,
-        username: response[2].value || undefined,
-        email: response[3].value || undefined,
-        blocked: response[4].value === 'true',
-        confirmed: response[5].value === 'true',
-        darkMode: response[6].value === 'true'
+        id: id || '0',
+        jwt: jwt || undefined,
+        username: username || undefined,
+        email: email || undefined,
+        blocked: blocked === 'true',
+        confirmed: confirmed === 'true',
+        darkMode: darkMode === 'true'
       });
-
+  
     } catch (error) {
       console.error('Error loading user data:', error);
     }

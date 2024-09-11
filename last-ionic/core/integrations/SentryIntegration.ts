@@ -1,6 +1,6 @@
 import { ServiceManager } from "../classes/managers/ServiceManager";
 
-const useServiceManager = ServiceManager.getInstance({
+const useSentry = ServiceManager.getInstance({
   exceptionManagerConfig: { dsn: "your-sentry-dsn", environment: "production" },
   restManagerConfig: "https://api.example.com",
   pushNotificationConfig: {
@@ -11,4 +11,4 @@ const useServiceManager = ServiceManager.getInstance({
   },
 });
 
-export default useServiceManager;
+export default useSentry;

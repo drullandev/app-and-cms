@@ -12,7 +12,7 @@ import CookieManager, { ICookieManager } from "../classes/managers/CookieManager
  *
  * @returns An instance of CookieManager configured with the domain and path settings.
  */
-export const useCookies = CookieManager.getInstance(
+export const useCookies : ICookieManager = CookieManager.getInstance(
   process.env.REACT_APP_HOST_URL,
   process.env.REACT_APP_COOKIE_PATH
 );
