@@ -7,7 +7,7 @@ import { Redirect } from 'react-router';
  * @return {JSX.Element} A Redirect component with the home path.
  */
 const Home: React.FC = () => {
-  return <Redirect to={process.env.REACT_APP_HOME_PATH} />;
+  return <Redirect to={process.env.REACT_APP_HOME_PATH ?? '/home'} />;
 };
 
 export default Home;
