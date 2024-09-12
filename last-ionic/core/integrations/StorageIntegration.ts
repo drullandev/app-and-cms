@@ -6,7 +6,7 @@ import StorageManager from "../classes/managers/StorageManager";
  * @returns An instance of StorageManager configured for storage operations.
  */
 const useAppStorage = (): StorageManager => {
-  return StorageManager.getInstance(process.env.REACT_APP_STORAGE_KEY ?? 'defaultKey');
+  return StorageManager.getInstance(process.env.REACT_APP_STORAGE_KEY);
 };
 
 export default useAppStorage;

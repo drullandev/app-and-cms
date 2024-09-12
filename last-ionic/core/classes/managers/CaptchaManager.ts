@@ -1,15 +1,6 @@
 import DebugUtils from '../utils/DebugUtils';
 import LoggerUtils, {initLogger } from '../utils/LoggerUtils';
-
-/**
- * Interface defining the contract for storage operations.
- * This interface allows for different storage implementations to be injected.
- */
-export interface IStorageManager {
-  set(key: string, value: any): Promise<void>;
-  get(key: string): Promise<any>;
-  remove(key: string): Promise<void>;
-}
+import IStorageManager from './StorageManager'
 
 /**
  * Interface defining the contract for CaptchaManager operations.
