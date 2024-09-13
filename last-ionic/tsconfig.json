@@ -23,6 +23,6 @@
       "@components/*": ["src/components/*"]
     }
   },
-  "include": ["core//**/*.ts", "src/**/*.ts", "core//**/*.ts", "core//**/*.tsx"],
+  "include": ["core/**/*.ts", "src/**/*.ts", "core/**/*.tsx", "src/**/*.tsx"],
   "exclude": ["node_modules"]
 }

@@ -11,7 +11,7 @@ import useUserStore from '../../../classes/stores/user.store';
 import Logger from '../../../classes/utils/LoggerUtils';
 import { FormDataProps } from '../../../components/Form/types';
 import RestManager from '../../../classes/managers/RestManager';
-import useAppRest from '../../../../core/integrations/RestIntegration';
+import useAppRest from '../../../integrations/RestIntegration';
 
 export const signupForm = ({
     setIsLogged

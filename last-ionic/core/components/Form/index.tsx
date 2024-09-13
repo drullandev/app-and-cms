@@ -16,7 +16,7 @@ import Field from './components/Field';
 import LoggerUtils from '../../classes/utils/LoggerUtils';
 import Security from '../../classes/utils/SecurityUtils';
 import DebugUtils from '../../classes/utils/DebugUtils';
-import ValidationUtilss from '../../classes/managers/ValidationsUtils';
+import ValidationUtils from '../../classes/managers/ValidationsUtils';
 import Captcha from '../../integrations/CaptchaIntegration';
 
 // Importing types
@@ -27,7 +27,7 @@ import './style.css';
 
 // Initialize logger
 const Form: React.FC<FormComponentProps> = (formProps: FormComponentProps): JSX.Element | null => {
-  const debug = DebugUtils.setDebug(false);
+  const debug = DebugUtils.setDebug(true);
   const logger = useMemo(() => {
     return debug ? LoggerUtils.getInstance('FormComponent', debug) : console;
   }, [debug]);
@@ -49,8 +49,8 @@ const Form: React.FC<FormComponentProps> = (formProps: FormComponentProps): JSX.
 
   const setFormResolver = (fields?: FieldProps[]) => {
     if (fields) {
-      const ValidationUtils = new ValidationUtilss(fields);
-      const validationSchema = ValidationUtils.buildValidationSchema();
+      const MyValidationUtils = new ValidationUtils(fields);
+      const validationSchema = MyValidationUtils.buildValidationSchema();
       return {
         resolver: yupResolver(validationSchema),
         defaultValues: initialValuesRef.current,
@@ -214,8 +214,8 @@ const Form: React.FC<FormComponentProps> = (formProps: FormComponentProps): JSX.
 
   useEffect(() => {
     if (formData?.fields) {
-      const ValidationUtils = new ValidationUtilss(formData.fields);
-      const newInitialValues = ValidationUtils.buildInitialValues();
+      const MyValidationUtils = new ValidationUtils(formData.fields);
+      const newInitialValues = MyValidationUtils.buildInitialValues();
       initialValuesRef.current = newInitialValues;
       reset(newInitialValues);
       if (firstFieldRef.current) {

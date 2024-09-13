@@ -1,17 +1,35 @@
 import React from 'react'
-import { AlertOptions, IonAlert } from '@ionic/react'
-import { AlertProps } from './types'
-import { useTranslation } from 'react-i18next'
-import { ReactControllerProps } from '@ionic/react/dist/types/components/createControllerComponent'
+import { IonAlert } from '@ionic/react'
 
-/**
- *  Only an static Alert container. To simulate state change with the 'same error' than prev, I use the timestamp value * 
- * @params
- * @returns 
- */
-const Alert: React.FC<AlertOptions> = (settingAlert) => {
-  const {t} = useTranslation()
-  return <IonAlert {...settingAlert}/>
+export interface AlertProps {
+  slug: string
+  showAlert: boolean
 }
 
-export default React.memo(Alert)
+const Alert: React.FC<AlertProps> = ({ slug, showAlert}) => (
+  <IonAlert
+    isOpen={showAlert}
+    header="Change Username"
+    buttons={[
+      'Cancel',
+      {
+        text: 'Ok',
+        handler: (data) => {
+          //setNickname(data.username);
+        }
+      }
+    ]}
+    inputs={[
+      {
+        type: 'text',
+        name: 'username',
+        value: 'fghjghfghjghjhg',
+        placeholder: 'username'
+      }
+    ]}
+    onDidDismiss={() => console.log() //setShowAlert(false)
+  }
+  />
+)
+
+export default Alert

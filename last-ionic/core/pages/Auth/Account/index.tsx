@@ -1,5 +1,6 @@
-import { IonButton, IonButtons, IonCardSubtitle, IonCardTitle, IonCol, IonContent, IonGrid, IonHeader, IonIcon, IonPage, IonRow, IonToolbar } from '@ionic/react';
-import { addCircleOutline, bookmarksOutline, chevronDown, gridOutline, menuOutline } from 'ionicons/icons';
+import { IonButton, IonButtons, IonCardSubtitle, IonCardTitle, IonCol, IonContent, IonGrid, IonHeader, IonIcon, IonItem, IonPage, IonRow, IonToolbar } from '@ionic/react';
+import { addCircleOutline, bookmarksOutline, chevronDown, gridOutline, menuOutline, moonOutline } from 'ionicons/icons';
+import React from 'react';
 import { useState, useEffect } from 'react';
 //import styles from './styles.scss';
 
@@ -46,6 +47,15 @@ const Account: React.FC = () => {
 
     return (
         <IonPage>
+
+            <IonItem>
+
+                <IonIcon
+                slot="start"
+                icon={moonOutline}
+                ></IonIcon>
+
+            </IonItem>
             
             {/*<IonHeader>
                 <IonToolbar>

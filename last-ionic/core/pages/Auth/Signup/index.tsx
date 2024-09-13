@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 // Component imports
 import './styles.scss';
 import { signupForm } from './source';
-import PagePropsData from '../../../components/Page/types';
+import { PagePropsData } from '../../../components/Page';
 
 // Used Components
 import Page from '../../../components/Page';
@@ -13,7 +13,7 @@ import Header from '../../../components/Header';
 import Form from '../../../components/Form';
 
 // Component Reducer
-const SignupPage: React.FC<any> = (pageProps) => {
+const SignUp: React.FC<any> = (pageProps) => {
 
   const { t } = useTranslation();
 
@@ -44,4 +44,4 @@ const SignupPage: React.FC<any> = (pageProps) => {
 
 };
 
-export default SignupPage;
+export default SignUp;

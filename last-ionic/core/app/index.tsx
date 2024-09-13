@@ -12,13 +12,8 @@ import './types';
 
 import {
   NotFound,
-  ChangePassword,
   Login,
   Menu,
-  Recover,
-  ResetPassword,
-  Signup,
-  MainTabs,
   Page,
   Account,
   Home,
@@ -31,6 +26,8 @@ import useUserStore from '../classes/stores/user.store';
 import useAppStore from '../classes/stores/app.store'
 
 import DebugUtils from '../classes/utils/DebugUtils';
+import SignUp from '../pages/Auth/SignUp';
+import MainTabs from '../components/MainTabs';
 
 const AppComponent: React.FC = () => {
 
@@ -62,10 +59,7 @@ const AppComponent: React.FC = () => {
             <Route path="/support" component={Support} />
             <Route path="/logout" render={() => <Logout />} />
             <Route path="/login" component={Login} />
-            <Route path="/sign-up" component={Signup} />
-            <Route path="/reset" component={ResetPassword} />
-            <Route path="/recover" component={Recover} />
-            <Route path="/change-password" component={ChangePassword} />
+            <Route path="/sign-up" component={SignUp} />
             <Route path="/" component={Home} exact />
             <Route path="/not-found" component={NotFound} />
             <Route component={NotFound} />

@@ -93,7 +93,6 @@
     "cypress": "^13.14.2",
     "depcheck": "^1.4.7",
     "electron": "^32.0.2",
-    "electron-builder": "^24.13.3",
     "eslint": "^8.57.0",
     "eslint-plugin-react": "^7.35.2",
     "husky": "9.1.5",

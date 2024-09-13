@@ -39,21 +39,12 @@ const Menu: React.FC<any> = () => {
         </IonList>
 
         <IonList role="list" lines="none">
-
-          <IonListHeader>Account</IonListHeader>
-
+          
           {true
             ? renderMenuItems(routes.loggedOutPages)
             : renderMenuItems(routes.loggedInPages)}
 
-          <IonItem>
 
-            <IonIcon
-              slot="start"
-              icon={moonOutline}
-            ></IonIcon>
-
-          </IonItem>
 
         </IonList>
 
