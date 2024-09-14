@@ -1,3 +1,5 @@
+import React from "react";
+
 // interfaces/LifecycleHooks.ts
 export interface LifecycleHooks {
   onLoad?: (callback: () => void) => void;

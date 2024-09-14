@@ -5,7 +5,7 @@ import { IonItem } from '@ionic/react'
 
 // Used Components
 import { PagePropsData } from '../../../components/Page';
-import Form from '../../../components/Form'
+import Form from '../../../components/Form/index'
 import Page from '../../../components/Page'
 import Header from '../../../components/Header'
 

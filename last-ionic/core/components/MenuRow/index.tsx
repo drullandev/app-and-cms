@@ -4,8 +4,40 @@ import { useLocation } from 'react-router';
 import { useHistory } from 'react-router-dom';
 import useUserStore from '../../classes/stores/user.store'; // Importa tu store de Zustand
 
-import { PathProps } from '../../interfaces/PathProps';
-import { MenuRowProps } from '../../interfaces/MenuRowProps';
+export interface PathProps {
+  slug?: string
+  value: string
+  component: {
+    name?: string
+    icon?: string
+    iconOut?: string
+    exact?: false
+    main?: false
+    icon_out?: string
+    component: {
+      name?: string
+      slug?: string
+      params?: object
+    }
+  },
+  roles: {
+    name?: string
+    type?: string
+  }[]
+}
+export interface MenuRowProps {
+  row: {
+    title: string
+    component: {
+      component: {
+        id: number
+      }
+      icon: string
+    }
+    slug: string
+    path: PathProps
+  }
+}
 
 // Style
 import './styles/Menu.css';

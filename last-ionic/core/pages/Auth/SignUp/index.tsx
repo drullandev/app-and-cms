@@ -10,7 +10,7 @@ import { PagePropsData } from '../../../components/Page';
 // Used Components
 import Page from '../../../components/Page';
 import Header from '../../../components/Header';
-import Form from '../../../components/Form';
+import Form from '../../../components/Form/index';
 
 // Component Reducer
 const SignUp: React.FC<any> = (pageProps) => {

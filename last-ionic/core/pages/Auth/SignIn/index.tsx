@@ -8,7 +8,7 @@ import { checkmarkCircleOutline } from 'ionicons/icons';
 import { PagePropsData } from '../../../components/Page';
 import Page from '../../../components/Page';
 import Header from '../../../components/Header';
-import Form from '../../../components/Form';
+import Form from '../../../components/Form/index';
 
 // Page imports
 import { loginFormData, recoverFormData } from './source';

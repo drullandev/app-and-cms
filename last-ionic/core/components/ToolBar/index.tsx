@@ -1,6 +1,11 @@
 import React from 'react'
 import { IonToolbar, IonButtons, IonMenuButton, IonTitle } from '@ionic/react'
-import { HeaderProps } from '../../interfaces/HeaderProps'
+
+export interface HeaderProps {
+  label?: any
+  slot?: string
+  loading?:boolean
+}
 
 /**
  * 

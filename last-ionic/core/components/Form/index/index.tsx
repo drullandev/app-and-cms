@@ -6,24 +6,24 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 
 // Importing components
-import Overlay from './components/Overlay';
-import Field from './components/Field';
+import Overlay from '../components/Overlay';
+import Field from '../components/Field';
 //import GA4Tracker from '../../../../src/integrations/GA4Integration';
 //import DebugBox from '../DebugBox';
 //import Accordion from '../Accordion';
 
 // Importing utilities and helper functions
-import LoggerUtils from '../../classes/utils/LoggerUtils';
-import Security from '../../classes/utils/SecurityUtils';
-import DebugUtils from '../../classes/utils/DebugUtils';
-import ValidationUtils from '../../classes/managers/ValidationsUtils';
-import Captcha from '../../integrations/CaptchaIntegration';
+import LoggerUtils from '../../../classes/utils/LoggerUtils';
+import Security from '../../../classes/utils/SecurityUtils';
+import DebugUtils from '../../../classes/utils/DebugUtils';
+import ValidationUtils from '../../../classes/managers/ValidationsUtils';
+import Captcha from '../../../integrations/CaptchaIntegration';
 
 // Importing types
-import { FieldProps, FormComponentProps, FormDataProps } from './types';
+import { FieldProps, FormComponentProps, FormDataProps } from '../types';
 
 // Importing styles
-import './style.css';
+import '../style.css';
 
 // Initialize logger
 const Form: React.FC<FormComponentProps> = (formProps: FormComponentProps): JSX.Element | null => {

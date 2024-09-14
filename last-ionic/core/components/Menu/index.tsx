@@ -2,7 +2,7 @@ import React from 'react'
 import { moonOutline } from 'ionicons/icons'
 import { IonContent, IonIcon, IonItem, IonLabel, IonList, IonListHeader, IonMenu, IonMenuToggle } from '@ionic/react'
 
-import { Page } from '../../interfaces/models/Page'
+import { Page } from '../../interfaces/Page'
 import { routes } from '../../app/config/routes'
 
 import './style.css'
