@@ -9,7 +9,22 @@ import DebugUtils from '../../classes/utils/DebugUtils'
 import './styles.css'
 import PWA from '../PWA'
 
-import { GA4Options } from '../../interfaces/GA4';
+export interface GA4Event {
+  category: string, // Categoría del evento (puede ser cualquier nombre relevante)
+  action: string, // Acción realizada (por ejemplo, 'Clic en botón')
+  label?: string, // Etiqueta opcional para detalles adicionales
+}
+
+
+export interface GA4Options {
+  load?: GA4Event;
+  submit?: FormEventsProps
+}
+
+export interface FormEventsProps {
+  succcess: GA4Event;
+  error: GA4Event;
+}
 
 export interface IonPageProps {
   id: string;

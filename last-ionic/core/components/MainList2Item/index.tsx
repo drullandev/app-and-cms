@@ -2,7 +2,14 @@ import React, { useRef, useEffect, useState } from 'react';
 import { IonItemSliding, IonItem, IonLabel, IonItemOptions, IonItemOption, IonSkeletonText, IonThumbnail } from '@ionic/react';
 import useSessionStore from '../../classes/stores/app.store';
 import Icon from '../Icon';
-import { ListRowProps } from '../../interfaces/ListRowProps';
+export interface ListRowProps {
+  id: number
+  title?: string
+  name?: string
+  path: string
+  slot?: string
+  icon?: string
+}
 import useSearchStore from '../../classes/stores/searcher.store'; // Import the new search store
 
 interface LineProps {

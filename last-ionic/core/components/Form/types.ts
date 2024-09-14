@@ -1,7 +1,23 @@
 import { CSSProperties } from 'react';
 import { ControllerProps, DeepMap, FieldError } from 'react-hook-form';
 import { Schema } from 'yup';
-import { GA4Options } from '../../interfaces/GA4';
+
+export interface GA4Event {
+  category: string, // Categoría del evento (puede ser cualquier nombre relevante)
+  action: string, // Acción realizada (por ejemplo, 'Clic en botón')
+  label?: string, // Etiqueta opcional para detalles adicionales
+}
+
+
+export interface GA4Options {
+  load?: GA4Event;
+  submit?: FormEventsProps
+}
+
+export interface FormEventsProps {
+  succcess: GA4Event;
+  error: GA4Event;
+}
 
 export interface FormDataProps {
   id: string;
