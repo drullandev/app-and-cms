@@ -27,7 +27,7 @@ import useAppStore from '../classes/stores/app.store'
 
 import DebugUtils from '../classes/utils/DebugUtils';
 import SignUp from '../pages/Auth/SignUp';
-import MainTabs from '../components/MainTabs';
+import MainTabs from '../components/main/MainTabs';
 
 const AppComponent: React.FC = () => {
 

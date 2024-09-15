@@ -7,5 +7,5 @@ export { default as Support } from '../pages/Main/Support';
 // Page Components
 export { default as Menu } from './../components/Menu';
 export { default as Page } from './../components/Page';
-export { default as Home } from './../components/Home';
-export { default as Logout } from './../components/Logout';
+export { default as Home } from './../components/main/Home';
+export { default as Logout } from './../components/main/Logout';

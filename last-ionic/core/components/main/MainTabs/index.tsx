@@ -8,23 +8,23 @@ import {
   IonLabel
 } from '@ionic/react'
 
-import About from '../../pages/Main/About'
-import { MainMenu } from '../../app/config/env'
+import About from '../../../pages/Main/About'
+import { MainMenu } from '../../../app/config/env'
 
-import Icon from '../Icon'
+import Icon from '../../Icon'
 
-interface MainTabsProps {}
+interface IMainTabs {}
 
-export interface TabProps {
+export interface ITabButton {
   name: string
   href: string
   icon: string
   label: string
 }
 
-const MainTabs: React.FC<MainTabsProps> = () => {
+const MainTabs: React.FC<IMainTabs> = () => {
 
-  const TabButton = (tab: TabProps) =>
+  const TabButton = (tab: ITabButton) =>
     <IonTabButton key={tab.href + '-tab'} tab={tab.name} href={tab.href}>
       <Icon name={tab.icon}/>
       <IonLabel>{tab.label}</IonLabel>

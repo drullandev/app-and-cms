@@ -5,7 +5,7 @@ import { IonTabButton, IonLabel } from '@ionic/react'
 
 import Icon from '../Icon'
 
-export interface TabButtonProps {
+export interface ITabButton {
   path: {
     slug: string
     value: string

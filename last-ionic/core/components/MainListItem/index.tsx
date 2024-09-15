@@ -23,7 +23,7 @@ interface OwnProps {
   row: ListRowProps;
 }
 
-const SessionListItem: React.FC<OwnProps> = ({ row }) => {
+const MainListItem: React.FC<OwnProps> = ({ row }) => {
   const [line, setLine] = useState<LineProps | undefined>(undefined);
   const ionItemSlidingRef = useRef<HTMLIonItemSlidingElement>(null);
   const { searchString } = useSearchStore();
@@ -88,4 +88,4 @@ const SessionListItem: React.FC<OwnProps> = ({ row }) => {
   );
 };
 
-export default SessionListItem;
+export default MainListItem;

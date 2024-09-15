@@ -22,9 +22,17 @@ const SignUp: React.FC<any> = (pageProps) => {
       id: 'signup-page',
       title: t('Sign up a new account!'),
     },
+    ga4: {
+      load: {
+        category: 'auth',
+        action: 'page-load',
+        label: 'login-landing',
+      }
+    },
     header: () => {
       const headerProps = {
         title: t('Sign up!'),
+        showMenuButton: true,
         slot: 'start',
         loading: pageProps.loading || false
       }

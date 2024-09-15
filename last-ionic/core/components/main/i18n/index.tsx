@@ -3,11 +3,11 @@ import React from 'react';
 import i18n from 'i18next';
 import { useTranslation, initReactI18next } from 'react-i18next';
 import detector from 'i18next-browser-languagedetector';
-import { supportedLanguages, defaultLanguage } from '../../app/config/env';
-import resources from '../../app/translations.json';
+import { supportedLanguages, defaultLanguage } from '../../../app/config/env';
+import resources from '../../../app/translations.json';
 
 import { setLocale } from 'yup';
-import { getYupLocaleConfig } from '../../app/config/env'
+import { getYupLocaleConfig } from '../../../app/config/env'
 
 // Modo debug
 const debug = false;
