@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import Accordion from '../../Accordion'; // Ensure the path is correct
+import Accordion from '../../extra/Accordion'; // Ensure the path is correct
 import { default as LoggerUtils } from '../../../classes/utils/LoggerUtils'; // Ensure the path is correct
 
 interface LoggerProps {

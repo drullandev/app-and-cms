@@ -4,7 +4,7 @@ import { IonFooter, IonGrid, IonRow, IonCol, IonToolbar, IonImg, IonLabel, getCo
 //import Storage from '../../classes/Storage'
 import { useHistory } from "react-router"
 //import { translate } from '../../../data/utils/translations'
-import { appAssets } from '../../app/config/env'
+import { appAssets } from '../../../app/config/env'
 
 export interface FooterProps {
   index?: number

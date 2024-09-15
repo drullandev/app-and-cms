@@ -9,7 +9,7 @@ import { PagePropsData } from '../../../components/main/Page';
 
 // Used Components
 import Page from '../../../components/main/Page';
-import Header from '../../../components/Header';
+import Header from '../../../components/main/Header';
 import Form from '../../../components/main/Form/index/index';
 
 // Component Reducer

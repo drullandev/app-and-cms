@@ -3,9 +3,9 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 
 import Page from '../../../components/main/Page';
-import Header from '../../../components/Header';
+import Header from '../../../components/main/Header';
 import { PagePropsData } from '../../../components/main/Page';
-import Chat from '../../../components/Chat';
+import Chat from '../../../components/main/Chat';
 
 const SupportPage: React.FC<any> = (pageProps) => {
 

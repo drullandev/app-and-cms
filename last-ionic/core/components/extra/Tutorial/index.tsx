@@ -11,8 +11,8 @@ import {
 } from '@ionic/react';
 import { arrowForward } from 'ionicons/icons';
 import { useHistory } from 'react-router';
-import useSessionStore from '../../classes/stores/app.store';
-import useUserStore from '../../classes/stores/user.store';
+import useSessionStore from '../../../classes/stores/app.store';
+import useUserStore from '../../../classes/stores/user.store';
 import './Tutorial.scss';
 
 const Tutorial: React.FC = () => {

@@ -1,9 +1,9 @@
-import * as AppConst from '../../app/config/env';
-import { GraphQLFilter } from '../../classes/assets/GraphQLFilter';
+import * as AppConst from '../../../app/config/env';
+import { GraphQLFilter } from '../../../classes/assets/GraphQLFilter';
 import { IonList, IonInfiniteScroll, IonInfiniteScrollContent, IonItem, IonLabel, IonRefresher, IonRefresherContent, useIonToast } from '@ionic/react';
 import React, { useState, useEffect, useRef } from 'react';
 import Spinner from '../Spinner';
-import useSearchStore from '../../classes/stores/searcher.store'; // Import the new search store
+import useSearchStore from '../../../classes/stores/searcher.store'; // Import the new search store
 
 const MainList: React.FC = () => {
   const { searchString, searchOrder, orderField, filter, setSearchString, setSearchOrder, setOrderField, setFilter } = useSearchStore();

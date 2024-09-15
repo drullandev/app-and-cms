@@ -8,10 +8,10 @@ import {
   IonLabel
 } from '@ionic/react'
 
-import About from '../../../pages/main/About'
-import { MainMenu } from '../../../app/config/env'
+import About from '../../../../pages/main/About'
+import { MainMenu } from '../../../../app/config/env'
 
-import Icon from '../../extra/Icon'
+import Icon from '../../../extra/Icon'
 
 interface IMainTabs {}
 

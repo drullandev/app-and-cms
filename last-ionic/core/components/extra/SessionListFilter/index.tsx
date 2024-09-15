@@ -1,4 +1,4 @@
-import * as AppConst from '../../app/config/env';
+import * as AppConst from '../../../app/config/env';
 import React from 'react';
 import { getMode } from '@ionic/core';
 import {
@@ -29,7 +29,7 @@ import {
   compass,
 } from 'ionicons/icons';
 
-import useAppStore from '../../classes/stores/app.store';
+import useAppStore from '../../../classes/stores/app.store';
 
 interface OwnProps {
   onDismissModal: () => void;

@@ -1,13 +1,13 @@
 import React, { useEffect } from 'react'
 import { IonPage, IonContent } from '@ionic/react'
 
-import Logger from '../../../classes/utils/LoggerUtils'
+import Logger from '../../../../classes/utils/LoggerUtils'
 //import GA4Tracker  from '../../../../src/integrations/GA4Integration'
-import DebugUtils from '../../../classes/utils/DebugUtils'
+import DebugUtils from '../../../../classes/utils/DebugUtils'
 //import CookieConsent from '../CookieConsent'
 
 import './styles.css'
-import PWA from '../PWA'
+import PWA from '../../../main/PWA'
 
 export interface GA4Event {
   category: string, // Categoría del evento (puede ser cualquier nombre relevante)

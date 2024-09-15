@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { IonHeader, IonToolbar, IonContent, IonButtons, IonMenuButton, IonButton, IonIcon, IonDatetime, IonSelectOption, IonList, IonItem, IonLabel, IonSelect, IonPopover } from '@ionic/react'
 import { ellipsisHorizontal, ellipsisVertical } from 'ionicons/icons'
 
-import Popover from '../../../components/Popover'
+import Popover from '../../../components/extra/Popover'
 //import Header from '../../components/main/Header'
 
 interface AboutProps { }
