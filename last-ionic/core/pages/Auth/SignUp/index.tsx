@@ -5,12 +5,12 @@ import { useTranslation } from 'react-i18next';
 // Component imports
 import './styles.scss';
 import { signupForm } from './source';
-import { PagePropsData } from '../../../components/Page';
+import { PagePropsData } from '../../../components/main/Page';
 
 // Used Components
-import Page from '../../../components/Page';
+import Page from '../../../components/main/Page';
 import Header from '../../../components/Header';
-import Form from '../../../components/Form/index';
+import Form from '../../../components/main/Form/index/index';
 
 // Component Reducer
 const SignUp: React.FC<any> = (pageProps) => {

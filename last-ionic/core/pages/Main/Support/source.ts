@@ -7,7 +7,7 @@ import * as icon from 'ionicons/icons';
 import DebugUtils from '../../../classes/utils/DebugUtils';
 import RestOutput from '../../../classes/utils/RestOutput';
 
-import { FormDataProps } from '../../../components/Form/types';
+import { FormDataProps } from '../../../components/main/Form/types';
 import useUserStore from '../../../classes/stores/user.store';  // Importa el store
 import RestManager from '../../../classes/managers/RestManager';
 import useAppRest from '../../../integrations/RestIntegration';

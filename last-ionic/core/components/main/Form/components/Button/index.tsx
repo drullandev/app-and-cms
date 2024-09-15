@@ -2,7 +2,7 @@ import React, { useState, useEffect, forwardRef } from 'react';
 import { IonLabel, IonButton, IonSpinner } from '@ionic/react';
 import { FieldProps } from '../../types';
 import * as icon from 'ionicons/icons';
-import Logger from '../../../../classes/utils/LoggerUtils';
+import Logger from '../../../../../classes/utils/LoggerUtils';
 import Icon from '../../../Ionic/v8/Icon';
 
 /**

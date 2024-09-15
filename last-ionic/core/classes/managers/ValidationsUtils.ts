@@ -1,5 +1,5 @@
 import * as yup from 'yup';
-import { FieldProps } from '../../components/Form/types';
+import { FieldProps } from '../../components/main/Form/types';
 import LoggerUtils from '../utils/LoggerUtils';
 import DebugUtils from '../utils/DebugUtils';
 

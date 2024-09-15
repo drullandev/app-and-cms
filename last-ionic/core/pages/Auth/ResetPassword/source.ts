@@ -12,7 +12,7 @@ import DebugUtils from '../../../classes/utils/DebugUtils';
 import RestManager from '../../../classes/managers/RestManager';
 
 // Local dependencies
-import { FormDataProps } from '../../../components/Form/types';
+import { FormDataProps } from '../../../components/main/Form/types';
 
 // Reducer dependencies
 import useUserStore from '../../../classes/stores/user.store';

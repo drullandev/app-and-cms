@@ -13,11 +13,11 @@ import Field from '../components/Field';
 //import Accordion from '../Accordion';
 
 // Importing utilities and helper functions
-import LoggerUtils from '../../../classes/utils/LoggerUtils';
-import Security from '../../../classes/utils/SecurityUtils';
-import DebugUtils from '../../../classes/utils/DebugUtils';
-import ValidationUtils from '../../../classes/managers/ValidationsUtils';
-import Captcha from '../../../integrations/CaptchaIntegration';
+import LoggerUtils from '../../../../classes/utils/LoggerUtils';
+import Security from '../../../../classes/utils/SecurityUtils';
+import DebugUtils from '../../../../classes/utils/DebugUtils';
+import ValidationUtils from '../../../../classes/managers/ValidationsUtils';
+import Captcha from '../../../../integrations/CaptchaIntegration';
 
 // Importing types
 import { FieldProps, FormComponentProps, FormDataProps } from '../types';

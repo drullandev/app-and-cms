@@ -9,7 +9,7 @@ import RestOutput from '../../../classes/utils/RestOutput';
 
 import useUserStore from '../../../classes/stores/user.store';
 import Logger from '../../../classes/utils/LoggerUtils';
-import { FormDataProps } from '../../../components/Form/types';
+import { FormDataProps } from '../../../components/main/Form/types';
 import RestManager from '../../../classes/managers/RestManager';
 import useAppRest from '../../../integrations/RestIntegration';
 

@@ -1,10 +1,10 @@
 // TODO : MAKE IT WORK SOMEHOW!
 import { RouteProps } from 'react-router-dom';
-import Page from '../../components/Page';
-import Login from '../../pages/Auth/SignIn';
-import SignUp from '../../pages/Auth/SignUp';
-import Support from '../../pages/Main/Support';
-import Account from '../../pages/Auth/Account';
+import Page from '../../components/main/Page';
+import Login from '../../pages/auth/SignIn';
+import SignUp from '../../pages/auth/SignUp';
+import Support from '../../pages/main/Support';
+import Account from '../../pages/auth/Account';
 //import Logout from '../../pages/Logout';
 import Home from '../../pages/Index';
 

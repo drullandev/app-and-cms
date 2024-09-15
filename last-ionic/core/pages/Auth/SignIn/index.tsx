@@ -1,14 +1,13 @@
 // Global imports
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { IonIcon, IonItem, IonText, IonFooter, IonContent } from '../../../components/Ionic/basic';
+import { IonIcon, IonItem, IonText, IonFooter, IonContent } from '../../../components/main/Ionic/basic';
 import { checkmarkCircleOutline } from 'ionicons/icons';
 
 // Used Components
-import { PagePropsData } from '../../../components/Page';
-import Page from '../../../components/Page';
+import Page, { PagePropsData } from '../../../components/main/Page';
 import Header from '../../../components/Header';
-import Form from '../../../components/Form/index';
+import Form from '../../../components/main/Form/index/index';
 
 // Page imports
 import { loginFormData, recoverFormData } from './source';
@@ -19,7 +18,7 @@ const LoginPage: React.FC<any> = (pageProps) => {
   
   const { t } = useTranslation();
 
-  const pageSettings : PagePropsData = {
+  const pageSettings : PagePropsData = { 
     settings: {
       id: 'login-page',
       title: 'Login page',

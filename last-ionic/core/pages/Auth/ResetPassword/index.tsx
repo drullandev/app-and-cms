@@ -4,9 +4,9 @@ import { useTranslation } from 'react-i18next'
 import { IonItem } from '@ionic/react'
 
 // Used Components
-import { PagePropsData } from '../../../components/Page';
-import Form from '../../../components/Form/index'
-import Page from '../../../components/Page'
+import { PagePropsData } from '../../../components/main/Page';
+import Form from '../../../components/main/Form/index'
+import Page from '../../../components/main/Page'
 import Header from '../../../components/Header'
 
 // The component imports
