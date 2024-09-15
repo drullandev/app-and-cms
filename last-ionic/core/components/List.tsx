@@ -1,6 +1,5 @@
 import React, { useMemo } from 'react';
 import { IonMenuToggle, IonIcon, IonItem, IonLabel } from '@ionic/react';
-import { ListProps } from '../interfaces/ListProps';
 
 export interface ListRowProps {
   id: number
@@ -10,6 +9,14 @@ export interface ListRowProps {
   slot?: string
   icon?: string
 }
+
+export interface ListProps {
+  rows: ListRowProps[]
+  id: number
+  title: string
+  path?: string
+}
+
 const List: React.FC<ListProps> = ({ rows }) => {
   // Memoize the current path to avoid recalculating in each render
   const currentPath = useMemo(() => window.location.pathname, []);
