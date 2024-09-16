@@ -1,3 +1,4 @@
+import ReactGA from 'react-ga';
 import DebugUtils from "../utils/DebugUtils";
 import LoggerUtils, {initLogger } from "../utils/LoggerUtils";
 
@@ -18,7 +19,7 @@ export interface IGA4Manager {
  * @date August 30, 2024
  */
 class GA4Manager {
-  private trackingId: string;
+  public trackingId: string | undefined;
   private initialized: boolean = false;
   private logger: LoggerUtils;
   private src: string = 'https://www.googletagmanager.com/gtag/js?id=';
@@ -29,21 +30,23 @@ class GA4Manager {
    *
    * @param trackingId - The GA4 tracking ID to be used for sending data.
    */
-  constructor(trackingId: string, debug?: boolean) {
+  constructor(trackingId?: string, debug?: boolean) {
     this.debug = DebugUtils.setDebug(debug ?? this.debug);
-    this.logger =initLogger(this.constructor.name, this.debug, 100);
-    if (!trackingId) {
-      throw new Error("Tracking ID must be provided.");
+    this.logger = initLogger(this.constructor.name, this.debug, 100);
+    if (trackingId){
+      this.trackingId = trackingId;
+      this.initializeGA4();
+    }else{
+      this.trackingId = undefined
+      if (this.debug) this.logger.log('Cannot initialize the', this.constructor.name )
     }
-    this.trackingId = trackingId;
-    this.logger = LoggerUtils.getInstance(this.constructor.name);
-    this.initializeGA4();
   }
 
   /**
    * Initializes GA4 by loading the GA4 script and configuring the global `gtag` function.
    */
   private initializeGA4(): void {
+    
     const script = document.createElement("script");
     script.src = `${this.src}${this.trackingId}`;
     script.async = true;
@@ -62,6 +65,7 @@ class GA4Manager {
       this.logger.error("Failed to load GA4 script.");
     };
     document.head.appendChild(script);
+    if (this.trackingId ) ReactGA.initialize(this.trackingId); 
   }
 
   /**

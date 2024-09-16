@@ -1,36 +1,65 @@
 /**
- * Utility class for common browser-related operations.
+ * Interface representing the BrowserManager operations.
+ *
+ * @interface BrowserManagerInterface
+ * @author [Tu Nombre]
+ * @date [Fecha actual]
+ */
+export interface BrowserManagerInterface {
+  appName: string;
+  
+  updatePageTitle(newTitle: string): void;
+  setLocalStorageItem(key: string, value: any): void;
+  getLocalStorageItem(key: string): any;
+  removeLocalStorageItem(key: string): void;
+  setCookie(name: string, value: string, days: number): void;
+  getCookie(name: string): string;
+  deleteCookie(name: string): void;
+  scrollToElementById(elementId: string): void;
+}
+
+/**
+ * Manager class for common browser-related operations.
  * This class provides methods to manipulate the document title,
  * localStorage, cookies, and other browser-related utilities.
  *
- * @class BrowserUtils
+ * @class BrowserManager
  */
-class BrowserUtils {
-  private static instance: BrowserUtils | null = null;
+class BrowserManager implements BrowserManagerInterface {
+  private static instances: Record<string, BrowserManager> = {}; // Stores instances by app name
+  public appName: string;
 
-  // Private constructor to ensure Singleton pattern
-  private constructor() {}
-
-  /**
-   * Returns the singleton instance of BrowserUtils.
-   * If an instance doesn't exist, it creates one.
-   *
-   * @returns {BrowserUtils} The singleton instance.
-   */
-  public static getInstance(): BrowserUtils {
-    if (!this.instance) {
-      this.instance = new BrowserUtils();
-    }
-    return this.instance;
+  // Private constructor to ensure Singleton pattern with appName
+  private constructor(appName: string) {
+    this.appName = appName;
   }
 
   /**
-   * Updates the page title.
+   * Returns the singleton instance of BrowserManager for a specific app.
+   * If an instance doesn't exist, it creates one.
+   *
+   * @param appName - The name of the app to associate with this instance.
+   * @returns {BrowserManager} The singleton instance for the specified app.
+   */
+  public static getInstance(appName?: string): BrowserManager | undefined {
+    if (appName){
+      if (!this.instances[appName]) {
+        this.instances[appName] = new BrowserManager(appName);
+      }
+      return this.instances[appName];
+    }
+    return new BrowserManager('')
+  }
+
+  /**
+   * Updates the page title by appending the app name.
    *
    * @param newTitle - The new title to set for the document.
    */
   public updatePageTitle(newTitle: string): void {
-    document.title = newTitle;
+    if (this.appName != ''){
+      document.title = `${newTitle} - ${this.appName}`;
+    }
   }
 
   /**
@@ -122,5 +151,5 @@ class BrowserUtils {
   }
 }
 
-// Export the singleton instance of BrowserUtils
-export default BrowserUtils.getInstance();
+// Export function to get the instance
+export default BrowserManager;

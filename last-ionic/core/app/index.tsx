@@ -3,7 +3,6 @@ import { Route, Redirect, Switch } from 'react-router-dom';
 import { IonApp, IonRouterOutlet, IonSplitPane } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 
-import BrowserUtils from '../classes/utils/BrowserUtils';
 import RandomUtils from '../classes/utils/RandomUtils';
 import DebugUtils from '../classes/utils/DebugUtils';
 
@@ -28,7 +27,6 @@ const AppComponent: React.FC = () => {
 
   useEffect(() => {
     setTheme(darkMode ? 'dark-theme' : '');
-    BrowserUtils.updatePageTitle('New Page Title');
     setSessionId(RandomUtils.getRandomUUID());
   }, [darkMode, setSessionId]);
 
