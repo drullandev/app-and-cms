@@ -1,16 +1,13 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
-import AppContainer from './index';
+
 import { ServiceWorker } from '../classes/workers/ServiceWorker';
 import i18n from '../components/main/i18n';
-import React from 'react';
+import AppContainer from './index';
 
 const strictMode = false; // Set to `true` during development
 const registerSW = true; // Set to `false` if you don't want to register the service worker
 
-/**
- * Sets up the React application with or without StrictMode based on the environment.
- */
 const renderApp = () => {
 
   // Get the root DOM element where the React app will be mounted

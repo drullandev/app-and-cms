@@ -1,13 +1,12 @@
 /**
  * Interface representing the BrowserManager operations.
  *
- * @interface BrowserManagerInterface
- * @author [Tu Nombre]
- * @date [Fecha actual]
+ * @interface IBrowserManager
+ * @author David Rullán - https://github.com/drullandev
+ * @date September 3, 2024
  */
-export interface BrowserManagerInterface {
+export interface IBrowserManager {
   appName: string;
-  
   updatePageTitle(newTitle: string): void;
   setLocalStorageItem(key: string, value: any): void;
   getLocalStorageItem(key: string): any;
@@ -25,7 +24,7 @@ export interface BrowserManagerInterface {
  *
  * @class BrowserManager
  */
-class BrowserManager implements BrowserManagerInterface {
+class BrowserManager implements IBrowserManager {
   private static instances: Record<string, BrowserManager> = {}; // Stores instances by app name
   public appName: string;
 
@@ -58,7 +57,7 @@ class BrowserManager implements BrowserManagerInterface {
    */
   public updatePageTitle(newTitle: string): void {
     if (this.appName != ''){
-      document.title = `${newTitle} - ${this.appName}`;
+      document.title = `${this.appName} - ${newTitle}}`;
     }
   }
 

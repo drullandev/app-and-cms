@@ -1,15 +1,20 @@
 import React from 'react';
 import { IonContent, IonIcon, IonItem, IonLabel, IonList, IonMenu, IonMenuToggle } from '@ionic/react';
-import { AppRoutes, IAppRoute } from '../../../app/config/routes'; // No necesitas `RenderRoutes` aquí
+import { AppRoutes, IAppRoute } from '../../../app/config/routes';
 
 import useUserStore from '../../../classes/stores/user.store'; // Suponiendo que tienes un store para el estado del usuario
 
 import './style.css';
 
+export interface IMenu {
+  appRoutes: any;
+}
+
 /**
  * Menu Component to render navigation items based on the user's authentication status.
  */
-const Menu: React.FC = () => {
+const Menu: React.FC<IMenu> = ({ appRoutes }) => {
+
   const { logged } = useUserStore();
 
   /**
@@ -35,7 +40,7 @@ const Menu: React.FC = () => {
     <IonMenu type="overlay" disabled={false} menuId="main" contentId="main">
       <IonContent forceOverscroll={false}>
         <IonList role="list" lines="none">
-          {renderMenuItems(AppRoutes)} {/* Renderiza los ítems del menú */}
+          {renderMenuItems(appRoutes)} {/* Renderiza los ítems del menú */}
         </IonList>
       </IonContent>
     </IonMenu>
