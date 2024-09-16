@@ -5,7 +5,6 @@ import Login from '../../pages/auth/SignIn';
 import SignUp from '../../pages/auth/SignUp';
 import Support from '../../pages/main/Support';
 import Account from '../../pages/auth/Account';
-//import Logout from '../../pages/Logout';
 import Home from '../../pages/Index';
 
 const routes: RouteProps[] = [
@@ -14,7 +13,6 @@ const routes: RouteProps[] = [
   { path: '/sign-up', component: SignUp },
   { path: '/support', component: Support },
   { path: '/account', component: Account },
-  { path: '/logout', render: () => <></> },
   { path: '/', component: Home, exact: true }
 ];
 

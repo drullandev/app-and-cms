@@ -4,13 +4,13 @@ import { useTranslation } from 'react-i18next';
 import { IonIcon, IonItem, IonText, IonFooter, IonContent } from '../../../components/main/Ionic/basic';
 import { checkmarkCircleOutline } from 'ionicons/icons';
 
-// Used Components
-import Page, { PagePropsData } from '../../../components/main/Page';
 import Header from '../../../components/main/Header';
 import Form from '../../../components/main/Form/index/index';
 
 // Page imports
+import  Page, { PagePropsData } from '../../../components/main/Page';
 import { loginFormData, recoverFormData } from './source';
+
 import './styles.scss';
 import './style.css';
 

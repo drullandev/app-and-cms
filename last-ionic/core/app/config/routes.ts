@@ -1,33 +1,123 @@
-// This way was an awsome one!
-import i18n from 'i18next'
+import React from 'react';
+import { Redirect, Route, Switch, RouteComponentProps } from 'react-router-dom';
+import * as icon from 'ionicons/icons';
+import MainTabs from '../../components/main/MainTabs';
+import { NotFound, SignIn, Account, Home, Logout, Support, SignUp } from '../components';
 
-import * as icon from 'ionicons/icons'
+export interface IAppRoute {
+  title: string;
+  path?: string;
+  icon: string;
+  component?: React.ComponentType<RouteComponentProps<any>> | React.ComponentType<any>;
+  logged: boolean;
+  menu: boolean;
+  exact?: boolean;
+  redirect?: boolean;
+  from?: string;
+  to?: string;
+}
 
-// TODO: MOVE TO A ENV FILE OR SOMETHING!!!
-
-export const all = import.meta.env
-
-export const routes = { //TODO: Unificar en archivo de configuración con todo esto,,,
-
-  appPages: [/*
-    { title: 'Schedule', path: '/tabs/schedule', icon: icon.calendarOutline },
-    { title: 'Speakers', path: '/tabs/speakers', icon: icon.peopleOutline },
-    { title: 'Map', path: '/tabs/map', icon: icon.mapOutline }, // Not for now...
-  */],
-  
-  loggedInPages: [
-    { title: 'Account', path: '/account', icon: icon.person },
-    { title: 'Reset Pass', path: '/reset', icon: icon.person },
-    { title: 'Support', path: '/support', icon: icon.help },
-    { title: 'Logout', path: '/logout', icon: icon.logOut },
-    { title: 'About', path: '/tabs/about', icon: icon.informationCircleOutline },
-  ],
-
-  loggedOutPages: [
-    { title: 'Login', path: '/login', icon: icon.logIn },
-    { title: 'Recover', path: '/recover', icon: icon.person },
-    { title: 'Signup', path: '/sign-up', icon: icon.personAdd },
-    { title: 'Support', path: '/support', icon: icon.help },
-  ]
-  
-};
+/**
+ * Configuración de rutas directamente en el archivo
+ */
+export const AppRoutes: IAppRoute[] = [
+  {
+    title: 'Tabs',
+    path: '/tabs',
+    component: MainTabs,
+    exact: true,
+    icon: icon.person,
+    logged: true,
+    menu: true,
+  },
+  {
+    title: 'Tabs',
+    path: '/tabs/home/:id',
+    component: MainTabs,
+    exact: true,
+    icon: icon.person,
+    logged: true,
+    menu: true,
+  },
+  {
+    title: 'Tabs',
+    path: '/tabs/:slug',
+    component: MainTabs,
+    exact: true,
+    icon: icon.person,
+    logged: true,
+    menu: true,
+  },
+  {
+    title: 'Account',
+    path: '/account',
+    component: Account,
+    exact: true,
+    icon: icon.person,
+    menu: true,
+    logged: true,
+  },
+  {
+    title: 'Help',
+    path: '/support',
+    component: Support,
+    exact: true,
+    icon: icon.help,
+    menu: true,
+    logged: false,
+  },
+  {
+    title: 'Logout',
+    path: '/logout',
+    component: Logout,
+    exact: true,
+    icon: icon.person,
+    menu: true,
+    logged: true,
+  },
+  {
+    title: 'Sign in',
+    path: '/login',
+    component: SignIn,
+    exact: true,
+    icon: icon.person,
+    menu: true,
+    logged: false,
+  },
+  {
+    title: 'Sign up',
+    path: '/sign-up',
+    component: SignUp,
+    exact: true,
+    icon: icon.person,
+    menu: true,
+    logged: false,
+  },
+  {
+    title: 'Home',
+    path: '/',
+    component: Home,
+    exact: true,
+    icon: icon.person,
+    menu: true,
+    logged: false,
+  },
+  {
+    title: 'Not found',
+    path: '/not-found',
+    component: NotFound,
+    exact: true,
+    icon: icon.person,
+    menu: false,
+    logged: false,
+  },
+  {
+    title: 'Not found',
+    redirect: true,
+    from: '*',
+    to: '/not-found',
+    icon: icon.person,
+    menu: false,
+    logged: false,
+  },
+];

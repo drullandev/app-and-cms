@@ -28,7 +28,7 @@ import Skeleton from '../Skeleton';
 import Error from '../Error';
 import Button from '../Button';
 import ReCAPTCHA from 'react-google-recaptcha';
-import Icon from '../../../Ionic/v8/Icon';
+import Icon from '../../../../main/Ionic/v8/Icon';
 import React from 'react';
 
 /**

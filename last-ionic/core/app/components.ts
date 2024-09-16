@@ -1,6 +1,7 @@
 // Pages
 export { default as NotFound } from '../pages/main/NotFound';
-export { default as Login } from '../pages/auth/SignIn';
+export { default as SignIn } from '../pages/auth/SignIn';
+export { default as SignUp } from '../pages/auth/SignUp';
 export { default as Account } from '../pages/auth/Account';
 export { default as Support } from '../pages/main/Support';
 

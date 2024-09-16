@@ -1,68 +1,65 @@
 import React, { useEffect, useState } from 'react';
-import { Route } from 'react-router-dom';
+import { Route, Redirect, Switch } from 'react-router-dom';
 import { IonApp, IonRouterOutlet, IonSplitPane } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 
 import BrowserUtils from '../classes/utils/BrowserUtils';
 import RandomUtils from '../classes/utils/RandomUtils';
+import DebugUtils from '../classes/utils/DebugUtils';
+
+import useUserStore from '../classes/stores/user.store';
+import useAppStore from '../classes/stores/app.store';
+
+import Menu from '../components/main/Menu';
+import { AppRoutes } from './config/routes';
 
 import './config';
 import './styles';
 import './types';
 
-import {
-  NotFound,
-  Login,
-  Menu,
-  Page,
-  Account,
-  Home,
-  Logout,
-  Support  
-} from './components';
-
-
-import useUserStore from '../classes/stores/user.store';
-import useAppStore from '../classes/stores/app.store'
-
-import DebugUtils from '../classes/utils/DebugUtils';
-import SignUp from '../pages/auth/SignUp';
-import MainTabs from '../components/main/MainTabs';
-
+/** 
+ * Componente principal de la aplicación que carga rutas desde la configuración
+ */
 const AppComponent: React.FC = () => {
-
   const debug = DebugUtils.setDebug(false);
   const { setSessionId } = useAppStore();
   const { darkMode } = useUserStore();
-  const [ theme, setTheme ] = useState<string>('dark-mode');
+  const [theme, setTheme] = useState<string>('dark-mode');
 
   useEffect(() => {
     setTheme(darkMode ? 'dark-theme' : '');
-  }, [darkMode]);
-
-  useEffect(()=>{
     BrowserUtils.updatePageTitle('New Page Title');
     setSessionId(RandomUtils.getRandomUUID());
-  },[])
+  }, [darkMode, setSessionId]);
 
   return (
     <IonApp className={theme}>
       <IonReactRouter>
         <IonSplitPane contentId="main">
-          <Menu />
+          <Menu /> {/* Menú lateral */}
           <IonRouterOutlet id="main">
-            <Route path="/tabs" render={() => <MainTabs />} />
-            <Route path="/:slug" component={Page} />
-            <Route path="/tabs/home/:id" render={() => <MainTabs />} />
-            <Route path="/tabs/:slug" render={() => <MainTabs />} />
-            <Route path="/account" component={Account} />
-            <Route path="/support" component={Support} />
-            <Route path="/logout" render={() => <Logout />} />
-            <Route path="/login" component={Login} />
-            <Route path="/sign-up" component={SignUp} />
-            <Route path="/" component={Home} exact />
-            <Route path="/not-found" component={NotFound} />
-            <Route component={NotFound} />
+            <Switch>
+              {/* Mapeo dinámico de las rutas desde la configuración */}
+              {AppRoutes.map((route, index) => {
+
+                if (route.redirect && route.to) {
+                  return <Redirect key={index} from={route.from} to={route.to} />;
+                }
+
+                if (route.path && route.component) {
+                  return (
+                    <Route
+                      key={index}
+                      path={route.path}
+                      component={route.component}
+                      exact={route.exact}
+                    />
+                  );
+                }
+
+                return null;
+              })}
+            </Switch>
           </IonRouterOutlet>
         </IonSplitPane>
       </IonReactRouter>

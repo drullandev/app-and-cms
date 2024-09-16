@@ -16,7 +16,7 @@ export default defineConfig({
     rollupInputOptions: {
         // Opciones de Rollup (opcional)
         input: {
-            include: ['src/**'],
+            include: ['core/**', 'src/**'],
             exclude: ['stuff/**'] // Excluir la carpeta 'stuff' de la entrada de Rollup
         },
         output: {

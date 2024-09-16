@@ -20,7 +20,7 @@
     "jsx": "react-jsx",
     "baseUrl": "./",
     "paths": {
-      "@components/*": ["core/src/components/*"]
+      "@components/*": ["core/components/*", "src/components/*"]
     }
   },
   "include": ["core/**/*.ts", "src/**/*.ts", "core/**/*.tsx", "src/**/*.tsx"],

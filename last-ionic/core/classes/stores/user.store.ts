@@ -27,6 +27,7 @@ interface UserState {
   blocked: boolean;
   confirmed: boolean;
   darkMode: boolean;
+  logged: boolean;
 }
 
 // Define la interfaz del store con Zustand
@@ -54,6 +55,7 @@ const useUserStore = create<IStoreState>((set, get) => ({
   confirmed: false,
   darkMode: false,
   menuEnabled: true,
+  logged: false,
 
   // Métodos para actualizar el estado, optimizados con comparaciones
   setUserState: (user) => {
