@@ -67,10 +67,10 @@ export class ServiceWorker {
    */
   constructor(private config?: Config, swUrl?: string, debug?: boolean) {
     this.debug = DebugUtils.setDebug(debug ?? false);
-    this.logger = LoggerUtils.getInstance(this.constructor.name, this.debug, 100);
+    this.logger = LoggerUtils.getInstance( this.debug, this.constructor.name);
     this.swUrl = swUrl || `${process.env.PUBLIC_URL}/service-worker.js`;
 
-    if (this.debug) {
+    {
       this.logger.info("ServiceWorker initialized", { config });
     }
   }

@@ -37,9 +37,9 @@ class StorageManager implements IStorageManager {
   public constructor(storageKey: string = 'app', debug?: boolean) {
     this.storageKey = storageKey;
     this.debug = DebugUtils.setDebug(debug ?? this.debug);
-    this.logger = LoggerUtils.getInstance(this.constructor.name, this.debug, 100);
+    this.logger = LoggerUtils.getInstance( this.debug, this.constructor.name);
 
-    if (this.debug) {
+    {
       this.logger.info(`StorageManager initialized with key: ${storageKey}`);
     }
   }
@@ -72,7 +72,7 @@ class StorageManager implements IStorageManager {
       const combinedKey = this.getCombinedKey(key);
       const stringValue = this.stringify(value);
       await Preferences.set({ key: combinedKey, value: stringValue });
-      if (this.debug) this.logger.info(`Value set in storage for key: ${combinedKey}`, { value });
+      this.logger.info(`Value set in storage for key: ${combinedKey}`, { value });
     } catch (error) {
       this.logger.error(`Failed to set value in storage for key: ${key}`, error);
     }
@@ -91,14 +91,14 @@ class StorageManager implements IStorageManager {
       const combinedKey = this.getCombinedKey(key);
       const { value } = await Preferences.get({ key: combinedKey });
       if (value === null) {
-        if (this.debug) this.logger.info(`No value found in storage for key: ${combinedKey}`);
+        this.logger.info(`No value found in storage for key: ${combinedKey}`);
         return null;
       }
       const parsedValue = this.parse(value);
-      if (this.debug) this.logger.info(`Value retrieved from storage for key: ${combinedKey}`, { value: parsedValue });
+      this.logger.info(`Value retrieved from storage for key: ${combinedKey}`, { value: parsedValue });
       return parsedValue;
     } catch (error) {
-      if (this.debug) this.logger.error(`Failed to retrieve value from storage for key: ${key}`, error);
+      this.logger.error(`Failed to retrieve value from storage for key: ${key}`, error);
       return null;
     }
   }
@@ -113,9 +113,9 @@ class StorageManager implements IStorageManager {
     try {
       const combinedKey = this.getCombinedKey(key);
       await Preferences.remove({ key: combinedKey });
-      if (this.debug) this.logger.info(`Value removed from storage for key: ${combinedKey}`);
+      this.logger.info(`Value removed from storage for key: ${combinedKey}`);
     } catch (error) {
-      if (this.debug) this.logger.error(`Failed to remove value from storage for key: ${key}`, error);
+      this.logger.error(`Failed to remove value from storage for key: ${key}`, error);
     }
   }
 

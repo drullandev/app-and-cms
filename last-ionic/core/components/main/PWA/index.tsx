@@ -118,16 +118,16 @@ const PWA: React.FC = () => {
             </IonRow>
             <IonRow></IonRow>
             <IonRow></IonRow>
-
             <IonRow style={{ height: '5vh' }}>
               <IonCol size='1'></IonCol>
               <IonCol size='10' className='ion-text-center'>
                 <IonLabel className='bold fade-in-2'>
                   <IonButton
                     color='soft-blue' style={{ margin: '10% 0' }}
-                    onClick={promptToInstall} strong={undefined} disabled={undefined} size={undefined} fill={undefined} mode={undefined} href={undefined} routerAnimation={undefined} rel={undefined} target={undefined} buttonType={undefined} download={undefined} expand={undefined} onIonBlur={undefined} onIonFocus={undefined} shape={undefined} type={undefined}>
-                      {/*t(translations.addHomescreen)*/}
-                    </IonButton>
+                    onClick={promptToInstall}
+                  >
+                    {/*t(translations.addHomescreen)*/}
+                  </IonButton>
                 </IonLabel>
               </IonCol>
               <IonCol size='1'></IonCol>

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { IonItem, IonInput, IonButton, IonContent, IonPage, IonCard, IonCardContent, IonIcon } from '@ionic/react';
 import { send } from 'ionicons/icons';
 import './style.css';
+import Looper from '../Looper';
 
 interface Message {
   user: string;
@@ -45,13 +46,13 @@ const Chat: React.FC = () => {
     <>
       <IonContent className="chat-container">
         <div className="chat-content">
-          {messages.map((message, index) => (
+          <Looper items={messages} renderItem={(message: any, index: number) => (
             <IonCard key={index} className={`chat-message ${message.user === 'You' ? 'user-message' : 'bot-message'}`}>
               <IonCardContent>
                 <strong>{message.user}:</strong> {message.text}
               </IonCardContent>
             </IonCard>
-          ))}
+          )} />
         </div>
       </IonContent>
       <div className="chat-input">

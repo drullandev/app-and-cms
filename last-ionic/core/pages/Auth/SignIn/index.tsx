@@ -1,11 +1,10 @@
-// Global imports
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { IonIcon, IonItem, IonText, IonFooter, IonContent } from '../../../components/main/Ionic/basic';
+import { IonIcon, IonItem, IonText, IonFooter, IonContent } from '../../../app/components/Ionic/basic';
 import { checkmarkCircleOutline } from 'ionicons/icons';
 
 import Header from '../../../components/main/Header';
-import Form from '../../../components/main/Form/index/index';
+import Form from '../../../components/main/Form/index';
 
 // Page imports
 import  Page, { PagePropsData } from '../../../components/main/Page';
@@ -14,7 +13,7 @@ import { loginFormData, recoverFormData } from './source';
 import './styles.scss';
 import './style.css';
 
-const LoginPage: React.FC<any> = (pageProps) => {
+const SignIn: React.FC<any> = (pageProps) => {
   
   const { t } = useTranslation();
 
@@ -42,6 +41,7 @@ const LoginPage: React.FC<any> = (pageProps) => {
       return <Header {...headerProps} />
     },
     content: () => {
+      
       return (
         <IonContent ariaLabel={t('Wellcome and login page!')} className="login-content">
           {/* Welcome Item */}
@@ -77,9 +77,13 @@ const LoginPage: React.FC<any> = (pageProps) => {
 
           {/* Login Form */}
           <Form {...loginFormData(pageProps)} />
+
           <hr></hr>
+          
           <IonItem>{t('Please include here you account mail to recover your account')}</IonItem>
           <IonItem>{t('After that check your email box')}</IonItem>
+
+          {/* Login Form */}
           <Form {...recoverFormData()} />
 
         </IonContent>
@@ -115,4 +119,4 @@ const LoginPage: React.FC<any> = (pageProps) => {
 
 };
 
-export default LoginPage;
+export default SignIn;

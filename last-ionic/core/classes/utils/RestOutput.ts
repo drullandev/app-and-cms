@@ -60,7 +60,7 @@ class RestOutput {
    * @returns LoggerUtils instance.
    */
   private initLogger(): LoggerUtils {
-    return LoggerUtils.getInstance(this.constructor.name, this.debug, 100);
+    return LoggerUtils.getInstance( this.debug, this.constructor.name);
   }
 
   /**

@@ -1,6 +1,6 @@
 import axios from "axios";
 import NodeCache from "node-cache";
-import LoggerUtils, {initLogger } from "../utils/LoggerUtils";
+import LoggerUtils from "../utils/LoggerUtils";
 import DebugUtils from "../utils/DebugUtils";
 
 /**
@@ -62,7 +62,7 @@ class StrapiManager {
    */
   private constructor(baseUrl: string, debug: boolean = false) {
     this.debug = DebugUtils.setDebug(debug ?? this.debug);
-    this.logger =initLogger(this.constructor.name, false, 100);
+    this.logger = LoggerUtils.getInstance(this.debug, this.constructor.name);
     this.cache = new NodeCache({ stdTTL: 600 }); // Cache TTL set to 10 minutes
     this.baseUrl = baseUrl;
   }

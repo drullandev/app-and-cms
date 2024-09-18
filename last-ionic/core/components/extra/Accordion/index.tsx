@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { IonItem, IonItemGroup, IonLabel, IonButton, IonIcon, IonAccordion, IonContent } from '@ionic/react';
-import * as icon from 'ionicons/icons'; // Import necessary icons
-import './style.css'; // Import styles for the accordion
+import * as icon from 'ionicons/icons';
+import Looper from '@components/main/Looper';
+
+import './style.css'; 
 
 interface AccordionSection {
   title: string;
@@ -11,15 +13,27 @@ interface AccordionSection {
 interface AccordionProps {
   title: string;
 	data?: any;
-  sections?: AccordionSection[]; // Array of sections to display in the accordion
+  sections: AccordionSection[]; // Array of sections to display in the accordion
 }
 
 const Accordion: React.FC<AccordionProps> = ({ title, data, sections }) => {
+
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleAccordion = () => {
     setIsOpen(!isOpen);
   };
+
+  const AccordionSection = (section: AccordionSection, index: number) => (
+    <IonAccordion key={index} value={`section-${index}`}>
+      <IonItem slot="header">
+        <IonLabel><b>{section.title}</b></IonLabel>
+      </IonItem>
+      {isOpen && <IonContent slot="content">
+        {JSON.stringify(section.content)}
+      </IonContent>}
+    </IonAccordion>
+  )
 
   return (
     <IonItemGroup>
@@ -30,16 +44,7 @@ const Accordion: React.FC<AccordionProps> = ({ title, data, sections }) => {
         </IonButton>
       </IonItem>
 			{data && <pre>{JSON.stringify(data)}</pre>}
-      {sections && sections.map((section, index) => (
-        <IonAccordion key={index} value={`section-${index}`}>
-          <IonItem slot="header">
-            <IonLabel><b>{section.title}</b></IonLabel>
-          </IonItem>
-          {isOpen && <IonContent slot="content">
-            {JSON.stringify(section.content)}
-          </IonContent>}
-        </IonAccordion>
-      ))}
+      <Looper items={sections} renderItem={AccordionSection}/>
     </IonItemGroup>
   );
 };

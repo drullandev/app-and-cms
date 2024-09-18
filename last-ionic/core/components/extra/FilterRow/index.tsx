@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { GraphQLFilter } from '../../../classes/assets/GraphQLFilter'
 import { IonSelect, IonSelectOption, IonCol, IonRow, IonDatetime, IonTextarea, IonItem, IonInput, IonButton } from '@ionic/react'
 import useConfStore from '../../../classes/stores/app.store'
+import Looper from '@components/main/Looper'
 
 export interface Filter {
   key: number
@@ -66,6 +67,18 @@ const FilterRow: React.FC<any> = ({ filter }) => {
     */
   }
 
+  const SelectRow = (option: any, index: number) => (
+    <IonSelectOption key={'filter-field-' + index} value={option.value}>
+      {option.label}
+    </IonSelectOption>
+  )
+  
+  const ConditionRow = (option: any, index: number) => (
+    <IonSelectOption key={'filter-field-condition-' + index} value={option.value}>
+      {option.label}
+    </IonSelectOption>
+  );
+
   return <>
     <IonRow>
       <IonCol>
@@ -74,12 +87,9 @@ const FilterRow: React.FC<any> = ({ filter }) => {
           interface="popover"
           placeholder='Field'
           value={filterField}
-          onIonChange={(e: CustomEvent) => resetFilterField(e.detail.value)}>
-          {GraphQLFilter.fields.options.map((option: any, index: number) => (
-            <IonSelectOption key={'filter-field-' + index} value={option.value}>
-              {option.label}
-            </IonSelectOption>
-          ))}
+          onIonChange={(e: CustomEvent) => resetFilterField(e.detail.value)}
+        >
+          <Looper items={GraphQLFilter.fields.options} renderItem={SelectRow} />
         </IonSelect>
       </IonCol>
       <IonCol>
@@ -88,12 +98,9 @@ const FilterRow: React.FC<any> = ({ filter }) => {
           interface="popover"
           value={filterCondition}
           placeholder='Condition'
-          onIonChange={(e: CustomEvent) => resetFilterCondition(e.detail.value)}>
-          {GraphQLFilter.conditions.options.map((option: any, index: number) => (
-            <IonSelectOption key={'filter-field-condition-' + index} value={option.value}>
-              {option.label}
-            </IonSelectOption>
-          ))}
+          onIonChange={(e: CustomEvent) => resetFilterCondition(e.detail.value)}
+        >
+          <Looper items={GraphQLFilter.conditions.options} renderItem={ConditionRow} />
         </IonSelect>
       </IonCol>
     </IonRow>

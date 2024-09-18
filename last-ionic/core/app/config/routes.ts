@@ -1,123 +1,154 @@
-import React from 'react';
-import { Redirect, Route, Switch, RouteComponentProps } from 'react-router-dom';
 import * as icon from 'ionicons/icons';
-import MainTabs from '../../components/main/MainTabs';
-import { NotFound, SignIn, Account, Home, Logout, Support, SignUp } from '../components';
-
-export interface IAppRoute {
-  title: string;
-  path?: string;
-  icon: string;
-  component?: React.ComponentType<RouteComponentProps<any>> | React.ComponentType<any>;
-  logged: boolean;
-  menu: boolean;
-  exact?: boolean;
-  redirect?: boolean;
-  from?: string;
-  to?: string;
-}
+import {
+  NotFound,
+  SignIn,
+  Account,
+  Home,
+  Logout,
+  Support,
+  SignUp,
+  TabItem,
+  About
+} from '../components';
+import i18n from 'i18next'
+import { IAppRoute } from '../../components/main/AppRouter';
 
 /**
- * Configuración de rutas directamente en el archivo
+ * Routes settings
  */
 export const AppRoutes: IAppRoute[] = [
   {
-    title: 'Tabs',
+    title: i18n.t('Tabs'),//TODO: Move?
     path: '/tabs',
-    component: MainTabs,
+    component: TabItem,
     exact: true,
     icon: icon.person,
     logged: true,
     menu: true,
+    tab: false,
   },
   {
-    title: 'Tabs',
+    title: i18n.t('Tabs'),//TODO: Move?
     path: '/tabs/home/:id',
-    component: MainTabs,
+    component: TabItem,
     exact: true,
     icon: icon.person,
     logged: true,
     menu: true,
+    tab: false,
   },
   {
-    title: 'Tabs',
+    title: i18n.t('Tabs'),//TODO: Move?
     path: '/tabs/:slug',
-    component: MainTabs,
+    component: TabItem,
     exact: true,
     icon: icon.person,
     logged: true,
     menu: true,
+    tab: false,
   },
+
+
+
   {
-    title: 'Account',
+    title: i18n.t('Account'),
     path: '/account',
     component: Account,
     exact: true,
     icon: icon.person,
     menu: true,
     logged: true,
+    tab: false,
   },
   {
-    title: 'Help',
+    title: i18n.t('Help'),
     path: '/support',
     component: Support,
     exact: true,
     icon: icon.help,
     menu: true,
     logged: false,
+    tab: false,
   },
   {
-    title: 'Logout',
+    title: i18n.t('Logout'),
     path: '/logout',
     component: Logout,
     exact: true,
     icon: icon.person,
     menu: true,
     logged: true,
+    tab: false,
   },
   {
-    title: 'Sign in',
+    title: i18n.t('Sign in'),
     path: '/login',
     component: SignIn,
     exact: true,
     icon: icon.person,
     menu: true,
     logged: false,
+    tab: false,
   },
   {
-    title: 'Sign up',
+    title: i18n.t('Sign up'),
     path: '/sign-up',
     component: SignUp,
     exact: true,
     icon: icon.person,
     menu: true,
     logged: false,
+    tab: false,
   },
   {
-    title: 'Home',
+    title: i18n.t('Home'),
     path: '/',
     component: Home,
     exact: true,
     icon: icon.person,
     menu: true,
     logged: false,
+    tab: false,
   },
   {
-    title: 'Not found',
+    title: i18n.t('Not found'),
     path: '/not-found',
     component: NotFound,
     exact: true,
     icon: icon.person,
     menu: false,
     logged: false,
+    tab: false,
   },
   {
-    title: 'Not found',
+    title: i18n.t('Not found'),
     redirect: true,
     from: '*',
     to: '/not-found',
     icon: icon.person,
     menu: false,
     logged: false,
+    tab: false,
   },
+  {
+    title: i18n.t('Tabs Home'),
+    redirect: true,
+    from: '/tabs',
+    to: '/tabs/schedule',
+    icon: icon.person,
+    menu: false,
+    logged: false,
+    tab: false,
+  },
+  {
+    title: i18n.t('About'),
+    path: '/tabs/about',
+    component: About,
+    exact: true,
+    icon: icon.person,
+    menu: false,
+    logged: false,
+    tab: true,
+  },
+
 ];

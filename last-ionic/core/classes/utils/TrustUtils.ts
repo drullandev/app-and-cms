@@ -1,5 +1,5 @@
 import DebugUtils from "./DebugUtils";
-import LoggerUtils, {initLogger } from "./LoggerUtils";
+import LoggerUtils from "./LoggerUtils";
 
 /**
  * CheckTrustManager is responsible for evaluating the trustworthiness of users based on their behavior 
@@ -47,7 +47,7 @@ class CheckTrustManager {
         debug?: boolean
     ) {
         this.debug = DebugUtils.setDebug(debug ?? this.debug);
-        this.logger = LoggerUtils.getInstance(this.constructor.name, this.debug, 100);
+        this.logger = LoggerUtils.getInstance( this.debug, this.constructor.name);
         this.maxFailedAttempts = maxFailedAttempts;
         this.maxActions = maxActions;
         this.maxRequests = maxRequests;

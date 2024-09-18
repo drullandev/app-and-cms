@@ -1,5 +1,6 @@
 import { create } from 'zustand';
-import Logger, {initLogger } from '../utils/LoggerUtils';
+import LoggerUtils from '../utils/LoggerUtils';
+import { v4 as uuidv4 } from 'uuid'; // Importar una librería para generar un UUID
 
 /**
  * Interface representing the application state.
@@ -7,6 +8,7 @@ import Logger, {initLogger } from '../utils/LoggerUtils';
  * @interface AppState
  * @property {boolean} [loading] - Indicates whether the application is in a loading state.
  * @property {boolean} menuEnabled - Indicates whether the menu is enabled or not.
+ * @property {string} [sessionId] - Unique session ID for tracking the session.
  */
 export interface AppState {
   loading?: boolean;
@@ -23,6 +25,7 @@ export interface AppState {
  * @property {(data: Partial<AppState>) => void} setData - Function to update multiple properties of the state.
  * @property {(isLoading: boolean) => void} setLoading - Function to update the loading state.
  * @property {(menuEnabled: boolean) => void} setMenuEnabled - Function to update the menuEnabled state.
+ * @property {(sessionId: string) => void} setSessionId - Function to update the sessionId state.
  * @property {() => AppState} getConfData - Function to retrieve the current application state.
  * @property {() => Promise<void>} loadAppData - Function to load application data asynchronously.
  */
@@ -36,7 +39,7 @@ interface AppStore extends AppState {
 }
 
 // Initialize Logger for the AppStore
-const logger = initLogger('AppStoreLogger');
+const logger = LoggerUtils.getInstance(false, 'AppStoreLogger');
 
 /**
  * Creates a Zustand store for managing the application state.
@@ -47,6 +50,7 @@ const logger = initLogger('AppStoreLogger');
 const useAppStore = create<AppStore>((set, get) => ({
   loading: false,
   menuEnabled: false,
+  sessionId: uuidv4(), // Generar un sessionId único al inicializar el estado
 
   /**
    * Updates multiple properties of the state.
@@ -77,19 +81,19 @@ const useAppStore = create<AppStore>((set, get) => ({
   })),
 
   /**
-   * Updates the menuEnabled state.
+   * Updates the sessionId.
    * 
-   * @param {string} sessionId - The new menuEnabled state.
+   * @param {string} sessionId - The new sessionId state.
    */
-    setSessionId: (sessionId) => set(() => ({
-      sessionId,
-    })),
+  setSessionId: (sessionId: string) => set(() => ({
+    sessionId,
+  })),
 
   /**
-   * Updates the menuEnabled state.
+   * Updates the headerTitle.
    * 
-   * @param {boolean} menuEnabled - The new menuEnabled state.
-  */
+   * @param {string} headerTitle - The new header title.
+   */
   setHeaderTitle: (headerTitle: any) => set(() => ({
     headerTitle,
   })),
@@ -100,8 +104,8 @@ const useAppStore = create<AppStore>((set, get) => ({
    * @returns {AppState} - The current state.
    */
   getConfData: () => {
-    const { loading, menuEnabled, headerTitle } = get();
-    return { loading, menuEnabled, headerTitle };
+    const { loading, menuEnabled, headerTitle, sessionId } = get();
+    return { loading, menuEnabled, headerTitle, sessionId };
   },
 
   /**
@@ -117,7 +121,6 @@ const useAppStore = create<AppStore>((set, get) => ({
     }));
 
     try {
-      // Simulate data fetching
       const data = await fetchDataFromServer();
       set(() => ({
         ...data,
@@ -140,7 +143,6 @@ const useAppStore = create<AppStore>((set, get) => ({
  * @returns {Promise<Partial<AppState>>} - The simulated data.
  */
 async function fetchDataFromServer(): Promise<Partial<AppState>> {
-  // Replace with actual data fetching logic
   return {
     loading: false,
     menuEnabled: true,

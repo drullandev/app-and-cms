@@ -26,7 +26,7 @@ class TranslationsManager {
   
   private constructor(debug?: boolean) {
     this.debug = DebugUtils.setDebug(debug ?? this.debug);
-    this.logger = LoggerUtils.getInstance(this.constructor.name, this.debug, 100);
+    this.logger = LoggerUtils.getInstance( this.debug, this.constructor.name);
   }
 
   /**
@@ -60,11 +60,11 @@ class TranslationsManager {
       }
       const data: KeyTranslations = await response.json();
       this.myTranslations = { ...data };
-      if (this.debug) {
+      {
         this.logger.debug("Translations loaded from URL:", this.myTranslations);
       }
     } catch (error) {
-      if (this.debug) {
+      {
         this.logger.error(`Error loading translations from ${url}:`, error);
       }
     }
@@ -78,7 +78,7 @@ class TranslationsManager {
    */
   public setTranslations(translations: KeyTranslations): void {
     this.myTranslations = { ...this.myTranslations, ...translations };
-    if (this.debug) {
+    {
       this.logger.debug("Translations updated:", this.myTranslations);
     }
   }
@@ -94,7 +94,7 @@ class TranslationsManager {
   public translate(key: string): string {
     const translation = this.myTranslations[key];
     if (!translation) {
-      if (this.debug) {
+      {
         this.logger.warn(`Missing translation for key: ${key}`);
       }
       return key; // Fallback to the key if translation is not found
@@ -107,7 +107,7 @@ class TranslationsManager {
    */
   public clearTranslations(): void {
     this.myTranslations = {};
-    if (this.debug) {
+    {
       this.logger.debug("Translations cleared.");
     }
   }

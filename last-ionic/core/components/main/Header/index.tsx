@@ -1,6 +1,21 @@
-import React from 'react';
-import { IonHeader, IonToolbar, IonButtons, IonMenuButton, IonTitle, IonButton, IonIcon, IonSearchbar, IonPopover, IonList, IonItem, IonLabel, IonMenuToggle } from '@ionic/react';
+import React, { useState, useEffect } from 'react';
+import {
+  IonHeader,
+  IonToolbar,
+  IonButtons,
+  IonMenuButton,
+  IonTitle,
+  IonButton,
+  IonIcon,
+  IonSearchbar,
+  IonPopover,
+  IonList,
+  IonItem,
+  IonLabel,
+  IonSkeletonText,
+} from '@ionic/react';
 import { filter, shareSocial } from 'ionicons/icons';
+import Looper from '../Looper';
 
 const Header: React.FC<any> = (HeaderProps) => {
   const {
@@ -15,8 +30,20 @@ const Header: React.FC<any> = (HeaderProps) => {
     onSearch,
   } = HeaderProps;
 
-  const [showPopover, setShowPopover] = React.useState(false);
-  const [searchQuery, setSearchQuery] = React.useState('');
+  const [showPopover, setShowPopover] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [menuLoaded, setMenuLoaded] = useState(false);
+
+  useEffect(() => {
+    // Simula un tiempo de carga para el IonMenuButton
+    if (showMenuButton) {
+      const timer = setTimeout(() => {
+        setMenuLoaded(true);
+      }, 200); // Ajusta el tiempo según el retraso percibido
+
+      return () => clearTimeout(timer);
+    }
+  }, [showMenuButton]);
 
   const handleFilterChange = (filter: string) => {
     if (onFilterChange) {
@@ -32,11 +59,35 @@ const Header: React.FC<any> = (HeaderProps) => {
     }
   };
 
+  const FilterRow = (filter: any, index: number) => (
+    <IonItem button key={index} onClick={() => handleFilterChange(filter)}>
+      <IonLabel>{filter}</IonLabel>
+    </IonItem>
+  )
+
   return (
     <IonHeader>
       <IonToolbar>
         <IonButtons slot="start">
-          {showMenuButton && <IonMenuButton menu="main" />}
+        <div className="menu-transition-wrapper">
+          {showMenuButton ? (
+            menuLoaded ? (
+              <IonMenuButton menu="main" className="menu-button transition-active" />
+            ) : (
+              <IonSkeletonText
+                animated
+                className="skeleton transition-active"
+                style={{ width: '40px', height: '40px', borderRadius: '23px' }}
+              />
+            )
+          ) : (
+            <IonSkeletonText
+              animated
+              className="skeleton transition-active"
+              style={{ width: '40px', height: '40px', borderRadius: '23px' }}
+            />
+          )}
+        </div>
         </IonButtons>
         <IonTitle>{title}</IonTitle>
         <IonButtons slot="end">
@@ -52,6 +103,7 @@ const Header: React.FC<any> = (HeaderProps) => {
           )}
         </IonButtons>
       </IonToolbar>
+
       {showSearchBar && (
         <IonToolbar>
           <IonSearchbar
@@ -61,16 +113,10 @@ const Header: React.FC<any> = (HeaderProps) => {
           />
         </IonToolbar>
       )}
-      <IonPopover
-        isOpen={showPopover}
-        onDidDismiss={() => setShowPopover(false)}
-      >
+
+      <IonPopover isOpen={showPopover} onDidDismiss={() => setShowPopover(false)}>
         <IonList>
-          {filters.map((filter: any, index: number) => (
-            <IonItem button key={index} onClick={() => handleFilterChange(filter)}>
-              <IonLabel>{filter}</IonLabel>
-            </IonItem>
-          ))}
+          <Looper items={filters} renderItem={FilterRow} />
         </IonList>
       </IonPopover>
     </IonHeader>

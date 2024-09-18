@@ -3,7 +3,7 @@ import { IonLabel, IonButton, IonSpinner } from '@ionic/react';
 import { FieldProps } from '../../types';
 import * as icon from 'ionicons/icons';
 import Logger from '../../../../../classes/utils/LoggerUtils';
-import Icon from '../../../Ionic/v8/Icon';
+import Icon from '../../../../../app/components/Ionic/v8/Icon';
 
 /**
  * Button component that handles loadinging a label, an optional icon, and a spinner during loading state.

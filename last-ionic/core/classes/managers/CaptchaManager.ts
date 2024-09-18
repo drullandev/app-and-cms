@@ -1,5 +1,5 @@
 import DebugUtils from '../utils/DebugUtils';
-import LoggerUtils, {initLogger } from '../utils/LoggerUtils';
+import LoggerUtils from '../utils/LoggerUtils';
 import IStorageManager from './StorageManager'
 
 /**
@@ -37,14 +37,19 @@ class CaptchaManager implements ICaptchaManager {
    * @param storage - The storage instance to be used for saving and retrieving CAPTCHAs.
    * @param captchaExpiry - Expiry time for CAPTCHA in milliseconds.
    * @param cleanupInterval - Interval time for periodic cleanup in milliseconds.
+   * @param debug - Optional flag to enable or disable debug mode.
    */
-  private constructor(storage: IStorageManager, captchaExpiry: number = 300000, cleanupInterval: number = 60000, debug?: boolean) {
-    this.debug = DebugUtils.setDebug(debug ?? this.debug);
-    this.logger =initLogger(this.constructor.name, this.debug, 100);
+  private constructor(storage: IStorageManager, captchaExpiry: number = 300000, cleanupInterval: number = 60000, debug: boolean = false) {
+    this.debug = DebugUtils.setDebug(debug);
+    
+    // Initialize logger instance
+    this.logger = LoggerUtils.getInstance(this.debug, this.constructor.name);
+    
     this.captchaStore = new Map();
     this.captchaExpiry = captchaExpiry;
     this.cleanupInterval = cleanupInterval;
     this.storage = storage;
+
     // Start the periodic cleanup
     this.startCleanup();
   }
@@ -55,14 +60,16 @@ class CaptchaManager implements ICaptchaManager {
    * @param storage - The storage instance to be used for saving and retrieving CAPTCHAs.
    * @param captchaExpiry - Optional expiry time for CAPTCHA in milliseconds.
    * @param cleanupInterval - Optional interval time for periodic cleanup in milliseconds.
+   * @param debug - Optional flag to enable or disable debug mode.
    * @returns The singleton instance of CaptchaManager.
    */
-  public static getInstance(storage: IStorageManager, captchaExpiry?: number, cleanupInterval?: number): CaptchaManager {
+  public static getInstance(storage: IStorageManager, captchaExpiry?: number, cleanupInterval?: number, debug?: boolean): CaptchaManager {
     if (this.instance === null) {
       this.instance = new this(
         storage,
         captchaExpiry ?? 300000,  // Default to 300000ms (5 minutes) if not provided
-        cleanupInterval ?? 60000  // Default to 60000ms (1 minute) if not provided
+        cleanupInterval ?? 60000,  // Default to 60000ms (1 minute) if not provided
+        debug ?? false
       );
     }
     return this.instance;
@@ -86,7 +93,7 @@ class CaptchaManager implements ICaptchaManager {
     // Set expiry time for the CAPTCHA
     setTimeout(() => this.captchaStore.delete(token), this.captchaExpiry);
 
-    if (this.debug) this.logger.info("CAPTCHA generated", { token });
+    this.logger.info("CAPTCHA generated", { token });
     return { token, answer };
   }
 
@@ -114,12 +121,12 @@ class CaptchaManager implements ICaptchaManager {
   public async validateCaptcha(token: string, answer: string): Promise<boolean> {
     const captcha = this.captchaStore.get(token) || await this.storage.get(token); // Check in memory or persistent storage
     if (captcha && captcha.answer === answer) {
-      if (this.debug) this.logger.info("CAPTCHA validated successfully", { token });
+      this.logger.info("CAPTCHA validated successfully", { token });
       this.captchaStore.delete(token); // Remove CAPTCHA after validation
       await this.storage.remove(token); // Optionally remove from persistent storage
       return true;
     } else {
-      if (this.debug) this.logger.warn("CAPTCHA validation failed", { token, answer });
+      this.logger.warn("CAPTCHA validation failed", { token, answer });
       return false;
     }
   }
@@ -150,7 +157,7 @@ class CaptchaManager implements ICaptchaManager {
       if (now - timestamp > this.captchaExpiry) { // Check if CAPTCHA has expired
         this.captchaStore.delete(token);
         await this.storage.remove(token); // Optionally remove from persistent storage
-        if (this.debug) this.logger.info("Expired CAPTCHA removed", { token });
+        this.logger.info("Expired CAPTCHA removed", { token });
       }
     }
   }
@@ -160,7 +167,7 @@ class CaptchaManager implements ICaptchaManager {
    */
   private startCleanup(): void {
     this.cleanupTimer = setInterval(() => this.cleanUpExpiredCaptchas(), this.cleanupInterval);
-    if (this.debug) this.logger.info("Started CAPTCHA cleanup interval", { interval: this.cleanupInterval });
+    this.logger.info("Started CAPTCHA cleanup interval", { interval: this.cleanupInterval });
   }
 
   /**
@@ -169,7 +176,7 @@ class CaptchaManager implements ICaptchaManager {
   public stopCleanup(): void {
     if (this.cleanupTimer) {
       clearInterval(this.cleanupTimer);
-      if (this.debug) this.logger.info("Stopped CAPTCHA cleanup interval");
+      this.logger.info("Stopped CAPTCHA cleanup interval");
     }
   }
 }

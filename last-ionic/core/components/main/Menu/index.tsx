@@ -1,46 +1,44 @@
 import React from 'react';
-import { IonContent, IonIcon, IonItem, IonLabel, IonList, IonMenu, IonMenuToggle } from '@ionic/react';
-import { AppRoutes, IAppRoute } from '../../../app/config/routes';
+import { IonContent, IonList, IonMenu } from '@ionic/react';
 
-import useUserStore from '../../../classes/stores/user.store'; // Suponiendo que tienes un store para el estado del usuario
+import { IAppRoute } from '../AppRouter';
+
+import useUserStore from '../../../classes/stores/user.store'; // Assuming there is a store for managing user state
 
 import './style.css';
 
 export interface IMenu {
-  appRoutes: any;
+  id: string;
+  routes: IAppRoute[];
+  component: React.ComponentType<{ route: IAppRoute }>; // Ensures the component receives a 'route' as a prop
 }
 
 /**
- * Menu Component to render navigation items based on the user's authentication status.
+ * Menu component that dynamically renders navigation items 
+ * based on user authentication status and passed routes.
  */
-const Menu: React.FC<IMenu> = ({ appRoutes }) => {
-
+const Menu: React.FC<IMenu> = ({ id, routes, component: Component }) => {
+  
+  // Retrieve the logged status from the user store
   const { logged } = useUserStore();
 
   /**
-   * Renders the menu items.
-   * @param list - The list of pages to display.
-   * @returns JSX elements for menu items.
+   * Filters and renders the menu items based on user authentication status and route configuration.
+   * @param list - Array of route objects that need to be displayed in the menu.
+   * @returns JSX elements for each menu item.
    */
-  const renderMenuItems = (list: IAppRoute[]) => {
+  const renderSidenavItems = (list: IAppRoute[]) => {
     return list
-      .filter((route) => route.menu) // Filtra los elementos que deben aparecer en el menú
-      .filter((route) => route.logged === logged || !route.logged) // Filtra basado en si el usuario está logueado
-      .map((p: IAppRoute) => (
-        <IonMenuToggle key={p.title} auto-hide="false">
-          <IonItem detail={false} routerLink={p.path} routerDirection="none">
-            <IonIcon slot="start" icon={p.icon} />
-            <IonLabel>{p.title}</IonLabel>
-          </IonItem>
-        </IonMenuToggle>
-      ));
+      .filter((route) => route.menu) // Only display routes that are marked to be shown in the menu
+      .filter((route) => route.logged === logged || !route.logged) // Display routes based on the user's logged-in status
+      .map((route) => <Component key={route.title} route={route} />); // Render each route as a menu item using the provided component
   };
 
   return (
-    <IonMenu type="overlay" disabled={false} menuId="main" contentId="main">
+    <IonMenu type="overlay" disabled={false} menuId={id} contentId={id}>
       <IonContent forceOverscroll={false}>
         <IonList role="list" lines="none">
-          {renderMenuItems(appRoutes)} {/* Renderiza los ítems del menú */}
+          {renderSidenavItems(routes)} {/* Render the list of menu items */}
         </IonList>
       </IonContent>
     </IonMenu>

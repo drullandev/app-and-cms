@@ -30,6 +30,7 @@ import {
 } from 'ionicons/icons';
 
 import useAppStore from '../../../classes/stores/app.store';
+import Looper from '@components/main/Looper';
 
 interface OwnProps {
   onDismissModal: () => void;
@@ -95,7 +96,7 @@ const SessionListFilter: React.FC<OwnProps> = ({ onDismissModal }) => {
       <IonContent>
         <IonList lines={ios ? 'inset' : 'full'}>
           <IonListHeader>Tracks</IonListHeader>
-          {allTracks.map((track: any) => (
+          <Looper items={allTracks} renderItem={(track: any) => (
             <IonItem key={track}>
               {ios && <IonIcon slot="start" icon={iconMap[track]} color="medium" />}
               <IonLabel>{track}</IonLabel>
@@ -106,7 +107,7 @@ const SessionListFilter: React.FC<OwnProps> = ({ onDismissModal }) => {
                 value={track}
               ></IonCheckbox>
             </IonItem>
-          ))}
+          )} />
         </IonList>
       </IonContent>
 

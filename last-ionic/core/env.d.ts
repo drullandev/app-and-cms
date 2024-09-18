@@ -20,5 +20,7 @@ declare namespace NodeJS {
     REACT_APP_COOKIE_PATH: string;
     REACT_APP_CRM_API_URL: string;
     REACT_APP_AUTH_LOGIN: string;
+    REACT_APP_SHOW_PWA_INSTALLER: boolean;
+    REACT_APP_SHOW_COOCKIES_CONSENT: boolean;
   }
 }

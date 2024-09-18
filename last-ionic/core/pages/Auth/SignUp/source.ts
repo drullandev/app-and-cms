@@ -53,6 +53,7 @@ export const signupForm = ({
         validationSchema: yup.string()
           .required(t('Username is required'))
           .min(7, t('Username must be at least 7 characters')),
+          options: []
       },
       {
         name: 'email',
@@ -63,6 +64,7 @@ export const signupForm = ({
         validationSchema: yup.string()
           .required(t('Email is required'))
           .email(t('This email is invalid...')),
+          options: []
       },
       { 
         name: 'password',
@@ -75,6 +77,7 @@ export const signupForm = ({
           .required(t('Password is required'))
           .min(8, t('Password must be at least 8 characters'))
           .max(16, t('Password must be at max 16 characters')),
+          options: []
       },
       { 
         name: 'repeat-password',
@@ -88,6 +91,7 @@ export const signupForm = ({
           .min(8, t('Password must be at least 8 characters'))
           .max(16, t('Password must be at max 16 characters'))
           .oneOf([yup.ref('password')], 'Passwords must match with previoous one!'),
+          options: []
       }
     ],
     buttons:[      
@@ -96,7 +100,8 @@ export const signupForm = ({
         label: t('Submit'),
         type: 'submit',
         style: { borderRadius: '20px', float: 'left', width: '46%', margin: '2%' },
-        icon: icon.starOutline
+        icon: icon.starOutline,
+        options: []
       },
       {
         name: 'register',
@@ -105,7 +110,8 @@ export const signupForm = ({
         style: { display: 'inline-block', width: '46%', margin: '2%' },
         onClick: () => {
           //history.push(SIGNUP_PATH);
-        }
+        },
+        options: []
       }
     ],
     onSuccess: async (data: any) => {
@@ -116,7 +122,7 @@ export const signupForm = ({
         newRes.header = t('Greate! Now validate on emaii!');
         newRes.message = t('Now you are a new honor guest!');
         //var toastProps = RestOutput.catchSuccess(res, newRes);
-        //if (debug) Logger.log(toastProps)
+        //Logger.log(toastProps)
         //presentToast(toastProps)
         //  .then(() => {
         //    history.push(LOGIN_PATH);
@@ -130,7 +136,7 @@ export const signupForm = ({
         newRes.message = t('Error trying to sing-up!');
         newRes.showInnerMessage = true;
         //var toastProps = RestOutput.catchDanger(res, newRes);
-        //if (debug) Logger.log(toastProps)
+        //Logger.log(toastProps)
         //presentToast(toastProps);
       }
 

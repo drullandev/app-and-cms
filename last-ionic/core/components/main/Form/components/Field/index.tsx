@@ -28,8 +28,9 @@ import Skeleton from '../Skeleton';
 import Error from '../Error';
 import Button from '../Button';
 import ReCAPTCHA from 'react-google-recaptcha';
-import Icon from '../../../../main/Ionic/v8/Icon';
+import Icon from '../../../../../app/components/Ionic/v8/Icon';
 import React from 'react';
+import Looper from '../../../../../components/main/Looper';
 
 /**
  * Field component that handles various types of form fields with validation, loading states, and error handling.
@@ -278,6 +279,11 @@ const Field = forwardRef<any, {
         );
 
       case 'select':
+        const renderItem = (option:any, index: number) => (
+          <IonSelectOption key={option.value} value={option.value}>
+            {option.label}
+          </IonSelectOption>
+        )
         return (
           <>
             <Label name={field.name} label={field.label} errors={errors} />
@@ -286,11 +292,7 @@ const Field = forwardRef<any, {
               interface="popover"
               disabled={loading}
             >
-              {field.options && field.options.map(option => (
-                <IonSelectOption key={option.value} value={option.value}>
-                  {option.label}
-                </IonSelectOption>
-              ))}
+              <Looper items={field.options} renderItem={renderItem}/>
             </IonSelect>
             {fieldStatusIcon(controller, field.name, errors)}
             <Error name={field.name} label={field.label} errors={errors} />
@@ -413,12 +415,13 @@ const Field = forwardRef<any, {
               value={controller.value || field.defaultValue}
               {...commonProps}
             >
-              {field.options && field.options.map((option, idx) => (
-                <IonItem key={idx}>
-                  <IonLabel>{option.label}</IonLabel>
-                  <IonRadio slot="start" value={option.value} />
-                </IonItem>
-              ))}
+              <Looper items={field.options} renderItem={(option, idx) => (
+                  <IonItem key={idx}>
+                    <IonLabel>{option.label}</IonLabel>
+                    <IonRadio slot="start" value={option.value} />
+                  </IonItem>
+                )} 
+              />
             </IonRadioGroup>
             {fieldStatusIcon(controller, field.name, errors)}
             <Error name={field.name} label={field.label} errors={errors} />

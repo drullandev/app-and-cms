@@ -53,7 +53,7 @@ const useUserStore = create<IStoreState>((set, get) => ({
   jwt: '',
   blocked: false,
   confirmed: false,
-  darkMode: false,
+  darkMode: true,
   menuEnabled: true,
   logged: false,
 

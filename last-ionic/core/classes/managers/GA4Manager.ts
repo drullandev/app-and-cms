@@ -1,6 +1,6 @@
 import ReactGA from 'react-ga';
 import DebugUtils from "../utils/DebugUtils";
-import LoggerUtils, {initLogger } from "../utils/LoggerUtils";
+import LoggerUtils from "../utils/LoggerUtils";
 
 /**
  * Interface defining the contract for GA4Manager operations.
@@ -32,13 +32,13 @@ class GA4Manager {
    */
   constructor(trackingId?: string, debug?: boolean) {
     this.debug = DebugUtils.setDebug(debug ?? this.debug);
-    this.logger = initLogger(this.constructor.name, this.debug, 100);
+    this.logger = LoggerUtils.getInstance(this.debug, this.constructor.name);
     if (trackingId){
       this.trackingId = trackingId;
       this.initializeGA4();
     }else{
       this.trackingId = undefined
-      if (this.debug) this.logger.log('Cannot initialize the', this.constructor.name )
+      this.logger.log('Cannot initialize the', this.constructor.name )
     }
   }
 

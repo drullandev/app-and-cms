@@ -15,17 +15,15 @@ interface CsrfTokenData {
  * @date September 7, 2024
  */
 class SecurityUtils {
-  private csrfTokens: Map<string, CsrfTokenData> = new Map();
   private debug: boolean = false;
   private logger: LoggerUtils;
+  private csrfTokens: Map<string, CsrfTokenData> = new Map();
   private readonly CSRF_TOKEN_EXPIRATION = 1000 * 60 * 15; // 15 minutes
 
   constructor(debug: boolean = false) {
     this.debug = DebugUtils.setDebug(debug);
-    this.logger = LoggerUtils.getInstance(this.constructor.name, this.debug, 100);
-    if (this.debug) {
-      this.logger.info(this.constructor.name + " initialized!");
-    }
+    this.logger = LoggerUtils.getInstance(this.debug, this.constructor.name);
+    this.logger.info(this.constructor.name + " initialized!");
   }
 
   /**
@@ -49,9 +47,7 @@ class SecurityUtils {
     const token = this.generateRandomToken();
     const expiration = Date.now() + this.CSRF_TOKEN_EXPIRATION;
     this.csrfTokens.set(sessionId, { token, expiration });
-    
-    if (this.debug) this.logger.log(`CSRF token generated for session: ${sessionId}`);
-    
+    this.logger.log(`CSRF token generated for session: ${sessionId}`);
     return token;
   }
 
@@ -67,20 +63,20 @@ class SecurityUtils {
     const csrfData = this.csrfTokens.get(sessionId);
     
     if (!csrfData) {
-      if (this.debug) this.logger.error(`CSRF token validation failed: no token found for session ${sessionId}`);
+      this.logger.error(`CSRF token validation failed: no token found for session ${sessionId}`);
       return false;
     }
 
     if (csrfData.expiration < Date.now()) {
       this.csrfTokens.delete(sessionId);
-      if (this.debug) this.logger.error(`CSRF token expired for session ${sessionId}`);
+      this.logger.error(`CSRF token expired for session ${sessionId}`);
       return false;
     }
 
     const isValid = csrfData.token === token;
     
     if (!isValid) {
-      if (this.debug) this.logger.error(`Invalid CSRF token for session ${sessionId}`);
+      this.logger.error(`Invalid CSRF token for session ${sessionId}`);
     }
     
     return isValid;
@@ -95,12 +91,8 @@ class SecurityUtils {
    */
   public approveFormData(data: any, sessionId: string): any | boolean {
     const submittedCsrfToken = data.csrf;
-
     if (this.validateCsrfToken(sessionId, submittedCsrfToken)) {
-      if (this.debug) {
-        if (this.debug) this.logger.info("CSRF Token approved!");
-      }
-
+      this.logger.info("CSRF Token approved!");
       const sanitizedData: any = {};
       for (const key in data) {
         if (
@@ -110,8 +102,7 @@ class SecurityUtils {
           sanitizedData[key] = DOMPurify.sanitize(data[key]);
         }
       }
-
-      if (this.debug) this.logger.log("Sanitized data", sanitizedData);
+      this.logger.log("Sanitized data", sanitizedData);
       return sanitizedData;
     } else {
       this.logger.error("Invalid CSRF Token", data);

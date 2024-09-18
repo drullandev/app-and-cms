@@ -1,30 +1,13 @@
 import React, { useEffect } from 'react'
 import { IonPage, IonContent } from '@ionic/react'
 
-import Logger from '../../../classes/utils/LoggerUtils'
+import LoggerUtils from '../../../classes/utils/LoggerUtils'
 //import GA4Tracker  from '../../../../src/integrations/GA4Integration'
 import DebugUtils from '../../../classes/utils/DebugUtils'
-//import CookieConsent from '../CookieConsent'
 
 import './styles.css'
-import PWA from '../PWA'
-
-export interface GA4Event {
-  category: string, // Categoría del evento (puede ser cualquier nombre relevante)
-  action: string, // Acción realizada (por ejemplo, 'Clic en botón')
-  label?: string, // Etiqueta opcional para detalles adicionales
-}
-
-
-export interface GA4Options {
-  load?: GA4Event;
-  submit?: FormEventsProps
-}
-
-export interface FormEventsProps {
-  succcess: GA4Event;
-  error: GA4Event;
-}
+import { GA4Options } from './types'
+import useGA4Tracker from '../../../integrations/GA4Integration'
 
 export interface IonPageProps {
   id: string;
@@ -62,10 +45,14 @@ export interface PagePropsData {
  * @returns JSX.IonPage
  */
 const Page: React.FC<PagePropsData> = (pageProps) => {
+
   const debug = DebugUtils.setDebug(false);
+  const logger = LoggerUtils.getInstance(debug, 'Page');
+
   useEffect(()=> {
-    //if (debug) Logger.info(' • Loading page!');
-    //GA4Tracker.trackEvent('load', pageProps.ga4)
+    logger.info(' • Loading page!');
+    // A GA4 test to track a load, as a "test"...
+    useGA4Tracker.sendEvent('load', pageProps.ga4);
   },[ pageProps ])
 
   return (
@@ -75,8 +62,11 @@ const Page: React.FC<PagePropsData> = (pageProps) => {
         {pageProps.content(pageProps)}
       </IonContent>
       {pageProps.footer !== undefined && pageProps.footer(pageProps)}
-      {/*<CookieConsent />*/}
-      <PWA/>
+      {/*<TabItem
+        id={'main-tabs'}
+        slot={'button'}
+        routes={AppRoutes}
+      />*/} 
     </IonPage>
   );
 };

@@ -1,0 +1,20 @@
+.menu-transition-wrapper {
+  display: inline-block;
+  position: relative;
+}
+
+.transition-active {
+  opacity: 0;
+  transform: scale(0.9);
+  transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+.menu-button.transition-active {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.skeleton.transition-active {
+  opacity: 1;
+  transform: scale(1);
+}

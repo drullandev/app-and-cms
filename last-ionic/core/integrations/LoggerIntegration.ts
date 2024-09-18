@@ -14,15 +14,15 @@ import LoggerUtils, { ILoggerUtils, LogLevel } from "../classes/utils/LoggerUtil
  * @date Agoust 31, 2024
  */
 export const initLogger = (
-  className: string,
   debug: boolean = false,
+  className: string,
   maxLogs: number = 100,
   logLevel: LogLevel = "debug",
   shouldLog?: () => boolean
 ): ILoggerUtils => {
   return LoggerUtils.getInstance(
-    className,
     debug,
+    className,
     maxLogs,
     logLevel,
     shouldLog

@@ -95,6 +95,7 @@ class TimeUtils {
         case "weeks":
           totalMilliseconds += this.weeksToMilliseconds(value);
           break;
+        case "M":
         case "month":
         case "months":
           totalMilliseconds += this.monthsToMilliseconds(value);
@@ -113,6 +114,7 @@ class TimeUtils {
         case "hours":
           totalMilliseconds += this.hoursToMilliseconds(value);
           break;
+        case "m":
         case "min":
         case "minute":
         case "minutes":

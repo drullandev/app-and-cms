@@ -52,7 +52,8 @@ export const resetFormData = (): FormDataProps => {
         validationSchema: yup.string()
           .required(t('Email is required'))
           .email(t('This email is invalid...')),
-        className: 'col-span-12'
+        className: 'col-span-12',
+        options: []
       },
       { 
         name: 'password',
@@ -64,7 +65,8 @@ export const resetFormData = (): FormDataProps => {
           .min(8, t('Password must be at least 8 characters'))
           .max(16, t('Password must be at max 16 characters')),
         className: 'col-span-12',
-        secret: true
+        secret: true,
+        options: []
       },
       { 
         name: 'repeat-password',
@@ -77,7 +79,8 @@ export const resetFormData = (): FormDataProps => {
           .min(8, t('Password must be at least 8 characters'))
           .max(16, t('Password must be at max 16 characters')),
         className: 'col-span-12',
-        secret: true
+        secret: true,
+        options: []
       },
     ],
     buttons:[      
@@ -86,7 +89,8 @@ export const resetFormData = (): FormDataProps => {
         label: t('Submit'),
         type: 'submit',
         style: { borderRadius: '20px', float: 'left', width: '46%', margin: '2%' },
-        icon: icon.starOutline
+        icon: icon.starOutline,
+        options: []
       },
       {
         name: 'goToLogin',
@@ -95,7 +99,8 @@ export const resetFormData = (): FormDataProps => {
         style: { display: 'inline-block', width: '46%', margin: '2%' },
         onClick: () => {
           history.push('/login');
-        }
+        },
+        options: []
       }
     ],
     onSuccess: async (data: any) => {

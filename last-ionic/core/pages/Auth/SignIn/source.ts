@@ -46,7 +46,8 @@ export const loginFormData = ({}): FormDataProps => {
         validationSchema: yup.string()
           .required(t('Email is required'))
           .email(t('This email is invalid...')),
-        className: 'col-span-12'
+        className: 'col-span-12',
+        options: []
       },
       { 
         name: 'password',
@@ -58,7 +59,8 @@ export const loginFormData = ({}): FormDataProps => {
           .min(8, t('Password must be at least 8 characters'))
           .max(16, t('Password must be at max 16 characters')),
         className: 'col-span-12',
-        secret: true
+        secret: true,
+        options: []
       }
     ],
     buttons:[
@@ -67,7 +69,8 @@ export const loginFormData = ({}): FormDataProps => {
         label: t('Submit'),
         type: 'submit',
         style: { borderRadius: '20px', float: 'left', width: '46%', margin: '2%'},
-        icon: icon.starOutline
+        icon: icon.starOutline,
+        options: []
       },
       {
         name: 'register',
@@ -76,7 +79,8 @@ export const loginFormData = ({}): FormDataProps => {
         style: { display: 'inline-block', width: '46%', margin: '2%' },
         onClick: () => {
           history.push('/sign-up');
-        }
+        },
+        options: []
       }
     ],
     onSuccess: async (data: any) => {
@@ -88,7 +92,7 @@ export const loginFormData = ({}): FormDataProps => {
         newRes.header = t('Wellcome to the app!');
         newRes.message = 'Hello '+res.data.user.username+'!';
         var toastProps = RestOutput.catchSuccess(res, newRes);
-        //if (debug) Logger.log(toastProps)
+        //Logger.log(toastProps)
         presentToast(toastProps)
           .then(() => {
             history.push(HOME_PATH);
@@ -101,7 +105,7 @@ export const loginFormData = ({}): FormDataProps => {
         newRes.showInnerMessage = true;
         newRes.message = 'Was an error!', res;
         var toastProps = RestOutput.catchDanger(res, newRes)
-        //if (debug) Logger.log(toastProps)
+        //Logger.log(toastProps)
         presentToast(toastProps)
       }
 
@@ -174,7 +178,8 @@ export const recoverFormData = (): FormDataProps => {
         validationSchema: yup.string()
           .required(t('Email is required'))
           .email(t('This email is invalid...')),
-        className: 'col-span-12'
+        className: 'col-span-12',
+        options: []
       }
     ],
     buttons: [
@@ -183,7 +188,8 @@ export const recoverFormData = (): FormDataProps => {
         label: t('Submit'),
         type: 'submit',
         style: { borderRadius: '20px', float: 'left', width: '46%', margin: '2%' },
-        icon: icon.starOutline
+        icon: icon.starOutline,
+        options: []
       },
       {
         name: 'goToLogin',
@@ -192,7 +198,8 @@ export const recoverFormData = (): FormDataProps => {
         style: { display: 'inline-block', width: '46%', margin: '2%' },
         onClick: () => {
           history.push('/login');
-        }
+        },
+        options: []
       }
     ],
     onSuccess: async (data: any) => {

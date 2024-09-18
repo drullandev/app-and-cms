@@ -40,14 +40,14 @@ i18n
     setLocale(getYupLocaleConfig(t));
   })
   .catch((error) => {
-    if (debug) {
+    {
       console.error('Error initializing i18next:', error);
     }
   });
 
 // Maneja cambios en el idioma
 i18n.on('languageChanged', () => {
-  if (debug) {
+  {
     console.log('Language changed, updating the app container!');
   }
 });

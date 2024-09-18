@@ -111,11 +111,11 @@ class RestManager implements IRestManager {
    */
   public constructor(baseUrl: string, headers?: Record<string, string>, debug?: boolean) {
     this.debug = DebugUtils.setDebug(debug ?? this.debug);
-    this.logger = LoggerUtils.getInstance(this.constructor.name, this.debug, 100);
+    this.logger = LoggerUtils.getInstance( this.debug, this.constructor.name);
     this.baseUrl = baseUrl;
     this.headers = headers || {};
 
-    if (this.debug) {
+    {
       this.logger.info("RestManager initialized", { baseUrl, headers });
     }
   }

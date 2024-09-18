@@ -52,10 +52,10 @@ class SQLiteManager implements ISQLiteManager {
    */
   private constructor(dbPath: string, debug?: boolean) {
     this.debug = DebugUtils.setDebug(debug ?? this.debug);
-    this.logger = LoggerUtils.getInstance(this.constructor.name, this.debug, 100);
+    this.logger = LoggerUtils.getInstance( this.debug, this.constructor.name);
     this.dbPath = dbPath;
 
-    if (this.debug) {
+    {
       this.logger.info("SQLiteManager initialized", { dbPath });
     }
   }

@@ -60,7 +60,7 @@ export interface FieldProps {
     label?: string;
   };
   defaultValue?: any;
-  options?: { value: string; label: string }[];
+  options: any[];
   control?: ControllerProps;
   errors?: any;
   min?: any;

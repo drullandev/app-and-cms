@@ -3,6 +3,7 @@ import React, { useRef, useState } from 'react';
 import { default as LoggerUtils } from '../../../classes/utils/LoggerUtils';
 import { IonAccordionGroup, IonItem } from '@ionic/react';
 import DebugUtils from '../../../classes/utils/DebugUtils';
+import Looper from '../Looper';
 
 interface DebugBoxProps {
   debugThis: boolean; // Flag to enable the DebugBox
@@ -15,7 +16,7 @@ const DebugBox: React.FC<DebugBoxProps> = ({ debugThis, children }) => {
 
   // Check if we are in a development environment and if debug is enabled
   if (process.env.NODE_ENV !== 'development' || ! debugThis) {
-    //if (debug) LoggerUtils.log('DebugBox is not visible due to environment or debug flag.');
+    //LoggerUtils.log('DebugBox is not visible due to environment or debug flag.');
     return null;
   }
 
@@ -42,9 +43,9 @@ const DebugBox: React.FC<DebugBoxProps> = ({ debugThis, children }) => {
   return (
     <>
 			<IonAccordionGroup ref={accordionGroup}>
-				{children.map((child, index) => (
+        <Looper items={children} renderItem={(child, index) => (
           <IonItem key={'accor-'+index}></IonItem>
-				))}
+				)} />
 			</IonAccordionGroup>
     </>
   );

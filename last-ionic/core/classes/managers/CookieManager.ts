@@ -1,4 +1,4 @@
-import LoggerUtils, {initLogger } from "../utils/LoggerUtils";
+import LoggerUtils from "../utils/LoggerUtils";
 import DebugUtils from "../utils/DebugUtils";
 
 /**
@@ -43,14 +43,10 @@ class CookieManager implements ICookieManager {
    */
   private constructor(domain: string, path: string, debug?: boolean) {
     this.debug = DebugUtils.setDebug(debug ?? this.debug);
-    this.logger =initLogger(this.constructor.name, this.debug, 100);
+    this.logger = LoggerUtils.getInstance(this.debug, this.constructor.name);
     this.domain = domain;
     this.path = path;
-    this.logger = LoggerUtils.getInstance(this.constructor.name, this.debug, 100);
-
-    if (this.debug) {
-      this.logger.info("CookieManager initialized", { domain, path });
-    }
+    this.logger.info("CookieManager initialized", { domain, path });
   }
 
   /**

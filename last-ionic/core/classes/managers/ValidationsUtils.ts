@@ -46,7 +46,7 @@ class ValidationUtils {
   constructor(fields: FieldProps[], debug?: boolean) {
     this.fields = fields;
     this.debug = DebugUtils.setDebug(debug ?? this.debug);
-    this.logger = LoggerUtils.getInstance(this.constructor.name, this.debug, 100);
+    this.logger = LoggerUtils.getInstance( this.debug, this.constructor.name);
   }
 
   /**

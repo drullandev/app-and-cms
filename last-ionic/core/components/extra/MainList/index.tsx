@@ -4,6 +4,7 @@ import { IonList, IonInfiniteScroll, IonInfiniteScrollContent, IonItem, IonLabel
 import React, { useState, useEffect, useRef } from 'react';
 import Spinner from '../Spinner';
 import useSearchStore from '../../../classes/stores/searcher.store'; // Import the new search store
+import Looper from '@components/main/Looper';
 
 const MainList: React.FC = () => {
   const { searchString, searchOrder, orderField, filter, setSearchString, setSearchOrder, setOrderField, setFilter } = useSearchStore();
@@ -177,9 +178,9 @@ const MainList: React.FC = () => {
       </IonRefresher>
 
       <IonList>
-        {listData.map((row: any, index: number) => (
+        <Looper items={listData} renderItem={(row: any, index: number) => (
           putABar(listData[index])
-        ))}
+        )} />
       </IonList>
 
       <IonInfiniteScroll

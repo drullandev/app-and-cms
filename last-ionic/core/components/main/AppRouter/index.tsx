@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { Route, Redirect, Switch, RouteComponentProps } from 'react-router-dom';
 import { IonRouterOutlet, IonSplitPane } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-import Looper from '../Looper';
 import Menu from '../Menu';
+import SidenavItem, { SidenavItemComponent } from '../Menu/SidenavItem';
+import RouterOutlet from './components/RouterOutlet';
 
 export interface IAppRoute {
   title: string;
@@ -16,71 +17,32 @@ export interface IAppRoute {
   redirect?: boolean;
   from?: string;
   to?: string;
+  tab?: boolean;
 }
 
 export interface IAppRouter {
   id: string;
   appRoutes: IAppRoute[];
+  component: React.ComponentType<{ route: IAppRoute }>; // Aseguramos que se espera un componente que reciba 'route' como prop
 }
 
 /** 
  * Componente de enrutado principal para la aplicación.
  */
-const AppRouter: React.FC<IAppRouter> = ({ id, appRoutes }) => {
-
-  // Función para renderizar cada ruta
-  const MenuRouteRow = (route: IAppRoute, index: number) => {
-    if (route.redirect && route.from && route.to) {
-      return <Redirect key={index} from={route.from} to={route.to} />;
-    }
-
-    if (route.path && route.component) {
-      return (
-        <Route
-          key={index}
-          path={route.path}
-          component={route.component}
-          exact={route.exact ?? true} 
-        />
-      );
-    }
-
-    return null; 
-  };
-
+const AppRouter: React.FC<IAppRouter> = ({ id, appRoutes, component }) => {
   return (
     <IonReactRouter>
       <IonSplitPane contentId={id}>
-        <Menu appRoutes={appRoutes} />
-        <IonRouterOutlet id={id}>
-          <Switch>
-            {appRoutes.map(MenuRouteRow)}
-          </Switch>
-        </IonRouterOutlet>
+        <Menu
+          id={id}
+          routes={appRoutes}
+          component={component}
+        />
+        <RouterOutlet id={id} routes={appRoutes} />
       </IonSplitPane>
     </IonReactRouter>
   );
 };
-
-export const RouteRows = (route: IAppRoute, index: number) => {
-
-  if (route.redirect && route.to) {
-    return <Redirect key={index} from={route.from} to={route.to} />;
-  }
-
-  if (route.path && route.component) {
-    return (
-      <Route
-        key={index}
-        path={route.path}
-        component={route.component}
-        exact={route.exact}
-      />
-    );
-  }
-
-  return null;
-}
 
 
 export default AppRouter;
