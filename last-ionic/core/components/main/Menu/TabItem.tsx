@@ -10,7 +10,7 @@ import {
 
 import Icon from '../../extra/Icon';
 import { IAppRoute } from '../AppRouter';
-import Looper from '../Looper';
+import Looper from '../../utils/Looper';
 
 interface ITabItem {
   id: string;

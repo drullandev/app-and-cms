@@ -63,7 +63,7 @@ export const signupForm = ({
         className: 'col-span-12',
         validationSchema: yup.string()
           .required(t('Email is required'))
-          .email(t('This email is invalid...')),
+          .email(t('This email is invalid')),
           options: []
       },
       { 

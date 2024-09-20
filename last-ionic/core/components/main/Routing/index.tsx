@@ -3,7 +3,7 @@ import { Route, Redirect, Switch } from 'react-router-dom';
 import { IonRouterOutlet } from '@ionic/react';
 
 import DebugUtils from '../../../classes/utils/DebugUtils';
-import Looper from '../../../components/main/Looper';
+import Looper from '../../utils/Looper';
 
 import { AppRoutes } from '../../../app/config/routes'
 import { IAppRoute } from '../../../components/main/AppRouter';

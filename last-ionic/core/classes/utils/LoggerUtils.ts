@@ -1,12 +1,9 @@
-// Interfaz que define las instancias del logger por nombre
 interface LoggerInstances {
   [name: string]: LoggerUtils;
 }
 
-// Tipos posibles para los niveles de log
 export type LogLevel = 'error' | 'warn' | 'info' | 'debug';
 
-// Interfaz para la clase LoggerUtils que define su estructura pública
 export interface ILoggerUtils {
   log: (...args: any[]) => void;
   warn: (...args: any[]) => void;
@@ -78,12 +75,13 @@ class LoggerUtils implements ILoggerUtils {
     logLevel?: LogLevel,
     shouldLog?: () => boolean
   ): LoggerUtils {
-    const loggerName = name || 'Logger'; // Default name if not provided
-    if (!LoggerUtils.instances[loggerName] || (debug && LoggerUtils.instances[loggerName].maxLogs !== maxLogs)) {
+    const loggerName = name || 'Logger';
+    if (!LoggerUtils.instances[loggerName] || LoggerUtils.instances[loggerName].debugLogger !== debug) {
       LoggerUtils.instances[loggerName] = new LoggerUtils(debug, loggerName, maxLogs, logLevel, shouldLog);
     }
     return LoggerUtils.instances[loggerName];
   }
+  
 
   /**
    * Logs a debug message if the current log level allows it.

@@ -121,7 +121,7 @@ const useAppStore = create<AppStore>((set, get) => ({
     }));
 
     try {
-      const data = await fetchDataFromServer();
+      const data = await fetchDataFromServer();//TODO: get elementary app data :) if you have :P
       set(() => ({
         ...data,
       }));
@@ -137,7 +137,7 @@ const useAppStore = create<AppStore>((set, get) => ({
 
 /**
  * Simulates fetching data from a server.
- * 
+ * TODO: Fetch the server config!!
  * @async
  * @function fetchDataFromServer
  * @returns {Promise<Partial<AppState>>} - The simulated data.

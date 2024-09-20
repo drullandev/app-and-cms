@@ -9,28 +9,22 @@ import React from 'react';
  * @param {T[]} items - The array of items to be iterated over.
  * @param {(item: T, index: number) => React.ReactNode} renderItem - A function that specifies how to render each item.
  * @param {React.ReactNode} [loadingComponent] - Optional custom loading component to be displayed when the items array is empty.
- * @returns {JSX.Element} A JSX element that contains the rendered items.
+ * @returns {JSX.Element} A JSX element that contains the rendered items or a fallback component when the array is empty.
  */
 interface ILooper<T> {
-  items: T[];  // Array of items of generic type T
+  items?: T[];  // Optional array of items of generic type T
   renderItem: (item: T, index: number) => React.ReactNode;  // Function that defines how each item is rendered
   loadingComponent?: React.ReactNode;  // Optional custom loading component
 }
 
-const Looper = <T,>({ items, renderItem, loadingComponent }: ILooper<T>): JSX.Element => {
-  // If items array is empty, show the custom loading component or a default message
+const Looper = <T,>({ items = [], renderItem, loadingComponent }: ILooper<T>): JSX.Element => {
+  // If no items or the items array is empty, render a fragment or a custom loading component if provided
   if (items.length === 0) {
-    return <>{loadingComponent || <>Loading...</>}</>;
+    return <>{loadingComponent || <></>}</>;
   }
 
-  const elements = [];  // Array to hold the rendered items
-  let i = 0;
-
-  // Loop through the items array and apply the render function to each element
-  while (i < items.length) {
-    elements.push(renderItem(items[i], i));
-    i++;
-  }
+  // Create an array to hold the rendered items
+  const elements = items.map((item, index) => renderItem(item, index));
 
   // Return the rendered elements wrapped in a fragment
   return <>{elements}</>;

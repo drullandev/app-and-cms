@@ -73,6 +73,15 @@ export interface AccessibleIonSelect extends BaseAccessibleInteractiveProps {
 }
 
 /**
+ * Accessible version of IonSelect.
+ * Enforces accessibility attributes on IonSelect.
+ */
+export interface AccessibleIonSelectOption extends BaseAccessibleInteractiveProps {
+  ariaDescribedBy?: string;
+}
+
+
+/**
  * Accessible version of IonTabBar.
  * Enforces accessibility attributes on IonTabBar.
  */

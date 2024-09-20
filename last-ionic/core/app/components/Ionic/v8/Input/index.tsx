@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 import { IonInput } from '@ionic/react';
 import { AccessibleIonInput } from '../interfaces/accesibility';
 
@@ -13,18 +13,19 @@ import { AccessibleIonInput } from '../interfaces/accesibility';
  * @param {AccessibleIonInput} props Props of the component, enforcing accessibility attributes
  * @returns React component wrapping IonInput
  */
-const Input: React.FC<AccessibleIonInput> = (props: AccessibleIonInput) => {
+const Input = forwardRef<HTMLIonInputElement, AccessibleIonInput>((props, ref) => {
     const { ariaLabel, ariaRequired, ariaInvalid, ...restProps } = props;
 
     // Ensure accessibility attributes are passed down to IonInput
     return (
         <IonInput
+          ref={ref}  // Pass the ref to IonInput
           aria-label={ariaLabel}
           aria-required={ariaRequired}
           aria-invalid={ariaInvalid}
           {...restProps}
         />
     );
-};
+});
 
 export default React.memo(Input);

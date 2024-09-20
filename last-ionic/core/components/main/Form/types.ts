@@ -1,4 +1,3 @@
-import { CSSProperties } from 'react';
 import { ControllerProps, DeepMap, FieldError } from 'react-hook-form';
 import { Schema } from 'yup';
 
@@ -7,7 +6,6 @@ export interface GA4Event {
   action: string, // Acción realizada (por ejemplo, 'Clic en botón')
   label?: string, // Etiqueta opcional para detalles adicionales
 }
-
 
 export interface GA4Options {
   load?: GA4Event;
@@ -21,15 +19,15 @@ export interface FormEventsProps {
 
 export interface FormDataProps {
   id: string;
-  fields: FieldProps[];
+  settings?: any;
   captcha?: false | boolean;
   agreement?: boolean;
   privacy?: boolean;
-  ga4?: GA4Options;
+  fields: FieldProps[];
   buttons: FieldProps[];
+  ga4?: GA4Options;
   onSuccess:(data: any) => Promise<void>;
   onError: (errors: { [key: string]: any }) => void;
-  settings?: any;
 }
 
 export interface FormComponentProps extends FormDataProps {
@@ -60,7 +58,7 @@ export interface FieldProps {
     label?: string;
   };
   defaultValue?: any;
-  options: any[];
+  options?: any[];
   control?: ControllerProps;
   errors?: any;
   min?: any;

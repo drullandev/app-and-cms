@@ -18,6 +18,14 @@ import IonModal from './v8/Modal';
 import IonAlert from './v8/Alert';
 import IonLoading from './v8/Loading';
 import IonIcon from './v8/Icon';
+import IonTextarea from './v8/Textarea';
+import IonSelectOption from './v8/SelectOption';
+import IonDatetime from './v8/Datetime';
+import IonLabel from './v8/Label';
+import IonRange from './v8/Range';
+import IonToggle from './v8/Toggle';
+import IonSkeletonText from './v8/SkeletonText';
+import IonSpinner from './v8/Spinner';
 
 // Export the components for use in the application
 export {
@@ -38,5 +46,13 @@ export {
   IonAlert,
   IonLoading,
   IonIcon,
-  IonContent
+  IonContent,
+  IonTextarea,
+  IonSelectOption,
+  IonDatetime,
+  IonLabel,
+  IonRange,
+  IonToggle,
+  IonSkeletonText,
+  IonSpinner
 };

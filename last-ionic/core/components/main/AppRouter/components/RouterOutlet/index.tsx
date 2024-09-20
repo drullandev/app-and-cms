@@ -1,7 +1,7 @@
 import { IonRouterOutlet } from "@ionic/react";
 import { Redirect, Route, Switch } from "react-router";
 import { IAppRoute } from "../..";
-import Looper from "../../../../../components/main/Looper";
+import Looper from "../../../../utils/Looper";
 
 export interface IRouterOutlet {
   id: string;

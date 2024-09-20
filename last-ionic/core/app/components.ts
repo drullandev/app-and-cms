@@ -11,6 +11,6 @@ export { default as About } from '../pages/main/About';
 export { default as Menu } from './../components/main/Menu';
 export { default as Page } from './../components/main/Page';
 export { default as Home } from './../components/main/Home';
-export { default as Logout } from './../components/main/Logout';
+export { default as SignOut } from './../components/main/SignOut';
 export { default as TabItem } from './../components/main/Menu/TabItem';
 //TODO: Remember allways add the new arrival!!

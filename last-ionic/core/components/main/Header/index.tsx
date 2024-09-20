@@ -15,7 +15,7 @@ import {
   IonSkeletonText,
 } from '@ionic/react';
 import { filter, shareSocial } from 'ionicons/icons';
-import Looper from '../Looper';
+import Looper from '../../utils/Looper';
 
 const Header: React.FC<any> = (HeaderProps) => {
   const {

@@ -15,6 +15,7 @@ const SupportPage: React.FC<any> = (pageProps) => {
     settings: {
       id: 'support-page',
       title: t('Do you have some problem?'),
+      description: 'This page is to help you to get support with the platform',
     },
     ga4: {
       load: {

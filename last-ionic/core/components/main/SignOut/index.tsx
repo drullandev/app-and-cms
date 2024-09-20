@@ -1,7 +1,7 @@
 import React, { useEffect, useContext } from 'react'
 import { IonRouterContext } from '@ionic/react'
 
-const Logout: React.FC<any> = ({
+const SignOut: React.FC<any> = ({
   setData
 }) => {
   const ionRouterContext = useContext(IonRouterContext)
@@ -11,4 +11,4 @@ const Logout: React.FC<any> = ({
   return null
 }
 
-export default Logout;
+export default SignOut;

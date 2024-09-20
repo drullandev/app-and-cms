@@ -10,8 +10,9 @@ export const apiUploads = process.env.REACT_APP_API_URL + '/uploads/'
  * @param token - Optional Bearer token to be used for authorization.
  * @returns A singleton instance of RestManager.
  */
-const useAppRest: RestManager = RestManager.getInstance(
-  process.env.REACT_APP_API_URL
-);
+
+const apiUrl = `${process.env.REACT_APP_PROTOCOL}://${process.env.REACT_APP_DOMAIN}:${process.env.REACT_APP_API_PORT}`;
+
+const useAppRest: RestManager = RestManager.getInstance(apiUrl);
 
 export default useAppRest;

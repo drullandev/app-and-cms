@@ -12,17 +12,16 @@ import MainListItem from '../components/main/Menu/SidenavItem';
 import TabItem from '../components/main/Menu/TabItem';
 
 import CookieConsent from '../pages/main/CookieConsent';
+import PWA from '../components/main/PWA';
 
 import { AppRoutes } from './config/routes';
 
+import './config';
 import './styles';
 import './types';
-import './config';
-import PWA from '../components/main/PWA';
 
 const AppComponent: React.FC = () => {
   const debug = DebugUtils.setDebug(false);
-  const { setSessionId } = useAppStore();
   const { darkMode } = useUserStore();
   const [theme, setTheme] = useState<string>('dark-mode');
 
@@ -30,11 +29,6 @@ const AppComponent: React.FC = () => {
   useEffect(() => {
     setTheme(darkMode ? 'dark-theme' : '');
   }, [darkMode]);
-
-  // Setting the random sessionId for the user
-  useEffect(() => {
-    setSessionId(RandomUtils.getRandomUUID());
-  }, [setSessionId]);
 
   // Rendering the app main routes
   return (
@@ -49,7 +43,7 @@ const AppComponent: React.FC = () => {
         slot={'bottom'}
         routes={AppRoutes}
       ></TabItem>*/}
-      {process.env.REACT_APP_SHOW_COOCKIES_CONSENT && <CookieConsent />}
+      {process.env.REACT_APP_SHOW_COOKIES_CONSENT && <CookieConsent />}
       {process.env.REACT_APP_SHOW_PWA_INSTALLER && <PWA/>}
     </IonApp>
   );

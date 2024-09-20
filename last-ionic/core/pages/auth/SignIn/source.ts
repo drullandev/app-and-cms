@@ -21,10 +21,13 @@ export const loginFormData = ({}): FormDataProps => {
   const [presentToast] = useIonToast();
   const { setData } = useUserStore();
   const debug = DebugUtils.setDebug(false);
+  const logger = Logger.getInstance(debug, 'loginFomData');
   
   return {
     id: 'login-page',
     captcha: false,
+    agreement: true,
+    privacy: true,
     settings: {
       autoSendIfValid: false,
       animations: {
@@ -84,19 +87,18 @@ export const loginFormData = ({}): FormDataProps => {
       }
     ],
     onSuccess: async (data: any) => {
-      console.log('formdatasucces', data)
-      /*
+
       const success = (res: any)=>{
         setData(res.data.user)
         var newRes = res;
         newRes.header = t('Wellcome to the app!');
         newRes.message = 'Hello '+res.data.user.username+'!';
-        var toastProps = RestOutput.catchSuccess(res, newRes);
+        //var toastProps = RestOutput.catchSuccess(res, newRes);
         //Logger.log(toastProps)
-        presentToast(toastProps)
-          .then(() => {
-            history.push(HOME_PATH);
-          });
+        //presentToast(toastProps)
+        //  .then(() => {
+        //    history.push(HOME_PATH);
+        //  });
       }
 
       const error = (res: any) => {
@@ -104,44 +106,32 @@ export const loginFormData = ({}): FormDataProps => {
         newRes.header = t('Login error!');
         newRes.showInnerMessage = true;
         newRes.message = 'Was an error!', res;
-        var toastProps = RestOutput.catchDanger(res, newRes)
-        //Logger.log(toastProps)
-        presentToast(toastProps)
+        //var toastProps = RestOutput.catchDanger(res, newRes)
+        logger.log('success::error');//toastProps)
+        //presentToast(toastProps)
       }
 
-      await useAppRest.makeAsyncCall({
-        req: {
-          method: 'POST',
-          url: `${apiUrl}/auth/local`,
-          data: {
-            identifier: data.email,
-            password: data.password,
-          },
-        },
-        onSuccess: {
-          default: (res: any) => {
-            switch(res.status){
-              case 200:
-                success(res);
-                break;
-              case 400:
-              default:
-                error(res);
-            }
-          }
-        },
-        onError: {
-          default: (error: any) => {
-            error(error);
-          }
-        },
-        onFinally: () => {
-
+      await useAppRest.post('/auth/local', {
+        identifier: data.email,
+        password: data.password,
+      }).then((res)=>{
+        switch(res.status){
+          case 200:
+            success(res);
+            break;
+          case 400:
+          default:
+            error(res);
         }
-      });*/
+      }).catch((err)=>{
+        error(err);
+      }).finally(()=>{
+
+      });
 
     },
     onError: (errors: any) => {
+      logger.error(errors)
       //const output = RestOutput.catchFormError(errors);
       //output.header = 'Login error';
       //presentToast(output);
@@ -204,6 +194,7 @@ export const recoverFormData = (): FormDataProps => {
     ],
     onSuccess: async (data: any) => {
       try {
+
         await useAppRest.makeAsyncCall({
           req: {
             url: '/auth/forgot-password',

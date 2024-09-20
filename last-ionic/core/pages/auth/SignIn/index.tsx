@@ -6,7 +6,6 @@ import { checkmarkCircleOutline } from 'ionicons/icons';
 import Header from '../../../components/main/Header';
 import Form from '../../../components/main/Form/index';
 
-// Page imports
 import  Page, { PagePropsData } from '../../../components/main/Page';
 import { loginFormData, recoverFormData } from './source';
 
@@ -21,6 +20,7 @@ const SignIn: React.FC<any> = (pageProps) => {
     settings: {
       id: 'login-page',
       title: 'Login page',
+      description:'',
       //skeleton: true,
       //animated: "true",
     },
@@ -43,20 +43,25 @@ const SignIn: React.FC<any> = (pageProps) => {
     content: () => {
       
       return (
+
         <IonContent ariaLabel={t('Wellcome and login page!')} className="login-content">
+
           {/* Welcome Item */}
           <IonItem ariaLabel="Welcome item" lines="none" className="welcome-item" role="region" ariaLabelledby="welcome-heading welcome-text">
+            
             <IonIcon
               icon={checkmarkCircleOutline}
               color="success"
               className="welcome-icon"
             />
+
             <IonText id="welcome-text">
               <h2 id="welcome-heading">{t('Welcome to Festivore!')}</h2>
               <p>
                 {t('Join the community and enjoy the best culinary experiences. Login to your account to continue.')}
               </p>
             </IonText>
+
           </IonItem>
 
           {/* Login Item */}
@@ -67,12 +72,14 @@ const SignIn: React.FC<any> = (pageProps) => {
             role="region"
             ariaLabelledby="login-heading login-text"
           >
+            
             <IonText id="login-text">
               <h3 id="login-heading">{t('Login to your account')}</h3>
               <p>
                 {t('Enter your credentials to access your account and start exploring the world of Festivore.')}
               </p>
             </IonText>
+
           </IonItem>
 
           {/* Login Form */}

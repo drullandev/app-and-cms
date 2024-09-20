@@ -21,6 +21,7 @@ const SignUp: React.FC<any> = (pageProps) => {
     settings: {
       id: 'signup-page',
       title: t('Sign up a new account!'),
+      description: t('This is the signup page'),
     },
     ga4: {
       load: {

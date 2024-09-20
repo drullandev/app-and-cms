@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { IonItem, IonInput, IonButton, IonContent, IonPage, IonCard, IonCardContent, IonIcon } from '@ionic/react';
 import { send } from 'ionicons/icons';
 import './style.css';
-import Looper from '../Looper';
+import Looper from '../../utils/Looper';
 
 interface Message {
   user: string;

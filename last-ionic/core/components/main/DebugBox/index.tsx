@@ -3,7 +3,7 @@ import React, { useRef, useState } from 'react';
 import { default as LoggerUtils } from '../../../classes/utils/LoggerUtils';
 import { IonAccordionGroup, IonItem } from '@ionic/react';
 import DebugUtils from '../../../classes/utils/DebugUtils';
-import Looper from '../Looper';
+import Looper from '../../utils/Looper';
 
 interface DebugBoxProps {
   debugThis: boolean; // Flag to enable the DebugBox

@@ -15,7 +15,7 @@ import {
   IonToggle,
   IonSkeletonText,
   IonSpinner
-} from '@ionic/react';
+} from '../../../../../app/components/Ionic/basic';
 import * as yup from 'yup';
 import * as icon from 'ionicons/icons';
 import { FieldProps } from '../../types';
@@ -30,7 +30,7 @@ import Button from '../Button';
 import ReCAPTCHA from 'react-google-recaptcha';
 import Icon from '../../../../../app/components/Ionic/v8/Icon';
 import React from 'react';
-import Looper from '../../../../../components/main/Looper';
+import Looper from '../../../../utils/Looper';
 
 /**
  * Field component that handles various types of form fields with validation, loading states, and error handling.
@@ -319,13 +319,16 @@ const Field = forwardRef<any, {
               onClick={() => commonProps.onIonChange({ detail: { checked: !controller.value } })}
               style={{paddingTop: '8px', paddingBottom: '8px'}}
               disabled={loading}
+              aria-hidden={true}
             >
               <IonLabel 
+                role={'group'}
+                ariaLabel={field.name+'-label'}
                 style={{ display: 'flex', alignItems: 'start', width: '93%' }}
               >
                 {field.label} {checkIfFieldIsRequired(field.name)}
               </IonLabel>
-              <div style={{ display: 'flex', alignItems: 'end' }}
+              <div aria-hidden={true} style={{ display: 'flex', alignItems: 'end' }}
                 className={(errors && errors[field.name] ? 'checkbox-color-border' : '')}>
                 <IonCheckbox
                   {...commonProps}
@@ -347,7 +350,9 @@ const Field = forwardRef<any, {
         return (
           <>
             {field.label && (
-              <IonLabel position='floating' 
+              <IonLabel
+              ariaLabel={field.name+'-label'}
+              position='floating' 
                 aria-label={field.label}>{field.label}
               </IonLabel>
             )}
@@ -379,7 +384,12 @@ const Field = forwardRef<any, {
       case 'range':
         return (
           <>
-            {field.label && <IonLabel position='floating' aria-label={field.label}>{field.label}</IonLabel>}
+            {field.label && 
+              <IonLabel 
+                ariaLabel={field.name+'-label'}
+                position='floating' aria-label={field.label}>{field.label}
+              </IonLabel>
+            }
             <IonRange
               value={controller.value || field.defaultValue}
               min={field.min}
@@ -396,7 +406,9 @@ const Field = forwardRef<any, {
         return (
           <>
             <IonItem >
-              <IonLabel>{field.label}</IonLabel>
+              <IonLabel
+                ariaLabel={field.name+'-label'}
+              >{field.label}</IonLabel>
               <IonToggle
                 checked={controller.value || field.defaultValue}
                 value={controller.value || field.defaultValue}
@@ -417,8 +429,8 @@ const Field = forwardRef<any, {
             >
               <Looper items={field.options} renderItem={(option, idx) => (
                   <IonItem key={idx}>
-                    <IonLabel>{option.label}</IonLabel>
-                    <IonRadio slot="start" value={option.value} />
+                    <IonLabel ariaLabel={option.label+'-label'}>{option.label}</IonLabel>
+                    <IonRadio ariaLabel={option.label+'-radio'} ariaChecked={false} slot="start" value={option.value} />
                   </IonItem>
                 )} 
               />
@@ -437,8 +449,12 @@ const Field = forwardRef<any, {
       
       case 'hidden':
         return (
-          <IonInput type="hidden" name={field.name} value={field.csrfToken}
+          <IonInput
+            type="hidden"
+            name={field.name}
+            value={field.csrfToken}
             {...commonProps}
+            style={{display: 'none'}}
           ></IonInput>
         );
   
@@ -446,7 +462,7 @@ const Field = forwardRef<any, {
         return (
           <div style={{ margin: '4%', border: '2px solid #BF4F74' }}>
             <div className="captcha-container">
-              <IonLabel>{field.label}</IonLabel>
+              <IonLabel ariaLabel={field.name+'-label'}>{field.label}</IonLabel>
             </div>
             {process.env.NODE_ENV === 'production' ? (
               <div>
@@ -461,7 +477,7 @@ const Field = forwardRef<any, {
               <div style={{ margin: '4%'}}>
                 <>
                 <div className="captcha-container">
-                  <IonLabel className="captcha">{field.captcha}</IonLabel>
+                  <IonLabel ariaLabel={field.name+'-label'} className="captcha">{field.captcha}</IonLabel>
                 </div>
                   <IonItem>
                     <IonInput

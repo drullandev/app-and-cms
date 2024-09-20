@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react'
 import { IonPage, IonContent } from '@ionic/react'
+import { Helmet } from 'react-helmet';
 
 import LoggerUtils from '../../../classes/utils/LoggerUtils'
 //import GA4Tracker  from '../../../../src/integrations/GA4Integration'
@@ -18,6 +19,7 @@ export interface IonPageProps {
   routerDirection?: 'forward' | 'back' | 'root' | string; // Ajusta según las opciones reales de Ionic
   skeleton?: boolean | false;
   title: string;
+  description: string;
   ionViewWillEnter?: () => void;
   ionViewDidEnter?: () => void;
   ionViewWillLeave?: () => void;
@@ -57,6 +59,10 @@ const Page: React.FC<PagePropsData> = (pageProps) => {
 
   return (
     <IonPage {...pageProps.settings}>
+      <Helmet>
+        <title>{process.env.REACT_APP_APP_NAME+' - '+pageProps.settings.title}</title>
+        <meta name="description" content="This is a brief description of the page content." />
+      </Helmet>
       {pageProps.header !== undefined && pageProps.header(pageProps)}
       <IonContent>
         {pageProps.content(pageProps)}

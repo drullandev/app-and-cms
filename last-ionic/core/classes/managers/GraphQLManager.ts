@@ -192,23 +192,10 @@ export class GraphQLManager {
    */
   private graphqlCallAsync = async (call: string, variables?: any): Promise<any> => {
     try {
-      const response = await this.restManager.makeAsyncCall({
-        req: {
-          method: 'POST',
-          url: 'graphql',
-          data: { query: call, variables }
-        },
-        onSuccess: {
-          default: ()=>{
-            
-          }
-        },
-        onError: {
-          default: ()=>{
+      const response = await this.restManager.post('graphql', { query: call, variables })
+        .then(()=>{
 
-          }
-        }
-      });
+        });
       return response;
     } catch (error) {
       throw new Error("GraphQL call failed: " + error);

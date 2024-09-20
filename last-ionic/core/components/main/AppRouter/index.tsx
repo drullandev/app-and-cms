@@ -38,7 +38,10 @@ const AppRouter: React.FC<IAppRouter> = ({ id, appRoutes, component }) => {
           routes={appRoutes}
           component={component}
         />
-        <RouterOutlet id={id} routes={appRoutes} />
+        <RouterOutlet
+          id={id}
+          routes={appRoutes}
+        />
       </IonSplitPane>
     </IonReactRouter>
   );

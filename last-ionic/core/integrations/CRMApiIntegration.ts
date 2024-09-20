@@ -30,7 +30,7 @@ export interface ICRMManager {
 class useCRMApi extends RestManager implements ICRMManager {
   constructor(token?: string) {
     super(
-      process.env.REACT_APP_CRM_API_URL,
+      `${process.env.REACT_APP_PROTOCOL}://localhost:${process.env.REACT_APP_API_PORT}`,
       token ? { Authorization: `Bearer ${token}` } : undefined
     );
   }
