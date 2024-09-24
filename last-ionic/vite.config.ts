@@ -30,8 +30,14 @@ export default defineConfig({
     },
   },
   build: {
-
-    chunkSizeWarningLimit: 2000,
+    chunkSizeWarningLimit: 1536,
+  },  
+  css: {
+    preprocessorOptions: {
+      css: {
+        additionalData: `@import "core/theme/variables.css";`, // Importa variables globales si es necesario
+      },
+    },
   },
   
 });

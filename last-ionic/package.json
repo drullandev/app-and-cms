@@ -106,7 +106,7 @@
     "lint-staged": "^15.2.10",
     "prettier": "^3.3.3",
     "rollup-plugin-visualizer": "^5.12.0",
-    "sass": "^1.79.2",
+    "sass": "^1.79.3",
     "terser-webpack-plugin": "^5.3.10",
     "ts-jest": "^29.2.5",
     "typescript": "^5.6.2",
