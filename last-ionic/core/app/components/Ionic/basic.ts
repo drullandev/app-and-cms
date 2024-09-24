@@ -26,6 +26,7 @@ import IonRange from './v8/Range';
 import IonToggle from './v8/Toggle';
 import IonSkeletonText from './v8/SkeletonText';
 import IonSpinner from './v8/Spinner';
+import IonNote from './v8/IonNote';
 
 // Export the components for use in the application
 export {
@@ -54,5 +55,6 @@ export {
   IonRange,
   IonToggle,
   IonSkeletonText,
-  IonSpinner
+  IonSpinner,
+  IonNote
 };

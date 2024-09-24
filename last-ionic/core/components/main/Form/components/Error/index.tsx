@@ -1,5 +1,5 @@
 import React from 'react'
-import { IonItem, IonNote } from '@ionic/react'
+import { IonItem, IonNote } from '../../../../../app/components/Ionic/basic';
 import { ErrorProps } from '../../types';
 
 /**

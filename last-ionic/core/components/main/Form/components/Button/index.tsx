@@ -1,8 +1,7 @@
-import React, { useState, useEffect, forwardRef } from 'react';
-import { IonLabel, IonButton, IonSpinner } from '@ionic/react';
+import { useState, useEffect, forwardRef } from 'react';
+import { IonLabel, IonButton, IonSpinner } from '../../../../../app/components/Ionic/basic';
 import { FieldProps } from '../../types';
 import * as icon from 'ionicons/icons';
-import Logger from '../../../../../classes/utils/LoggerUtils';
 import Icon from '../../../../../app/components/Ionic/v8/Icon';
 
 /**
@@ -23,10 +22,10 @@ const Button = forwardRef<HTMLIonButtonElement, FieldProps>((field, ref) => {
   const buttonContent = (field: FieldProps) => (
     <>
       {loading 
-        ? <IonSpinner name="lines-small" />
-        : (field.icon ? <Icon ariaLabel={'test label'} slot="start" icon={field.icon || icon.star} /> : null)
+        ? <IonSpinner ariaHidden={true} name="lines-small" />
+        : (field.icon ? <Icon ariaHidden={true} slot="start" icon={field.icon || icon.star} /> : null)
       }
-      <IonLabel>{field.label}</IonLabel>
+      <IonLabel ariaLabel={field.name+'-label'}>{field.label}</IonLabel>
     </>
   );
 
@@ -43,6 +42,7 @@ const Button = forwardRef<HTMLIonButtonElement, FieldProps>((field, ref) => {
   // Render the IonButton with the provided properties and handle the onClick event
   return (
     <IonButton
+      ariaLabel={field.name+'-button'}
       ref={ref}
       style={field.style || { width: '100%', borderRadius: '20px' }}
       expand="block"

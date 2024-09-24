@@ -389,3 +389,10 @@ export interface AccessibleIonText extends Omit<BaseAccessibleStructuralProps, '
   role?: string;
   ariaHidden?: boolean;
 }
+
+export interface AccessibleIonNote extends Omit<BaseAccessibleStructuralProps, 'ariaLabel'> {
+  ariaLabel?: string;
+  role?: 'note';  // Valor predeterminado podría ser "note" ya que describe información adicional
+  ariaDescribedBy?: string;  // Para proporcionar descripciones adicionales
+}
+

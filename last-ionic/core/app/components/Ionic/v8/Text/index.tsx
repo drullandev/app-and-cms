@@ -1,26 +1,26 @@
 import React from 'react';
-import { IonText } from '@ionic/react';
-import { AccessibleIonText } from '../interfaces/accesibility';
+import { IonNote } from '@ionic/react';
+import { AccessibleIonNote } from '../interfaces/accesibility';
 
 /**
- * Component Text
- * A custom wrapper around IonText that enforces accessibility attributes.
+ * Component Note
+ * A custom wrapper around IonNote that enforces accessibility attributes.
  * 
  * This component ensures that accessibility attributes are properly passed
- * to IonText, making the text content more inclusive for users with disabilities.
+ * to IonNote, making the note content more inclusive for users with disabilities.
  * 
  * @author David Rullán Díaz
  * @href http://github.com/drullandev
- * @date 
+ * @date
  *
- * @param {AccessibleIonText} props Props of the component, enforcing accessibility attributes
- * @returns React component wrapping IonText
+ * @param {AccessibleIonNote} props Props of the component, enforcing accessibility attributes
+ * @returns React component wrapping IonNote
  */
-const Text: React.FC<AccessibleIonText> = (props: AccessibleIonText) => {
-    const { ariaLabel, role = 'text', ...restProps } = props;
+const Note: React.FC<AccessibleIonNote> = (props: AccessibleIonNote) => {
+    const { ariaLabel, role = 'note', ...restProps } = props;
 
-    // Ensure accessibility attributes are passed down to IonText
-    return <IonText aria-label={ariaLabel} role={role} {...restProps} />;
+    // Ensure accessibility attributes are passed down to IonNote
+    return <IonNote aria-label={ariaLabel} role={role} {...restProps} />;
 };
 
-export default React.memo(Text);
+export default React.memo(Note);

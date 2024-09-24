@@ -1,5 +1,5 @@
 import React, { FC, useState } from 'react'
-import { IonLabel, IonButton, IonModal } from '@ionic/react'
+import { IonLabel, IonButton, IonModal } from '../../../../../app/components/Ionic/basic';
 import { ContentCheckProps} from '../../types'
 
 const ContentCheck: FC<ContentCheckProps> = ({ label, slug }) => {
@@ -7,10 +7,10 @@ const ContentCheck: FC<ContentCheckProps> = ({ label, slug }) => {
   return <>
     <IonModal className='content-modal' animated={true} key={slug + '-modal'} isOpen={showModal}>
       HERES IS YOR MODAL; AND NOW H¿WHAT? TODO!!
-      <IonButton slot='start' onClick={() => setShowModal(false)}>X</IonButton>
+      <IonButton ariaLabel={slug+'-modal-button'} slot='start' onClick={() => setShowModal(false)}>X</IonButton>
     </IonModal>
-    <IonButton key={slug} color='light' onClick={(e: any) => { setShowModal(true) }}>
-      <IonLabel color='primary'>{label}</IonLabel>
+    <IonButton ariaLabel={slug+'-button'} key={slug} color='light' onClick={(e: any) => { setShowModal(true) }}>
+      <IonLabel ariaLabel={slug+'-label'} color='primary'>{label}</IonLabel>
     </IonButton>
   </>
 }
