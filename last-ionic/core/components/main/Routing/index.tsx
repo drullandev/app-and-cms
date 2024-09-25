@@ -34,4 +34,4 @@ const Routing: React.FC = () => {
   );
 };
 
-export default Routing;
+export default React.memo(Routing);

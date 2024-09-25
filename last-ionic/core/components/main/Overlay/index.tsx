@@ -26,4 +26,4 @@ const Overlay: React.FC<OverlayProps> = ({ show, duration = 500}) => {
   ) : null;
 };
 
-export default Overlay;
+export default React.memo(Overlay);

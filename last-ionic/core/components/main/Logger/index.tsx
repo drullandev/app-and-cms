@@ -39,4 +39,4 @@ const Logger: React.FC<LoggerProps> = ({ children }) => {
   );
 };
 
-export default Logger;
+export default React.memo(Logger);

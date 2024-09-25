@@ -11,4 +11,4 @@ const Settings: React.FC<PopoverProps> = ({dismiss}) => {
   return <></>
 }
 
-export default Settings
+export default React.memo(Settings);

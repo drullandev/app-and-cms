@@ -20,7 +20,7 @@ const SidenavItem: React.FC<ISidenavItem> = ({ route }) => {
   );
 };
 
-export default SidenavItem;
+export default React.memo(SidenavItem);
 
 /**
  * Componente que renderiza un `SidenavItem`.

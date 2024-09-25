@@ -7,4 +7,4 @@ const Skeleton: React.FC<{ style?: React.CSSProperties, className?: string }> = 
   );
 };
 
-export default Skeleton;
+export default React.memo(Skeleton);

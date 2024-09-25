@@ -525,4 +525,4 @@ const Field = forwardRef<any, {
   );
 });
 
-export default Field;
+export default React.memo(Field);

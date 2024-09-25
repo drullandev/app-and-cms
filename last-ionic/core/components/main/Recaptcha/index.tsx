@@ -15,4 +15,4 @@ const Recaptcha: React.FC<RecaptchaProps> = ({ onChange }) => {
   );
 };
 
-export default Recaptcha;
+export default React.memo(Recaptcha);

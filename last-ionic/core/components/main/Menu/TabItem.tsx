@@ -64,4 +64,4 @@ const TabItem: React.FC<ITabItem> = ({ id, slot = 'bottom', routes }) => {
   );
 };
 
-export default TabItem;
+export default React.memo(TabItem);

@@ -48,4 +48,4 @@ const AppRouter: React.FC<IAppRouter> = ({ id, appRoutes, component }) => {
 };
 
 
-export default AppRouter;
+export default React.memo(AppRouter);

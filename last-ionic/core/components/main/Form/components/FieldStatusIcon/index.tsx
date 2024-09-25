@@ -101,4 +101,4 @@ const FieldStatusIcon: React.FC<FieldStatusIconProps> = ({
 
 };
 
-export default FieldStatusIcon;
+export default React.memo(FieldStatusIcon);

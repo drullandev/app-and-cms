@@ -15,4 +15,4 @@ const ContentCheck: FC<ContentCheckProps> = ({ label, slug }) => {
   </>
 }
 
-export default ContentCheck
+export default React.memo(ContentCheck);

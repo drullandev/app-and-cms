@@ -20,4 +20,4 @@ import { ErrorProps } from '../../types';
   return <></>
 }
 
-export default Error
+export default React.memo(Error)

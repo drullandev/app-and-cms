@@ -247,4 +247,4 @@ const Form: React.FC<FormComponentProps> = (formProps: FormComponentProps): JSX.
   );
 };
 
-export default Form;
+export default React.memo(Form);

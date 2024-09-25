@@ -51,4 +51,4 @@ const Modal: React.FC<any> = ({ open, showButton, model, slug, contentIn }) => {
   );
 };
 
-export default Modal;
+export default React.memo(Modal);

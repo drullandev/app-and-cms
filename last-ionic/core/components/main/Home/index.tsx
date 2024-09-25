@@ -10,4 +10,4 @@ const Home: React.FC = () => {
   return <Redirect to={process.env.REACT_APP_HOME_PATH ?? '/home'} />;
 };
 
-export default Home;
+export default React.memo(Home);

@@ -14,4 +14,4 @@ const Toast: React.FC<{ message: string }> = ({ message }) => {
   );
 };
 
-export default Toast;
+export default React.memo(Toast);

@@ -123,4 +123,4 @@ const Header: React.FC<any> = (HeaderProps) => {
   );
 };
 
-export default Header;
+export default React.memo(Header);

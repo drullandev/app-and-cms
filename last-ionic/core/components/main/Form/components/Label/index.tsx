@@ -9,4 +9,4 @@ const Label: React.FC<LabelProps> = ({ name, label, errors }) => {
   return <></>
 }
 
-export default Label;
+export default React.memo(Label);

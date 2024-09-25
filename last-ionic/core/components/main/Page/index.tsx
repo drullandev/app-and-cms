@@ -77,4 +77,4 @@ const Page: React.FC<PagePropsData> = (pageProps) => {
   );
 };
 
-export default Page;
+export default React.memo(Page);

@@ -51,4 +51,4 @@ const DebugBox: React.FC<DebugBoxProps> = ({ debugThis, children }) => {
   );
 };
 
-export default DebugBox;
+export default React.memo(DebugBox);

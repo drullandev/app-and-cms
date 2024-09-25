@@ -3,6 +3,7 @@ import { IonLabel, IonButton, IonSpinner } from '../../../../../app/components/I
 import { FieldProps } from '../../types';
 import * as icon from 'ionicons/icons';
 import Icon from '../../../../../app/components/Ionic/v8/Icon';
+import React from 'react';
 
 /**
  * Button component that handles loadinging a label, an optional icon, and a spinner during loading state.
@@ -59,4 +60,4 @@ const Button = forwardRef<HTMLIonButtonElement, FieldProps>((field, ref) => {
   );
 });
 
-export default Button;
+export default React.memo(Button);

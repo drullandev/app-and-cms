@@ -2,6 +2,7 @@ import { IonRouterOutlet } from "@ionic/react";
 import { Redirect, Route, Switch } from "react-router";
 import { IAppRoute } from "../..";
 import Looper from "../../../../utils/Looper";
+import React from "react";
 
 export interface IRouterOutlet {
   id: string;
@@ -36,4 +37,4 @@ const RouterOutlet: React.FC<IRouterOutlet> = ({ id, routes }) => (
   </IonRouterOutlet>
 );
 
-export default RouterOutlet;
+export default React.memo(RouterOutlet);

@@ -11,4 +11,4 @@ const SignOut: React.FC<any> = ({
   return null
 }
 
-export default SignOut;
+export default React.memo(SignOut);

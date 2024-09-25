@@ -20,7 +20,7 @@ const Note: React.FC<AccessibleIonNote> = (props: AccessibleIonNote) => {
     const { ariaLabel, role = 'note', ...restProps } = props;
 
     // Ensure accessibility attributes are passed down to IonNote
-    return <IonNote aria-label={ariaLabel} role={role} {...restProps} />;
+    return <IonNote style={{fontSize: '16px'}} aria-label={ariaLabel} role={role} {...restProps} />;
 };
 
 export default React.memo(Note);
