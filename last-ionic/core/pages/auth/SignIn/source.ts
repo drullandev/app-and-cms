@@ -203,6 +203,7 @@ export const recoverFormData = (): FormDataProps => {
           },
           onSuccess: {
             default: async (ret: any) => {
+              console.log('yes')
               const user = ret.user;
               user.jwt = ret.jwt;
 

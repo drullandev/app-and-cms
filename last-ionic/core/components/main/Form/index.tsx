@@ -11,10 +11,9 @@ import Field from './components/Field';
 import LoggerUtils from '../../../classes/utils/LoggerUtils';
 import Security from '../../../classes/utils/SecurityUtils';
 import DebugUtils from '../../../classes/utils/DebugUtils';
-import useAppStore from '../../../classes/stores/app.store'
+import useAppStore from '../../../classes/stores/app.store';
 
 import ValidationUtils from '../../../classes/managers/ValidationsUtils';
-
 import Captcha from '../../../integrations/CaptchaIntegration';
 
 import Looper from '../../utils/Looper';
@@ -23,7 +22,6 @@ import { FieldProps, FormComponentProps, FormDataProps } from './types';
 import './style.css';
 
 const Form: React.FC<FormComponentProps> = (formProps: FormComponentProps): JSX.Element | null => {
-
   const debug = DebugUtils.setDebug(true);
   const logger = LoggerUtils.getInstance(true, 'FormComponent');
 
@@ -35,7 +33,6 @@ const Form: React.FC<FormComponentProps> = (formProps: FormComponentProps): JSX.
   const [isLoading, setIsLoading] = useState(true); // Loading state
   const [isSubmitting, setIsSubmitting] = useState(false); // Submission state
   const [showCaptcha, setShowCaptcha] = useState(false); // Estado para mostrar CAPTCHA
-  const [ipAddress, setIpAddress] = useState<string>(); // Dirección IP del usuario
   const { sessionId } = useAppStore();
 
   const initialValuesRef = useRef<FieldValues>({});
@@ -60,19 +57,19 @@ const Form: React.FC<FormComponentProps> = (formProps: FormComponentProps): JSX.
 
   // Función para generar el CSRF token
   const generateCsrfToken = (sessionId: string) => {
-    if (sessionId != '') {
+    if (sessionId) {
       const token = Security.generateCsrfToken(sessionId, formProps.id);
-      logger?.debug('Generated CSRF Token:', token);
+      logger.debug('Generated CSRF Token:', token);
       setCsrfToken(token);
     } else {
-      logger?.error('Session ID is not available yet.');
+      logger.error('Session ID is not available yet.');
     }
   };
 
   const generateCaptcha = () => {
-    if (process.env.REACT_APP_ENABLE_CAPTCHA && formProps.captcha) {
+    if (formProps.captcha) {
       const captcha = Security.generateCaptcha();
-      logger?.debug('Generated CAPTCHA:', captcha);
+      logger.debug('Generated CAPTCHA:', captcha);
       setCaptcha(captcha);
     }
   };
@@ -81,8 +78,13 @@ const Form: React.FC<FormComponentProps> = (formProps: FormComponentProps): JSX.
     setIsSubmitting(true);
 
     try {
+      // Verifica que formData esté disponible
+      if (!formData) {
+        logger.error('formData is not initialized');
+        return;
+      }
 
-      // Removing the buttons from the equation ;)
+      // Filtrar los botones del envío de datos
       const filteredData = Object.keys(data).reduce((acc, key) => {
         if (!key.startsWith('button')) {
           acc[key] = data[key];
@@ -90,47 +92,45 @@ const Form: React.FC<FormComponentProps> = (formProps: FormComponentProps): JSX.
         return acc;
       }, {} as any);
 
-      const approvedData = sessionId && Security.approveFormData(data, sessionId, formProps);
+      const approvedData = sessionId && Security.approveFormData(filteredData, sessionId, formProps);
 
-      if (approvedData) {
-
-        if (process.env.REACT_APP_ENABLE_CAPTCHA) {
-
-          const captchaRequired = await Captcha.verifyCaptcha(captcha, approvedData);
-          if (captchaRequired) {
-            setShowCaptcha(true);
-            logger?.info('Showing CAPTCHA due to verification requirement');
-          } else {
-            await formData?.onSuccess(approvedData);
-          }
-
-        } else {
-          await formData?.onSuccess(approvedData);
-        }
-
-      } else {
-
+      if (!approvedData) {
         logger.error('Invalid CSRF token');
-        formData?.onError({ message: 'Invalid CSRF token' });
+        formData.onError({ message: 'Invalid CSRF token' });
+        return; // Salir si no es válido
+      }
+
+      if (formProps.captcha) {
+        const captchaRequired = await Captcha.verifyCaptcha(captcha, approvedData);
+        if (captchaRequired) {
+          setShowCaptcha(true);
+          logger.info('Showing CAPTCHA due to verification requirement');
+          return; // No continuar si se requiere CAPTCHA
+        }
+      }
+
+      // Asegúrate de que onSuccess esté definido
+      if (typeof formData.onSuccess === 'function') {
+        await formData.onSuccess(approvedData);
+      } else {
+        logger.error('formData.onSuccess is not defined');
       }
 
     } catch (error) {
       logger.error('Submission error:', error);
+      formData?.onError?.({ message: 'Submission failed', error });
     } finally {
       setIsSubmitting(false);
     }
 
-  }, [formData, csrfToken]);
-
-
+  }, [formData, csrfToken, captcha, sessionId]);
 
   useEffect(() => {
     const setInitialForm = (formProps?: FormComponentProps) => {
-
       const fields = [...(formProps?.fields || [])];
 
       if (csrfToken) {
-        logger.info('A csrf was added');
+        logger.info('A csrf token was added');
         fields.push({
           name: 'csrf',
           type: 'hidden',
@@ -184,7 +184,7 @@ const Form: React.FC<FormComponentProps> = (formProps: FormComponentProps): JSX.
     const updatedFormData = setInitialForm(formProps) as FormDataProps;
     setFormData(updatedFormData);
 
-  }, [csrfToken, captcha, showCaptcha]);
+  }, [csrfToken, captcha, showCaptcha, formProps]);
 
   useEffect(() => {
     if (formData?.fields) {
@@ -195,19 +195,42 @@ const Form: React.FC<FormComponentProps> = (formProps: FormComponentProps): JSX.
       if (firstFieldRef.current) {
         firstFieldRef.current.focus();
       }
-      setIsLoading(false); // Solo cambiamos a false cuando todo está listo
+      setIsLoading(false);
     }
   }, [formData, reset]);
 
-  useEffect(()=>{
-    if (sessionId) generateCsrfToken(sessionId)
-  },[sessionId]);
+  useEffect(() => {
+    if (sessionId) generateCsrfToken(sessionId);
+  }, [sessionId]);
 
-  useEffect(generateCaptcha);
+  useEffect(generateCaptcha, []);
 
   if (isLoading || !formData) {
     return <div>Loading form...</div>; // Pantalla de carga hasta que todo esté listo
   }
+
+  const renderField = (field: FieldProps, index: number) => (
+    <Field
+      ref={index === 0 ? firstFieldRef : null}
+      key={'field-' + (field.name ?? 'field-' + field.id) + index}
+      field={field}
+      control={control}
+      errors={errors}
+      onFieldChange={() => {}}
+      loading={isLoading}
+    />
+  );
+
+  const renderButton = (button: FieldProps, index: number) => (
+    <Field
+      key={'button-' + (button.name ?? 'button-' + button.id) + index}
+      field={button}
+      control={control}
+      errors={errors}
+      onFieldChange={() => {}}
+      loading={isLoading}
+    />
+  );
 
   return (
     <>
@@ -217,31 +240,8 @@ const Form: React.FC<FormComponentProps> = (formProps: FormComponentProps): JSX.
         onSubmit={handleSubmit(onSubmit, formData.onError)}
         style={formData.settings.style}
       >
-        <Looper items={formData.fields} renderItem={
-          (field: FieldProps, index: number) => (
-            <Field
-              ref={index === 0 ? firstFieldRef : null}
-              key={'field-' + (field.name ?? 'field-' + field.id) + index}
-              field={field}
-              control={control}
-              errors={errors}
-              onFieldChange={() => {}}
-              loading={isLoading}
-            />
-          )} 
-        />
-        <Looper items={formData.buttons} renderItem={
-          (button: FieldProps, index: number) => (
-            <Field
-              key={'button-' + (button.name ?? 'button-' + button.id) + index}
-              field={button}
-              control={control}
-              errors={errors}
-              onFieldChange={() => {}}
-              loading={isLoading}
-            />
-          )} 
-        />
+        <Looper items={formData.fields} renderItem={renderField} />
+        <Looper items={formData.buttons} renderItem={renderButton} />
       </form>
     </>
   );

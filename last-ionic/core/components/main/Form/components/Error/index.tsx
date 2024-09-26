@@ -1,6 +1,8 @@
 import React from 'react'
 import { IonItem, IonNote } from '../../../../../app/components/Ionic/basic';
 import { ErrorProps } from '../../types';
+import { randomBytes } from 'crypto';
+import { now } from '@ionic/core/dist/types/utils/helpers';
 
 /**
  * Universal error case for the
@@ -20,4 +22,4 @@ import { ErrorProps } from '../../types';
   return <></>
 }
 
-export default React.memo(Error)
+export default Error; // Do not memoizex!!
