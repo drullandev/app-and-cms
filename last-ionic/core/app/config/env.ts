@@ -9,6 +9,8 @@ export const appSetup = {
   animated: true
 }
 
+console.log(process.env)
+
 // Icon for the app
 export const appIcon = 'assets/icon/transp-icon-512.png';
 
@@ -53,7 +55,7 @@ export const captchaCleanupInterval = process.env.REACT_APP_CAPTCHA_CLEANUP_INTE
 // Backend configuration
 export const apiProtocol = process.env.REACT_APP_PROTOCOL ?? 'http';
 export const apiPort = process.env.REACT_APP_API_PORT ?? '1337';
-export const apiUrl = process.env.REACT_APP_API_URL ?? `${apiProtocol}://localhost:${apiPort}`;
+export const apiUrl = process.env.REACT_APP_API_URL ?? `${apiProtocol}://localhost:${apiPort}/api`;
 export const apiUploads = apiUrl + '/uploads/'
 
 // Authentication and login path

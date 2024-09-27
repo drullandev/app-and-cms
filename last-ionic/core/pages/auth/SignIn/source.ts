@@ -20,7 +20,7 @@ export const loginFormData = ({}): FormDataProps => {
   const history = useHistory();
   const [presentToast] = useIonToast();
   const { setData } = useUserStore();
-  const debug = DebugUtils.setDebug(false);
+  const debug = DebugUtils.setDebug(true);
   const logger = Logger.getInstance(debug, 'loginFomData');
   
   return {
@@ -87,12 +87,13 @@ export const loginFormData = ({}): FormDataProps => {
       }
     ],
     onSuccess: async (data: any) => {
-
+      logger.error('formData is onSuccess submited!!');
       const success = (res: any)=>{
         setData(res.data.user)
         var newRes = res;
         newRes.header = t('Wellcome to the app!');
         newRes.message = 'Hello '+res.data.user.username+'!';
+        logger.log('success::ok', res)
         //var toastProps = RestOutput.catchSuccess(res, newRes);
         //Logger.log(toastProps)
         //presentToast(toastProps)
@@ -101,14 +102,19 @@ export const loginFormData = ({}): FormDataProps => {
         //  });
       }
 
-      const error = (res: any) => {
-        var newRes = res;
+      const error = (err: any) => {
+        var newRes = err;
         newRes.header = t('Login error!');
         newRes.showInnerMessage = true;
-        newRes.message = 'Was an error!', res;
+        newRes.message = 'Was an error!', err;
         //var toastProps = RestOutput.catchDanger(res, newRes)
-        logger.log('success::error');//toastProps)
+        logger.log('success::error', err);//toastProps)
         //presentToast(toastProps)
+      }
+
+      if (!useAppRest || typeof useAppRest.post !== 'function') {
+        logger.error('useAppRest is not properly initialized');
+        return;
       }
 
       await useAppRest.post('/auth/local', {
@@ -142,7 +148,7 @@ export const loginFormData = ({}): FormDataProps => {
 export const recoverFormData = (): FormDataProps => {
   const { t } = useTranslation();
   const history = useHistory();
-  const [presentToast] = useIonToast();
+  const [ presentToast ] = useIonToast();
   const debug = DebugUtils.setDebug(false);
 
   return {
@@ -194,43 +200,35 @@ export const recoverFormData = (): FormDataProps => {
     ],
     onSuccess: async (data: any) => {
       try {
+        await useAppRest.post('/auth/forgot-password', { email: data.email })
+          .then((res)=>{
+            console.log('yes')
+            const user = res.user;
+            user.jwt = res.jwt;
 
-        await useAppRest.makeAsyncCall({
-          req: {
-            url: '/auth/forgot-password',
-            method: 'POST',
-            data: { email: data.email }
-          },
-          onSuccess: {
-            default: async (ret: any) => {
-              console.log('yes')
-              const user = ret.user;
-              user.jwt = ret.jwt;
+            presentToast({
+              message: t('user-welcome', { username: user.username }),
+              duration: 2000
+            }).then(() => {
+              history.push('/tabs/schedule', { direction: 'none' });
+            });
+          })
+          .catch((err: any)=>{
+            presentToast({
+              message: t(err.response?.data?.error?.message || 'Error during recovery process'),
+              duration: 2000,
+              color: 'danger'
+            });
+          });
 
-              presentToast({
-                message: t('user-welcome', { username: user.username }),
-                duration: 2000
-              }).then(() => {
-                history.push('/tabs/schedule', { direction: 'none' });
-              });
-            }
-          },
-          onError: {
-            default: (err: any) => {
-              presentToast({
-                message: t(err.response?.data?.error?.message || 'Error during recovery process'),
-                duration: 2000,
-                color: 'danger'
-              });
-            }
-          }
-        });
       } catch (error) {
+
         presentToast({
-          message: 'Error during recovery process',
+          message: t('Error during recovery process'),
           duration: 2000,
           color: 'danger',
         });
+
       }
     },
 

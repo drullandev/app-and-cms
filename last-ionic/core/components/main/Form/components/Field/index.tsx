@@ -371,6 +371,7 @@ const Field = forwardRef<any, {
         return (
           <Button
             expand
+            type={field.type}
             style={field.style || { width: '100%' }}
             label={field.label}
             disabled={loading}

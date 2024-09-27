@@ -52,7 +52,7 @@ const FetchDataWrapper: React.FC<FetchDataWrapperProps<any>> = ({
       },
     };
 
-    return useAppRest.makeAsyncCall(callProps);
+    //return useAppRest.makeAsyncCall(callProps);
   };
 
   // Usa useQuery con queryKey, queryFn y opcionalmente, queryOptions

@@ -105,7 +105,7 @@ export const resetFormData = (): FormDataProps => {
     ],
     onSuccess: async (data: any) => {
 
-      await useAppRest.makeAsyncCall({
+      /*await useAppRest.makeAsyncCall({
         req: {
           url: '/auth/reset-password',
           method: 'POST',
@@ -143,7 +143,7 @@ export const resetFormData = (): FormDataProps => {
             })
           }
         }
-      })
+      })*/
       
     },
 

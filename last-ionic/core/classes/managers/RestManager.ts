@@ -2,20 +2,16 @@ import axios, { AxiosRequestConfig } from "axios";
 import LoggerUtils from "../utils/LoggerUtils";
 import DebugUtils from "../utils/DebugUtils";
 
-/**
- * Interface for defining the properties of a REST API call.
- * This interface is used to ensure that the necessary parameters and handlers
- * are provided for each API call made through the RestManager.
- */
-export interface CallProps<T = any> {
-  req: AxiosRequestConfig;
-  onSuccess: {
-    default: (response: T) => void;
-  };
-  onError: {
-    default: (error: any) => void;
-  };
-  onFinally?: () => void;
+export class RestError extends Error {
+  public statusCode: number;
+  public data: any;
+
+  constructor(message: string, statusCode: number, data: any) {
+    super(message);
+    this.name = 'RestError';
+    this.statusCode = statusCode;
+    this.data = data;
+  }
 }
 
 /**
@@ -24,31 +20,6 @@ export interface CallProps<T = any> {
  * along with the standard REST methods (GET, POST, PUT, DELETE).
  */
 export interface IRestManager {
-  
-  /**
-   * Makes an asynchronous API call using the given configuration.
-   * 
-   * @param call - Object containing the request configuration and success/error callbacks.
-   * @returns A promise that resolves when the call is completed.
-   */
-  makeAsyncCall<T = any>(call: {
-    req: AxiosRequestConfig;
-    onSuccess: {
-      default: (response: T) => void;
-    };
-    onError: {
-      default: (error: any) => void;
-    };
-    onFinally?: () => void;
-  }): Promise<void>;
-
-  /**
-   * Makes a synchronous API call using the given configuration.
-   * 
-   * @param config - Axios configuration for the request.
-   * @returns A promise that resolves with the response of the request.
-   */
-  makeCall<T = any>(config: AxiosRequestConfig): Promise<T>;
 
   /**
    * Performs a GET request to the specified URL.
@@ -96,6 +67,7 @@ export interface IRestManager {
  * centralized configuration and error handling.
  */
 class RestManager implements IRestManager {
+  
   private static instance: RestManager | null = null;
   private baseUrl: string;
   private headers: Record<string, string>;
@@ -114,10 +86,7 @@ class RestManager implements IRestManager {
     this.logger = LoggerUtils.getInstance( this.debug, this.constructor.name);
     this.baseUrl = baseUrl;
     this.headers = headers || {};
-
-    {
-      this.logger.info("RestManager initialized", { baseUrl, headers });
-    }
+    this.logger.info("RestManager initialized", { baseUrl, headers });
   }
 
   /**
@@ -132,53 +101,6 @@ class RestManager implements IRestManager {
       this.instance = new RestManager(baseUrl, headers);
     }
     return this.instance;
-  }
-
-  /**
-   * Performs an asynchronous API call.
-   *
-   * @param {CallProps} call - The API call properties, including request config and callbacks.
-   */
-  public async makeAsyncCall<T>(call: CallProps<T>): Promise<void> {
-    try {
-      const response = await axios({
-        ...call.req,
-        baseURL: this.baseUrl,
-        headers: {
-          ...this.headers,
-          ...call.req.headers,
-        },
-      });
-      call.onSuccess.default(response.data);
-    } catch (error) {
-      this.handleError(error);
-      call.onError.default(error);
-    } finally {
-      call.onFinally?.();
-    }
-  }
-
-  /**
-   * Makes a synchronous API call using the given Axios configuration.
-   *
-   * @param config - Axios configuration for the request.
-   * @returns A promise that resolves with the response of the request.
-   */
-  public async makeCall<T = any>(config: AxiosRequestConfig): Promise<T> {
-    try {
-      const response = await axios({
-        ...config,
-        baseURL: this.baseUrl,
-        headers: {
-          ...this.headers,
-          ...config.headers,
-        },
-      });
-      return response.data;
-    } catch (error) {
-      this.handleError(error);
-      throw error;
-    }
   }
 
   /**
@@ -255,7 +177,6 @@ class RestManager implements IRestManager {
       return response.data;
     } catch (error) {
       this.handleError(error);
-      throw error;
     }
   }
 
@@ -280,7 +201,6 @@ class RestManager implements IRestManager {
       return response.data;
     } catch (error) {
       this.handleError(error);
-      throw error;
     }
   }
 
@@ -290,15 +210,25 @@ class RestManager implements IRestManager {
    *
    * @param error - The error object received during the failed API call.
    */
-  private handleError(error: any): void {
+  private handleError(error: any): never {
     if (axios.isCancel(error)) {
       this.logger.warn("Request was canceled", error.message);
+      throw new RestError("Request was canceled", 499, error.message);
     } else if (error.response) {
-      this.logger.error(`Server responded with status ${error.response.status}`, error.response.data);
+      // Puedes personalizar el mensaje usando error.response.data si el servidor lo proporciona
+      const serverMessage = error.response.data?.message || `Server responded with status ${error.response.status}`;
+      this.logger.error(serverMessage, error.response.data);
+      throw new RestError(
+        serverMessage,
+        error.response.status,
+        error.response.data
+      );
     } else if (error.request) {
       this.logger.error("No response received from server", error.request);
+      throw new RestError("No response received from server", 0, null);
     } else {
       this.logger.error("Unexpected error", error.message);
+      throw new RestError("Unexpected error", 0, error.message);
     }
   }
 

@@ -1244,6 +1244,7 @@ export interface PluginNavigationNavigationItem extends Schema.CollectionType {
     menuAttached: Attribute.Boolean & Attribute.DefaultTo<false>;
     order: Attribute.Integer & Attribute.DefaultTo<0>;
     collapsed: Attribute.Boolean & Attribute.DefaultTo<false>;
+    autoSync: Attribute.Boolean & Attribute.DefaultTo<true>;
     related: Attribute.Relation<
       'plugin::navigation.navigation-item',
       'oneToOne',

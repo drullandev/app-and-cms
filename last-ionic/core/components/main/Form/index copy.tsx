@@ -140,7 +140,7 @@ const Form: React.FC<FormComponentProps> = (formProps: FormComponentProps): JSX.
           options: []
         });
       }
-
+/*
       if (formProps?.agreement) {
         fields.push({
           name: 'agreement',
@@ -172,7 +172,7 @@ const Form: React.FC<FormComponentProps> = (formProps: FormComponentProps): JSX.
           options: []
         });
       }
-  
+*/      
       const newData = {
         ...formProps,
         fields,
