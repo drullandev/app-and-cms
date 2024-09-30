@@ -9,7 +9,7 @@ export const appSetup = {
   animated: true
 }
 
-console.log(process.env)
+//console.log(process.env)
 
 // Icon for the app
 export const appIcon = 'assets/icon/transp-icon-512.png';

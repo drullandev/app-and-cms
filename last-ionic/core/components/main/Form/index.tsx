@@ -20,6 +20,7 @@ import Looper from '../../utils/Looper';
 
 import { FieldProps, FormComponentProps, FormDataProps } from './types';
 import './style.css';
+import DOMPurify from 'dompurify';
 
 const Form: React.FC<FormComponentProps> = (formProps: FormComponentProps): JSX.Element | null => {
   const debug = DebugUtils.setDebug(true);
@@ -84,7 +85,8 @@ const Form: React.FC<FormComponentProps> = (formProps: FormComponentProps): JSX.
     }
   
     try {
-      // Filtrar los botones del envío de datos
+
+      // Removing buttons
       const filteredData = Object.keys(data).reduce((acc, key) => {
         if (!key.startsWith('button')) {
           acc[key] = data[key];
@@ -92,26 +94,44 @@ const Form: React.FC<FormComponentProps> = (formProps: FormComponentProps): JSX.
         return acc;
       }, {} as any);
   
-      const approvedData = sessionId && Security.approveFormData(filteredData, sessionId, formProps);
+      // Accepting the CSRF
+      const validData = sessionId && Security.approveFormData(filteredData, sessionId, formProps);
   
-      if (!approvedData) {
+      if (!validData) {
         logger.error('Invalid CSRF token');
         formData.onError({ message: 'Invalid CSRF token' });
-        return; // Salir si no es válido
       }
-  
-      if (formProps.captcha) {
-        const captchaRequired = await Captcha.verifyCaptcha(captcha, approvedData);
+      
+      if (validData && formProps.captcha) {
+        const captchaRequired = await Captcha.verifyCaptcha(captcha, validData);
         if (captchaRequired) {
           setShowCaptcha(true);
           logger.info('Showing CAPTCHA due to verification requirement');
-          return; // No continuar si se requiere CAPTCHA
+          for (const key in validData) {
+            if (
+              Object.prototype.hasOwnProperty.call(validData, key) &&
+              !["captcha"].includes(key)
+            ) {
+              validData[key] = DOMPurify.sanitize(data[key]);
+            }
+          }
+        }
+      }
+
+      // For now removing privacy and publicity stuff!!
+      // TODO: Recover this parameters somewhere in the cms for first, later to CRM somehow!!
+      for (const key in validData) {
+        if (
+          Object.prototype.hasOwnProperty.call(validData, key) &&
+          !["privacy", "publicity"].includes(key)
+        ) {
+          validData[key] = DOMPurify.sanitize(data[key]);
         }
       }
   
-      // Asegúrate de que onSuccess esté definido
+      // Then the onSuccess actions...
       if (typeof formData.onSuccess === 'function') {
-        await formData.onSuccess(approvedData);
+        await formData.onSuccess(validData);
       } else {
         logger.error('formData.onSuccess is not defined');
       }
@@ -143,22 +163,39 @@ const Form: React.FC<FormComponentProps> = (formProps: FormComponentProps): JSX.
 
       if (formProps?.agreement) {
         fields.push({
-          name: 'agreement',
+          name: 'check-agreement',
+          placeholder: t('Publicity agreement'),
           label: t('Accept the publicity agreement'),
           type: 'checkbox',
           defaultValue: false,
-          validationSchema: yup.boolean().required().oneOf([true]),
+          validationSchema: yup
+          .boolean()
+          .test(
+            'is-true',
+            t('You must check the publicity agreement'),
+            function (value) {
+              return value === true;
+            }
+          ),
           options: []
         });
       }
 
       if (formProps?.privacy) {
         fields.push({
-          name: 'lopd',
+          name: 'ccheck-lopd',
           label: t('Accept Privacy and Data Policy'),
           type: 'checkbox',
           defaultValue: false,
-          validationSchema: yup.boolean().required().oneOf([true]),
+          validationSchema: yup
+          .boolean()
+          .test(
+            'is-true',
+            t('You must check the privacy and data policy'),
+            function (value) {
+              return value === true;
+            }
+          ),
           options: []
         });
       }
@@ -167,7 +204,7 @@ const Form: React.FC<FormComponentProps> = (formProps: FormComponentProps): JSX.
         fields.push({
           name: 'captcha',
           type: 'recaptcha',
-          validationSchema: yup.string().required().oneOf([captcha]),
+          validationSchema: yup.string().required(t('The captha is required ;)')).oneOf([captcha]),
           captcha: captcha,
           options: []
         });

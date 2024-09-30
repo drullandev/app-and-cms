@@ -13,6 +13,10 @@ import { FormDataProps } from '../../../components/main/Form/types';
 import useUserStore from '../../../classes/stores/user.store';
 import Logger from '../../../classes/utils/LoggerUtils';
 import useAppRest from '../../../integrations/RestIntegration';
+import { ILogin, User } from 'core/classes/models/strapi/User';
+import { AuthResponse } from 'core/classes/models/strapi/AuthResponse';
+import { AxiosError, AxiosResponse } from 'axios';
+import useAppStore from '../../../classes/stores/app.store'
 
 export const loginFormData = ({}): FormDataProps => {
 
@@ -20,9 +24,9 @@ export const loginFormData = ({}): FormDataProps => {
   const history = useHistory();
   const [presentToast] = useIonToast();
   const { setData } = useUserStore();
-  const debug = DebugUtils.setDebug(true);
+  const debug = DebugUtils.setDebug(false);
   const logger = Logger.getInstance(debug, 'loginFomData');
-  
+  const { setLoading } = useAppStore()
   return {
     id: 'login-page',
     captcha: false,
@@ -42,16 +46,39 @@ export const loginFormData = ({}): FormDataProps => {
     },
     fields: [
       {
-        name: 'email',
-        label: t('Email'),
-        type: 'email',
+        name: 'identifier',
+        label: t('Nickname or Email'),
+        type: 'text',
         defaultValue: '',
         validationSchema: yup.string()
-          .required(t('Email is required'))
-          .email(t('This email is invalid...')),
+        .required(t('The email or username is required'))
+        .test('email-or-username',
+
+          t('Enter a valid email or username (3-30 chars)'),
+          function (value) {
+            const { path, createError } = this;
+      
+            // Verifica si es un correo electrónico válido
+            const isValidEmail = yup.string().email().isValidSync(value);
+      
+            // Verifica si es un nombre de usuario válido
+            const isValidUsername = yup.string()
+              .matches(/^[a-zA-Z0-9_.-]{3,30}$/)
+              .isValidSync(value);
+      
+            if (isValidEmail || isValidUsername) {
+              return true;
+            }
+      
+            return createError({
+              path,
+              message: t('Enter a valid email or username (3-30 chars)'),
+            });
+          }
+        ),
         className: 'col-span-12',
         options: []
-      },
+      },      
       { 
         name: 'password',
         label: t('Password'),
@@ -86,14 +113,17 @@ export const loginFormData = ({}): FormDataProps => {
         options: []
       }
     ],
-    onSuccess: async (data: any) => {
-      logger.error('formData is onSuccess submited!!');
-      const success = (res: any)=>{
-        setData(res.data.user)
-        var newRes = res;
-        newRes.header = t('Wellcome to the app!');
-        newRes.message = 'Hello '+res.data.user.username+'!';
-        logger.log('success::ok', res)
+    onSuccess: async (data: ILogin) => {
+
+      logger.error('formData is onSuccess submited!!', data);
+      const success = (res: any) => {
+        console.log('res', res)
+        //const user: User = res.data.user;
+        //setData(user)
+        //var newRes = res;
+        //newRes.header = t('Wellcome to the app!');
+        //newRes.message = 'Hello '+res.data.user.username+'!';
+        //logger.log('success::ok', res)
         //var toastProps = RestOutput.catchSuccess(res, newRes);
         //Logger.log(toastProps)
         //presentToast(toastProps)
@@ -103,12 +133,13 @@ export const loginFormData = ({}): FormDataProps => {
       }
 
       const error = (err: any) => {
-        var newRes = err;
-        newRes.header = t('Login error!');
-        newRes.showInnerMessage = true;
-        newRes.message = 'Was an error!', err;
+        console.log('err', err)
+        //var newRes = err;
+        //newRes.header = t('Login error!');
+        //newRes.showInnerMessage = true;
+        //newRes.message = 'Was an error!', err;
         //var toastProps = RestOutput.catchDanger(res, newRes)
-        logger.log('success::error', err);//toastProps)
+        //logger.log('success::error', err);//toastProps)
         //presentToast(toastProps)
       }
 
@@ -118,21 +149,14 @@ export const loginFormData = ({}): FormDataProps => {
       }
 
       await useAppRest.post('/auth/local', {
-        identifier: data.email,
+        identifier: data.identifier,
         password: data.password,
-      }).then((res)=>{
-        switch(res.status){
-          case 200:
-            success(res);
-            break;
-          case 400:
-          default:
-            error(res);
-        }
+      }).then((res: AxiosResponse) => {
+        success(res);
       }).catch((err)=>{
         error(err);
       }).finally(()=>{
-
+        setLoading(false)
       });
 
     },

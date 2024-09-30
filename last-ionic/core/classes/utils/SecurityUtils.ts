@@ -115,7 +115,7 @@ class SecurityUtils {
       for (const key in data) {
         if (
           Object.prototype.hasOwnProperty.call(data, key) &&
-          !["csrf", "privacy", "publicity"].includes(key)
+          !["csrf"].includes(key)
         ) {
           sanitizedData[key] = DOMPurify.sanitize(data[key]);
         }
