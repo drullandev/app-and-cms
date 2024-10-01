@@ -21,7 +21,7 @@ import './styles';
 import './types';
 
 const AppComponent: React.FC = () => {
-  const debug = DebugUtils.setDebug(false);
+
   const { darkMode } = useUserStore();
   const [theme, setTheme] = useState<string>('dark-mode');
 

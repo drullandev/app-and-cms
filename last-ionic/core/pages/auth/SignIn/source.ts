@@ -5,17 +5,14 @@ import { useIonToast } from '@ionic/react'
 import * as icon from 'ionicons/icons';
 
 import DebugUtils from '../../../classes/utils/DebugUtils';
-import RestOutput from '../../../classes/utils/RestOutput';
-import RestManager from '../../../classes/managers/RestManager';
 
 import { FormDataProps } from '../../../components/main/Form/types';
 
 import useUserStore from '../../../classes/stores/user.store';
 import Logger from '../../../classes/utils/LoggerUtils';
 import useAppRest from '../../../integrations/RestIntegration';
-import { ILogin, User } from 'core/classes/models/strapi/User';
-import { AuthResponse } from 'core/classes/models/strapi/AuthResponse';
-import { AxiosError, AxiosResponse } from 'axios';
+import { ILogin } from 'core/classes/models/strapi/User';
+import { AxiosResponse } from 'axios';
 import useAppStore from '../../../classes/stores/app.store'
 
 export const loginFormData = ({}): FormDataProps => {

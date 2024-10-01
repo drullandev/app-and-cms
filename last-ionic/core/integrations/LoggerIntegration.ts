@@ -17,15 +17,11 @@ import { storageKey } from '../app/config/env'
 export const initLogger = (
   debug: boolean = false,
   className: string,
-  maxLogs: number = 100,
-  logLevel: LogLevel = "debug",
-  shouldLog?: () => boolean
+  logLevel: LogLevel = 'debug'
 ): ILoggerUtils => {
   return LoggerUtils.getInstance(
     debug,
     className,
-    maxLogs,
     logLevel,
-    shouldLog
   );
 }

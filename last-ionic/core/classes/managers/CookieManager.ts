@@ -41,8 +41,8 @@ class CookieManager implements ICookieManager {
    * @param path - The path for which cookies will be managed.
    * @param debug - Optional flag to enable debug mode.
    */
-  private constructor(domain: string, path: string, debug?: boolean) {
-    this.debug = DebugUtils.setDebug(debug ?? this.debug);
+  private constructor(domain: string, path: string, debug: boolean = false) {
+    this.debug = debug;
     this.logger = LoggerUtils.getInstance(this.debug, this.constructor.name);
     this.domain = domain;
     this.path = path;

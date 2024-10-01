@@ -1,4 +1,3 @@
-import * as AppConst from '../../../app/config/env';
 import React from 'react';
 import { getMode } from '@ionic/core';
 import {
