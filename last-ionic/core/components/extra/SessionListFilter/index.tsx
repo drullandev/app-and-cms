@@ -29,7 +29,7 @@ import {
 } from 'ionicons/icons';
 
 import useAppStore from '../../../classes/stores/app.store';
-import Looper from '@components/utils/Looper';
+import Looper from '../../../components/utils/Looper';
 
 interface OwnProps {
   onDismissModal: () => void;

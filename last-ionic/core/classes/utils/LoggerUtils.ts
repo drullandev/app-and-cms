@@ -27,7 +27,7 @@ class LoggerUtils implements ILoggerUtils {
   private debugLogger = false;
   private static instances: LoggerInstances = {};
   private logs: string[] = [];
-  private maxLogs: number;
+  private maxLogs: number = 100;
   private prefix?: string;
   private shouldLog: () => boolean;
   public logLevel: LogLevel;
@@ -71,8 +71,8 @@ class LoggerUtils implements ILoggerUtils {
   public static getInstance(
     debug?: boolean,
     name?: string,
-    maxLogs?: number,
     logLevel?: LogLevel,
+    maxLogs?: number,
     shouldLog?: () => boolean
   ): LoggerUtils {
     const loggerName = name || 'Logger';

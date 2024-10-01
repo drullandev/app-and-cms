@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { IonItem, IonItemGroup, IonLabel, IonButton, IonIcon, IonAccordion, IonContent } from '@ionic/react';
 import * as icon from 'ionicons/icons';
-import Looper from '@components/utils/Looper';
+import Looper from '../../../components/utils/Looper';
 
 import './style.css'; 
 

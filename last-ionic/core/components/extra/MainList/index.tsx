@@ -4,7 +4,7 @@ import { IonList, IonInfiniteScroll, IonInfiniteScrollContent, IonItem, IonLabel
 import React, { useState, useEffect, useRef } from 'react';
 import Spinner from '../Spinner';
 import useSearchStore from '../../../classes/stores/searcher.store'; // Import the new search store
-import Looper from '@components/utils/Looper';
+import Looper from '../../../components/utils/Looper';
 
 const MainList: React.FC = () => {
   const { searchString, searchOrder, orderField, filter, setSearchString, setSearchOrder, setOrderField, setFilter } = useSearchStore();

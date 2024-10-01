@@ -11,7 +11,7 @@ import { FormDataProps } from '../../../components/main/Form/types';
 import useUserStore from '../../../classes/stores/user.store';
 import Logger from '../../../classes/utils/LoggerUtils';
 import useAppRest from '../../../integrations/RestIntegration';
-import { ILogin } from 'core/classes/models/strapi/User';
+import { ILogin } from '../../../classes/models/strapi/User';
 import { AxiosResponse } from 'axios';
 import useAppStore from '../../../classes/stores/app.store'
 
