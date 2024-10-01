@@ -1,5 +1,5 @@
-import RestManager, { IRestManager } from "../classes/managers/RestManager";
-import { apiUrl } from '../app/config/env'
+import RestManager from "../classes/managers/RestManager";
+import { apiUrl } from '../app/config/env';
 
 /**
  * This is the single instance of RestManager that will be used throughout the application.
@@ -8,6 +8,6 @@ import { apiUrl } from '../app/config/env'
  * @param token - Optional Bearer token to be used for authorization.
  * @returns A singleton instance of RestManager.
  */
-const useAppRest: IRestManager = RestManager.getInstance(apiUrl);
+const useAppRest: RestManager = RestManager.getInstance(apiUrl);
 
 export default useAppRest;

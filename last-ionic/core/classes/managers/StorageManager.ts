@@ -17,9 +17,6 @@ export interface IStorageManager {
  * It provides methods to set, get, and remove values from storage, as well as utilities
  * for parsing and stringifying data.
  * The storage can be instantiated with a unique key to manage different storages.
- *
- * @author David Rullán - https://github.com/drullandev
- * @date August 31, 2024
  */
 class StorageManager implements IStorageManager {
   private static instances: Record<string, StorageManager> = {}; // Stores instances by key
@@ -34,14 +31,11 @@ class StorageManager implements IStorageManager {
    * @param storageKey - The key to identify this instance of storage.
    * @param debug - Optional debug flag for logging.
    */
-  public constructor(storageKey: string = 'app', debug?: boolean) {
+  private constructor(storageKey: string = 'app', debug?: boolean) {
     this.storageKey = storageKey;
     this.debug = DebugUtils.setDebug(debug ?? this.debug);
-    this.logger = LoggerUtils.getInstance( this.debug, this.constructor.name);
-
-    {
-      this.logger.info(`StorageManager initialized with key: ${storageKey}`);
-    }
+    this.logger = LoggerUtils.getInstance(this.debug, this.constructor.name);
+    this.logger.info(`StorageManager initialized with key: ${storageKey}`);
   }
 
   /**

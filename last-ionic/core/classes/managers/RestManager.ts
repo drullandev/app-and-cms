@@ -205,6 +205,40 @@ class RestManager implements IRestManager {
   }
 
   /**
+   * A more flexible method to perform REST API calls, allowing you to configure 
+   * the HTTP method, URL, parameters, and request body dynamically.
+   * 
+   * @param config - Configuration object that contains the details of the request.
+   * @returns A promise that resolves with the data from the response.
+   */
+  public async makeRequest<T = any>(config: {
+    method: 'GET' | 'POST' | 'PUT' | 'DELETE';
+    url: string;
+    params?: Record<string, any>;
+    data?: any;
+    headers?: Record<string, string>;
+  }): Promise<T> {
+    const finalUrl = config.url.startsWith(this.baseUrl) ? config.url : `${this.baseUrl}${config.url}`;
+    this.logger.info(`Performing ${config.method} request`, { url: finalUrl });
+    try {
+      const response = await axios({
+        method: config.method,
+        url: finalUrl,
+        params: config.params,
+        data: config.data,
+        headers: {
+          ...this.headers,
+          ...config.headers,
+        },
+      });
+      return response.data;
+    } catch (error) {
+      this.handleError(error);
+      throw error;
+    }
+  }
+
+  /**
    * Handles different types of errors that may occur during an API call.
    * This method provides more specific logging and categorization of errors based on their nature.
    *
@@ -243,3 +277,5 @@ class RestManager implements IRestManager {
 }
 
 export default RestManager;
+
+

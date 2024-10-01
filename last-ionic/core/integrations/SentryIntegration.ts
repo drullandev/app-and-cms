@@ -1,4 +1,5 @@
 import { ServiceManager } from "../classes/managers/ServiceManager";
+import { storageKey } from '../app/config/env'
 
 const useSentry = ServiceManager.getInstance({
   exceptionManagerConfig: { dsn: "your-sentry-dsn", environment: "production" },

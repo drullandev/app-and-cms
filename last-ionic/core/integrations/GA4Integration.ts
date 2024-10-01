@@ -1,4 +1,5 @@
 import GA4Manager from "../classes/managers/GA4Manager";
+import { storageKey } from '../app/config/env'
 
 /**
  * Creates and exports an instance of GA4Manager configured with the specified tracking ID.

@@ -1,4 +1,4 @@
-import RestManager from './RestManager';
+import IRestManager from './RestManager';
 import { AxiosRequestConfig } from 'axios';
 import StringUtil from '../utils/StringUtil';
 import DebugUtils from '../utils/DebugUtils';
@@ -59,21 +59,22 @@ export interface CallProps {
  */
 export class GraphQLManager {
   private static instance: GraphQLManager | null = null;
-  private restManager: RestManager;
+  private restManager: IRestManager;
 
   /**
    * Returns the single instance of GraphQLManager.
+   * @param restManager - An instance of a class implementing IRestManager.
    * @returns {GraphQLManager} The singleton instance.
    */
-  public static getInstance(restManager: RestManager): GraphQLManager {
+  public static getInstance(restManager: IRestManager): GraphQLManager {
     if (!this.instance) {
       this.instance = new this(restManager);
     }
     return this.instance;
   }
 
-  // Constructor accepts a RestManager instance
-  constructor(restManager: RestManager) {
+  // Constructor accepts an IRestManager instance
+  constructor(restManager: IRestManager) {
     this.restManager = restManager;
   }
 

@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import { useQuery, UseQueryOptions } from '@tanstack/react-query';
-import RestCall, { CallProps } from '../../../classes/managers/RestManager'; // Importa la clase RestCall
 import { useAppRest } from '../../../integrations/all-Integrations';
 
 interface FetchDataWrapperProps<T> {
@@ -8,6 +7,7 @@ interface FetchDataWrapperProps<T> {
   params?: Record<string, any>;
   method?: 'GET' | 'POST' | 'PUT' | 'DELETE';
   body?: Record<string, any>;
+  headers?: Record<string, string>;  // Nueva prop para aceptar cabeceras
   queryOptions?: UseQueryOptions<T, unknown, T, [string, Record<string, any>]>;
   onSuccessCallback?: (data: T) => void;
   ZustandStore: any;
@@ -22,6 +22,7 @@ const FetchDataWrapper: React.FC<FetchDataWrapperProps<any>> = ({
   params = {},
   method = 'GET',
   body = {},
+  headers = {},  // Prop de cabeceras con un valor por defecto vacío
   queryOptions = {},
   onSuccessCallback,
   ZustandStore,
@@ -35,24 +36,17 @@ const FetchDataWrapper: React.FC<FetchDataWrapperProps<any>> = ({
 
   // Define la función para obtener datos usando RestCall
   const fetchData = async () => {
-    const callProps: CallProps = {
-      req: {
-        url,
-        method,
-        params,
-        data: body,
-      },
-      onSuccess: {
-        default: (response) => response.data,  // Retorna los datos directamente
-      },
-      onError: {
-        default: (error) => {
-          throw error;  // Deja que React Query maneje el error
-        },
-      },
-    };
-
-    //return useAppRest.makeAsyncCall(callProps);
+    const response = await useAppRest.makeRequest({
+      method: method,
+      url: url,
+      data: body,
+      params: params,
+      headers: { 
+        ...headers,  // Añade las cabeceras personalizadas aquí
+        Authorization: 'Bearer your_token' // Ejemplo de cabecera, puedes eliminarlo o modificarlo
+      }
+    });
+    return response;
   };
 
   // Usa useQuery con queryKey, queryFn y opcionalmente, queryOptions
