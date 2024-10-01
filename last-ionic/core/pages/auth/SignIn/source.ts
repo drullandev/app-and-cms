@@ -11,9 +11,10 @@ import { FormDataProps } from '../../../components/main/Form/types';
 import useUserStore from '../../../classes/stores/user.store';
 import Logger from '../../../classes/utils/LoggerUtils';
 import useAppRest from '../../../integrations/RestIntegration';
-import { ILogin } from '../../../classes/models/strapi/User';
+import { ILogin, User } from '../../../classes/models/strapi/User';
 import { AxiosResponse } from 'axios';
 import useAppStore from '../../../classes/stores/app.store'
+import RestOutput from '../../../classes/utils/RestOutput';
 
 export const loginFormData = ({}): FormDataProps => {
 
@@ -27,8 +28,6 @@ export const loginFormData = ({}): FormDataProps => {
   return {
     id: 'login-page',
     captcha: false,
-    agreement: true,
-    privacy: true,
     settings: {
       autoSendIfValid: false,
       animations: {
@@ -112,11 +111,55 @@ export const loginFormData = ({}): FormDataProps => {
     ],
     onSuccess: async (data: ILogin) => {
 
-      logger.error('formData is onSuccess submited!!', data);
       const success = (res: any) => {
-        console.log('res', res)
+
+        const resUser = res.user; 
+
+        // Evaluate status::
+        // 0.- Is not confirmed?
+        if (!resUser.confirmed) {
+          presentToast(RestOutput.warning({message: t('The user is not confirmed')}))
+        }
+
+        // 1.- Is bloqued?
+        if (resUser.bloqued) {
+          presentToast(RestOutput.danger({message: t('The user is blocked')}))
+        }
+
+        presentToast(RestOutput.success({message: t('You logged successfully"')}))
+
         //const user: User = res.data.user;
-        //setData(user)
+
+console.log(resUser)
+
+/*{
+  "id": 25,
+  "username": "bunny",
+  "email": "bunny@gmail.com",
+  "provider": "local",
+  "confirmed": true,
+  "blocked": false,
+  "createdAt": "2024-09-27T00:35:40.116Z",
+  "updatedAt": "2024-09-30T02:29:35.655Z",
+  "darkMode": true,
+  "hasSeenTutorial": "true"
+}
+*/
+        const user: User = {
+          id: resUser.id,
+          username: resUser.username,
+          email: resUser.email,
+          provider: resUser.provider,
+          confirmed: resUser.confirmed,
+          blocked: resUser.blocked,
+          createdAt: '',
+          updatedAt: '',
+          darkMode: resUser.darkMode,
+          hasSeenTutorial: resUser.hasSeenTutorial.toString(),
+        };
+        console.log('user', user)
+        
+        setData(user)
         //var newRes = res;
         //newRes.header = t('Wellcome to the app!');
         //newRes.message = 'Hello '+res.data.user.username+'!';
@@ -130,14 +173,7 @@ export const loginFormData = ({}): FormDataProps => {
       }
 
       const error = (err: any) => {
-        console.log('err', err)
-        //var newRes = err;
-        //newRes.header = t('Login error!');
-        //newRes.showInnerMessage = true;
-        //newRes.message = 'Was an error!', err;
-        //var toastProps = RestOutput.catchDanger(res, newRes)
-        //logger.log('success::error', err);//toastProps)
-        //presentToast(toastProps)
+        presentToast(RestOutput.danger({message: t('Login error')}))
       }
 
       if (!useAppRest || typeof useAppRest.post !== 'function') {
@@ -166,6 +202,7 @@ export const loginFormData = ({}): FormDataProps => {
   };
 };
 
+/*
 export const recoverFormData = (): FormDataProps => {
   const { t } = useTranslation();
   const history = useHistory();
@@ -262,3 +299,4 @@ export const recoverFormData = (): FormDataProps => {
     }
   };
 };
+*/

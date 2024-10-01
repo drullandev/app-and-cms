@@ -147,8 +147,10 @@ const Form: React.FC<FormComponentProps> = (formProps: FormComponentProps): JSX.
   
 
   useEffect(() => {
-    const setInitialForm = (formProps?: FormComponentProps) => {
-      const fields = [...(formProps?.fields || [])];
+
+    const setInitialForm = (formProps: FormComponentProps) => {
+
+      const fields = [...(formProps.fields || [])];
 
       if (csrfToken) {
         logger.info('A csrf token was added');
@@ -161,7 +163,7 @@ const Form: React.FC<FormComponentProps> = (formProps: FormComponentProps): JSX.
         });
       }
 
-      if (formProps?.agreement) {
+      if (formProps.agreement) {
         fields.push({
           name: 'check-agreement',
           placeholder: t('Publicity agreement'),
@@ -181,9 +183,9 @@ const Form: React.FC<FormComponentProps> = (formProps: FormComponentProps): JSX.
         });
       }
 
-      if (formProps?.privacy) {
+      if (formProps.privacy) {
         fields.push({
-          name: 'ccheck-lopd',
+          name: 'check-lopd',
           label: t('Accept Privacy and Data Policy'),
           type: 'checkbox',
           defaultValue: false,
@@ -200,7 +202,7 @@ const Form: React.FC<FormComponentProps> = (formProps: FormComponentProps): JSX.
         });
       }
 
-      if (showCaptcha && captcha && formProps?.captcha) {
+      if (showCaptcha && captcha && formProps.captcha) {
         fields.push({
           name: 'captcha',
           type: 'recaptcha',
@@ -209,7 +211,7 @@ const Form: React.FC<FormComponentProps> = (formProps: FormComponentProps): JSX.
           options: []
         });
       }
-  
+
       const newData = {
         ...formProps,
         fields,
@@ -223,7 +225,7 @@ const Form: React.FC<FormComponentProps> = (formProps: FormComponentProps): JSX.
 
     setFormData(updatedFormData);
 
-  }, [csrfToken,  showCaptcha, formProps]);//captcha,
+  }, [csrfToken, formProps, captcha, showCaptcha]);
 
   useEffect(() => {
     if (formData?.fields) {
@@ -242,7 +244,7 @@ const Form: React.FC<FormComponentProps> = (formProps: FormComponentProps): JSX.
     if (sessionId) generateCsrfToken(sessionId);
   }, [sessionId]);
 
-  //useEffect(generateCaptcha, []);
+  useEffect(generateCaptcha, []);
 
   if (isLoading || !formData) {
     return <div>Loading form...</div>; // Pantalla de carga hasta que todo esté listo

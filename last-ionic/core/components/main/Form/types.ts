@@ -19,10 +19,10 @@ export interface FormEventsProps {
 
 export interface FormDataProps {
   id: string;
-  settings?: any;
+  settings: any;
   captcha?: false | boolean;
-  agreement?: boolean;
-  privacy?: boolean;
+  agreement?: false | boolean;
+  privacy?: false | boolean;
   fields: FieldProps[];
   buttons: FieldProps[];
   ga4?: GA4Options;

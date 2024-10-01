@@ -125,7 +125,6 @@ class RestManager implements IRestManager {
       return response.data;
     } catch (error) {
       this.handleError(error);
-      throw error;
     }
   }
 
@@ -151,7 +150,6 @@ class RestManager implements IRestManager {
       return response.data;
     } catch (error) {
       this.handleError(error);
-      throw error;
     }
   }
 
@@ -234,7 +232,6 @@ class RestManager implements IRestManager {
       return response.data;
     } catch (error) {
       this.handleError(error);
-      throw error;
     }
   }
 
@@ -245,10 +242,14 @@ class RestManager implements IRestManager {
    * @param error - The error object received during the failed API call.
    */
   private handleError(error: any): never {
+    
     if (axios.isCancel(error)) {
+
       this.logger.warn("Request was canceled", error.message);
       throw new RestError("Request was canceled", 499, error.message);
+
     } else if (error.response) {
+
       // Puedes personalizar el mensaje usando error.response.data si el servidor lo proporciona
       const serverMessage = error.response.data?.message || `Server responded with status ${error.response.status}`;
       this.logger.error(serverMessage, error.response.data);
@@ -257,12 +258,17 @@ class RestManager implements IRestManager {
         error.response.status,
         error.response.data
       );
+
     } else if (error.request) {
+
       this.logger.error("No response received from server", error.request);
       throw new RestError("No response received from server", 0, null);
+
     } else {
+
       this.logger.error("Unexpected error", error.message);
       throw new RestError("Unexpected error", 0, error.message);
+
     }
   }
 

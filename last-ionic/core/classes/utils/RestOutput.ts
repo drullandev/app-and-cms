@@ -1,16 +1,27 @@
-import { ToastOptions } from '@ionic/core';
-import { ModalOptions } from '@ionic/core';
-import { checkboxOutline, warningOutline, skullOutline, closeCircle, informationCircleOutline } from 'ionicons/icons';
+import { ToastOptions, ModalOptions } from '@ionic/core';
+import {
+  checkboxOutline,
+  warningOutline,
+  skullOutline,
+  closeCircle,
+  informationCircleOutline,
+} from 'ionicons/icons';
 import i18n from 'i18next';
 import LoggerUtils from './LoggerUtils';
 import DebugUtils from './DebugUtils';
 
+/**
+ * Enumeration for Toast positions.
+ */
 enum ToastPosition {
   Top = 'top',
   Bottom = 'bottom',
   Middle = 'middle',
 }
 
+/**
+ * Enumeration for Toast colors.
+ */
 enum ToastColor {
   Success = 'success',
   Warning = 'warning',
@@ -24,11 +35,8 @@ enum ToastColor {
  * the application. This class also integrates logging and debugging features.
  *
  * @class RestOutput
- * @author David Rullán - https://github.com/drullandev
- * @date September 3, 2024
  */
 class RestOutput {
-
   private static instance: RestOutput;
   private debug: boolean;
   private logger: LoggerUtils;
@@ -43,8 +51,8 @@ class RestOutput {
   }
 
   /**
-   * Returns the single instance of RestOutput, creating it if necessary.
-   * 
+   * Returns the singleton instance of RestOutput, creating it if necessary.
+   *
    * @returns RestOutput instance.
    */
   public static getInstance(): RestOutput {
@@ -56,91 +64,94 @@ class RestOutput {
 
   /**
    * Initializes and returns a LoggerUtils instance.
-   * 
+   *
    * @returns LoggerUtils instance.
    */
   private initLogger(): LoggerUtils {
-    return LoggerUtils.getInstance( this.debug, this.constructor.name);
+    return LoggerUtils.getInstance(this.debug, this.constructor.name);
   }
 
   /**
-   * Generates default messages for success, warning, danger, and form error responses.
-   * 
-   * @returns Object containing default messages for different response types.
+   * Generates default messages for different response types.
+   *
+   * @returns Object containing default messages for various response categories.
    */
   private getDefaultMessages() {
     return {
       info: {
-        icon: informationCircleOutline,  // Usamos un icono de información
-        color: ToastColor.Success,           // Puedes cambiar el color si lo prefieres
+        icon: informationCircleOutline, // Information icon
+        color: ToastColor.Success, // Success color
         header: i18n.t('Info'),
         message: i18n.t('Information'),
       },
       success: {
-        icon: checkboxOutline,
-        color: ToastColor.Success,
-        header: i18n.t('Greetings!'),
-        message: i18n.t('The operation was correct!'),
+        icon: checkboxOutline, // Success icon
+        color: ToastColor.Success, // Success color
+        header: i18n.t('Success'),
+        message: i18n.t('The operation was successful!'),
       },
       warning: {
-        icon: warningOutline,
-        color: ToastColor.Warning,
-        header: i18n.t('Pay attention!'),
-        message: i18n.t('The operation has some conflict!'),
+        icon: warningOutline, // Warning icon
+        color: ToastColor.Warning, // Warning color
+        header: i18n.t('Warning'),
+        message: i18n.t('The operation encountered a conflict!'),
       },
       danger: {
-        icon: skullOutline,
-        color: ToastColor.Danger,
-        header: i18n.t('Caution!'),
-        message: i18n.t('The operation resulted in error!'),
+        icon: skullOutline, // Danger icon
+        color: ToastColor.Danger, // Danger color
+        header: i18n.t('Error'),
+        message: i18n.t('The operation resulted in an error!'),
       },
-      formDanger: {
-        icon: warningOutline,
-        color: ToastColor.Warning,
-        header: i18n.t('Form error!'),
-        message: i18n.t('Something went wrong sending the form!'),
+      formError: {
+        icon: warningOutline, // Warning icon
+        color: ToastColor.Warning, // Warning color
+        header: i18n.t('Form Error'),
+        message: i18n.t('There was an issue submitting the form!'),
       },
     };
   }
 
   /**
-   * Generates a Toast output based on a successful operation.
-   * 
-   * @param props - Optional custom properties for the toast.
-   * @returns ToastOptions formatted for the toast controller.
+   * Displays a toast or modal based on the specified type.
+   *
+   * @param type - The type of message ('info', 'success', 'warning', 'danger', 'formError').
+   * @param options - Optional custom properties for the toast or modal.
+   * @param outputType - The output type ('toast' | 'modal'). Defaults to 'toast'.
+   * @returns ToastOptions | ModalOptions formatted for the respective controllers.
    */
-  public catchSuccessToast(props: Partial<ToastOptions> = {}): ToastOptions {
-    return this.setToastOutput(props, this.getDefaultMessages().success);
+  public showOutput(
+    type: keyof ReturnType<typeof this.getDefaultMessages>,
+    options: Partial<ToastOptions | ModalOptions> = {},
+    outputType: 'toast' | 'modal' = 'toast',
+    component?: any // Required only for modal
+  ): ToastOptions | ModalOptions {
+    const defaultMessage = this.getDefaultMessages()[type];
+
+    if (outputType === 'toast') {
+      return this.createToast(options, defaultMessage);
+    } else if (outputType === 'modal') {
+      if (!component) {
+        this.logger.error('Component must be provided for modal output.');
+        throw new Error('Component must be provided for modal output.');
+      }
+      return this.createModal(component, options, defaultMessage);
+    } else {
+      this.logger.error(`Invalid output type: ${outputType}`);
+      throw new Error(`Invalid output type: ${outputType}`);
+    }
   }
 
   /**
-   * Generates a Toast output based on a warning operation.
-   * 
-   * @param props - Optional custom properties for the toast.
-   * @returns ToastOptions formatted for the toast controller.
+   * Creates a ToastOptions object by merging default and custom options.
+   *
+   * @param customOptions - Custom properties for the toast.
+   * @param defaultMessage - The default message configuration.
+   * @returns Merged ToastOptions object.
    */
-  public catchWarningToast(props: Partial<ToastOptions> = {}): ToastOptions {
-    return this.setToastOutput(props, this.getDefaultMessages().warning);
-  }
-
-  /**
-   * Generates a Toast output based on an error/danger operation.
-   * 
-   * @param props - Optional custom properties for the toast.
-   * @returns ToastOptions formatted for the toast controller.
-   */
-  public catchDangerToast(props: Partial<ToastOptions> = {}): ToastOptions {
-    return this.setToastOutput(props, this.getDefaultMessages().danger);
-  }
-
-  /**
-   * Merges provided options with default toast options to produce the final output configuration.
-   * 
-   * @param props - Custom toast properties.
-   * @param defaultMessage - The default message to merge with the props.
-   * @returns The final ToastOptions object.
-   */
-  private setToastOutput(props: Partial<ToastOptions>, defaultMessage: any): ToastOptions {
+  private createToast(
+    customOptions: Partial<ToastOptions>,
+    defaultMessage: any
+  ): ToastOptions {
     const defaultToastOptions: ToastOptions = {
       message: defaultMessage.message,
       icon: defaultMessage.icon,
@@ -152,48 +163,95 @@ class RestOutput {
       keyboardClose: true,
     };
 
-    return { ...defaultToastOptions, ...props };
+    // Merge default options with custom options
+    return { ...defaultToastOptions, ...customOptions };
   }
 
   /**
-  * Generates a Modal output for form errors.
-  * 
-  * @param component - The component to render in the modal.
-  * @param props - Optional custom properties for the modal.
-  * @returns ModalOptions formatted for the modal controller.
-  */
-  public catchFormErrorModal(component: any, props: Partial<ModalOptions> = {}): ModalOptions {
-    const defaultMessage = this.getDefaultMessages().formDanger;
-    // Añadimos el ícono `closeCircle` como predeterminado si no se proporciona uno.
-    return this.setModalOutput(component, { ...props, componentProps: { ...props.componentProps, icon: closeCircle } }, defaultMessage);
-  }
-
-  /**
-   * Merges provided options with default modal options to produce the final output configuration.
-   * 
-   * @param component - The component to render in the modal.
-   * @param props - Custom modal properties.
-   * @param defaultMessage - The default message to merge with the props.
-   * @returns The final ModalOptions object.
+   * Creates a ModalOptions object by merging default and custom options.
+   *
+   * @param component - The component to render inside the modal.
+   * @param customOptions - Custom properties for the modal.
+   * @param defaultMessage - The default message configuration.
+   * @returns Merged ModalOptions object.
    */
-  private setModalOutput(component: any, props: Partial<ModalOptions>, defaultMessage: any): ModalOptions {
+  private createModal(
+    component: any,
+    customOptions: Partial<ModalOptions>,
+    defaultMessage: any
+  ): ModalOptions {
     const defaultModalOptions: ModalOptions = {
       component,
       componentProps: {
         header: defaultMessage.header,
         message: defaultMessage.message,
-        icon: closeCircle,  // Ícono predeterminado de cierre
+        icon: closeCircle, // Default close icon
       },
       backdropDismiss: true,
       cssClass: 'custom-modal-class',
       mode: 'ios',
     };
 
-    // Fusionamos el defaultModalOptions con cualquier `props` proporcionado.
-    return { ...defaultModalOptions, ...props };
+    // Merge default options with custom options
+    return { ...defaultModalOptions, ...customOptions };
   }
 
-};
+  /**
+   * Convenience method to display an info toast.
+   *
+   * @param options - Optional custom properties for the toast.
+   * @returns ToastOptions formatted for the toast controller.
+   */
+  public info(options: Partial<ToastOptions> = {}): ToastOptions {
+    return this.showOutput('info', options, 'toast') as ToastOptions;
+  }
 
-// Export the singleton via the getInstance method
+  /**
+   * Convenience method to display a success toast.
+   *
+   * @param options - Optional custom properties for the toast.
+   * @returns ToastOptions formatted for the toast controller.
+   */
+  public success(options: Partial<ToastOptions> = {}): ToastOptions {
+    return this.showOutput('success', options, 'toast') as ToastOptions;
+  }
+
+  /**
+   * Convenience method to display a warning toast.
+   *
+   * @param options - Optional custom properties for the toast.
+   * @returns ToastOptions formatted for the toast controller.
+   */
+  public warning(options: Partial<ToastOptions> = {}): ToastOptions {
+    return this.showOutput('warning', options, 'toast') as ToastOptions;
+  }
+
+  /**
+   * Convenience method to display a danger toast.
+   *
+   * @param options - Optional custom properties for the toast.
+   * @returns ToastOptions formatted for the toast controller.
+   */
+  public danger(options: Partial<ToastOptions> = {}): ToastOptions {
+    return this.showOutput('danger', options, 'toast') as ToastOptions;
+  }
+
+  /**
+   * Convenience method to display a form error modal.
+   *
+   * @param component - The component to render inside the modal.
+   * @param options - Optional custom properties for the modal.
+   * @returns ModalOptions formatted for the modal controller.
+   */
+  public formError(
+    component: any,
+    options: Partial<ModalOptions> = {}
+  ): ModalOptions {
+    return this.showOutput('formError', options, 'modal', component) as ModalOptions;
+  }
+}
+
+/**
+ * Export the singleton instance of RestOutput.
+ */
 export default RestOutput.getInstance();

@@ -59,9 +59,7 @@ class DebugUtils {
    * @param message The message to log.
    */
   public logInfo(message: string) {
-    {
-      console.info(`[INFO]: ${message}`);
-    }
+    console.info(`[INFO]: ${message}`);
   }
 
   /**
@@ -69,9 +67,7 @@ class DebugUtils {
    * @param message The message to log.
    */
   public logWarning(message: string) {
-    {
-      console.warn(`[WARNING]: ${message}`);
-    }
+    console.warn(`[WARNING]: ${message}`);
   }
 
   /**
@@ -79,9 +75,7 @@ class DebugUtils {
    * @param message The message to log.
    */
   public logError(message: string, error: any) {
-    {
-      console.error(`[ERROR]: ${message}`, error);
-    }
+    console.error(`[ERROR]: ${message}`, error);
   }
 
   /**
@@ -89,9 +83,7 @@ class DebugUtils {
    * @param label The label for the timer.
    */
   public startTimer(label: string) {
-    {
-      console.time(label);
-    }
+    console.time(label);
   }
 
   /**
@@ -99,9 +91,7 @@ class DebugUtils {
    * @param label The label for the timer.
    */
   public stopTimer(label: string) {
-    {
-      console.timeEnd(label);
-    }
+    console.timeEnd(label);
   }
 
   /**

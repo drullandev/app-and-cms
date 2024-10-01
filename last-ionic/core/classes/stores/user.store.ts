@@ -29,7 +29,7 @@ interface UserState {
   blocked: boolean;
   confirmed: boolean;
   darkMode: boolean;
-  hasSeenTutorial: boolean;
+  hasSeenTutorial: string;
   logged: boolean;
   createdAt?: string;
   updatedAt?: string;
@@ -52,7 +52,7 @@ interface IStoreState extends UserState, AppState {
   setBlocked: (blocked?: boolean) => void;
   setConfirmed: (confirmed?: boolean) => void;
   setDarkMode: (darkMode: boolean) => void;
-  setHasSeenTutorial: (hasSeenTutorial: boolean) => void;
+  setHasSeenTutorial: (hasSeenTutorial: string) => void;
   setLogged: (logged: boolean) => void;
 }
 
@@ -65,7 +65,7 @@ const useUserStore = create<IStoreState>((set, get) => ({
   blocked: false,
   confirmed: false,
   darkMode: true,
-  hasSeenTutorial: false,
+  hasSeenTutorial: 'false',
   logged: false,
   createdAt: undefined,
   updatedAt: undefined,
@@ -131,7 +131,7 @@ const useUserStore = create<IStoreState>((set, get) => ({
         blocked: blocked === 'true',
         confirmed: confirmed === 'true',
         darkMode: darkMode === 'true',
-        hasSeenTutorial: hasSeenTutorial === 'true',
+        hasSeenTutorial: hasSeenTutorial || 'false',
         createdAt: createdAt || undefined,
         updatedAt: updatedAt || undefined,
       });
@@ -197,7 +197,7 @@ const useUserStore = create<IStoreState>((set, get) => ({
     }
   },
 
-  setHasSeenTutorial: (hasSeenTutorial: boolean) => {
+  setHasSeenTutorial: (hasSeenTutorial: string) => {
     if (get().hasSeenTutorial !== hasSeenTutorial) {
       set({ hasSeenTutorial });
     }

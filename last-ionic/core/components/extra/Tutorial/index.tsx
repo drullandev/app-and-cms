@@ -27,9 +27,9 @@ const Tutorial: React.FC = () => {
   });
 
   const startApp = async () => {
-    await setHasSeenTutorial(true);
+    await setHasSeenTutorial("true");
     await setMenuEnabled(true);
-    history.push('/tabs/schedule', { direction: 'none' });
+    //history.push('/tabs/schedule', { direction: 'none' });
   };
 
   return (
