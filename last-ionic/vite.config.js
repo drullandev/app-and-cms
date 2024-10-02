@@ -7,9 +7,6 @@ export default defineConfig({
     server: {
         port: 3000
     },
-    define: {
-        'process.env': process.env
-    },
     optimizeDeps: {
         exclude: ['stuff/*'], // Excluir la carpeta 'stuff' de la optimización de dependencias
     },

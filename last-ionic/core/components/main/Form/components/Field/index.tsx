@@ -465,7 +465,7 @@ const Field = forwardRef<any, {
             <div className="captcha-container">
               <IonLabel ariaLabel={field.name+'-label'}>{field.label}</IonLabel>
             </div>
-            {process.env.NODE_ENV === 'production' ? (
+            {import.meta.env.NODE_ENV === 'production' ? (
               <div>
                 <ReCAPTCHA 
                   {...recaptchaProps}

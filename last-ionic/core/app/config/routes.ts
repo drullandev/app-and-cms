@@ -59,13 +59,14 @@ export const AppRoutes: IAppRoute[] = [
   },
   {
     title: i18n.t('Home'),
-    path: '/',
+    path: '/home',
     component: Home,
     exact: true,
     icon: icon.homeOutline,
     menu: true,
     logged: false,
     tab: false,
+    isHome: true,
   },
   {
     title: i18n.t('Sign in'),
@@ -149,3 +150,13 @@ export const AppRoutes: IAppRoute[] = [
   },
 
 ];
+
+/**
+ * Finds and returns the route with `isHome` set to true.
+ *
+ * @param routes - The array of app routes to search in.
+ * @returns The route object with `isHome: true` or `undefined` if not found.
+ */
+export const getHomeRoute = (routes: IAppRoute[]): IAppRoute | undefined => {
+  return routes.find(route => route.isHome === true);
+};

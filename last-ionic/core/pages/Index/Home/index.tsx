@@ -1,5 +1,4 @@
-import React from 'react';
-import { Redirect } from 'react-router';
+import React, { useEffect } from 'react';
 
 /**
  * A functional component that redirects to the home path.
@@ -7,7 +6,10 @@ import { Redirect } from 'react-router';
  * @return {JSX.Element} A Redirect component with the home path.
  */
 const Home: React.FC = () => {
-  return <Redirect to={process.env.REACT_APP_HOME_PATH ?? '/home'} />;
+  useEffect(() => {
+    console.log(import.meta.env);
+  }, []);
+  return <>Wellcome home</>
 };
 
 export default React.memo(Home);

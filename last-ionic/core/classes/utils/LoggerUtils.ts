@@ -49,7 +49,7 @@ class LoggerUtils implements ILoggerUtils {
     this.prefix = prefix;
     this.maxLogs = maxLogs || 100;
     this.logLevel = logLevel || 'debug';
-    this.shouldLog = shouldLog || (() => process.env.NODE_ENV === "development");
+    this.shouldLog = shouldLog || (() => import.meta.env.NODE_ENV === "development");
 
     // If debug is false, we disable logging by default
     if (!this.debugLogger) {

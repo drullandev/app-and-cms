@@ -4,7 +4,7 @@ const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const TerserPlugin = require('terser-webpack-plugin');
 const webpack = require('webpack');
 
-const isDevelopment = process.env.NODE_ENV !== 'production';
+const isDevelopment = import.meta.NODE_ENV !== 'production';
 
 module.exports = {
   mode: isDevelopment ? 'development' : 'production',
@@ -14,7 +14,7 @@ module.exports = {
   plugins: [
     new webpack.DefinePlugin({
       'process.env': JSON.stringify(dotenv.parsed),
-      'process.env.NODE_ENV': JSON.stringify(isDevelopment ? 'development' : 'production'),
+      'import.meta.NODE_ENV': JSON.stringify(isDevelopment ? 'development' : 'production'),
     }),
     isDevelopment && new BundleAnalyzerPlugin(),
   ].filter(Boolean),

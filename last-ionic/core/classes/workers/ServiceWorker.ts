@@ -48,7 +48,7 @@ type CacheOptions = {
  */
 export class ServiceWorker {
   private inNavigator: boolean = 'serviceWorker' in navigator;
-  private isProduction: boolean = process.env.NODE_ENV === 'production';
+  private isProduction: boolean = import.meta.env.NODE_ENV === 'production';
   private swUrl: string;
   private isLocalhost: boolean = Boolean(
     window.location.hostname === 'localhost' ||
@@ -68,7 +68,7 @@ export class ServiceWorker {
   constructor(private config?: Config, swUrl?: string, debug?: boolean) {
     this.debug = DebugUtils.setDebug(debug ?? false);
     this.logger = LoggerUtils.getInstance( this.debug, this.constructor.name);
-    this.swUrl = swUrl || `${process.env.PUBLIC_URL}/service-worker.js`;
+    this.swUrl = swUrl || `${import.meta.env.PUBLIC_URL}/service-worker.js`;
 
     {
       this.logger.info("ServiceWorker initialized", { config });

@@ -10,6 +10,6 @@ import { storageKey } from '../app/config/env'
  * @date September 1, 2024
  */
 
-const useAppSQLite: ISQLiteManager = SQLiteManager.getInstance(process.env.REACT_APP_SQLITE_PATH);
+const useAppSQLite: ISQLiteManager = SQLiteManager.getInstance(import.meta.env.VITE_SQLITE_PATH);
 
 export default useAppSQLite;

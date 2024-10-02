@@ -9,8 +9,8 @@ import { storageKey } from '../app/config/env'
  * @author David Rullán - https://github.com/drullandev
  * @date August 30, 2024
  */
-const useGA4Tracker = (process.env.NODE_ENV === 'production' && process.env.REACT_APP_GA4_TRACKING_ID != '') 
-  ? new GA4Manager(process.env.REACT_APP_GA4_TRACKING_ID)
+const useGA4Tracker = (import.meta.env.NODE_ENV === 'production' && import.meta.env.VITE_GA4_TRACKING_ID != '') 
+  ? new GA4Manager(import.meta.env.VITE_GA4_TRACKING_ID)
   : new GA4Manager();
 
 export default useGA4Tracker;

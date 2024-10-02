@@ -3,8 +3,8 @@ import { Redirect } from 'react-router'
 
 const Home: React.FC<any> = ({ hasSeenTutorial }) => (
   hasSeenTutorial 
-    ? <Redirect to={process.env.REACT_APP_HOME_PATH} />
-    : <Redirect to={process.env.REACT_APP_AUTH_LOGIN} />
+    ? <Redirect to={import.meta.env.VITE_HOME_PATH} />
+    : <Redirect to={import.meta.env.VITE_AUTH_LOGIN} />
 )
 
 export default Home;

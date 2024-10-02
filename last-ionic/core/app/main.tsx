@@ -25,7 +25,7 @@ const renderApp = () => {
   const sw = new ServiceWorker();
 
   // Determine the environment
-  const isProduction = process.env.NODE_ENV === 'production';
+  const isProduction = import.meta.env.NODE_ENV === 'production';
 
   // Verifica si `i18next` está listo antes de renderizar la aplicación
   i18n

@@ -18,6 +18,7 @@ export interface IAppRoute {
   from?: string;
   to?: string;
   tab?: boolean;
+  isHome?: boolean;
 }
 
 export interface IAppRouter {

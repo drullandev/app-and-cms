@@ -14,9 +14,6 @@ export default defineConfig({
       overlay: false,
     },
   },
-  define: {
-    'process.env': process.env,
-  },
   optimizeDeps: {
     exclude: ['stuff/*'], // Excluir la carpeta 'stuff' de la optimización de dependencias
   },

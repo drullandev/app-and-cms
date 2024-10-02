@@ -1,11 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { IonApp } from '@ionic/react';
 
-import RandomUtils from '../classes/utils/RandomUtils';
-import DebugUtils from '../classes/utils/DebugUtils';
-
 import useUserStore from '../classes/stores/user.store';
-import useAppStore from '../classes/stores/app.store';
 
 import AppRouter from '../components/main/AppRouter';
 import MainListItem from '../components/main/Menu/SidenavItem';
@@ -43,8 +39,8 @@ const AppComponent: React.FC = () => {
         slot={'bottom'}
         routes={AppRoutes}
       ></TabItem>*/}
-      {process.env.REACT_APP_SHOW_COOKIES_CONSENT && <CookieConsent />}
-      {process.env.REACT_APP_SHOW_PWA_INSTALLER && <PWA/>}
+      {import.meta.env.VITE_SHOW_COOKIES_CONSENT && <CookieConsent />}
+      {import.meta.env.VITE_SHOW_PWA_INSTALLER && <PWA/>}
     </IonApp>
   );
 };

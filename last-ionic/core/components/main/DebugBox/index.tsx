@@ -15,7 +15,7 @@ const DebugBox: React.FC<DebugBoxProps> = ({ debugThis, children }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   // Check if we are in a development environment and if debug is enabled
-  if (process.env.NODE_ENV !== 'development' || ! debugThis) {
+  if (import.meta.env.NODE_ENV !== 'development' || ! debugThis) {
     //LoggerUtils.log('DebugBox is not visible due to environment or debug flag.');
     return null;
   }

@@ -31,7 +31,7 @@ export interface ICRMManager {
 class useCRMApi extends RestManager implements ICRMManager {
   constructor(token?: string) {
     super(
-      `${process.env.REACT_APP_PROTOCOL}://localhost:${process.env.REACT_APP_API_PORT}`,
+      `${import.meta.env.VITE_PROTOCOL}://localhost:${import.meta.env.VITE_API_PORT}`,
       token ? { Authorization: `Bearer ${token}` } : undefined
     );
   }
