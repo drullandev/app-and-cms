@@ -14,8 +14,8 @@ import { storageKey } from '../app/config/env'
  * @returns An instance of CookieManager configured with the domain and path settings.
  */
 export const useCookies : ICookieManager = CookieManager.getInstance(
-  import.meta.env.VITE_HOST_URL,
-  import.meta.env.VITE_COOKIE_PATH
+  import.meta.env.VITE_APP_HOST_URL,
+  import.meta.env.VITE_APP_COOKIE_PATH
 );
 
 export default useCookies;

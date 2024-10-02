@@ -1,21 +1,24 @@
 import i18n, { TFunction } from 'i18next';
 import { shareSocialOutline, addCircleOutline, closeCircleOutline } from 'ionicons/icons';
 
-export const all = import.meta.env
-
-// Environment variables
-export const nodeEnv = import.meta.env.VITE_NODE_ENV ?? 'development';
-
 // https://ionicframework.com/docs/react/config#global-config
 export const appSetup = {
   rippleEffect: true,
   animated: true
 }
 
-//console.log(import.meta.env)
+// Environment variables
+export const all = import.meta.env;
 
-// Icon for the app
-export const appIcon = 'assets/icon/transp-icon-512.png';
+// Node environment setting (default to 'development')
+export const nodeEnv = import.meta.env.VITE_NODE_ENV ?? 'development';
+
+// Application-specific variables
+export const appName = import.meta.env.VITE_APP_NAME ?? 'Festivore';
+export const appDomain = import.meta.env.VITE_APP_DOMAIN ?? 'localhost';
+export const appProtocol = import.meta.env.VITE_APP_PROTOCOL ?? 'http';
+export const appPort = import.meta.env.VITE_APP_PORT ?? '3000';
+export const appUrl = import.meta.env.VITE_APP_HOST_URL ?? `${appProtocol}://${appDomain}:${appPort}`;
 
 // Debug mode based on the environment
 export const debug = import.meta.env.VITE_TESTING;
@@ -28,41 +31,22 @@ export const supportedLanguages = import.meta.env.VITE_SUPPORTED_LANGS
   ? import.meta.env.VITE_SUPPORTED_LANGS.split(',')
   : ['en', 'es'];
 
-// Language priority order
-export const langsPriority = supportedLanguages;
-
-// ASCII Art for the project
-export const asciiArt = import.meta.env.VITE_PROJECT_ASCIIART 
-  ?? "  ██░ ██ ▒█████  ▄▄▄▄      \n ▓██░ ██▒██▒  ██▓█████▄    \n ▒██▀▀██▒██░  ██▒██▒ ▄██   \n ░▓█ ░██▒██   ██▒██░█▀     \n ░▓█▒░██░ ████▓▒░▓█  ▀█▓   \n  ▒ ░░▒░░ ▒░▒░▒░░▒▓███▀▒   \n  ▒ ░▒░ ░ ░ ▒ ▒░▒░▒   ░    \n  ░  ░░ ░ ░ ░ ▒  ░    ░    \n  ░  ░  ░   ░ ░  ░         \n  ▄▄▄      ██▓███  ██▓███  \n ▒████▄   ▓██░  ██▓██░  ██▒\n ▒██  ▀█▄ ▓██░ ██▓▓██░ ██▓▒\n ░██▄▄▄▄██▒██▄█▓▒ ▒██▄█▓▒ ▒\n  ▓█   ▓██▒██▒ ░  ▒██▒ ░  ░\n  ▒▒   ▓▒█▒▓▒░ ░  ▒▓▒░ ░  ░\n   ▒   ▒▒ ░▒ ░    ░▒ ░     \n   ░   ▒  ░░      ░░       \n       ░  ░                      \n ᵦᵧ ᴅₐᵥᵢ𝓭 ᵣᵤₗₗáₙ ᴅíₐ𝆎 𝔀ᵢₜₕ ₗₒᵥₑ ;₎\n 𝖧ɑρρɣ ɕ𝗈ᑯ౿";
-
-// Application-specific variables
-export const appName = import.meta.env.VITE_APP_NAME ?? 'Festivore';
-export const appDomain = import.meta.env.VITE_DOMAIN ?? 'localhost';
-export const appProtocol = import.meta.env.VITE_PROTOCOL ?? 'http';
-export const appPort = import.meta.env.VITE_PORT ?? '3000';
-export const appUrl = import.meta.env.VITE_URL ?? `${appProtocol}://${appDomain}:${appPort}`;
-
-// Application environment settings
-export const cookiePath = import.meta.env.VITE_COOKIE_PATH ?? '/';
+// CAPTCHA configuration
 export const enableCaptcha = import.meta.env.VITE_ENABLE_CAPTCHA;
-export const captchaExpiryTime = import.meta.env.VITE_CAPTCHA_EXPIRY_TIME 
-  ? import.meta.env.VITE_CAPTCHA_EXPIRY_TIME 
-  : 300000;
-export const captchaCleanupInterval = import.meta.env.VITE_CAPTCHA_CLEANUP_INTERVAL 
-  ? import.meta.env.VITE_CAPTCHA_CLEANUP_INTERVAL 
-  : 60000;
+export const captchaExpiryTime = import.meta.env.VITE_CAPTCHA_EXPIRY_TIME ?? 300000;
+export const captchaCleanupInterval = import.meta.env.VITE_CAPTCHA_CLEANUP_INTERVAL ?? 60000;
 
 // Backend configuration
-export const apiProtocol = import.meta.env.VITE_PROTOCOL ?? 'http';
+export const apiProtocol = import.meta.env.VITE_API_PROTOCOL ?? 'http';
 export const apiPort = import.meta.env.VITE_API_PORT ?? '1337';
 export const apiUrl = import.meta.env.VITE_API_URL ?? `${apiProtocol}://localhost:${apiPort}/api`;
-export const apiUploads = apiUrl + '/uploads/'
+export const apiUploads = apiUrl + '/uploads/';
 
 // Authentication and login path
 export const authLoginPath = import.meta.env.VITE_AUTH_LOGIN ?? '/auth/login';
 
 // Storage configuration
-export const storageKey = import.meta.env.VITE_STORAGE_KEY ?? 'app';
+export const storageKey = import.meta.env.VITE_APP_STORAGE_KEY ?? 'app';
 
 // PWA settings
 export const showPwaInstaller = import.meta.env.VITE_SHOW_PWA_INSTALLER;
@@ -73,7 +57,7 @@ export const homePath = import.meta.env.VITE_HOME_PATH ?? '/login';
 
 // Third-party integrations
 export const ga4TrackingId = import.meta.env.VITE_GA4_TRACKING_ID ?? 'YOUR_GA4_TRACKING_ID';
-export const mapboxKey = import.meta.env.VITE_MAPBOX_KEY ?? 'pk.eyJ1IjoiZHJ1bGxhbiIsImEiOiJja2l4eDBpNWUxOTJtMnRuejE1YWYyYThzIn0.y7nuRLnfl72qFp2Rq06Wlg';
+export const mapboxKey = import.meta.env.VITE_MAPBOX_KEY ?? 'YOUR_MAPBOX_KEY';
 
 // SQLite configuration
 export const sqlitePath = import.meta.env.VITE_SQLITE_PATH ?? './default-database.db';
