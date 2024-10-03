@@ -20,7 +20,6 @@ export interface IonPageProps {
   skeleton?: boolean | false;
   title: string;
   role: string;
-  ariaLabel?: string;
   description: string;
   ionViewWillEnter?: () => void;
   ionViewDidEnter?: () => void;

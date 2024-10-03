@@ -6,9 +6,8 @@ services:
       - "${VITE_APP_PORT}:${VITE_APP_PORT}"  # Usa la variable de entorno para los puertos
     volumes:
       - .:/app
-      - /app/node_modules
     stdin_open: true
     environment:
-      - NODE_ENV=${NODE_ENV}  # Usa la variable de entorno para el entorno
+      - NODE_ENV=${VITE_APP_NODE_ENV}  # Usa la variable de entorno para el entorno
     env_file:  # Indica el archivo que contiene las variables de entorno
       - .env  # Ruta al archivo .env que contiene las variables

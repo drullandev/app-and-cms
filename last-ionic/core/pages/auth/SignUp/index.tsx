@@ -20,7 +20,6 @@ const SignUp: React.FC<any> = () => {
       id: 'signup-page',
       title: t('Sign up a new account!'),
       description: t('This is the signup page'),
-      ariaLabel: t('Sign up a new account'),
       role: 'main',
     },
     ga4: {

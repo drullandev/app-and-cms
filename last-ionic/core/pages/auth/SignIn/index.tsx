@@ -26,7 +26,6 @@ const SignIn: React.FC<any> = (pageProps) => {
       description:'',
       //skeleton: true,
       //animated: "true",
-      ariaLabel: t('Login to the account'),
       role: 'main',
     },
     ga4: {
