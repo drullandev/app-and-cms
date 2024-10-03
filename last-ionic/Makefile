@@ -99,3 +99,11 @@ help:
 	@echo "  make lint            Lint the project"
 	@echo "  make clean           Clean up build artifacts"
 	@echo "  make help            Display this help message"
+
+clean-docker:
+	@docker stop $(docker ps -q) || true
+	@docker rm $(docker ps -a -q) || true
+	@docker rmi $(docker images -q) || true
+	@docker volume rm $(docker volume ls -q) || true
+	@docker network rm $(docker network ls -q) || true
+	@docker system prune --all --volumes -f || true

@@ -1,5 +1,5 @@
-# Etapa 1: Construcción
-FROM node:16-alpine as build
+# Etapa 1: Construcción con Node.js y Vite
+FROM node:22-alpine as build
 
 WORKDIR /app
 
@@ -12,14 +12,7 @@ RUN npm install --legacy-peer-deps
 COPY . .
 RUN npm run build
 
-# Etapa 2: Servir con Nginx
-FROM nginx:alpine
+# Etapa 2: Servir con Vite (desarrollo o producción)
+EXPOSE 3000
 
-# Copiar los archivos de construcción de la primera etapa
-COPY --from=build /app/build /usr/share/nginx/html
-
-# Exponer el puerto en el que corre Nginx
-EXPOSE 80
-
-# Comando para correr Nginx
-CMD ["nginx", "-g", "daemon off;"]
+CMD ["npm", "run", "dev"] # Cambiar a 'preview' si quieres el modo producción.
