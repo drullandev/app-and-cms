@@ -1,0 +1,12 @@
+version: '3'
+services:
+  strapi:
+    build: .
+    ports:
+      - "${VITE_CMS_PORT}:${VITE_CMS_PORT}" 
+    volumes:
+      - .:/app
+    env_file:
+      - .env
+    environment:
+      NODE_ENV: ${VITE_CMS_NODE_ENV}

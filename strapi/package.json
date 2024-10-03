@@ -13,10 +13,10 @@
     "@strapi-newsletter/strapi": "^0.1.2",
     "@strapi/plugin-color-picker": "^4.5.3",
     "@strapi/plugin-documentation": "^4.5.3",
-    "@strapi/plugin-graphql": "^4.5.3",
-    "@strapi/plugin-i18n": "^4.25.8",
-    "@strapi/plugin-users-permissions": "^4.25.8",
-    "@strapi/strapi": "^4.25.8",
+    "@strapi/plugin-graphql": "4.5.0",
+    "@strapi/plugin-i18n": "4.5.0",
+    "@strapi/plugin-users-permissions": "4.5.0",
+    "@strapi/strapi": "4.5.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router-dom": "^5.3.4",
@@ -28,15 +28,14 @@
     "styled-components": "^5.3.11",
     "yarn": "^1.22.19"
   },
+  "resolutions": {
+    "cheerio": "1.0.0-rc.12"
+  },
   "author": {
-    "name": "A Strapi developer"
+    "name": "Happycode Headless Backoffice"
   },
   "strapi": {
     "uuid": "e059499a-1473-4f77-afc2-6230fce33d6f"
-  },
-  "engines": {
-    "node": ">=12.x.x <=16.x.x",
-    "npm": ">=6.0.0"
   },
   "license": "MIT"
 }

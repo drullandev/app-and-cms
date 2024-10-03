@@ -307,7 +307,8 @@
           "deprecated": false,
           "required": false,
           "schema": {
-            "type": "object"
+            "type": "object",
+            "additionalProperties": true
           },
           "style": "deepObject"
         },
@@ -803,7 +804,8 @@
           "deprecated": false,
           "required": false,
           "schema": {
-            "type": "object"
+            "type": "object",
+            "additionalProperties": true
           },
           "style": "deepObject"
         },
