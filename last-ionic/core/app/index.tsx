@@ -12,7 +12,7 @@ import PWA from '../components/main/PWA';
 
 import { AppRoutes } from './config/routes';
 
-import './config';
+import './config/config';
 import './styles';
 import './types';
 

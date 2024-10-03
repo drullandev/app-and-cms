@@ -7,25 +7,24 @@ import * as icon from 'ionicons/icons';
 import DebugUtils from '../../../classes/utils/DebugUtils';
 import RestOutput from '../../../classes/utils/RestOutput';
 
-import useUserStore from '../../../classes/stores/user.store';
+import useUserStore, { setIUserState } from '../../../classes/stores/user.store';
 import Logger from '../../../classes/utils/LoggerUtils';
-import { FormDataProps } from '../../../components/main/Form/types';
-import RestManager from '../../../classes/managers/RestManager';
+import { IFormData } from '../../../components/main/Form/types';
 import useAppRest from '../../../integrations/RestIntegration';
+import { IRegister } from '../../../classes/models/strapi/User';
+import { AuthResponse } from '../../../classes/models/strapi/AuthResponse';
+import { AxiosResponse, AxiosError } from 'axios';
+import useAppStore from '../../../classes/stores/app.store';
 
-export const signupForm = ({
-    setIsLogged
-  }: {
-    setLoading: (loading: boolean) => void;
-    setData: (data: any) => void;
-    setIsLogged: (isLoggedIn: boolean) => void;
-  }): FormDataProps => {
+export const signupForm = (): IFormData => {
+  const debug = DebugUtils.setDebug(false);
+  const logger = Logger.getInstance(debug, 'loginFomData');
 
   const { t } = useTranslation();
   const history = useHistory();
   const [presentToast] = useIonToast();
-  const { setData } = useUserStore();
-  const debug = DebugUtils.setDebug(false);
+  const { setUserStore } = useUserStore();
+  const { setLoading } = useAppStore();
   
   return {
     id: 'signup-page',
@@ -108,80 +107,65 @@ export const signupForm = ({
         type: 'button',
         style: { display: 'inline-block', width: '46%', margin: '2%' },
         onClick: () => {
-          //history.push(SIGNUP_PATH);
+          history.push('/login');
         },
         options: []
       }
     ],
-    onSuccess: async (data: any) => {
-      const signupSuccess = (res: any)=>{
-        setIsLogged(true);
-        var newRes = res;
-        setData(res.data.user);
-        newRes.header = t('Greate! Now validate on emaii!');
-        newRes.message = t('Now you are a new honor guest!');
-        //var toastProps = RestOutput.catchSuccess(res, newRes);
-        //Logger.log(toastProps)
-        //presentToast(toastProps)
-        //  .then(() => {
-        //    history.push(LOGIN_PATH);
-        //  });
-      }
 
-      const signupError = (res:any)=>{
-        setIsLogged(false);
-        var newRes = res;
-        newRes.header = t('Sign-up warning!');
-        newRes.message = t('Error trying to sing-up!');
-        newRes.showInnerMessage = true;
-        //var toastProps = RestOutput.catchDanger(res, newRes);
-        //Logger.log(toastProps)
-        //presentToast(toastProps);
-      }
+    onSuccess: async (data: IRegister) => {
 
-      /*
-      await useAppRest.makeAsyncCall({
-        req: {
-          method: 'POST',
-          url: `${apiUrl}/auth/local/register`,
-          data: () => {
-            return {
-              name: data.name,
-              password: data.password,
-              email: data.email,
-              username: data.username,
-            };
-          },
-        },
-        onSuccess: {
-          default: (res: any) => {
-            switch(res.status){
-              case 200:
-                signupSuccess(res);
-                break;
-              case 400:
-              default:
-                signupError(res);
-                break;
-            }
+      const url = '/auth/register';
+
+      try {
+        const success = (res: AxiosResponse<AuthResponse>) => {
+
+          const resUser = res.data.user;
+          let logged = false;
+
+          if (!resUser.confirmed) {
+            presentToast(RestOutput.warning({ message: t('The user is not confirmed') }));
+          } else if (resUser.blocked) {
+            presentToast(RestOutput.danger({ message: t('The user is blocked') }));
+          } else {
+            logged = true;
           }
-        },
-        onError: {
-          default: (error: any) => {
-            signupError(error);
-          }
-        },
-        onFinally: () => {
 
-        }
-      });*/
-      
+          const userState = setIUserState(res.data, resUser, logged);
+          setUserStore(userState);
+
+          logger.info({ message: 'You have connected!' });
+
+          presentToast(RestOutput.success({
+            header: t('You logged successfully!'),
+            message: t('Welcome to the app ') + resUser.username,
+          })).then(() => {
+            history.push('/home');
+          });
+
+        };
+
+        const error = (err: AxiosError) => {
+          presentToast(RestOutput.danger({ message: t('Login error') }));
+          logger.error(err);
+        };
+
+        await useAppRest.post(url, data)
+          .then(success)
+          .catch(error);
+
+      } catch (err) {
+        presentToast(RestOutput.danger({ message: t('Login error') }));
+        logger.error(err);
+      } finally {
+        setLoading(false);
+      };
+
     },
-    onError: (errors: any) => {
-      setIsLogged(false);
-      //const output = RestOutput.catchFormError(errors);
-      //output.header = 'Login error';
-      //presentToast(output);
-    }
+    onError: (err: any) => {
+      //presentToast(RestOutput.danger({ message: t('Login error') }));
+      logger.error(err);
+    },
+
   };
 };

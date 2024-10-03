@@ -22,7 +22,7 @@ export interface AppState {
  * 
  * @interface AppStore
  * @extends {AppState}
- * @property {(data: Partial<AppState>) => void} setData - Function to update multiple properties of the state.
+ * @property {(data: Partial<AppState>) => void} setAppStore - Function to update multiple properties of the state.
  * @property {(isLoading: boolean) => void} setLoading - Function to update the loading state.
  * @property {(menuEnabled: boolean) => void} setMenuEnabled - Function to update the menuEnabled state.
  * @property {(sessionId: string) => void} setSessionId - Function to update the sessionId state.
@@ -30,7 +30,7 @@ export interface AppState {
  * @property {() => Promise<void>} loadAppData - Function to load application data asynchronously.
  */
 interface AppStore extends AppState {
-  setData: (data: Partial<AppState>) => void;
+  setAppStore: (data: Partial<AppState>) => void;
   setLoading: (isLoading: boolean) => void;
   setMenuEnabled: (menuEnabled: boolean) => void;
   setSessionId: (sessionId: string) => void;
@@ -57,7 +57,7 @@ const useAppStore = create<AppStore>((set, get) => ({
    * 
    * @param {Partial<AppState>} data - The partial state to update.
    */
-  setData: (data) => set((state) => ({
+  setAppStore: (data) => set((state) => ({
     ...state,
     ...data,
   })),

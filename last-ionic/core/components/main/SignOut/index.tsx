@@ -2,12 +2,12 @@ import React, { useEffect, useContext } from 'react'
 import { IonRouterContext } from '@ionic/react'
 
 const SignOut: React.FC<any> = ({
-  setData
+  setUserStore
 }) => {
   const ionRouterContext = useContext(IonRouterContext)
   useEffect(() => {
     ionRouterContext.push('/login')
-  }, [setData, ionRouterContext])
+  }, [setUserStore, ionRouterContext])
   return null
 }
 

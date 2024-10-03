@@ -18,7 +18,7 @@ import Captcha from '../../../integrations/CaptchaIntegration';
 
 import Looper from '../../utils/Looper';
 
-import { FieldProps, FormComponentProps, FormDataProps } from './types';
+import { FieldProps, FormComponentProps, IFormData } from './types';
 import './style.css';
 
 const Form: React.FC<FormComponentProps> = (formProps: FormComponentProps): JSX.Element | null => {
@@ -29,7 +29,7 @@ const Form: React.FC<FormComponentProps> = (formProps: FormComponentProps): JSX.
 
   const [csrfToken, setCsrfToken] = useState<string>(''); // CSRF token for security
   const [captcha, setCaptcha] = useState<string>(''); // CAPTCHA value
-  const [formData, setFormData] = useState<FormDataProps | null>(null); // Form data configuration
+  const [formData, setFormData] = useState<IFormData | null>(null); // Form data configuration
   const [isLoading, setIsLoading] = useState(true); // Loading state
   const [isSubmitting, setIsSubmitting] = useState(false); // Submission state
   const [showCaptcha, setShowCaptcha] = useState(false); // Estado para mostrar CAPTCHA
@@ -182,7 +182,7 @@ const Form: React.FC<FormComponentProps> = (formProps: FormComponentProps): JSX.
       return newData;
     };
 
-    const updatedFormData = setInitialForm(formProps) as FormDataProps;
+    const updatedFormData = setInitialForm(formProps) as IFormData;
 
     setFormData(updatedFormData);
 

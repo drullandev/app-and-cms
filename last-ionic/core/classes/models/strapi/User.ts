@@ -5,8 +5,8 @@ export interface User {
   provider: string;
   confirmed: boolean;
   blocked: boolean;
-  createdAt: string; // Fecha en formato ISO
-  updatedAt: string; // Fecha en formato ISO
+  createdAt: string;
+  updatedAt: string;
   darkMode: boolean;
   hasSeenTutorial: string; // Aunque parece booleano, en tus datos es un string
 }
@@ -14,4 +14,15 @@ export interface User {
 export interface ILogin {
   identifier: string;
   password: string;
+}
+
+export interface IRecover {
+  email: string;
+}
+
+export interface IRegister {
+  name: string;
+  password: string;
+  email: string;
+  username: string;
 }

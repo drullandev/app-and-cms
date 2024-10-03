@@ -7,17 +7,17 @@ import * as icon from 'ionicons/icons';
 import DebugUtils from '../../../classes/utils/DebugUtils';
 import RestOutput from '../../../classes/utils/RestOutput';
 
-import { FormDataProps } from '../../../components/main/Form/types';
+import { IFormData } from '../../../components/main/Form/types';
 import useUserStore from '../../../classes/stores/user.store';  // Importa el store
 import RestManager from '../../../classes/managers/RestManager';
 import useAppRest from '../../../integrations/RestIntegration';
 
-export const loginFormData = (): FormDataProps => {
+export const loginFormData = (): IFormData => {
 
   const { t } = useTranslation();
   const history = useHistory();
   const [presentToast] = useIonToast();
-  const { setData } = useUserStore();  // Obtén las funciones del store
+  const { setUserStore } = useUserStore();  // Obtén las funciones del store
 
   const debug = DebugUtils.setDebug(false);
 
@@ -96,7 +96,7 @@ export const loginFormData = (): FormDataProps => {
         onSuccess: {
           default: (res: any) => {
             if (res.status === 200) {
-              setData(res.data.user);
+              setUserStore(res.data.user);
               //presentToast(RestOutput.catchSuccess(res))
               //  .then(() => {
               //    history.push(HOME_PATH);

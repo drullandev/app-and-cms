@@ -46,7 +46,7 @@ const DataWrapper: React.FC<DataWrapperProps<any>> = ({
   ErrorComponent = <div>Error loading data</div>,  // Default error component
   children,
 }) => {
-  const { setData, setLoading } = ZustandActions;
+  const { setAppStore, setLoading } = ZustandActions;
   const ZustandState = ZustandStore();
 
   // Function to fetch data using useAppRest

@@ -5,13 +5,13 @@ import useUserStore from '../../../classes/stores/user.store';
 
 // Componente Reducer
 const LogoutPage: React.FC<LogoutProps> = () => {
-  const setData = useUserStore((state) => state.setData);  // Asumimos que esto proviene del store
+  const setUserStore = useUserStore((state) => state.setUserStore);  // Asumimos que esto proviene del store
   
   useEffect(() => {
     // Limpiar los datos del usuario al desmontar el componente
-    //setData(null);
+    //setUserStore(null);
     // Solo se ejecuta una vez cuando el componente se monta
-  }, [setData]);
+  }, [setUserStore]);
 
   return <Redirect to="/login" />;
 }

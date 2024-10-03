@@ -110,11 +110,11 @@ export const AppRoutes: IAppRoute[] = [
   },
   {
     title: i18n.t('About'),
-    path: '/tabs/about',
+    path: '/about',
     component: About,
     exact: true,
     icon: icon.person,
-    menu: false,
+    menu: true,
     logged: false,
     tab: true,
   },

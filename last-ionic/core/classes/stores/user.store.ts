@@ -3,6 +3,8 @@ import { Preferences } from '@capacitor/preferences';
 import Logger from '../utils/LoggerUtils';
 import DebugUtils from '../utils/DebugUtils';
 import { AppState } from './app.store';
+import { AuthResponse } from '../models/strapi/AuthResponse';
+import { User } from '../models/strapi/User';
 
 // Propiedades del usuario
 export const ID = 'id';
@@ -20,7 +22,7 @@ export const UPDATED_AT = 'updatedAt';
 const debug = DebugUtils.setDebug(false);
 
 // Define la interfaz del estado del usuario
-interface UserState {
+export interface IUserState {
   id: number;
   jwt: string;
   username?: string;
@@ -36,14 +38,14 @@ interface UserState {
 }
 
 // Define la interfaz del store con Zustand
-interface IStoreState extends UserState, AppState {
-  setUserState: (user: Partial<UserState>) => void;
+export interface IUserStore extends IUserState, AppState {
+  setUserState: (user: Partial<IUserState>) => void;
   setAppState: (conf: Partial<AppState>) => void;
   loadAppData: () => Promise<void>;
   loadUserData: () => Promise<void>;
 
   // Setters
-  setData: (data: Partial<UserState>) => void;
+  setUserStore: (data: Partial<IUserState>) => void;
   setId: (id: number) => void;
   setJwt: (jwt?: string) => void;
   setUsername: (username?: string) => void;
@@ -56,7 +58,7 @@ interface IStoreState extends UserState, AppState {
   setLogged: (logged: boolean) => void;
 }
 
-const useUserStore = create<IStoreState>((set, get) => ({
+const useUserStore = create<IUserStore>((set, get) => ({
   id: 0,
   jwt: '',
   username: undefined,
@@ -72,7 +74,7 @@ const useUserStore = create<IStoreState>((set, get) => ({
   menuEnabled: true,
 
   // Métodos para actualizar el estado
-  setUserState: (user) => {
+  setUserState: (user: Partial<IUserState>) => {
     const currentState = get();
     const updatedState = { ...currentState, ...user };
     if (JSON.stringify(currentState) !== JSON.stringify(updatedState)) {
@@ -141,7 +143,7 @@ const useUserStore = create<IStoreState>((set, get) => ({
   },
 
   // Setters
-  setData: (data: Partial<UserState>) => {
+  setUserStore: (data: Partial<IUserState>) => {
     const currentState = get();
     if (JSON.stringify(currentState) !== JSON.stringify({ ...currentState, ...data })) {
       set({ ...currentState, ...data });
@@ -211,3 +213,20 @@ const useUserStore = create<IStoreState>((set, get) => ({
 }));
 
 export default useUserStore;
+
+export const setIUserState = (resAxios: AuthResponse, resUser: User, logged: boolean): Partial<IUserState> => {
+  return {
+    id: resUser.id,
+    username: resUser.username,
+    email: resUser.email,
+    provider: resUser.provider,
+    confirmed: resUser.confirmed,
+    blocked: resUser.blocked,
+    createdAt: resUser.createdAt,
+    updatedAt: resUser.updatedAt,
+    darkMode: resUser.darkMode,
+    hasSeenTutorial: resUser.hasSeenTutorial.toString(),
+    jwt: resAxios.jwt,
+    logged: logged,
+  };
+};

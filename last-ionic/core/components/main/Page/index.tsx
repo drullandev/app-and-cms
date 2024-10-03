@@ -19,6 +19,8 @@ export interface IonPageProps {
   routerDirection?: 'forward' | 'back' | 'root' | string; // Ajusta según las opciones reales de Ionic
   skeleton?: boolean | false;
   title: string;
+  role: string;
+  ariaLabel?: string;
   description: string;
   ionViewWillEnter?: () => void;
   ionViewDidEnter?: () => void;

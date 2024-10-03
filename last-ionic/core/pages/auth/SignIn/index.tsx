@@ -7,8 +7,9 @@ import Header from '../../../components/main/Header';
 import Form from '../../../components/main/Form/index';
 
 import  Page, { PagePropsData } from '../../../components/main/Page';
-import { loginFormData, 
-  //recoverFormData 
+import { 
+  loginFormData, 
+  recoverFormData 
 } from './source';
 
 import './styles.scss';
@@ -25,7 +26,8 @@ const SignIn: React.FC<any> = (pageProps) => {
       description:'',
       //skeleton: true,
       //animated: "true",
-      
+      ariaLabel: t('Login to the account'),
+      role: 'main',
     },
     ga4: {
       load: {
@@ -67,7 +69,6 @@ const SignIn: React.FC<any> = (pageProps) => {
 
           </IonItem>
 
-          {/* Login Item */}
           <IonItem
             ariaLabel={t("Login item")}
             lines="none"
@@ -86,13 +87,13 @@ const SignIn: React.FC<any> = (pageProps) => {
           </IonItem>
 
           {/* Login Form */}
-          <Form {...loginFormData(pageProps)} />
-{/*
+          <Form {...loginFormData()} />
+
           <hr></hr>
           <IonItem>{t('Please include here you account mail to recover your account')}</IonItem>
           <IonItem>{t('After that check your email box')}</IonItem>
           <Form {...recoverFormData()} />
-*/}
+
         </IonContent>
       );
     },

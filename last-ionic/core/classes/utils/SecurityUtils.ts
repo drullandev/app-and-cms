@@ -1,7 +1,7 @@
 import DebugUtils from "./DebugUtils";
 import LoggerUtils from "./LoggerUtils"; 
 import DOMPurify from "dompurify";
-import { FormDataProps } from '../../components/main/Form/types';  // Importa tu interfaz FormDataProps
+import { IFormData } from '../../components/main/Form/types';  // Importa tu interfaz IFormData
 
 interface CsrfTokenData {
   token: string;
@@ -69,8 +69,8 @@ class SecurityUtils {
    * @param token - The CSRF token to validate.
    * @returns True if the token is valid and not expired, false otherwise.
    */
-  public validateCsrfToken(sessionId: string, formProps: FormDataProps, token: string): boolean {
-    const { id: formId } = formProps; // Usar el id del formulario de FormDataProps
+  public validateCsrfToken(sessionId: string, formProps: IFormData, token: string): boolean {
+    const { id: formId } = formProps; // Usar el id del formulario de IFormData
     const formTokens = this.csrfTokens.get(sessionId);
     
     if (!formTokens) {
@@ -106,7 +106,7 @@ class SecurityUtils {
    * @param formProps - The form properties used to validate the CSRF token (contains formId).
    * @returns Sanitized data if valid, otherwise false.
    */
-  public approveFormData(data: any, sessionId: string, formProps: FormDataProps): any | boolean {
+  public approveFormData(data: any, sessionId: string, formProps: IFormData): any | boolean {
     const submittedCsrfToken = data.csrf;
 
     if (this.validateCsrfToken(sessionId, formProps, submittedCsrfToken)) {

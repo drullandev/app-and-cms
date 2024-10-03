@@ -1,19 +1,17 @@
-// Global imports
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
 // Component imports
 import './styles.scss';
 import { signupForm } from './source';
-import { PagePropsData } from '../../../components/main/Page';
 
-// Used Components
+import { PagePropsData } from '../../../components/main/Page';
 import Page from '../../../components/main/Page';
 import Header from '../../../components/main/Header';
 import Form from '../../../components/main/Form/index';
 
 // Component Reducer
-const SignUp: React.FC<any> = (pageProps) => {
+const SignUp: React.FC<any> = () => {
 
   const { t } = useTranslation();
 
@@ -22,6 +20,8 @@ const SignUp: React.FC<any> = (pageProps) => {
       id: 'signup-page',
       title: t('Sign up a new account!'),
       description: t('This is the signup page'),
+      ariaLabel: t('Sign up a new account'),
+      role: 'main',
     },
     ga4: {
       load: {
@@ -35,14 +35,14 @@ const SignUp: React.FC<any> = (pageProps) => {
         title: t('Sign up!'),
         showMenuButton: true,
         slot: 'start',
-        loading: pageProps.loading || false
+        //loading: pageProps.loading || false
       }
       return <Header {...headerProps} />
     },
     content: () => {
       return (
         <>
-          <Form {...signupForm(pageProps)} />
+          <Form {...signupForm()} />
         </>
       );
     },

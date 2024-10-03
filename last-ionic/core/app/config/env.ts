@@ -7,6 +7,8 @@ export const appSetup = {
   animated: true
 }
 
+export const appIcon = 'assets/img/ica-slidebox-img-1.png'
+
 // Environment variables
 export const all = import.meta.env;
 

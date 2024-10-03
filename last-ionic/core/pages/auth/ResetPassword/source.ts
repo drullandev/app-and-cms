@@ -12,7 +12,7 @@ import DebugUtils from '../../../classes/utils/DebugUtils';
 import RestManager from '../../../classes/managers/RestManager';
 
 // Local dependencies
-import { FormDataProps } from '../../../components/main/Form/types';
+import { IFormData } from '../../../components/main/Form/types';
 
 // Reducer dependencies
 import useUserStore from '../../../classes/stores/user.store';
@@ -20,9 +20,9 @@ import useAppRest from '../../../integrations/RestIntegration';
 
 /**
  * This is the information for the reset page main form
- * @returns {FormDataProps}
+ * @returns {IFormData}
  */
-export const resetFormData = (): FormDataProps => {
+export const resetFormData = (): IFormData => {
 
   const { t } = useTranslation();
   const history = useHistory();

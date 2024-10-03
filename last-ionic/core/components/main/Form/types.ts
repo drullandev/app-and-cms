@@ -17,7 +17,7 @@ export interface FormEventsProps {
   error: GA4Event;
 }
 
-export interface FormDataProps {
+export interface IFormData {
   id: string;
   settings: any;
   captcha?: false | boolean;
@@ -30,7 +30,7 @@ export interface FormDataProps {
   onError: (errors: { [key: string]: any }) => void;
 }
 
-export interface FormComponentProps extends FormDataProps {
+export interface FormComponentProps extends IFormData {
   onError: (errors: DeepMap<Record<string, any>, FieldError>) => void;
 }
 

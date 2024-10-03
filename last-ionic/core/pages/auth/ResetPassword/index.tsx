@@ -22,6 +22,8 @@ const ResetPage: React.FC<any> = (pageProps) => {
       title: t('Reset your password'),
       id: 'reset-page',
       description: 'This page is to reset your password',
+      ariaLabel: t('Reset your password'),
+      role: 'main',
     },
     captcha: false,
     header: () => {
