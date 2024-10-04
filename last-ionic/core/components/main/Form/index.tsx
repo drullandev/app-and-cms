@@ -2,38 +2,33 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useForm, FieldValues } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { yupResolver } from '@hookform/resolvers/yup';
-
 import * as yup from 'yup';
-
 import Overlay from '../Overlay';
 import Field from './components/Field';
-
 import LoggerUtils from '../../../classes/utils/LoggerUtils';
 import Security from '../../../classes/utils/SecurityUtils';
 import DebugUtils from '../../../classes/utils/DebugUtils';
 import useAppStore from '../../../classes/stores/app.store';
-
 import ValidationUtils from '../../../classes/managers/ValidationsUtils';
 import Captcha from '../../../integrations/CaptchaIntegration';
-
+import * as icon from 'ionicons/icons';
 import Looper from '../../utils/Looper';
-
 import { FieldProps, FormComponentProps, IFormData } from './types';
 import './style.css';
 import DOMPurify from 'dompurify';
+import FormHandler from './classes/FormHandler'; // Importamos la clase para manejar el envío del formulario
 
 const Form: React.FC<FormComponentProps> = (formProps: FormComponentProps): JSX.Element | null => {
   const debug = DebugUtils.setDebug(true);
-  const logger = LoggerUtils.getInstance(true, 'FormComponent');
-
+  const logger = LoggerUtils.getInstance(debug, 'FormComponent');
   const { t } = useTranslation();
-
-  const [csrfToken, setCsrfToken] = useState<string>(''); // CSRF token for security
-  const [captcha, setCaptcha] = useState<string>(''); // CAPTCHA value
-  const [formData, setFormData] = useState<IFormData | null>(null); // Form data configuration
-  const [isLoading, setIsLoading] = useState(true); // Loading state
-  const [isSubmitting, setIsSubmitting] = useState(false); // Submission state
-  const [showCaptcha, setShowCaptcha] = useState(false); // Estado para mostrar CAPTCHA
+  
+  const [csrfToken, setCsrfToken] = useState<string>(''); 
+  const [captcha, setCaptcha] = useState<string>(''); 
+  const [formData, setFormData] = useState<IFormData | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showCaptcha, setShowCaptcha] = useState(false);
   const { sessionId } = useAppStore();
 
   const initialValuesRef = useRef<FieldValues>({});
@@ -49,7 +44,7 @@ const Form: React.FC<FormComponentProps> = (formProps: FormComponentProps): JSX.
       };
     }
     return {
-      resolver: yupResolver(yup.object().shape({})), // Empty schema if no fields
+      resolver: yupResolver(yup.object().shape({})),
       defaultValues: initialValuesRef.current,
     };
   }, [formData]);
@@ -75,81 +70,82 @@ const Form: React.FC<FormComponentProps> = (formProps: FormComponentProps): JSX.
     }
   };
 
-  const onSubmit = useCallback(async (data: FieldValues) => {
-    setIsSubmitting(true);
-  
-    // Verifica que formData esté disponible
-    if (!formData) {
-      logger.error('formData is not initialized');
-      return;
-    }
-  
-    try {
+  const onSubmit = useCallback(async (data: any) => {
 
-      // Removing buttons
-      const filteredData = Object.keys(data).reduce((acc, key) => {
-        if (!key.startsWith('button')) {
-          acc[key] = data[key];
+    if (formData) {
+
+      setIsSubmitting(true);
+
+      try {
+
+        // Removing buttons
+        const filteredData = Object.keys(data).reduce((acc, key) => {
+          if (!key.startsWith('button')) {
+            acc[key] = data[key];
+          }
+          return acc;
+        }, {} as any);
+    
+        // Accepting the CSRF
+        const validData = sessionId && Security.approveFormData(filteredData, sessionId, formProps);
+    
+        if (!validData) {
+          logger.error('Invalid CSRF token');
+          formData.onError({ message: 'Invalid CSRF token' });
         }
-        return acc;
-      }, {} as any);
-  
-      // Accepting the CSRF
-      const validData = sessionId && Security.approveFormData(filteredData, sessionId, formProps);
-  
-      if (!validData) {
-        logger.error('Invalid CSRF token');
-        formData.onError({ message: 'Invalid CSRF token' });
-      }
-      
-      if (validData && formProps.captcha) {
-        const captchaRequired = await Captcha.verifyCaptcha(captcha, validData);
-        if (captchaRequired) {
-          setShowCaptcha(true);
-          logger.info('Showing CAPTCHA due to verification requirement');
-          for (const key in validData) {
-            if (
-              Object.prototype.hasOwnProperty.call(validData, key) &&
-              !["captcha"].includes(key)
-            ) {
-              validData[key] = DOMPurify.sanitize(data[key]);
+        
+        if (validData && formProps.captcha) {
+          const captchaRequired = await Captcha.verifyCaptcha(captcha, validData);
+          if (captchaRequired) {
+            setShowCaptcha(true);
+            logger.info('Showing CAPTCHA due to verification requirement');
+            for (const key in validData) {
+              if (
+                Object.prototype.hasOwnProperty.call(validData, key) &&
+                !["captcha"].includes(key)
+              ) {
+                validData[key] = DOMPurify.sanitize(data[key]);
+              }
             }
           }
         }
+
+        // For now removing privacy and publicity stuff!!
+        // TODO: Recover this parameters somewhere in the cms for first, later to CRM somehow!!
+        for (const key in validData) {
+          if (
+            Object.prototype.hasOwnProperty.call(validData, key) &&
+            !["privacy", "publicity"].includes(key)
+          ) {
+            validData[key] = DOMPurify.sanitize(data[key]);
+          }
+        }
+    
+        // Then the onSuccess actions...
+        if (typeof formData.onSuccess === 'function') {
+          await formData.onSuccess(validData);
+        } else {
+          logger.error('formData.onSuccess is not defined');
+        }
+        
+        const formHandler = new FormHandler(formData);
+        await formHandler.handleSubmit(data);
+        logger.info('Submission success:', data);
+  
+      } catch (error) {
+        logger.error('Submission error:', error);
+  
+      } finally {
+        setIsSubmitting(false);
       }
 
-      // For now removing privacy and publicity stuff!!
-      // TODO: Recover this parameters somewhere in the cms for first, later to CRM somehow!!
-      for (const key in validData) {
-        if (
-          Object.prototype.hasOwnProperty.call(validData, key) &&
-          !["privacy", "publicity"].includes(key)
-        ) {
-          validData[key] = DOMPurify.sanitize(data[key]);
-        }
-      }
-  
-      // Then the onSuccess actions...
-      if (typeof formData.onSuccess === 'function') {
-        await formData.onSuccess(validData);
-      } else {
-        logger.error('formData.onSuccess is not defined');
-      }
-  
-    } catch (error) {
-      logger.error('Submission error:', error);
-      formData.onError({ message: 'Submission failed', error });
-    } finally {
-      setIsSubmitting(false);
     }
-  
-  }, [formData, csrfToken, captcha, sessionId]);
-  
+
+  }, [formData, csrfToken, captcha, sessionId, t, logger]);
 
   useEffect(() => {
 
     const setInitialForm = (formProps: FormComponentProps) => {
-
       const fields = [...(formProps.fields || [])];
 
       if (csrfToken) {
@@ -171,14 +167,8 @@ const Form: React.FC<FormComponentProps> = (formProps: FormComponentProps): JSX.
           type: 'checkbox',
           defaultValue: false,
           validationSchema: yup
-          .boolean()
-          .test(
-            'is-true',
-            t('You must check the publicity agreement'),
-            function (value) {
-              return value === true;
-            }
-          ),
+            .boolean()
+            .test('is-true', t('You must check the publicity agreement'), value => value === true),
           options: []
         });
       }
@@ -190,23 +180,17 @@ const Form: React.FC<FormComponentProps> = (formProps: FormComponentProps): JSX.
           type: 'checkbox',
           defaultValue: false,
           validationSchema: yup
-          .boolean()
-          .test(
-            'is-true',
-            t('You must check the privacy and data policy'),
-            function (value) {
-              return value === true;
-            }
-          ),
+            .boolean()
+            .test('is-true', t('You must check the privacy and data policy'), value => value === true),
           options: []
         });
       }
 
-      if (showCaptcha && captcha && formProps.captcha) {
+      if (showCaptcha && captcha && sessionId && formProps.captcha) {
         fields.push({
           name: 'captcha',
           type: 'recaptcha',
-          validationSchema: yup.string().required(t('The captha is required ;)')).oneOf([captcha]),
+          validationSchema: yup.string().required(t('The captcha is required ;)')).oneOf([captcha]),
           captcha: captcha,
           options: []
         });
@@ -219,15 +203,16 @@ const Form: React.FC<FormComponentProps> = (formProps: FormComponentProps): JSX.
       };
 
       return newData;
+
     };
 
     const updatedFormData = setInitialForm(formProps) as IFormData;
-
     setFormData(updatedFormData);
 
   }, [csrfToken, formProps, captcha, showCaptcha]);
 
   useEffect(() => {
+
     if (formData?.fields) {
       const MyValidationUtils = new ValidationUtils(formData.fields);
       const newInitialValues = MyValidationUtils.buildInitialValues();
@@ -238,6 +223,7 @@ const Form: React.FC<FormComponentProps> = (formProps: FormComponentProps): JSX.
       }
       setIsLoading(false);
     }
+
   }, [formData, reset]);
 
   useEffect(() => {
@@ -247,7 +233,7 @@ const Form: React.FC<FormComponentProps> = (formProps: FormComponentProps): JSX.
   useEffect(generateCaptcha, []);
 
   if (isLoading || !formData) {
-    return <div>Loading form...</div>; // Pantalla de carga hasta que todo esté listo
+    return <div>Loading form...</div>;
   }
 
   const renderField = (field: FieldProps, index: number) => (
@@ -283,6 +269,14 @@ const Form: React.FC<FormComponentProps> = (formProps: FormComponentProps): JSX.
       >
         <Looper items={formData.fields} renderItem={renderField} />
         <Looper items={formData.buttons} renderItem={renderButton} />
+        {!formData.buttons && renderButton({
+            name: 'submit',
+            label: t('Submit'),
+            type: 'submit',
+            style: { borderRadius: '20px', float: 'left', width: '46%', margin: '2%' },
+            icon: icon.starOutline,
+            options: []
+          }, 0)}
       </form>
     </>
   );

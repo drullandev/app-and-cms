@@ -29,8 +29,9 @@ export const resetFormData = (): IFormData => {
   const [presentToast] = useIonToast();
   const debug = DebugUtils.setDebug(false);
   
-  return {
+  const resetForm: IFormData = {
     id: 'reset-page',
+    url: '/auth/reset-password',
     settings: {
       autoSendIfValid: false,
       animations: {
@@ -105,46 +106,11 @@ export const resetFormData = (): IFormData => {
     ],
     onSuccess: async (data: any) => {
 
-      /*await useAppRest.makeAsyncCall({
-        req: {
-          url: '/auth/reset-password',
-          method: 'POST',
-          data: {
-            "code": data.code,
-            "password": data.password,
-            "passwordConfirmation": data.password
-          }
-        },
-        onSuccess: {
-          default: async (ret: any) => {
-
-            const onSuccess = async (ret: any) => {
-              let user = ret.user
-              user.jwt = ret.jwt // Attaching the JWT to the user level and state...
-
-              return user
-            } 
-
-            await onSuccess(ret.data)
-              .then((ret: any) => {
-                switch (ret.status) {
-                  case 200:
-                    presentToast({ 
-                      message: t('user-wellcome', { username: ret.data.user.username }) 
-                    }).then(()=> history.push('/tabs/schedule', { direction: 'none' }))
-                }            
-              })
-          }
-        },
-        onError:{
-          default: (err: any)=> {
-            presentToast({ 
-              message: t(err.response.data.error.message) ?? t(err.response.data.message[0].messages[0].message)
-            })
-          }
-        }
-      })*/
-      
+      await useAppRest.post( resetForm.url, {
+        "code": data.code,
+        "password": data.password,
+        "passwordConfirmation": data.password
+      });
     },
 
     onError: (errors:any) =>{
@@ -155,6 +121,9 @@ export const resetFormData = (): IFormData => {
       });
     }
   };
+
+  return resetForm;
+
 };
 
 export default resetFormData;

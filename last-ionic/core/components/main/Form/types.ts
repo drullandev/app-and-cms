@@ -1,3 +1,4 @@
+import { Method } from 'axios';
 import { ControllerProps, DeepMap, FieldError } from 'react-hook-form';
 import { Schema } from 'yup';
 
@@ -19,13 +20,24 @@ export interface FormEventsProps {
 
 export interface IFormData {
   id: string;
+  url: string;
   settings: any;
+  method?: Method;
+  success?: {
+    message?: string;
+    header?: string,
+  },
+  error?: {
+    message?: string;
+    header?: string,
+  },
   captcha?: false | boolean;
   agreement?: false | boolean;
   privacy?: false | boolean;
   fields: FieldProps[];
   buttons: FieldProps[];
   ga4?: GA4Options;
+  defaultOutput?: false | boolean;
   onSuccess:(data: any) => Promise<void>;
   onError: (errors: { [key: string]: any }) => void;
 }

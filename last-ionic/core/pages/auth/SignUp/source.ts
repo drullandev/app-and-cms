@@ -1,8 +1,8 @@
 import * as yup from 'yup';
+import * as icon from 'ionicons/icons';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router';
 import { useIonToast } from '@ionic/react'
-import * as icon from 'ionicons/icons';
 
 import DebugUtils from '../../../classes/utils/DebugUtils';
 import RestOutput from '../../../classes/utils/RestOutput';
@@ -11,8 +11,8 @@ import useUserStore, { setIUserState } from '../../../classes/stores/user.store'
 import Logger from '../../../classes/utils/LoggerUtils';
 import { IFormData } from '../../../components/main/Form/types';
 import useAppRest from '../../../integrations/RestIntegration';
-import { IRegister } from '../../../classes/models/strapi/User';
-import { AuthResponse } from '../../../classes/models/strapi/AuthResponse';
+import { IRegister } from '../../../classes/strapi/models/User';
+import { AuthResponse } from '../../../classes/strapi/models/AuthResponse';
 import { AxiosResponse, AxiosError } from 'axios';
 import useAppStore from '../../../classes/stores/app.store';
 
@@ -26,9 +26,12 @@ export const signupForm = (): IFormData => {
   const { setUserStore } = useUserStore();
   const { setLoading } = useAppStore();
   
-  return {
+  const formData: IFormData = {
     id: 'signup-page',
+    url: '/auth/local/register',
     captcha: false,
+    success: { header: 'dfdfa', message: 'adfa' }, // TODO: Externalize or make reusable
+    error: { header: 'string', message: 'string' }, // TODO: Externalize or make reusable
     settings: {
       autoSendIfValid: false,
       animations: {
@@ -77,7 +80,7 @@ export const signupForm = (): IFormData => {
           .max(16, t('Password must be at max 16 characters')),
           options: []
       },
-      { 
+      /*{ 
         name: 'repeat-password',
         label: t('Please, repeat the password'),
         type: 'password',
@@ -90,32 +93,20 @@ export const signupForm = (): IFormData => {
           .max(16, t('Password must be at max 16 characters'))
           .oneOf([yup.ref('password')], 'Passwords must match with previoous one!'),
           options: []
-      }
+      }*/
     ],
-    buttons:[      
+    buttons:[
       { 
         name: 'submit',
         label: t('Submit'),
         type: 'submit',
-        style: { borderRadius: '20px', float: 'left', width: '46%', margin: '2%' },
+        style: { borderRadius: '20px', float: 'left', width: '100%', margin: '2%' },
         icon: icon.starOutline,
-        options: []
-      },
-      {
-        name: 'register',
-        label: t('Register'),
-        type: 'button',
-        style: { display: 'inline-block', width: '46%', margin: '2%' },
-        onClick: () => {
-          history.push('/login');
-        },
         options: []
       }
     ],
 
     onSuccess: async (data: IRegister) => {
-
-      const url = '/auth/register';
 
       try {
         const success = (res: AxiosResponse<AuthResponse>) => {
@@ -150,7 +141,15 @@ export const signupForm = (): IFormData => {
           logger.error(err);
         };
 
-        await useAppRest.post(url, data)
+        await useAppRest.post(formData.url, data)
+          .then(success)
+          .catch(error);
+
+          await useAppRest.makeRequest({
+            url: formData.url,
+            method: formData.method ?? 'POST',
+            data: data
+          })
           .then(success)
           .catch(error);
 
@@ -168,4 +167,7 @@ export const signupForm = (): IFormData => {
     },
 
   };
+
+  return formData;
+
 };

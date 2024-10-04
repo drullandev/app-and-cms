@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useQuery, UseQueryOptions } from '@tanstack/react-query';
 import { useAppRest } from '../../../integrations/all-Integrations';
+import { Method } from 'axios';
 
 /**
  * DataWrapper is a higher-order React component that handles the process of fetching data
@@ -20,7 +21,7 @@ import { useAppRest } from '../../../integrations/all-Integrations';
 interface DataWrapperProps<T> {
   url: string;
   params?: Record<string, any>;  // Optional params to be passed with the request
-  method?: 'GET' | 'POST' | 'PUT' | 'DELETE';  // HTTP method to use (default: GET)
+  method?: Method;  // HTTP method to use (default: GET)
   body?: Record<string, any>;  // Optional body data for POST/PUT requests
   headers?: Record<string, string>;  // Optional headers for the request
   queryOptions?: UseQueryOptions<T, unknown, T, [string, Record<string, any>]>;  // React Query options

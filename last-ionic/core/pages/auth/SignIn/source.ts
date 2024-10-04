@@ -7,13 +7,13 @@ import * as icon from 'ionicons/icons';
 
 import Logger from '../../../classes/utils/LoggerUtils';
 import DebugUtils from '../../../classes/utils/DebugUtils';
-import { ILogin, IRecover } from '../../../classes/models/strapi/User';
+import { ILogin, IRecover } from '../../../classes/strapi/models/User';
 import useAppStore from '../../../classes/stores/app.store';
 import RestOutput from '../../../classes/utils/RestOutput';
-import useUserStore, { IUserState, setIUserState } from '../../../classes/stores/user.store';
+import useUserStore, { setIUserState } from '../../../classes/stores/user.store';
 import { IFormData } from '../../../components/main/Form/types';
 import useAppRest from '../../../integrations/RestIntegration';
-import { AuthResponse } from '../../../classes/models/strapi/AuthResponse';
+import { AuthResponse } from '../../../classes/strapi/models/AuthResponse';
 
 export const loginFormData = (): IFormData => {
 
@@ -25,9 +25,10 @@ export const loginFormData = (): IFormData => {
   const { setUserStore } = useUserStore();
   const { setLoading } = useAppStore();
 
-  return {
+  const formData : IFormData = {
     id: 'login-page',
     captcha: false,
+    url: '/auth/local',
     settings: {
       autoSendIfValid: false,
       animations: {
@@ -93,9 +94,8 @@ export const loginFormData = (): IFormData => {
     ],
     onSuccess: async (data: ILogin) => {
 
-      const url = '/auth/local';
-
       try {
+
         const success = (res: AxiosResponse<AuthResponse>) => {
 
           const resUser = res.data.user;
@@ -128,10 +128,10 @@ export const loginFormData = (): IFormData => {
           logger.error(err);
         };
 
-        await useAppRest.post(url, data)
+        await useAppRest.post(formData.url, data)
           .then(success)
           .catch(error)
-          .finally(() => setLoading(false));
+
       } catch (err) {
         presentToast(RestOutput.danger({ message: t('Login error') }));
         logger.error(err);
@@ -144,9 +144,13 @@ export const loginFormData = (): IFormData => {
       logger.error(err);
     },
   };
+
+  return formData;
+
 };
 
 export const recoverFormData = (): IFormData => {
+
   const debug = DebugUtils.setDebug(false);
   const logger = Logger.getInstance(debug, 'recoverFormData');
   const { t } = useTranslation();
@@ -155,9 +159,10 @@ export const recoverFormData = (): IFormData => {
   const { setLoading } = useAppStore();
   const { setUserStore } = useUserStore();
 
-  return {
+  const formData = {
     captcha: false,
     id: 'recover-page',
+    url: '/auth/forgot-password',
     settings: {
       autoSendIfValid: false,
       animations: {
@@ -197,9 +202,8 @@ export const recoverFormData = (): IFormData => {
     ],
     onSuccess: async (data: IRecover) => {
 
-      const url = '/auth/forgot-password';
-
       try {
+
         const success = (res: AxiosResponse<AuthResponse>) => {
 
           const resUser = res.data.user;
@@ -235,7 +239,7 @@ export const recoverFormData = (): IFormData => {
           logger.error(err);
         };
 
-        await useAppRest.post(url, data)
+        await useAppRest.post(formData.url, data)
           .then(success)
           .catch(error);
 
@@ -246,9 +250,12 @@ export const recoverFormData = (): IFormData => {
         setLoading(false);
       }
     },
-    onError: (err) => {
+    onError: (err: any) => {
       //presentToast(RestOutput.danger({ message: t('Recover error') }));
       logger.error(err);
     },
   };
+
+  return formData;
+
 };

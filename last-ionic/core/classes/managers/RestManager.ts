@@ -1,4 +1,4 @@
-import axios, { AxiosRequestConfig } from "axios";
+import axios, { AxiosRequestConfig, Method } from "axios";
 import LoggerUtils from "../utils/LoggerUtils";
 import DebugUtils from "../utils/DebugUtils";
 
@@ -210,7 +210,7 @@ class RestManager implements IRestManager {
    * @returns A promise that resolves with the data from the response.
    */
   public async makeRequest<T = any>(config: {
-    method: 'GET' | 'POST' | 'PUT' | 'DELETE';
+    method: Method;
     url: string;
     params?: Record<string, any>;
     data?: any;

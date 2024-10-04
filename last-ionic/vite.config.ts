@@ -16,6 +16,7 @@ export default defineConfig({
   },
   optimizeDeps: {
     exclude: ['stuff/*'], // Excluir la carpeta 'stuff' de la optimización de dependencias
+    include: ['lodash', 'axios'],
   },
   rollupInputOptions: {
     // Opciones de Rollup (opcional)

@@ -3,8 +3,8 @@ import { Preferences } from '@capacitor/preferences';
 import Logger from '../utils/LoggerUtils';
 import DebugUtils from '../utils/DebugUtils';
 import { AppState } from './app.store';
-import { AuthResponse } from '../models/strapi/AuthResponse';
-import { User } from '../models/strapi/User';
+import { AuthResponse } from '../strapi/models/AuthResponse';
+import { User } from '../strapi/models/User';
 
 // Propiedades del usuario
 export const ID = 'id';

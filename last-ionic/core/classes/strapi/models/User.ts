@@ -21,8 +21,7 @@ export interface IRecover {
 }
 
 export interface IRegister {
-  name: string;
+  username: string;
   password: string;
   email: string;
-  username: string;
 }
