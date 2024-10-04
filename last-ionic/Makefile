@@ -107,3 +107,6 @@ clean-docker:
 	@docker volume rm $(docker volume ls -q) || true
 	@docker network rm $(docker network ls -q) || true
 	@docker system prune --all --volumes -f || true
+
+zip:
+	@zip -r app.zip ./last-ionic/ -x "*/node_modules/*"	

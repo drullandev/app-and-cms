@@ -24,6 +24,7 @@ export interface ICookieManager {
  * CookieManager is a utility class for managing browser cookies.
  * It provides methods to set, get, and remove cookies in a simple and efficient manner.
  *
+ * @class CookieManager
  * @author David Rullán - https://github.com/drullandev
  * @date August 30, 2024
  */
@@ -35,112 +36,87 @@ class CookieManager implements ICookieManager {
   private debug: boolean = false; // Debug mode flag
 
   /**
+   * Private constructor to prevent direct instantiation. Use getInstance() instead.
    * Constructs a new CookieManager instance with the specified domain and path.
-   *
+   * 
    * @param domain - The domain for which cookies will be managed.
    * @param path - The path for which cookies will be managed.
-   * @param debug - Optional flag to enable debug mode.
    */
-  private constructor(domain: string, path: string, debug: boolean = false) {
-    this.debug = debug;
-    this.logger = LoggerUtils.getInstance(this.debug, this.constructor.name);
+  private constructor(domain: string, path: string = "/") {
     this.domain = domain;
     this.path = path;
-    this.logger.info("CookieManager initialized", { domain, path });
+    this.debug = DebugUtils.setDebug(this.debug);
+    this.logger = LoggerUtils.getInstance(this.debug, this.constructor.name);
   }
 
   /**
-   * Returns the instance of CookieManager for a specific domain and path.
-   * If an instance does not already exist, it creates a new one.
-   *
-   * @param domain - The domain for which cookies will be managed.
-   * @param path - The path for which cookies will be managed.
-   * @param debug - Optional flag to enable debug mode.
-   * @returns The singleton instance of CookieManager for the specified domain and path.
+   * Retrieves the singleton instance of CookieManager for the specified domain and path.
+   * 
+   * @param domain - The domain for which the instance is needed.
+   * @param path - Optional path for the cookies. Defaults to "/".
+   * @returns {CookieManager} The CookieManager instance for the specified domain and path.
    */
-  public static getInstance(domain: string, path: string, debug?: boolean): CookieManager {
-    const key = `${domain}_${path}`;
-    
+  public static getInstance(domain: string, path: string = "/"): CookieManager {
+    const key = `${domain}${path}`;
     if (!this.instances.has(key)) {
-      const instance = new CookieManager(domain, path, debug);
-      this.instances.set(key, instance);
+      this.instances.set(key, new CookieManager(domain, path));
     }
-    
-    return this.instances.get(key)!; // The non-null assertion operator '!' guarantees that the value exists
+    return this.instances.get(key)!;
   }
 
   /**
    * Sets a cookie with the specified name, value, and options.
-   *
+   * 
    * @param name - The name of the cookie.
    * @param value - The value of the cookie.
-   * @param options - Optional. An object containing additional options such as expires, secure, and path.
+   * @param options - Optional settings such as expiration, security, and path.
    */
-  public set(name: string, value: string, options: CookieOptions = {}): void {
-    try {
-      let cookieString = `${encodeURIComponent(name)}=${encodeURIComponent(value)}; path=${options.path || this.path}; domain=${this.domain}`;
+  public set(name: string, value: string, options?: CookieOptions): void {
+    let cookieString = `${name}=${encodeURIComponent(value)}; Path=${options?.path || this.path};`;
 
-      // Handle different types of expiration input
-      if (options.expires) {
-        let expires: Date;
-        if (typeof options.expires === "number") {
-          expires = new Date(Date.now() + options.expires);
-        } else if (typeof options.expires === "string") {
-          expires = new Date(options.expires);
-        } else {
-          expires = options.expires;
-        }
-        cookieString += `; expires=${expires.toUTCString()}`;
-      }
+    if (options?.expires) {
+      const expires = typeof options.expires === "number"
+        ? new Date(Date.now() + options.expires).toUTCString()
+        : options.expires instanceof Date
+        ? options.expires.toUTCString()
+        : options.expires;
 
-      if (options.secure) {
-        cookieString += `; secure`;
-      }
-
-      document.cookie = cookieString;
-      this.logger.info(`Cookie "${name}" set successfully`, { value, options });
-    } catch (error) {
-      this.logger.error(`Failed to set cookie "${name}":`, error);
+      cookieString += ` Expires=${expires};`;
     }
+
+    if (options?.secure) {
+      cookieString += " Secure;";
+    }
+
+    document.cookie = cookieString;
+    this.logger.info(`Cookie set: ${cookieString}`);
   }
 
   /**
-   * Gets the value of a cookie by name.
-   *
+   * Retrieves a cookie by name.
+   * 
    * @param name - The name of the cookie to retrieve.
-   * @returns The value of the cookie, or null if the cookie does not exist.
+   * @returns The value of the cookie or null if not found.
    */
   public get(name: string): string | null {
-    try {
-      const match = document.cookie.match(
-        new RegExp(`(^| )${encodeURIComponent(name)}=([^;]+)`)
-      );
-      const value = match ? decodeURIComponent(match[2]) : null;
-      this.logger.info(`Cookie "${name}" retrieved`, { value });
-      return value;
-    } catch (error) {
-      this.logger.error(`Failed to retrieve cookie "${name}":`, error);
-      return null;
-    }
+    const cookies = document.cookie.split("; ");
+    const cookie = cookies.find(cookie => cookie.startsWith(`${name}=`));
+    return cookie ? decodeURIComponent(cookie.split("=")[1]) : null;
   }
 
   /**
    * Removes a cookie by name.
-   *
+   * 
    * @param name - The name of the cookie to remove.
    */
   public remove(name: string): void {
-    try {
-      this.set(name, "", { expires: new Date(0), path: '/' });
-      this.logger.info(`Cookie "${name}" removed`);
-    } catch (error) {
-      this.logger.error(`Failed to remove cookie "${name}":`, error);
-    }
+    this.set(name, "", { expires: new Date(0) });
+    this.logger.info(`Cookie removed: ${name}`);
   }
 
   /**
-   * Alias for `remove`. Removes a cookie by name.
-   *
+   * Alias for remove. Deletes a cookie by name.
+   * 
    * @param name - The name of the cookie to delete.
    */
   public delete(name: string): void {

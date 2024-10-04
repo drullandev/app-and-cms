@@ -8,6 +8,8 @@ import { apiUrl } from '../app/config/env';
  * @param token - Optional Bearer token to be used for authorization.
  * @returns A singleton instance of RestManager.
  */
-const useAppRest: RestManager = RestManager.getInstance(apiUrl);
+const useAppRest: RestManager = RestManager.getInstance(apiUrl, {
+  Authorization: `Bearer YOUR_TOKEN`
+});
 
 export default useAppRest;

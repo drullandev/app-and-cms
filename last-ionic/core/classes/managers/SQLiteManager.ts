@@ -34,145 +34,123 @@ export interface ISQLiteManager {
  * const users = await dbManager.query('users');
  * await dbManager.close();
  *
+ * @class SQLiteManager
  * @author David Rullán - https://github.com/drullandev
- * @date August 31, 2024
+ * @date September 10, 2024
  */
 class SQLiteManager implements ISQLiteManager {
-  private static instances: Map<string, SQLiteManager> = new Map(); // Store instances by dbPath
-  private db: Database | null = null;
+  private static instances: Map<string, SQLiteManager> = new Map(); // Store instances per database path
   private dbPath: string;
+  private db?: Database;
   private logger: LoggerUtils;
-  private debug: boolean = false; // Debug mode flag
+  private debug: boolean = false;
 
   /**
-   * Private constructor to enforce instantiation control.
-   *
+   * Private constructor to prevent direct instantiation. Use getInstance() instead.
+   * 
    * @param dbPath - The path to the SQLite database file.
-   * @param debug - Optional flag to enable or disable debug mode.
    */
-  private constructor(dbPath: string, debug?: boolean) {
-    this.debug = DebugUtils.setDebug(debug ?? this.debug);
-    this.logger = LoggerUtils.getInstance( this.debug, this.constructor.name);
+  private constructor(dbPath: string) {
     this.dbPath = dbPath;
-
-    {
-      this.logger.info("SQLiteManager initialized", { dbPath });
-    }
+    this.debug = DebugUtils.setDebug(this.debug);
+    this.logger = LoggerUtils.getInstance(this.debug, this.constructor.name);
   }
 
   /**
-   * Retrieves or creates a new SQLiteManager instance for the given database path.
-   *
+   * Retrieves the singleton instance of SQLiteManager for the specified database path.
+   * 
    * @param dbPath - The path to the SQLite database file.
-   * @param debug - Optional flag to enable or disable debug mode.
    * @returns {SQLiteManager} The SQLiteManager instance for the specified path.
    */
-  public static getInstance(dbPath: string = './default-database.db', debug?: boolean): SQLiteManager {
+  public static getInstance(dbPath: string): SQLiteManager {
     if (!this.instances.has(dbPath)) {
-      this.instances.set(dbPath, new SQLiteManager(dbPath, debug));
+      this.instances.set(dbPath, new SQLiteManager(dbPath));
     }
     return this.instances.get(dbPath)!;
   }
 
   /**
-   * Opens a connection to the SQLite database.
-   * This method initializes the `db` property with a connected Database instance.
-   *
-   * @returns A promise that resolves when the connection is established.
+   * Connects to the SQLite database. If already connected, it will reuse the existing connection.
    */
-  async connect(): Promise<void> {
+  public async connect(): Promise<void> {
     try {
-      this.db = await open({
-        filename: this.dbPath,
-        driver: sqlite3.Database,
-      });
-      this.logger.info("Connected to the database.", { dbPath: this.dbPath });
+      if (!this.db) {
+        this.db = await open({
+          filename: this.dbPath,
+          driver: sqlite3.Database,
+        });
+        this.logger.info(`Connected to SQLite database at ${this.dbPath}`);
+      }
     } catch (error) {
-      this.logger.error("Failed to connect to the database.", error);
-      throw error;
+      this.logger.error("Failed to connect to the SQLite database", error);
+      throw new Error("Database connection failed");
     }
   }
 
   /**
-   * Creates a new table in the SQLite database if it does not already exist.
-   * This operation can only be executed when debug mode is enabled.
-   *
+   * Creates a new table in the database with the specified columns.
+   * 
    * @param tableName - The name of the table to create.
-   * @param columns - A string defining the columns and their types, e.g., 'id INTEGER PRIMARY KEY, name TEXT'.
-   * @returns A promise that resolves when the table creation is complete.
-   * @throws Error if debug mode is disabled.
+   * @param columns - The columns to include in the table, formatted as a SQL string.
    */
-  async createTable(tableName: string, columns: string): Promise<void> {
-    if (!this.debug) {
-      this.logger.error("Attempted to create a table while debug mode is disabled.");
-      throw new Error("Table creation is only allowed in debug mode.");
-    }
-
+  public async createTable(tableName: string, columns: string): Promise<void> {
     try {
-      const query = `CREATE TABLE IF NOT EXISTS ${tableName} (${columns});`;
-      await this.db!.run(query);
-      this.logger.info(`Table ${tableName} created.`, { columns });
+      await this.db?.run(`CREATE TABLE IF NOT EXISTS ${tableName} (${columns})`);
+      this.logger.info(`Table '${tableName}' created successfully`);
     } catch (error) {
-      this.logger.error(`Failed to create table ${tableName}.`, error);
-      throw error;
+      this.logger.error(`Failed to create table '${tableName}'`, error);
+      throw new Error(`Failed to create table '${tableName}'`);
     }
   }
 
   /**
-   * Inserts a new row into a specified table.
-   *
-   * @param tableName - The name of the table to insert into.
-   * @param data - An object containing the column names as keys and the corresponding values.
-   * @returns A promise that resolves when the insertion is complete.
+   * Inserts data into the specified table.
+   * 
+   * @param tableName - The name of the table to insert data into.
+   * @param data - A record containing key-value pairs of the data to insert.
    */
-  async insert(tableName: string, data: Record<string, any>): Promise<void> {
+  public async insert(tableName: string, data: Record<string, any>): Promise<void> {
     try {
       const columns = Object.keys(data).join(", ");
-      const placeholders = Object.keys(data)
-        .map(() => "?")
-        .join(", ");
+      const placeholders = Object.keys(data).map(() => "?").join(", ");
       const values = Object.values(data);
 
-      const query = `INSERT INTO ${tableName} (${columns}) VALUES (${placeholders});`;
-      await this.db!.run(query, values);
-      this.logger.info(`Data inserted into ${tableName}.`, { data });
+      await this.db?.run(`INSERT INTO ${tableName} (${columns}) VALUES (${placeholders})`, values);
+      this.logger.info(`Data inserted into '${tableName}'`, data);
     } catch (error) {
-      this.logger.error(`Failed to insert data into ${tableName}.`, error);
-      throw error;
+      this.logger.error(`Failed to insert data into table '${tableName}'`, error);
+      throw new Error(`Failed to insert data into '${tableName}'`);
     }
   }
 
   /**
-   * Queries a table in the SQLite database.
-   *
+   * Queries data from the specified table.
+   * 
    * @param tableName - The name of the table to query.
-   * @param columns - The columns to retrieve, defaults to '*'.
-   * @returns A promise that resolves to an array of rows matching the query.
+   * @param columns - Optional columns to select. Defaults to '*'.
+   * @returns {Promise<any[]>} The query result.
    */
-  async query(tableName: string, columns: string = "*"): Promise<any[]> {
+  public async query(tableName: string, columns: string = "*"): Promise<any[]> {
     try {
-      const query = `SELECT ${columns} FROM ${tableName};`;
-      const rows = await this.db!.all(query);
-      this.logger.info(`Query executed on table ${tableName}.`, { columns });
-      return rows;
+      const rows = await this.db?.all(`SELECT ${columns} FROM ${tableName}`);
+      this.logger.info(`Query executed on table '${tableName}'`);
+      return rows || [];
     } catch (error) {
-      this.logger.error(`Failed to execute query on table ${tableName}.`, error);
-      throw error;
+      this.logger.error(`Failed to query table '${tableName}'`, error);
+      throw new Error(`Failed to query table '${tableName}'`);
     }
   }
 
   /**
-   * Closes the connection to the SQLite database.
-   *
-   * @returns A promise that resolves when the connection is closed.
+   * Closes the database connection.
    */
-  async close(): Promise<void> {
+  public async close(): Promise<void> {
     try {
-      await this.db!.close();
-      this.logger.info("Database connection closed.");
+      await this.db?.close();
+      this.logger.info(`Connection to SQLite database at ${this.dbPath} closed`);
     } catch (error) {
-      this.logger.error("Failed to close the database connection.", error);
-      throw error;
+      this.logger.error("Failed to close the database connection", error);
+      throw new Error("Failed to close the database connection");
     }
   }
 }

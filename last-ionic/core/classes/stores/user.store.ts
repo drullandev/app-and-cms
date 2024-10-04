@@ -5,6 +5,7 @@ import DebugUtils from '../utils/DebugUtils';
 import { AppState } from './app.store';
 import { AuthResponse } from '../strapi/models/AuthResponse';
 import { User } from '../strapi/models/User';
+import RestManager from '../managers/RestManager';
 
 // Propiedades del usuario
 export const ID = 'id';
@@ -42,12 +43,12 @@ export interface IUserStore extends IUserState, AppState {
   setUserState: (user: Partial<IUserState>) => void;
   setAppState: (conf: Partial<AppState>) => void;
   loadAppData: () => Promise<void>;
-  loadUserData: () => Promise<void>;
+  loadUserData: (useAppRest: RestManager) => Promise<void>;
 
   // Setters
   setUserStore: (data: Partial<IUserState>) => void;
   setId: (id: number) => void;
-  setJwt: (jwt?: string) => void;
+  setJwt: (jwt: string, useAppRest: RestManager) => void;
   setUsername: (username?: string) => void;
   setEmail: (email?: string) => void;
   setProvider: (provider?: string) => void;
@@ -73,6 +74,36 @@ const useUserStore = create<IUserStore>((set, get) => ({
   updatedAt: undefined,
   menuEnabled: true,
 
+  // Setter de JWT
+  setJwt: (jwt: string, useAppRest: RestManager) => {
+    const currentJwt = get().jwt;
+    if (currentJwt !== jwt) {
+      set({ jwt: jwt || '' });
+      
+      // Actualizar los headers de RestManager
+      if (jwt) {
+        useAppRest.updateHeaders({ Authorization: `Bearer ${jwt}` });
+      } else {
+        useAppRest.updateHeaders({}); // Remover el header de autorización
+      }
+    }
+  },
+
+  // Cargar datos de usuario (incluyendo el JWT)
+  loadUserData: async (useAppRest: RestManager) => {
+    try {
+      const jwt = (await Preferences.get({ key: 'jwt' })).value;
+      set({ jwt: jwt || '' });
+
+      // Actualizar RestManager con el JWT
+      if (jwt) {
+        useAppRest.updateHeaders({ Authorization: `Bearer ${jwt}` });
+      }
+    } catch (error) {
+      console.error('Error loading user data:', error);
+    }
+  },
+
   // Métodos para actualizar el estado
   setUserState: (user: Partial<IUserState>) => {
     const currentState = get();
@@ -93,55 +124,6 @@ const useUserStore = create<IUserStore>((set, get) => ({
     }
   },
 
-  loadUserData: async () => {
-    try {
-      const keys = [
-        ID,
-        JWT,
-        USERNAME,
-        EMAIL,
-        PROVIDER,
-        BLOCKED,
-        CONFIRMED,
-        DARK_MODE,
-        HAS_SEEN_TUTORIAL,
-        CREATED_AT,
-        UPDATED_AT,
-      ];
-      const userData = await Promise.all(keys.map(key => Preferences.get({ key })));
-
-      const [
-        id,
-        jwt,
-        username,
-        email,
-        provider,
-        blocked,
-        confirmed,
-        darkMode,
-        hasSeenTutorial,
-        createdAt,
-        updatedAt,
-      ] = userData.map(item => item.value);
-
-      set({
-        id: id ? parseInt(id, 10) : 0,
-        jwt: jwt || '',
-        username: username || undefined,
-        email: email || undefined,
-        provider: provider || undefined,
-        blocked: blocked === 'true',
-        confirmed: confirmed === 'true',
-        darkMode: darkMode === 'true',
-        hasSeenTutorial: hasSeenTutorial || 'false',
-        createdAt: createdAt || undefined,
-        updatedAt: updatedAt || undefined,
-      });
-    } catch (error) {
-      console.error('Error loading user data:', error);
-    }
-  },
-
   // Setters
   setUserStore: (data: Partial<IUserState>) => {
     const currentState = get();
@@ -153,12 +135,6 @@ const useUserStore = create<IUserStore>((set, get) => ({
   setId: (id: number) => {
     if (get().id !== id) {
       set({ id });
-    }
-  },
-
-  setJwt: (jwt?: string) => {
-    if (get().jwt !== jwt) {
-      set({ jwt: jwt || '' });
     }
   },
 

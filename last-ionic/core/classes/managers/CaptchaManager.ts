@@ -13,6 +13,11 @@ export interface ICaptchaManager {
   verifyCaptcha(token: string, answer: string): Promise<{ isValid: boolean, message?: string }>;
 }
 
+export interface CaptchaData {
+  answer: string;
+  timestamp: number;
+}
+
 /**
  * CaptchaManager is responsible for managing CAPTCHAs, including generating, validating,
  * and tracking CAPTCHAs. This class provides methods to generate CAPTCHAs, validate user responses,
@@ -25,7 +30,8 @@ class CaptchaManager implements ICaptchaManager {
   private static instance: CaptchaManager | null = null; // Singleton instance
   private debug: boolean = false; // Debug mode flag
   private logger: LoggerUtils;
-  private captchaStore: Map<string, { answer: string, timestamp: number }>; // Stores CAPTCHA tokens, their answers, and creation timestamps
+
+  private captchaStore: Map<string, CaptchaData>; // Reemplazo por la interfaz
   private captchaExpiry: number; // Expiry time for CAPTCHA in milliseconds
   private cleanupInterval: number; // Interval time for periodic cleanup in milliseconds
   private cleanupTimer: NodeJS.Timeout | null = null; // Timer for cleanup interval
@@ -41,8 +47,6 @@ class CaptchaManager implements ICaptchaManager {
    */
   private constructor(storage: IStorageManager, captchaExpiry: number = 300000, cleanupInterval: number = 60000, debug: boolean = false) {
     this.debug = DebugUtils.setDebug(debug);
-    
-    // Initialize logger instance
     this.logger = LoggerUtils.getInstance(this.debug, this.constructor.name);
     
     this.captchaStore = new Map();
@@ -50,7 +54,6 @@ class CaptchaManager implements ICaptchaManager {
     this.cleanupInterval = cleanupInterval;
     this.storage = storage;
 
-    // Start the periodic cleanup
     this.startCleanup();
   }
 
@@ -64,15 +67,10 @@ class CaptchaManager implements ICaptchaManager {
    * @returns The singleton instance of CaptchaManager.
    */
   public static getInstance(storage: IStorageManager, captchaExpiry?: number, cleanupInterval?: number, debug?: boolean): CaptchaManager {
-    if (this.instance === null) {
-      this.instance = new this(
-        storage,
-        captchaExpiry ?? 300000,  // Default to 300000ms (5 minutes) if not provided
-        cleanupInterval ?? 60000,  // Default to 60000ms (1 minute) if not provided
-        debug ?? false
-      );
+    if (!CaptchaManager.instance) {
+      CaptchaManager.instance = new CaptchaManager(storage, captchaExpiry, cleanupInterval, debug);
     }
-    return this.instance;
+    return CaptchaManager.instance;
   }
 
   /**
@@ -83,14 +81,12 @@ class CaptchaManager implements ICaptchaManager {
    */
   public generateCaptcha(): { token: string, answer: string } {
     const token = this.generateRandomHex(6); // Generate a random 6-character hex string
-    const answer = token; // For simplicity, use the token itself as the answer
-    const timestamp = Date.now(); // Store the current time as the timestamp
+    const answer = token; 
+    const timestamp = Date.now(); 
     this.captchaStore.set(token, { answer, timestamp });
 
-    // Optionally, save the CAPTCHA to persistent storage if needed
     this.storage.set(token, { answer, timestamp }).catch(error => this.logger.error('Error saving CAPTCHA to storage', error));
 
-    // Set expiry time for the CAPTCHA
     setTimeout(() => this.captchaStore.delete(token), this.captchaExpiry);
 
     this.logger.info("CAPTCHA generated", { token });
@@ -104,10 +100,10 @@ class CaptchaManager implements ICaptchaManager {
    * @returns A random hexadecimal string.
    */
   private generateRandomHex(length: number): string {
-    const randomValues = new Uint8Array(length / 2); // Each byte generates two hex characters
-    window.crypto.getRandomValues(randomValues); // Fill the array with random values
+    const randomValues = new Uint8Array(length / 2);
+    window.crypto.getRandomValues(randomValues);
     return Array.from(randomValues)
-      .map((byte) => byte.toString(16).padStart(2, '0')) // Convert each byte to a two-character hex string
+      .map((byte) => byte.toString(16).padStart(2, '0'))
       .join('');
   }
 
@@ -119,11 +115,11 @@ class CaptchaManager implements ICaptchaManager {
    * @returns A boolean indicating whether the CAPTCHA is valid.
    */
   public async validateCaptcha(token: string, answer: string): Promise<boolean> {
-    const captcha = this.captchaStore.get(token) || await this.storage.get(token); // Check in memory or persistent storage
+    const captcha = this.captchaStore.get(token) || await this.storage.get(token);
     if (captcha && captcha.answer === answer) {
       this.logger.info("CAPTCHA validated successfully", { token });
-      this.captchaStore.delete(token); // Remove CAPTCHA after validation
-      await this.storage.remove(token); // Optionally remove from persistent storage
+      this.captchaStore.delete(token);
+      await this.storage.remove(token); 
       return true;
     } else {
       this.logger.warn("CAPTCHA validation failed", { token, answer });
@@ -133,7 +129,6 @@ class CaptchaManager implements ICaptchaManager {
 
   /**
    * Verifies the provided CAPTCHA token and answer.
-   * Similar to validateCaptcha but provides a different interface that might be more suitable for some use cases.
    * 
    * @param token - The CAPTCHA token to verify.
    * @param answer - The answer to check against the CAPTCHA.
@@ -154,9 +149,9 @@ class CaptchaManager implements ICaptchaManager {
   private async cleanUpExpiredCaptchas(): Promise<void> {
     const now = Date.now();
     for (const [token, { timestamp }] of this.captchaStore.entries()) {
-      if (now - timestamp > this.captchaExpiry) { // Check if CAPTCHA has expired
+      if (now - timestamp > this.captchaExpiry) {
         this.captchaStore.delete(token);
-        await this.storage.remove(token); // Optionally remove from persistent storage
+        await this.storage.remove(token);
         this.logger.info("Expired CAPTCHA removed", { token });
       }
     }

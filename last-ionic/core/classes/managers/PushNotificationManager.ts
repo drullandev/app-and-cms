@@ -1,16 +1,24 @@
-import { PushNotifications, PushNotificationToken, PushNotification } from '@capacitor/push-notifications';
+import { PushNotifications } from '@capacitor/push-notifications';
 import { LocalNotifications } from '@capacitor/local-notifications';
 import LoggerUtils from '../utils/LoggerUtils'; // Logger for structured logging
 import DebugUtils from '../utils/DebugUtils';   // Debugging helper
 
+/**
+ * Type definition for the configuration object used in PushNotificationManager.
+ * Allows custom handlers for registration, notification received, actions, errors, and permission denials.
+ */
 export type PushNotificationConfig = {
   onRegister?: (token: string) => void;
-  onNotificationReceived?: (notification: PushNotification) => void;
+  onNotificationReceived?: (notification: any) => void;  // Adjusted type
   onNotificationActionPerformed?: (action: any) => void;
   onError?: (error: any) => void;
   onPermissionDenied?: () => void;
 };
 
+/**
+ * Type definition for retry configuration.
+ * Controls the maximum number of attempts and the base delay for exponential backoff.
+ */
 type RetryConfig = {
   maxAttempts?: number; // Maximum retry attempts
   baseDelay?: number;   // Base delay for exponential backoff in ms
@@ -22,20 +30,13 @@ type RetryConfig = {
  * Manages push notifications for an Ionic React app. Supports device registration, 
  * notification handling, reattempts, scheduling of local notifications, and more.
  * 
- * **Features**:
- * - Registers the device for push notifications.
- * - Handles received push notifications and actions.
- * - Retry logic with exponential backoff.
- * - Program local notifications for future delivery.
- * - Manage silent notifications and cancellation.
- * 
- * **Usage**:
- * 1. Create an instance of `PushNotificationManager`.
- * 2. Call `registerForPushNotifications()` to register the device and receive push notifications.
- * 3. Optionally configure retry behavior, error handling, and scheduled notifications.
+ * @class PushNotificationManager
+ * @example
+ * const notificationManager = new PushNotificationManager();
+ * notificationManager.registerForPushNotifications();
  * 
  * @author David Rullán - https://github.com/drullandev
- * @date September 2024
+ * @date October 2024
  */
 export class PushNotificationManager {
   private logger: LoggerUtils;
@@ -59,13 +60,11 @@ export class PushNotificationManager {
     debug?: boolean
   ) {
     this.debug = DebugUtils.setDebug(debug ?? false);
-    this.logger = LoggerUtils.getInstance( this.debug, this.constructor.name);
+    this.logger = LoggerUtils.getInstance(this.debug, this.constructor.name);
     this.maxAttempts = retryConfig?.maxAttempts || 3;  // Default to 3 attempts
     this.baseDelay = retryConfig?.baseDelay || 1000;   // Default to 1 second delay
 
-    {
-      this.logger.info('PushNotificationManager initialized', { config });
-    }
+    this.logger.info('PushNotificationManager initialized', { config });
 
     // Set up listeners for push notification events
     this.setupPushListeners();
@@ -74,6 +73,7 @@ export class PushNotificationManager {
   /**
    * Registers the device for push notifications.
    * If already registered, it skips registration. Uses retry logic in case of failure.
+   * Handles permission requests and token registration.
    */
   public async registerForPushNotifications(): Promise<void> {
     if (this.registered) {
@@ -87,15 +87,14 @@ export class PushNotificationManager {
         this.logger.info('Push notification permission granted');
         PushNotifications.register();
 
-        // Handle registration success
-        PushNotifications.addListener('registration', (token: PushNotificationToken) => {
-          this.logger.info('Push notification token:', token.value);
+        // Adjusted to handle the updated API
+        PushNotifications.addListener('registration', (token) => {
+          this.logger.info('Push notification token:', token.value);  // Updated without `PushNotificationToken`
           this.config?.onRegister?.(token.value);
           this.registered = true;
           this.resetRetryCount(); // Reset retry count on success
         });
 
-        // Handle registration errors
         PushNotifications.addListener('registrationError', (error) => {
           this.logger.error('Error during push registration:', error);
           this.retryRegistration();
@@ -134,7 +133,7 @@ export class PushNotificationManager {
    * @returns {number} - The calculated delay in milliseconds.
    */
   private getRetryDelay(): number {
-    return this.baseDelay * Math.pow(2, this.retryCount);
+    return this.baseDelay * Math.pow(2, this.retryCount);  // Exponential backoff formula
   }
 
   /**
@@ -146,6 +145,8 @@ export class PushNotificationManager {
 
   /**
    * Cancels all active push notifications.
+   * 
+   * @returns {Promise<void>} - A promise indicating the completion of the operation.
    */
   public async cancelAllNotifications(): Promise<void> {
     try {
@@ -176,10 +177,10 @@ export class PushNotificationManager {
             body,
             id: new Date().getTime(), // Unique ID for the notification
             schedule: { at: scheduleDate },
-            sound: undefined, // Omit sound property or set to undefined if not needed
-            attachments: [],  // Empty array for no attachments
-            actionTypeId: '',  // Set a valid actionTypeId if needed
-            extra: {},         // Additional data if needed
+            sound: undefined,
+            attachments: [],
+            actionTypeId: '',
+            extra: {},
           },
         ],
       });
@@ -190,32 +191,17 @@ export class PushNotificationManager {
   }
 
   /**
-   * Subscribes the device to a specific notification topic (for use with FCM).
-   * 
-   * @param topic - The topic to subscribe to.
-   */
-  public async subscribeToTopic(topic: string): Promise<void> {
-    try {
-      this.logger.info(`Subscribed to topic: ${topic}`);
-      // Placeholder: You would need to handle this logic via FCM or other services
-    } catch (error) {
-      this.handleError(error, `Error subscribing to topic: ${topic}`);
-    }
-  }
-
-  /**
    * Sets up listeners for push notification events.
    * Handles received notifications and actions performed on notifications.
    */
   private setupPushListeners(): void {
-    // Listen for push notifications received
-    PushNotifications.addListener('pushNotificationReceived', (notification: PushNotification) => {
-      this.logger.info('Push notification received:', notification);
+    // Updated to handle the latest push notification types
+    PushNotifications.addListener('pushNotificationReceived', (notification) => {
+      this.logger.info('Push notification received:', notification);  // Updated without `PushNotification`
       this.config?.onNotificationReceived?.(notification);
     });
 
-    // Listen for actions performed on push notifications
-    PushNotifications.addListener('pushNotificationActionPerformed', (action: any) => {
+    PushNotifications.addListener('pushNotificationActionPerformed', (action) => {
       this.logger.info('Push notification action performed:', action);
       this.config?.onNotificationActionPerformed?.(action);
     });
@@ -234,14 +220,6 @@ export class PushNotificationManager {
     } else {
       this.logger.error(message, error);
     }
-  }
-
-  /**
-   * Cleans up all listeners and resources to prevent memory leaks.
-   */
-  public cleanUp(): void {
-    this.logger.info('Cleaning up PushNotificationManager resources');
-    PushNotifications.removeAllListeners(); // Removes all registered listeners
   }
 }
 
