@@ -1,26 +1,26 @@
 import { useState, useEffect, forwardRef } from 'react';
 import { IonLabel, IonButton, IonSpinner } from '../../../../../app/components/Ionic/basic';
-import { FieldProps } from '../../types';
+import { IField } from '../../types';
 import * as icon from 'ionicons/icons';
 import Icon from '../../../../../app/components/Ionic/v8/Icon';
 import React from 'react';
 
 /**
  * Button component that handles loadinging a label, an optional icon, and a spinner during loading state.
- * @param {FieldProps} field - The properties for the button.
+ * @param {IField} field - The properties for the button.
  * @returns {JSX.Element} The rendered button component.
  */
-const Button = forwardRef<HTMLIonButtonElement, FieldProps>((field, ref) => {
+const Button = forwardRef<HTMLIonButtonElement, IField>((field, ref) => {
 
   // State to manage the loading/loading status
   const [loading, setloading] = useState<boolean>(false);
 
   /**
    * Generates the content to be loadinged inside the button.
-   * @param {FieldProps} field - The properties for the button.
+   * @param {IField} field - The properties for the button.
    * @returns {JSX.Element} The content for the button, including the spinner or icon and label.
    */
-  const buttonContent = (field: FieldProps) => (
+  const buttonContent = (field: IField) => (
     <>
       {loading 
         ? <IonSpinner ariaHidden={true} name="lines-small" />

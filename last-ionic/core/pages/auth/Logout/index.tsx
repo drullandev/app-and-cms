@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { Redirect } from 'react-router-dom';
 import { LogoutProps } from './types';
-import useUserStore from '../../../classes/stores/user.store';
+import useUserStore from '../../../integrations/stores/user.store';
 
 // Componente Reducer
 const LogoutPage: React.FC<LogoutProps> = () => {

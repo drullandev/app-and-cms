@@ -46,7 +46,7 @@ class CookieManager implements ICookieManager {
     this.domain = domain;
     this.path = path;
     this.debug = DebugUtils.setDebug(this.debug);
-    this.logger = LoggerUtils.getInstance(this.debug, this.constructor.name);
+    this.logger = LoggerUtils.getInstance(this.constructor.name, this.debug);
   }
 
   /**

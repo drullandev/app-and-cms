@@ -69,8 +69,8 @@ class LoggerUtils implements ILoggerUtils {
    * @returns {LoggerUtils} The LoggerUtils instance.
    */
   public static getInstance(
-    debug?: boolean,
-    name?: string,
+    name: string,
+    debug: boolean = false,
     logLevel?: LogLevel,
     maxLogs?: number,
     shouldLog?: () => boolean

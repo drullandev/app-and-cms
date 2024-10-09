@@ -18,10 +18,8 @@ import {
 } from '../../../../../app/components/Ionic/basic';
 import * as yup from 'yup';
 import * as icon from 'ionicons/icons';
-import { FieldProps } from '../../types';
+import { IField } from '../../types';
 
-//import DebugUtils from '../../../classes/utils/DebugUtils';
-//import Security from '../../../classes/utils/SecurityUtils';
 import FunctionUtils from '../../../../../classes/utils/FunctionUtils';
 import Label from '../Label';
 import Skeleton from '../Skeleton';
@@ -31,11 +29,11 @@ import ReCAPTCHA from 'react-google-recaptcha';
 import Icon from '../../../../../app/components/Ionic/v8/Icon';
 import React from 'react';
 import Looper from '../../../../utils/Looper';
-
+import '../../style.css';
 /**
  * Field component that handles various types of form fields with validation, loading states, and error handling.
  * @param {object} props - The props for the Field component.
- * @param {FieldProps} props.field - The properties for the field.
+ * @param {IField} props.field - The properties for the field.
  * @param {any} props.control - Control object from react-hook-form.
  * @param {DeepMap<Record<string, any>, FieldError>} props.errors - Errors object from react-hook-form.
  * @param {Function} props.onFieldChange - Callback function to handle field change.
@@ -43,7 +41,7 @@ import Looper from '../../../../utils/Looper';
  * @returns {JSX.Element} The rendered Field component.
  */
 const Field = forwardRef<any, {
-  field: FieldProps;
+  field: IField;
   control: any;
   errors: DeepMap<Record<string, any>, FieldError>;
   onFieldChange: (name: string, value: any) => void;
@@ -56,8 +54,8 @@ const Field = forwardRef<any, {
   const showSleketons = false;
 
   // Builds the validation schema for the fields using Yup
-  const buildValidationSchema = (fields: FieldProps[]) => {
-    const shape = fields.reduce((acc: any, row: FieldProps) => {
+  const buildValidationSchema = (fields: IField[]) => {
+    const shape = fields.reduce((acc: any, row: IField) => {
       if (row.validationSchema) {
         acc[row.name] = row.validationSchema;
       }
@@ -366,13 +364,28 @@ const Field = forwardRef<any, {
           </>
         );
 
-      case 'button':
       case 'submit':
         return (
           <Button
+            class="ion-button-custom"
+            type={field.type}
+            style={{ width: '100%', borderRadius: '20px' }}
+            label={field.label}
+            onClick={field.onClick ? field.onClick : undefined}
+            icon={field.icon}
+            loading={loading}
+            name={'submit'}            
+          />
+        );
+
+      case 'button':
+
+        return (
+          <Button
+            class="ion-button-custom"
             expand
             type={field.type}
-            style={field.style || { width: '100%' }}
+            style={{ width: '100%', borderRadius: '20px', ...field.style}}
             label={field.label}
             disabled={loading}
             onClick={field.onClick ? field.onClick : undefined}

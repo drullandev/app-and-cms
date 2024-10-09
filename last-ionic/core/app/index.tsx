@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { IonApp } from '@ionic/react';
 
-import useUserStore from '../classes/stores/user.store';
+import useUserStore from '../integrations/stores/user.store';
 
 import AppRouter from '../components/main/AppRouter';
 import MainListItem from '../components/main/Menu/SidenavItem';

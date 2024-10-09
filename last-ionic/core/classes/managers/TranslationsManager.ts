@@ -26,7 +26,7 @@ class TranslationsManager {
   
   private constructor(debug?: boolean) {
     this.debug = DebugUtils.setDebug(debug ?? this.debug);
-    this.logger = LoggerUtils.getInstance( this.debug, this.constructor.name);
+    this.logger = LoggerUtils.getInstance( this.constructor.name, this.debug);
   }
 
   /**

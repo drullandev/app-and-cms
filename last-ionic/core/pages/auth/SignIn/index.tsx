@@ -1,32 +1,29 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { IonIcon, IonItem, IonText, IonFooter, IonContent } from '../../../app/components/Ionic/basic';
 import { checkmarkCircleOutline } from 'ionicons/icons';
+import { IonIcon, IonItem, IonText, IonFooter, IonContent } from '../../../app/components/Ionic/basic';
 
 import Header from '../../../components/main/Header';
 import Form from '../../../components/main/Form/index';
+import Page, { PagePropsData } from '../../../components/main/Page';
 
-import  Page, { PagePropsData } from '../../../components/main/Page';
-import { 
-  loginFormData, 
-  recoverFormData 
-} from './source';
+import { loginFormData } from './forms/login';
+import { recoverFormData } from './forms/recover';
 
 import './styles.scss';
 import './style.css';
+import Footer from '../../../components/design/Footer';
 
 const SignIn: React.FC<any> = (pageProps) => {
-  
   const { t } = useTranslation();
-
   const pageSettings : PagePropsData = { 
     settings: {
       id: 'login-page',
       title: 'Login page',
       description:'',
-      //skeleton: true,
-      //animated: "true",
       role: 'main',
+      //skeleton: false,
+      //animated: false,
     },
     ga4: {
       load: {
@@ -95,28 +92,12 @@ const SignIn: React.FC<any> = (pageProps) => {
 
         </IonContent>
       );
+
     },
     footer: () => {
       return (
         <IonFooter className="login-footer">
-          {/*<IonToolbar>
-            <IonText className="footer-text">
-              <p>{t('Need help?')}</p>
-              <p>{t('Contact us at support@festivore.com')}</p>
-              <p>{t('Follow us on')}</p>
-            </IonText>
-            <IonButtons slot="end">
-              <IonButton href="https://www.facebook.com" target="_blank">
-                <IonIcon name="logo-facebook" />
-              </IonButton>
-              <IonButton href="https://www.twitter.com" target="_blank">
-                <IonIcon name="logo-twitter" />
-              </IonButton>
-              <IonButton href="https://www.instagram.com" target="_blank">
-                <IonIcon name="logo-instagram" />
-              </IonButton>
-            </IonButtons>
-          </IonToolbar>*/}
+          <Footer/>
         </IonFooter>
       );
     }

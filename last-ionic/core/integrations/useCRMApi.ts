@@ -1,5 +1,5 @@
 import RestManager from "../classes/managers/RestManager";
-import { storageKey } from '../app/config/env'
+import { storageKey } from '../app/config/env';
 
 /**
  * Interface defining the contract for CRM operations.
@@ -13,27 +13,24 @@ export interface ICRMManager {
 }
 
 /**
- * The base URL for CRM API requests.
- * - Purpose: This URL is specifically configured for use with a CRM system in an Ionic application.
- * It is set using an environment variable, with a fallback to a default local URL.
- */
-
-/**
- * useCRMApi class extends RestManager to include operations specific to the CRM system.
+ * useCRMApi class depends on an existing RestManager instance.
  * It includes methods for validating users, retrieving user data, and updating user data.
  *
  * This class leverages the existing functionality of RestManager for generic REST API calls,
  * while adding CRM-specific logic.
  *
  * @author David Rullán
- * @date September 5, 2024
+ * @date October 4, 2024
  */
-class useCRMApi extends RestManager implements ICRMManager {
-  constructor(token?: string) {
-    super(
-      `${import.meta.env.VITE_PROTOCOL}://localhost:${import.meta.env.VITE_API_PORT}`,
-      token ? { Authorization: `Bearer ${token}` } : undefined
-    );
+class useCRMApi implements ICRMManager {
+  private restManager: RestManager;
+
+  /**
+   * Constructor to initialize the CRM API with an existing RestManager instance.
+   * @param restManager - An instance of RestManager to handle API calls.
+   */
+  constructor(restManager: RestManager) {
+    this.restManager = restManager;
   }
 
   /**
@@ -44,7 +41,7 @@ class useCRMApi extends RestManager implements ICRMManager {
    */
   public async validateUser(userId: string): Promise<boolean> {
     try {
-      const response = await this.get(`/crm/validate/${userId}`);
+      const response = await this.restManager.get<{data:{isValid: boolean}} >(`/crm/validate/${userId}`);
       return response.data.isValid;
     } catch (error) {
       console.error(`Error validating user ${userId} in CRM:`, error);
@@ -60,7 +57,7 @@ class useCRMApi extends RestManager implements ICRMManager {
    */
   public async getUserData(userId: string): Promise<any> {
     try {
-      const response = await this.get(`/crm/user/${userId}`);
+      const response = await this.restManager.get<any>(`/crm/user/${userId}`);
       return response.data;
     } catch (error) {
       console.error(`Error fetching data for user ${userId} in CRM:`, error);
@@ -77,7 +74,7 @@ class useCRMApi extends RestManager implements ICRMManager {
    */
   public async updateUserData(userId: string, data: any): Promise<any> {
     try {
-      const response = await this.put(`/crm/user/${userId}`, data);
+      const response = await this.restManager.put<any>(`/crm/user/${userId}`, data);
       return response.data;
     } catch (error) {
       console.error(`Error updating data for user ${userId} in CRM:`, error);

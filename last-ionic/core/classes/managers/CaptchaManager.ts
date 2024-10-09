@@ -46,8 +46,8 @@ class CaptchaManager implements ICaptchaManager {
    * @param debug - Optional flag to enable or disable debug mode.
    */
   private constructor(storage: IStorageManager, captchaExpiry: number = 300000, cleanupInterval: number = 60000, debug: boolean = false) {
-    this.debug = DebugUtils.setDebug(debug);
-    this.logger = LoggerUtils.getInstance(this.debug, this.constructor.name);
+    this.debug = false;
+    this.logger = LoggerUtils.getInstance(this.constructor.name, this.debug);
     
     this.captchaStore = new Map();
     this.captchaExpiry = captchaExpiry;

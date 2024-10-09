@@ -1,21 +1,11 @@
-// Filename: ServiceManager.ts
-
-/**
- * ServiceManager class
- * Centralizes the management and access to various application services using lazy initialization.
- * Provides Singleton access to services like SentryManager, RestManager, and PushNotificationManager.
- *
- * @class ServiceManager
- * @author David Rullán - https://github.com/drullandev
- * @date October 4, 2024
- */
-
-import { SentryManager } from "./SentryManager";
+import SentryManager from "./SentryManager";
 import PushNotificationManager, { PushNotificationConfig } from "./PushNotificationManager";
 import RestManager from "./RestManager";
 
 /**
  * Interface defining the configuration structure for SentryManager.
+ * 
+ * @interface SentryManagerConfig
  */
 interface SentryManagerConfig {
   dsn: string;
@@ -24,80 +14,88 @@ interface SentryManagerConfig {
 
 /**
  * Interface defining the configuration structure for ServiceManager.
- * This object centralizes all configuration options needed for initializing services.
+ * 
+ * @interface ServiceManagerConfig
  */
 interface ServiceManagerConfig {
   SentryManagerConfig: SentryManagerConfig;
-  restManagerConfig: string; // Assuming RestManager needs just a string (baseUrl)
   pushNotificationConfig: PushNotificationConfig;
 }
 
 /**
- * ServiceManager class
- * Manages the initialization of core services and ensures that only one instance of each service is created (Singleton).
+ * ServiceManager Class
+ * 
+ * This class manages the initialization and access to core services used within the application. 
+ * It ensures that only one instance of each service (such as SentryManager, RestManager, 
+ * and PushNotificationManager) is created, providing a centralized way to manage them.
+ * 
+ * It follows the Singleton pattern to ensure that services are initialized only once and shared 
+ * across the application. The class also allows for lazy initialization of the services when needed.
+ * 
+ * Usage Example:
+ * 
+ * ```typescript
+ * const serviceManager = ServiceManager.getInstance(restManager, serviceConfig);
+ * const sentryManager = serviceManager.getSentryManager();
+ * const pushManager = serviceManager.getPushNotificationManager();
+ * ```
+ * 
+ * @class ServiceManager
+ * @author David Rullán - https://github.com/drullandev
+ * @date October 4, 2024
  */
 export class ServiceManager {
   private static instance: ServiceManager | null = null; // Singleton instance
-  private SentryManager?: SentryManager;
+  private sentryManager?: SentryManager;
   private pushNotificationManager?: PushNotificationManager;
-  private restManager?: RestManager;
+  private restManager: RestManager;
 
   private config: ServiceManagerConfig;
 
   /**
    * Private constructor to prevent direct instantiation.
-   * Use the getInstance() method to obtain a singleton instance.
-   *
-   * @param config - Centralized configuration object for all services.
+   * This constructor initializes the ServiceManager with a RestManager instance 
+   * and a configuration object for the services.
+   * 
+   * @param restManager - An instance of RestManager for handling API calls.
+   * @param config - Configuration object containing settings for the services.
    */
-  private constructor(config: ServiceManagerConfig) {
+  private constructor(restManager: RestManager, config: ServiceManagerConfig) {
+    this.restManager = restManager;
     this.config = config;
   }
 
   /**
-   * Returns the singleton instance of ServiceManager.
-   * If the instance doesn't exist, it initializes one with the provided configuration.
-   *
-   * @param config - Configuration object required for initializing services.
-   * @returns The singleton ServiceManager instance.
+   * Retrieves the singleton instance of the ServiceManager. 
+   * If the instance doesn't already exist, it is created with the provided RestManager and config.
+   * 
+   * @param restManager - RestManager instance to be used for making API calls.
+   * @param config - Configuration object required for initializing the services.
+   * @returns {ServiceManager} The singleton instance of ServiceManager.
    */
-  public static getInstance(config: ServiceManagerConfig): ServiceManager {
+  public static getInstance(restManager: RestManager, config: ServiceManagerConfig): ServiceManager {
     if (!ServiceManager.instance) {
-      ServiceManager.instance = new ServiceManager(config);
+      ServiceManager.instance = new ServiceManager(restManager, config);
     }
     return ServiceManager.instance;
   }
 
   /**
    * Returns an instance of SentryManager using lazy initialization.
-   * If the SentryManager is not already initialized, it creates one using the provided configuration.
+   * If it is not already initialized, it is created using the provided configuration.
    * 
    * @returns {SentryManager} The SentryManager instance.
    */
   public getSentryManager(): SentryManager {
-    if (!this.SentryManager) {
-      // Passing the entire SentryManagerConfig object for initialization
-      this.SentryManager = new SentryManager(this.config.SentryManagerConfig);
+    if (!this.sentryManager) {
+      this.sentryManager = new SentryManager(this.config.SentryManagerConfig); // Create directly using constructor
     }
-    return this.SentryManager;
-  }
-
-  /**
-   * Returns an instance of RestManager using lazy initialization.
-   * If the RestManager is not already initialized, it creates one.
-   * 
-   * @returns {RestManager} The RestManager instance.
-   */
-  public getRestManager(): RestManager {
-    if (!this.restManager) {
-      this.restManager = RestManager.getInstance(); // Assuming RestManager follows Singleton pattern
-    }
-    return this.restManager;
+    return this.sentryManager;
   }
 
   /**
    * Returns an instance of PushNotificationManager using lazy initialization.
-   * If the PushNotificationManager is not already initialized, it creates one using the provided configuration.
+   * If it is not already initialized, it is created using the provided configuration.
    * 
    * @returns {PushNotificationManager} The PushNotificationManager instance.
    */
@@ -106,6 +104,15 @@ export class ServiceManager {
       this.pushNotificationManager = new PushNotificationManager(this.config.pushNotificationConfig);
     }
     return this.pushNotificationManager;
+  }
+
+  /**
+   * Provides access to the RestManager instance that was passed during initialization.
+   * 
+   * @returns {RestManager} The RestManager instance.
+   */
+  public getRestManager(): RestManager {
+    return this.restManager;
   }
 }
 

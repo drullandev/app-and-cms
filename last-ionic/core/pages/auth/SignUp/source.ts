@@ -7,18 +7,18 @@ import { useIonToast } from '@ionic/react'
 import DebugUtils from '../../../classes/utils/DebugUtils';
 import RestOutput from '../../../classes/utils/RestOutput';
 
-import useUserStore, { setIUserState } from '../../../classes/stores/user.store';
-import Logger from '../../../classes/utils/LoggerUtils';
-import { IFormData } from '../../../components/main/Form/types';
-import useAppRest from '../../../integrations/RestIntegration';
+import useUserStore, { setIUserState } from '../../../integrations/stores/user.store';
+import LoggerUtils from '../../../classes/utils/LoggerUtils';
+import { IFormComponent, IFormData, ISubmitForm } from '../../../components/main/Form/types';
+import useAppRest from '../../../integrations/useAppRest';
 import { IRegister } from '../../../classes/strapi/models/User';
 import { AuthResponse } from '../../../classes/strapi/models/AuthResponse';
 import { AxiosResponse, AxiosError } from 'axios';
-import useAppStore from '../../../classes/stores/app.store';
+import useAppStore from '../../../integrations/stores/app.store';
 
-export const signupForm = (): IFormData => {
+export const signupForm = (): IFormComponent => {
   const debug = DebugUtils.setDebug(false);
-  const logger = Logger.getInstance(debug, 'loginFomData');
+  const logger = LoggerUtils.getInstance('loginFomData');
 
   const { t } = useTranslation();
   const history = useHistory();
@@ -26,12 +26,10 @@ export const signupForm = (): IFormData => {
   const { setUserStore } = useUserStore();
   const { setLoading } = useAppStore();
   
-  const formData: IFormData = {
+  const formData: IFormComponent = {
     id: 'signup-page',
     url: '/auth/local/register',
     captcha: false,
-    success: { header: 'dfdfa', message: 'adfa' }, // TODO: Externalize or make reusable
-    error: { header: 'string', message: 'string' }, // TODO: Externalize or make reusable
     settings: {
       autoSendIfValid: false,
       animations: {
@@ -106,63 +104,65 @@ export const signupForm = (): IFormData => {
       }
     ],
 
-    onSuccess: async (data: IRegister) => {
+    onSuccess: (data: IRegister) => {
+      const successAcctions : ISubmitForm  = {
+        data: data,
+        settings: {
+          customSuccessMessage: {
+            header: t('Welcome to the app!'),
+            message: t('You logged successfully'),
+            show: true,
+          },
+          customErrorMessage: {
+            header: t('Login error!'),
+            message: t('There was an error logging in'),
+            show: false,
+          },
+        },
 
-      try {
-        const success = (res: AxiosResponse<AuthResponse>) => {
+        onSuccess: (res: any) => {
 
           const resUser = res.data.user;
+
           let logged = false;
 
           if (!resUser.confirmed) {
-            presentToast(RestOutput.warning({ message: t('The user is not confirmed') }));
+
+            presentToast(RestOutput.warning({
+              header: t('Not confirmed jet!'),
+              message: t('This user is not confirmed')
+            }));
+
           } else if (resUser.blocked) {
-            presentToast(RestOutput.danger({ message: t('The user is blocked') }));
+
+            presentToast(RestOutput.danger({
+              header: t('Blocked user!!'),
+              message: t('This user is blocked')
+            }));
+
           } else {
+
             logged = true;
           }
 
           const userState = setIUserState(res.data, resUser, logged);
+
           setUserStore(userState);
 
-          logger.info({ message: 'You have connected!' });
+          logger.info('You have connected!', userState);
 
-          presentToast(RestOutput.success({
-            header: t('You logged successfully!'),
-            message: t('Welcome to the app ') + resUser.username,
-          })).then(() => {
-            history.push('/home');
-          });
+        },
 
-        };
+        onError: (err: any) => {
+          logger.error('You not have connected!', err );
+        }
+        
+      }
 
-        const error = (err: AxiosError) => {
-          presentToast(RestOutput.danger({ message: t('Login error') }));
-          logger.error(err);
-        };
-
-        await useAppRest.post(formData.url, data)
-          .then(success)
-          .catch(error);
-
-          await useAppRest.makeRequest({
-            url: formData.url,
-            method: formData.method ?? 'POST',
-            data: data
-          })
-          .then(success)
-          .catch(error);
-
-      } catch (err) {
-        presentToast(RestOutput.danger({ message: t('Login error') }));
-        logger.error(err);
-      } finally {
-        setLoading(false);
-      };
+      return successAcctions;
 
     },
     onError: (err: any) => {
-      //presentToast(RestOutput.danger({ message: t('Login error') }));
       logger.error(err);
     },
 

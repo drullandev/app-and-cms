@@ -4,7 +4,7 @@ import { IonButton, IonContent, IonModal } from '@ionic/react';
 
 import TimeUtils from '../../../classes/utils/TimeUtils';
 
-import useAppStorage from '../../../integrations/StorageIntegration';
+import useAppStorage from '../../../integrations/useAppStorage';
 
 import './style.css';
 import { COOKIE_CONSENT_KEY, COOKIE_EXPIRATION_TIME, COOKIE_CONSENT_KEY_EXPIRE } from './env';

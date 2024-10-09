@@ -8,24 +8,26 @@ import Field from './components/Field';
 import LoggerUtils from '../../../classes/utils/LoggerUtils';
 import Security from '../../../classes/utils/SecurityUtils';
 import DebugUtils from '../../../classes/utils/DebugUtils';
-import useAppStore from '../../../classes/stores/app.store';
+import useAppStore from '../../../integrations/stores/app.store';
 import ValidationUtils from '../../../classes/managers/ValidationsUtils';
-import Captcha from '../../../integrations/CaptchaIntegration';
+import Captcha from '../../../integrations/useCaptcha';
 import * as icon from 'ionicons/icons';
 import Looper from '../../utils/Looper';
-import { FieldProps, FormComponentProps, IFormData } from './types';
+import { IField, IFormComponent, IFormData, ISubmitForm } from './types';
 import './style.css';
 import DOMPurify from 'dompurify';
-import FormHandler from './classes/FormHandler'; // Importamos la clase para manejar el envío del formulario
+import FormHandler from './classes/useFormHandler'; // Importamos la clase para manejar el envío del formulario
+import useFormHandler from './classes/useFormHandler';
 
-const Form: React.FC<FormComponentProps> = (formProps: FormComponentProps): JSX.Element | null => {
+const Form: React.FC<IFormComponent> = (formProps: IFormComponent): JSX.Element | null => {
+  
   const debug = DebugUtils.setDebug(true);
-  const logger = LoggerUtils.getInstance(debug, 'FormComponent');
+  const logger = LoggerUtils.getInstance('FormComponent');
   const { t } = useTranslation();
   
   const [csrfToken, setCsrfToken] = useState<string>(''); 
   const [captcha, setCaptcha] = useState<string>(''); 
-  const [formData, setFormData] = useState<IFormData | null>(null);
+  const [formData, setFormData] = useState<IFormData>();
   const [isLoading, setIsLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showCaptcha, setShowCaptcha] = useState(false);
@@ -76,6 +78,9 @@ const Form: React.FC<FormComponentProps> = (formProps: FormComponentProps): JSX.
 
       setIsSubmitting(true);
 
+      // Inicializamos useFormHandler con formData
+      const { handleSubmit: handleFormSubmit } = useFormHandler(formData || { url: '', method: 'POST' });
+
       try {
 
         // Removing buttons
@@ -90,15 +95,25 @@ const Form: React.FC<FormComponentProps> = (formProps: FormComponentProps): JSX.
         const validData = sessionId && Security.approveFormData(filteredData, sessionId, formProps);
     
         if (!validData) {
+          
+          // Error with the CSRF validation
           logger.error('Invalid CSRF token');
-          formData.onError({ message: 'Invalid CSRF token' });
-        }
-        
-        if (validData && formProps.captcha) {
+          if (formData.onError) {
+            formData.onError({
+              message: 'Invalid CSRF token'
+            });
+          }
+
+        } else if (validData && formProps.captcha) {
+
           const captchaRequired = await Captcha.verifyCaptcha(captcha, validData);
+
           if (captchaRequired) {
+
+            // The form will reload with a captcha jiji
             setShowCaptcha(true);
             logger.info('Showing CAPTCHA due to verification requirement');
+
             for (const key in validData) {
               if (
                 Object.prototype.hasOwnProperty.call(validData, key) &&
@@ -107,32 +122,31 @@ const Form: React.FC<FormComponentProps> = (formProps: FormComponentProps): JSX.
                 validData[key] = DOMPurify.sanitize(data[key]);
               }
             }
+
           }
+
         }
 
-        // For now removing privacy and publicity stuff!!
-        // TODO: Recover this parameters somewhere in the cms for first, later to CRM somehow!!
+        // For now removing privacy and publicity stuff and sanitize!!
         for (const key in validData) {
           if (
             Object.prototype.hasOwnProperty.call(validData, key) &&
-            !["privacy", "publicity"].includes(key)
+            ! ["privacy", "publicity"].includes(key)
           ) {
             validData[key] = DOMPurify.sanitize(data[key]);
           }
         }
-    
-        // Then the onSuccess actions...
-        if (typeof formData.onSuccess === 'function') {
-          await formData.onSuccess(validData);
-        } else {
-          logger.error('formData.onSuccess is not defined');
+
+        const IForm: ISubmitForm = {
+          data: validData,
+          onSuccess: formData.onSuccess,
+          onError: formData.onError,
         }
-        
-        const formHandler = new FormHandler(formData);
-        await formHandler.handleSubmit(data);
-        logger.info('Submission success:', data);
+
+        await handleFormSubmit(IForm);
   
       } catch (error) {
+
         logger.error('Submission error:', error);
   
       } finally {
@@ -145,7 +159,7 @@ const Form: React.FC<FormComponentProps> = (formProps: FormComponentProps): JSX.
 
   useEffect(() => {
 
-    const setInitialForm = (formProps: FormComponentProps) => {
+    const setInitialForm = (formProps: IFormComponent) => {
       const fields = [...(formProps.fields || [])];
 
       if (csrfToken) {
@@ -207,6 +221,7 @@ const Form: React.FC<FormComponentProps> = (formProps: FormComponentProps): JSX.
     };
 
     const updatedFormData = setInitialForm(formProps) as IFormData;
+    
     setFormData(updatedFormData);
 
   }, [csrfToken, formProps, captcha, showCaptcha]);
@@ -236,7 +251,7 @@ const Form: React.FC<FormComponentProps> = (formProps: FormComponentProps): JSX.
     return <div>Loading form...</div>;
   }
 
-  const renderField = (field: FieldProps, index: number) => (
+  const renderField = (field: IField, index: number) => (
     <Field
       ref={index === 0 ? firstFieldRef : null}
       key={'field-' + (field.name ?? 'field-' + field.id) + index}
@@ -248,7 +263,7 @@ const Form: React.FC<FormComponentProps> = (formProps: FormComponentProps): JSX.
     />
   );
 
-  const renderButton = (button: FieldProps, index: number) => (
+  const renderButton = (button: IField, index: number) => (
     <Field
       key={'button-' + (button.name ?? 'button-' + button.id) + index}
       field={button}
@@ -271,9 +286,10 @@ const Form: React.FC<FormComponentProps> = (formProps: FormComponentProps): JSX.
         <Looper items={formData.buttons} renderItem={renderButton} />
         {!formData.buttons && renderButton({
             name: 'submit',
+            class: 'ion-button-custom',
             label: t('Submit'),
             type: 'submit',
-            style: { borderRadius: '20px', float: 'left', width: '46%', margin: '2%' },
+            style: { borderRadius: '20px', float: 'left', width: '98%', margin: '2%' },
             icon: icon.starOutline,
             options: []
           }, 0)}

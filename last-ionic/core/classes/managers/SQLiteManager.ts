@@ -53,7 +53,7 @@ class SQLiteManager implements ISQLiteManager {
   private constructor(dbPath: string) {
     this.dbPath = dbPath;
     this.debug = DebugUtils.setDebug(this.debug);
-    this.logger = LoggerUtils.getInstance(this.debug, this.constructor.name);
+    this.logger = LoggerUtils.getInstance(this.constructor.name, this.debug);
   }
 
   /**

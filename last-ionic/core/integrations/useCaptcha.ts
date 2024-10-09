@@ -1,5 +1,5 @@
 import CaptchaManager, { ICaptchaManager } from "../classes/managers/CaptchaManager";
-import useAppStorage from "./StorageIntegration";
+import useAppStorage from "./useAppStorage";
 import { captchaExpiryTime, captchaCleanupInterval } from '../app/config/env';
 
 /**

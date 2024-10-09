@@ -60,7 +60,7 @@ export class PushNotificationManager {
     debug?: boolean
   ) {
     this.debug = DebugUtils.setDebug(debug ?? false);
-    this.logger = LoggerUtils.getInstance(this.debug, this.constructor.name);
+    this.logger = LoggerUtils.getInstance(this.constructor.name, this.debug);
     this.maxAttempts = retryConfig?.maxAttempts || 3;  // Default to 3 attempts
     this.baseDelay = retryConfig?.baseDelay || 1000;   // Default to 1 second delay
 

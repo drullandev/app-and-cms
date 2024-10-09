@@ -3,7 +3,7 @@ import { IonContent, IonList, IonMenu } from '@ionic/react';
 
 import { IAppRoute } from '../AppRouter';
 
-import useUserStore from '../../../classes/stores/user.store'; // Assuming there is a store for managing user state
+import useUserStore from '../../../integrations/stores/user.store'; // Assuming there is a store for managing user state
 
 import './style.css';
 

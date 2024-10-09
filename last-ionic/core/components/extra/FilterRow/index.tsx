@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 
 import { GraphQLFilter } from '../../../classes/assets/GraphQLFilter'
 import { IonSelect, IonSelectOption, IonCol, IonRow, IonDatetime, IonTextarea, IonItem, IonInput, IonButton } from '@ionic/react'
-import useConfStore from '../../../classes/stores/app.store'
+import useConfStore from '../../../integrations/stores/app.store'
 import Looper from '../../../components/utils/Looper'
 
 export interface Filter {

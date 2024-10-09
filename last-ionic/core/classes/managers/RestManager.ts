@@ -8,15 +8,6 @@ import DebugUtils from "../utils/DebugUtils";
  * such as the HTTP status code and response data.
  * 
  * @class RestError
- * @example
- * try {
- *   await restManager.makeRequest({ method: 'GET', url: '/endpoint' });
- * } catch (error) {
- *   if (error instanceof RestError) {
- *     console.error(error.toString());
- *   }
- * }
- * 
  * @author David Rullán - https://github.com/drullandev
  * @date October 4, 2024
  */
@@ -38,12 +29,6 @@ export class RestError extends Error {
 
 /**
  * Interface for defining the structure of a request configuration object.
- * 
- * @interface RequestOptions
- * @property {Method} method - The HTTP method (GET, POST, etc.).
- * @property {string} url - The endpoint for the request.
- * @property {any} [data] - Optional data to be sent (for POST, PUT).
- * @property {AxiosRequestConfig} [config] - Optional Axios configuration.
  */
 export interface RequestOptions {
   method: Method;
@@ -56,11 +41,13 @@ export interface RequestOptions {
  * Interface defining the contract for RestManager operations.
  * This interface ensures that the RestManager can perform both synchronous 
  * and asynchronous REST API calls, along with the standard REST operations.
- * 
- * @interface IRestManager
  */
 export interface IRestManager {
   makeRequest<T>(options: RequestOptions): Promise<T>;
+  get<T>(url: string, config?: AxiosRequestConfig): Promise<T>;
+  post<T>(url: string, data: any, config?: AxiosRequestConfig): Promise<T>;
+  put<T>(url: string, data: any, config?: AxiosRequestConfig): Promise<T>;
+  delete<T>(url: string, config?: AxiosRequestConfig): Promise<T>;
 }
 
 /**
@@ -69,10 +56,6 @@ export interface IRestManager {
  * automatically manages logging, debugging, and error handling.
  * 
  * @class RestManager
- * @example
- * const restManager = RestManager.getInstance('https://api.example.com');
- * const response = await restManager.makeRequest({ method: 'GET', url: '/data' });
- * 
  * @author David Rullán
  * @date October 2024
  */
@@ -84,27 +67,18 @@ class RestManager implements IRestManager {
   private defaultHeaders: AxiosRequestConfig['headers'];
 
   /**
-   * Private constructor for singleton pattern. Initializes logging, debugging,
+   * Public constructor for singleton pattern. Initializes logging, debugging,
    * and sets the base URL and default headers for requests.
-   * 
-   * @param baseURL - The base URL for all API requests.
-   * @param defaultHeaders - Optional default headers (e.g., Authorization).
-   * @param debug - Optional debug flag to enable or disable debug logging.
    */
-  private constructor(baseURL: string, defaultHeaders?: AxiosRequestConfig['headers'], debug: boolean = false) {
+  public constructor(baseURL: string, defaultHeaders?: AxiosRequestConfig['headers'], debug: boolean = false) {
     this.baseURL = baseURL;
     this.defaultHeaders = defaultHeaders || {};
     this.debug = DebugUtils.setDebug(debug);
-    this.logger = LoggerUtils.getInstance(this.debug, this.constructor.name);
+    this.logger = LoggerUtils.getInstance(this.constructor.name, this.debug);
   }
 
   /**
    * Returns the singleton instance of RestManager.
-   * 
-   * @param baseURL - The base URL for all API requests.
-   * @param defaultHeaders - Optional default headers (e.g., Authorization).
-   * @param debug - Optional debug flag to enable or disable debug logging.
-   * @returns {RestManager} The singleton instance.
    */
   public static getInstance(baseURL: string, defaultHeaders?: AxiosRequestConfig['headers'], debug: boolean = false): RestManager {
     if (!RestManager.instance) {
@@ -115,11 +89,6 @@ class RestManager implements IRestManager {
 
   /**
    * Makes an HTTP request using Axios. Handles logging, debugging, and custom error handling.
-   * 
-   * @template T - The expected type of the response data.
-   * @param {RequestOptions} options - The request configuration (method, URL, data, etc.).
-   * @returns {Promise<T>} The response data.
-   * @throws {RestError} If the request fails or the server returns an error.
    */
   public async makeRequest<T>(options: RequestOptions): Promise<T> {
     try {
@@ -145,9 +114,53 @@ class RestManager implements IRestManager {
   }
 
   /**
+   * Simplified GET request.
+   */
+  public async get<T>(url: string, config?: AxiosRequestConfig): Promise<T> {
+    return this.makeRequest<T>({
+      method: 'GET',
+      url,
+      config
+    });
+  }
+
+  /**
+   * Simplified POST request.
+   */
+  public async post<T>(url: string, data: any, config?: AxiosRequestConfig): Promise<T> {
+    return this.makeRequest<T>({
+      method: 'POST',
+      url,
+      data,
+      config
+    });
+  }
+
+  /**
+   * Simplified PUT request.
+   */
+  public async put<T>(url: string, data: any, config?: AxiosRequestConfig): Promise<T> {
+    return this.makeRequest<T>({
+      method: 'PUT',
+      url,
+      data,
+      config
+    });
+  }
+
+  /**
+   * Simplified DELETE request.
+   */
+  public async delete<T>(url: string, config?: AxiosRequestConfig): Promise<T> {
+    return this.makeRequest<T>({
+      method: 'DELETE',
+      url,
+      config
+    });
+  }
+
+  /**
    * Updates the default headers for future requests.
-   * 
-   * @param newHeaders - New headers to be merged with the existing default headers.
    */
   public updateHeaders(newHeaders: AxiosRequestConfig['headers']): void {
     this.defaultHeaders = { ...this.defaultHeaders, ...newHeaders };

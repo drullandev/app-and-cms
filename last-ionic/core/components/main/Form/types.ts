@@ -1,4 +1,4 @@
-import { Method } from 'axios';
+import { AxiosError, AxiosResponse, Method } from 'axios';
 import { ControllerProps, DeepMap, FieldError } from 'react-hook-form';
 import { Schema } from 'yup';
 
@@ -22,27 +22,39 @@ export interface IFormData {
   id: string;
   url: string;
   settings: any;
+  fields: IField[];
+  buttons?: IField[];
   method?: Method;
-  success?: {
-    message?: string;
-    header?: string,
-  },
-  error?: {
-    message?: string;
-    header?: string,
-  },
   captcha?: false | boolean;
   agreement?: false | boolean;
   privacy?: false | boolean;
-  fields: FieldProps[];
-  buttons: FieldProps[];
   ga4?: GA4Options;
   defaultOutput?: false | boolean;
-  onSuccess:(data: any) => Promise<void>;
-  onError: (errors: { [key: string]: any }) => void;
+  onSuccess: (data: any) => ISubmitForm;
+  onError?: (err: any) => void;
 }
 
-export interface FormComponentProps extends IFormData {
+export interface IFormCustomMessage {
+  header?: string;
+  message?: string;
+  type?: 'toast' | 'modal';
+  show?: boolean;
+}
+
+export interface ISubmitFormSettings {
+  customSuccessMessage?: IFormCustomMessage;
+  customErrorMessage?: IFormCustomMessage;
+}
+
+export interface ISubmitForm {
+  data: any;
+  onSuccess?: (res: AxiosResponse) => void;
+  onError?: (err: AxiosError) => void;
+  settings?: ISubmitFormSettings;
+}
+
+
+export interface IFormComponent extends IFormData {
   onError: (errors: DeepMap<Record<string, any>, FieldError>) => void;
 }
 
@@ -52,9 +64,10 @@ export interface LabelProps {
   errors?: DeepMap<Record<string, any>, FieldError>;
 }
 
-export interface FieldProps {
+export interface IField {
   id?: string | undefined;
   name: string;
+  class?: string;
   label?: any;
   type: string;
   value?: any;

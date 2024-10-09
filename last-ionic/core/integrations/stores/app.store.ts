@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import LoggerUtils from '../utils/LoggerUtils';
+import LoggerUtils from '../../classes/utils/LoggerUtils';
 import { v4 as uuidv4 } from 'uuid'; // Importar una librería para generar un UUID
 
 /**
@@ -39,7 +39,7 @@ interface AppStore extends AppState {
 }
 
 // Initialize Logger for the AppStore
-const logger = LoggerUtils.getInstance(false, 'AppStoreLogger');
+const logger = LoggerUtils.getInstance('AppStoreLogger', false);
 
 /**
  * Creates a Zustand store for managing the application state.

@@ -26,6 +26,7 @@ type ValidationRule = (value: any) => boolean;
  * @date September 7, 2024
  */
 class FormUtils {
+  
   private static instance: FormUtils | null = null;
 
   /**

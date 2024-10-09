@@ -127,11 +127,8 @@ class RestOutput {
    */
   constructor() {
     this.debug = DebugUtils.setDebug(false); // Configure debug mode as needed
-    this.logger = LoggerUtils.getInstance( this.debug, this.constructor.name);
-
-    {
-      this.logger.info("RestOutput initialized");
-    }
+    this.logger = LoggerUtils.getInstance(this.constructor.name, this.debug);
+    this.logger.info("RestOutput initialized");
   }
 
   /**

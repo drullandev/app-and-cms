@@ -47,7 +47,7 @@ class RestOutput {
    */
   private constructor() {
     this.debug = DebugUtils.setDebug(false); // Configure debug mode as needed
-    this.logger = this.initLogger();
+    this.logger = this.useLogger();
   }
 
   /**
@@ -67,8 +67,8 @@ class RestOutput {
    *
    * @returns LoggerUtils instance.
    */
-  private initLogger(): LoggerUtils {
-    return LoggerUtils.getInstance(this.debug, this.constructor.name);
+  private useLogger(): LoggerUtils {
+    return LoggerUtils.getInstance(this.constructor.name);
   }
 
   /**

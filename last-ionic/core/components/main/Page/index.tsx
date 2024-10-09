@@ -8,7 +8,7 @@ import DebugUtils from '../../../classes/utils/DebugUtils'
 
 import './styles.css'
 import { GA4Options } from './types'
-import useGA4Tracker from '../../../integrations/GA4Integration'
+import useGA4Tracker from '../../../integrations/useGA4Tracker'
 
 export interface IonPageProps {
   id: string;
@@ -50,7 +50,7 @@ export interface PagePropsData {
 const Page: React.FC<PagePropsData> = (pageProps) => {
 
   const debug = DebugUtils.setDebug(false);
-  const logger = LoggerUtils.getInstance(debug, 'Page');
+  const logger = LoggerUtils.getInstance('Page', debug);
 
   useEffect(()=> {
     logger.info(' • Loading page!');

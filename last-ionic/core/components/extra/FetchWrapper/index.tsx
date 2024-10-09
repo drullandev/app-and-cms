@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useQuery, UseQueryOptions } from '@tanstack/react-query';
-import { useAppRest } from '../../../integrations/all-Integrations';
+import useAppRest from '../../../integrations/useAppRest';
 import { Method } from 'axios';
 
 /**
@@ -52,17 +52,15 @@ const DataWrapper: React.FC<DataWrapperProps<any>> = ({
 
   // Function to fetch data using useAppRest
   const fetchData = async () => {
+    /*
     const response = await useAppRest.makeRequest({
       method: method,
       url: url,
       data: body,
-      params: params,
-      headers: { 
-        ...headers,  // Merge custom headers with default headers
-        Authorization: 'Bearer your_token'  // Example header (can be modified or removed)
-      }
+      config: null
     });
     return response;
+    */
   };
 
   // Use useQuery to handle data fetching and caching
@@ -88,6 +86,7 @@ const DataWrapper: React.FC<DataWrapperProps<any>> = ({
 
   // Handle loading and error states
   if (isLoading) return <>{LoadingComponent}</>;
+
   if (error) return <>{ErrorComponent}</>;
 
   // Render children components if data is successfully loaded

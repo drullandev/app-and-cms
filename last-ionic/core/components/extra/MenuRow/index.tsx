@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { IonItem, IonLabel, IonSpinner } from '@ionic/react';
 import { useLocation } from 'react-router';
 import { useHistory } from 'react-router-dom';
-import useUserStore from '../../../classes/stores/user.store'; // Importa tu store de Zustand
+import useUserStore from '../../../integrations/stores/user.store'; // Importa tu store de Zustand
 
 export interface PathProps {
   slug?: string

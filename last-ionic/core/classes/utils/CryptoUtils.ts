@@ -1,4 +1,5 @@
 import CryptoJS from 'crypto-js';
+import LoggerUtils from './LoggerUtils';
 
 /**
  * Utility class for cryptographic operations such as encryption and decryption.
@@ -10,6 +11,11 @@ import CryptoJS from 'crypto-js';
  */
 class CryptoUtils {
   private static instance: CryptoUtils | null = null;
+  private logger: LoggerUtils;
+  
+  constructor(){
+    this.logger = this.useLogger();
+  }
 
   /**
    * Returns the singleton instance of CryptoUtils.
@@ -22,6 +28,15 @@ class CryptoUtils {
       this.instance = new this();
     }
     return this.instance;
+  }
+
+  /**
+   * Initializes and returns a LoggerUtils instance.
+   *
+   * @returns LoggerUtils instance.
+   */
+  private useLogger(): LoggerUtils {
+    return LoggerUtils.getInstance(this.constructor.name);
   }
 
   /**

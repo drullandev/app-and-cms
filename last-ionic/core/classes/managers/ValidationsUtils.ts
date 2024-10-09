@@ -1,16 +1,16 @@
 import * as yup from 'yup';
-import { FieldProps } from '../../components/main/Form/types';
+import { IField } from '../../components/main/Form/types';
 import LoggerUtils from '../utils/LoggerUtils';
 import DebugUtils from '../utils/DebugUtils';
 
 /**
- * Extends FieldProps to ensure each field has a defaultValue and validationSchema.
+ * Extends IField to ensure each field has a defaultValue and validationSchema.
  * The validationSchema is of type yup.Schema<any> for compatibility with Yup validation types.
  * 
  * @author David Rullán - https://github.com/drullandev
  * @date September 3, 2024
  */
-interface FieldPropsWithValidation extends FieldProps {
+interface IFieldWithValidation extends IField {
   defaultValue: any;
   validationSchema: yup.Schema<any>;
 }
@@ -34,19 +34,19 @@ interface FieldPropsWithValidation extends FieldProps {
  * @date September 3, 2024
  */
 class ValidationUtils {
-  private fields: FieldProps[];
+  private fields: IField[];
   private logger: LoggerUtils; // Logger instance
   private debug: boolean = false; // Debug mode flag
   
   /**
    * Constructor to initialize the ValidationUtils with the given form fields.
    * 
-   * @param {FieldProps[]} fields - An array of field properties that define the form's fields.
+   * @param {IField[]} fields - An array of field properties that define the form's fields.
    */
-  constructor(fields: FieldProps[], debug?: boolean) {
+  constructor(fields: IField[], debug?: boolean) {
     this.fields = fields;
     this.debug = DebugUtils.setDebug(debug ?? this.debug);
-    this.logger = LoggerUtils.getInstance( this.debug, this.constructor.name);
+    this.logger = LoggerUtils.getInstance( this.constructor.name, this.debug);
   }
 
   /**
@@ -54,10 +54,10 @@ class ValidationUtils {
    * This method ensures that only fields with proper validation configurations 
    * are included when building the schema and initial values.
    *
-   * @param {FieldProps} field - The field to validate.
-   * @returns {field is FieldPropsWithValidation} True if the field has both defaultValue and validationSchema.
+   * @param {IField} field - The field to validate.
+   * @returns {field is IFieldWithValidation} True if the field has both defaultValue and validationSchema.
    */
-  private isValidField(field: FieldProps): field is FieldPropsWithValidation {
+  private isValidField(field: IField): field is IFieldWithValidation {
     return field.defaultValue !== undefined && field.validationSchema !== undefined;
   }
 

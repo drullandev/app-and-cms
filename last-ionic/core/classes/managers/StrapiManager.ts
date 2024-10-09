@@ -62,7 +62,7 @@ class StrapiManager {
    */
   private constructor(baseUrl: string, debug: boolean = false) {
     this.debug = DebugUtils.setDebug(debug ?? this.debug);
-    this.logger = LoggerUtils.getInstance(this.debug, this.constructor.name);
+    this.logger = LoggerUtils.getInstance(this.constructor.name, this.debug);
     this.cache = new NodeCache({ stdTTL: 600 }); // Cache TTL set to 10 minutes
     this.baseUrl = baseUrl;
   }

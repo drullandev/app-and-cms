@@ -12,25 +12,33 @@ import DebugUtils from '../../../classes/utils/DebugUtils';
 import RestManager from '../../../classes/managers/RestManager';
 
 // Local dependencies
-import { IFormData } from '../../../components/main/Form/types';
+import { IFormComponent, IFormData, ISubmitForm } from '../../../components/main/Form/types';
 
 // Reducer dependencies
-import useUserStore from '../../../classes/stores/user.store';
-import useAppRest from '../../../integrations/RestIntegration';
+import useUserStore from '../../../integrations/stores/user.store';
+import useAppRest from '../../../integrations/useAppRest';
+import LoggerUtils from 'core/classes/utils/LoggerUtils';
+
+export interface IResetPassword {
+  code: string;
+  password: string;
+  passwordConfirmation: string;
+}
 
 /**
  * This is the information for the reset page main form
  * @returns {IFormData}
  */
-export const resetFormData = (): IFormData => {
+export const resetFormData = (): IFormComponent => {
 
   const { t } = useTranslation();
   const history = useHistory();
   const [presentToast] = useIonToast();
   const debug = DebugUtils.setDebug(false);
+  const logger = LoggerUtils.getInstance('resetFormData', debug);
   
-  const resetForm: IFormData = {
-    id: 'reset-page',
+  const resetForm: IFormComponent = {
+    id: 'reset-password-page',
     url: '/auth/reset-password',
     settings: {
       autoSendIfValid: false,
@@ -84,41 +92,30 @@ export const resetFormData = (): IFormData => {
         options: []
       },
     ],
-    buttons:[      
-      { 
-        name: 'submit',
-        label: t('Submit'),
-        type: 'submit',
-        style: { borderRadius: '20px', float: 'left', width: '46%', margin: '2%' },
-        icon: icon.starOutline,
-        options: []
-      },
-      {
-        name: 'goToLogin',
-        label: t('Login'),
-        type: 'button',
-        style: { display: 'inline-block', width: '46%', margin: '2%' },
-        onClick: () => {
-          history.push('/login');
+    onSuccess: (data: IResetPassword): ISubmitForm => {
+      return {
+        data,
+        onSuccess: (res)=>{
+          logger.log('success', res)
         },
-        options: []
+        onError: (err)=>{
+          logger.log('error', err)
+        },
+        settings:{
+          customSuccessMessage: {
+            header: t('PasswordReseted!'),
+            message: t('Your password was reseted'),
+          },
+          customErrorMessage: {
+            header: t('Recover error'),
+            message: t('There was an error reseting the password'),
+          }
+        }
       }
-    ],
-    onSuccess: async (data: any) => {
-
-      await useAppRest.post( resetForm.url, {
-        "code": data.code,
-        "password": data.password,
-        "passwordConfirmation": data.password
-      });
     },
 
-    onError: (errors:any) =>{
-      presentToast({
-        message: 'Reset error!',
-        duration: 2000,
-        color: 'warning',
-      });
+    onError: (err: any) =>{
+      logger.log('error', err)
     }
   };
 

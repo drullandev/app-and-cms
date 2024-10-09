@@ -3,7 +3,7 @@ import { GraphQLFilter } from '../../../classes/assets/GraphQLFilter';
 import { IonList, IonInfiniteScroll, IonInfiniteScrollContent, IonItem, IonLabel, IonRefresher, IonRefresherContent, useIonToast } from '@ionic/react';
 import React, { useState, useEffect, useRef } from 'react';
 import Spinner from '../Spinner';
-import useSearchStore from '../../../classes/stores/searcher.store'; // Import the new search store
+import useSearchStore from '../../../integrations/stores/searcher.store'; // Import the new search store
 import Looper from '../../../components/utils/Looper';
 
 const MainList: React.FC = () => {

@@ -1,11 +1,11 @@
 import { create } from 'zustand';
 import { Preferences } from '@capacitor/preferences';
-import Logger from '../utils/LoggerUtils';
-import DebugUtils from '../utils/DebugUtils';
+import Logger from '../../classes/utils/LoggerUtils';
+import DebugUtils from '../../classes/utils/DebugUtils';
 import { AppState } from './app.store';
-import { AuthResponse } from '../strapi/models/AuthResponse';
-import { User } from '../strapi/models/User';
-import RestManager from '../managers/RestManager';
+import { AuthResponse } from '../../classes/strapi/models/AuthResponse';
+import { User } from '../../classes/strapi/models/User';
+import RestManager from '../../classes/managers/RestManager';
 
 // Propiedades del usuario
 export const ID = 'id';

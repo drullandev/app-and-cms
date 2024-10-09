@@ -23,6 +23,6 @@
       "../../../components/*": ["core/components/*", "src/components/*"]
     }
   },
-  "include": ["core/**/*.ts", "src/**/*.ts", "core/**/*.tsx", "src/**/*.tsx"],
+  "include": ["core/**/*.ts", "src/**/*.ts", "core/**/*.tsx", "src/**/*.tsx", "core/components/design/Footer.tsx"],
   "exclude": ["node_modules"]
 }

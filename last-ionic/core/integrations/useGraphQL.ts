@@ -1,5 +1,5 @@
 import GraphQLManager from "../classes/managers/GraphQLManager";
-import useAppRest from "./RestIntegration"; // Tomamos la instancia de RestManager desde aquí
+import useAppRest from "./useAppRest"; // Tomamos la instancia de RestManager desde aquí
 import { storageKey } from '../app/config/env'
 
 /**

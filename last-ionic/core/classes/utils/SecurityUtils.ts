@@ -23,7 +23,7 @@ class SecurityUtils {
 
   constructor(debug: boolean = false) {
     this.debug = DebugUtils.setDebug(debug);
-    this.logger = LoggerUtils.getInstance(this.debug, this.constructor.name);
+    this.logger = LoggerUtils.getInstance(this.constructor.name, this.debug);
     this.logger.info(`${this.constructor.name} initialized!`);
   }
 

@@ -34,7 +34,7 @@ class StorageManager implements IStorageManager {
   private constructor(storageKey: string = 'app', debug?: boolean) {
     this.storageKey = storageKey;
     this.debug = DebugUtils.setDebug(debug ?? this.debug);
-    this.logger = LoggerUtils.getInstance(this.debug, this.constructor.name);
+    this.logger = LoggerUtils.getInstance(this.constructor.name);
     this.logger.info(`StorageManager initialized with key: ${storageKey}`);
   }
 

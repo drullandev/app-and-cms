@@ -92,7 +92,7 @@ ion-input[type='hidden'], div.hidden {
 .ion-textarea-custom,
 .ion-select-custom {
   --background: #f9f9f9;
-  --border-radius: 8px;
+  --border-radius: 20px;
   --padding: 12px;
   --color: #333333;
   --placeholder-color: #999999;
@@ -108,16 +108,21 @@ ion-input[type='hidden'], div.hidden {
 }
 
 .ion-button-custom {
-  --background: #3880ff;
-  --background-hover: #4c8dff;
-  --background-activated: #3367d6;
-  --color: #ffffff;
-  --border-radius: 8px;
-  --padding-start: 20px;
-  --padding-end: 20px;
-  --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  background-color: #3880ff;
+  color: #ffffff;
+  border-radius: 20px; /* Estilo estándar en lugar de variable personalizada */
+  padding: 10px 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease;
 }
 
+.ion-button-custom:hover {
+  background-color: #4c8dff;
+}
+
+.ion-button-custom:active {
+  background-color: #3367d6;
+}
 .ion-text-danger-custom {
   --color: #f44336;
   --font-size: 14px;

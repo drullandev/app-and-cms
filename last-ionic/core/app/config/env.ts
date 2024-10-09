@@ -59,6 +59,9 @@ export const homePath = import.meta.env.VITE_HOME_PATH ?? '/login';
 
 // Third-party integrations
 export const ga4TrackingId = import.meta.env.VITE_GA4_TRACKING_ID ?? 'YOUR_GA4_TRACKING_ID';
+export const sentryDns = import.meta.env.VITE_SENTRY_DNS ?? false;
+export const sentryEnv = import.meta.env.VITE_SENTRY_ENV ?? false;
+export const sentryToken = import.meta.env.VITE_SENTRY_TOKEN ?? false;
 export const mapboxKey = import.meta.env.VITE_MAPBOX_KEY ?? 'YOUR_MAPBOX_KEY';
 
 // SQLite configuration

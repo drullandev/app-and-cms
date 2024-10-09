@@ -34,7 +34,7 @@ declare namespace NodeJS {
     VITE_ENABLE_CAPTCHA: boolean;
 
     // Feature Toggles
-    VITE_TESTING: string; // A veces se usa "string" en vez de boolean en .env
+    VITE_TESTING: string;
     VITE_SHOW_PWA_INSTALLER: boolean;
 
     // Database Configuration

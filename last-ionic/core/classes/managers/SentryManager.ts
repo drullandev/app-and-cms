@@ -1,28 +1,17 @@
-// Filename: SentryManager.ts
-
-/**
- * Manages exception handling and reporting through Sentry.
- *
- * Initializes Sentry with the provided DSN and environment settings.
- * Allows capturing exceptions and custom error messages to log them in Sentry.
- *
- * @class SentryManager
- * @author David Rullán - https://github.com/drullandev
- * @date September 10, 2024
- */
+// SentryManager.ts
 import * as Sentry from "@sentry/browser";
 
 interface SentryManagerConfig {
-  dsn: string; // Sentry DSN for error reporting
-  environment: string; // Application environment (e.g., production, development)
+  dsn: string;
+  environment: string;
 }
 
 export class SentryManager {
   private config: SentryManagerConfig;
 
   /**
-   * Creates an instance of SentryManager configured with the provided settings.
-   *
+   * Constructor for SentryManager.
+   * Initializes Sentry with the provided DSN and environment settings.
    * @param config - Configuration object including Sentry DSN and environment
    */
   constructor(config: SentryManagerConfig) {
@@ -42,8 +31,6 @@ export class SentryManager {
 
   /**
    * Captures and logs an exception through Sentry.
-   *
-   * @param error - The error or exception to capture
    */
   public captureException = (error: Error): void => {
     Sentry.captureException(error);
@@ -51,10 +38,10 @@ export class SentryManager {
 
   /**
    * Captures a custom message as an error log in Sentry.
-   *
-   * @param message - Custom error message to log
    */
   public captureMessage = (message: string): void => {
     Sentry.captureMessage(message, "error"); // 'error' indicates the severity level
   };
 }
+
+export default SentryManager;

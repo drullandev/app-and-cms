@@ -10,7 +10,7 @@ import LoggerUtils from '../../../classes/utils/LoggerUtils';
 
 // Configuración del logger
 const debug = false; // Asume que puedes cambiar esto dinámicamente
-const logger = LoggerUtils.getInstance(debug, 'i18nLogger');
+const logger = LoggerUtils.getInstance('i18nLogger', debug);
 
 // Define un componente de traducción reutilizable
 export function t({ text }: { text: string }) {
