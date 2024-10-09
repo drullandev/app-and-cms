@@ -6,13 +6,14 @@ WORKDIR /app
 COPY package*.json ./
 
 # Instalar dependencias
-RUN npm install --legacy-peer-deps
+RUN npm install
 
 # Copiar el código fuente y construir la aplicación
 COPY . .
 RUN npm run build
 
 # Etapa 2: Servir con Vite (desarrollo o producción)
-EXPOSE 3000
+EXPOSE ${VITE_APP_DOCKER_PORT}
 
-CMD ["npm", "run", "dev"] # Cambiar a 'preview' si quieres el modo producción.
+# Usar el shell para ejecutar el comando en tiempo de ejecución
+CMD ["sh", "-c", "npm run ${VITE_APP_NODE_ENV}"]

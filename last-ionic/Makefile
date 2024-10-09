@@ -1,106 +1,98 @@
 # Makefile for Ionic React with TypeScript
 
-# Define variables
-PROJECT_NAME := my-ionic-app
-NODE_MODULES := node_modules
+# Phony targets: Declare non-file targets
+.PHONY: all install dev build preview test lint clean help
 
-# Define commands
-NPM := npm
-NPM_INSTALL := npm i
-NPM_START := npm run dev
-YARN := yarn
-NODE := yarn
-TS := tsc
-TS_NODE := ts-node
-VITE := vite
-E2E_TEST := cypress run
-UNIT_TEST := vitest
-LINT := eslint
+env := development
 
-# Phony targets
-.PHONY: all install dev build preview test lint clean
+up:  ## Start the project in development mode
+	@echo "Starting the project..."
+	npm i
+	make start
 
-up:
-start: 
-	$(NPM_INSTALL)
-	$(NPM_START)
+start:  ## Install dependencies and start the project
+	npm run dev
 
-# Default target
-all: dev
+config:  ## Check if your environment is properly configured
+	@docker-compose config
 
-# Install dependencies
-install:
+docker:  ## Start Docker with the specified environment configuration
+	@docker-compose build --no-cache
+	make docker-up
+
+docker-up:  ## Start Docker with production environment configuration
+	@docker-compose up
+
+down:  ## Shut down Docker, removing images, volumes, and orphan containers
+	@docker-compose down --rmi all --volumes --remove-orphans
+
+install:  ## Install project dependencies using npm
 	@echo "Installing dependencies..."
-#brew install openjdk@17
-	$(NPM) install
+	npm install
 
-outdated:
+outdated:  ## Check for outdated dependencies
 	@echo "Checking for outdated dependencies..."
 	npm outdated
 
-# Run development server
-dev:
+dev:  ## Run development server with Vite
 	@echo "Starting development server..."
-	$(VITE)
+	nvm use 22
+	vite
 
-build-translations:
-	$(node) ./src/classes/scripts/TranslationsKeeper.cjs
+build-ts:  ## Compile TypeScript files
+	@echo "Building TypeScript files..."
+	npx tsc	
 
-build-files:
-	node ./src/components/Ionic/generateComponents.cjs
-	
-# Build the project
-build:
-	make build-files
+build:  ## Build the project: Compile TypeScript and build with Vite
 	@echo "Building the project..."
-	$(TS) && $(VITE) build
+	make build-files
+	npm run build-ts && npx vite build
 
-# Preview the build
-preview:
-	@echo "Previewing the build..."
-	$(VITE) preview
+ionic-build:  ## Build the project with Ionic
+	npm run ionic:build
 
-test:
-test-all:
+build2:  ## Build the project using Webpack
+	npm run build2
+
+electron:  ## Build the project for Electron
+	npm run electron
+
+electron-build:  ## Build the project for Electron and run Electron Builder
+	npm run electron-build
+
+test:  ## Run unit and e2e tests
+	make test-all
+
+test-all:  ## Run all tests
 	make test.e2e
 	make test.unit
 
-# Run end-to-end tests
-test.e2e:
-	@echo "Running end-to-end tests..."
-	$(E2E_TEST)
+test.e2e:  ## Run end-to-end tests
+	npm run test.e2e
 
-# Run unit tests
-test.unit:
-	@echo "Running unit tests..."
-	$(UNIT_TEST)
+test.unit:  ## Run unit tests
+	npm run test.unit
 
-# Lint the project
-lint:
-	@echo "Linting the project..."
-	$(LINT)
+lint:  ## Lint the project using ESLint
+	npm run lint
+
+format:  ## Format the code using Prettier
+	npm run format
+
+precommit:  ## Run Prettier formatting and lint-staged before commit
+	npm run precommit
+
+prepare:  ## Prepare Husky hooks for Git
+	npm run prepare
 
 # Clean up build artifacts
-clean:
+clean:  ## Clean up build artifacts (dist, cache, coverage)
 	@echo "Cleaning up..."
 	rm -rf dist
 	rm -rf .cache
 	rm -rf coverage
 
-# Help command
-help:
-	@echo "Available commands:"
-	@echo "  make install         Install dependencies"
-	@echo "  make dev             Start development server"
-	@echo "  make build           Build the project"
-	@echo "  make preview         Preview the build"
-	@echo "  make test.e2e        Run end-to-end tests"
-	@echo "  make test.unit       Run unit tests"
-	@echo "  make lint            Lint the project"
-	@echo "  make clean           Clean up build artifacts"
-	@echo "  make help            Display this help message"
-
-clean-docker:
+clean-docker:  ## Clean up Docker artifacts
 	@docker stop $(docker ps -q) || true
 	@docker rm $(docker ps -a -q) || true
 	@docker rmi $(docker images -q) || true
@@ -108,5 +100,17 @@ clean-docker:
 	@docker network rm $(docker network ls -q) || true
 	@docker system prune --all --volumes -f || true
 
-zip:
-	@zip -r app.zip ./last-ionic/ -x "*/node_modules/*"	
+zip:  ## Compress the app excluding node_modules
+	@zip -r ../app.zip . -x "node_modules/*"	
+
+refresh-all:  ## Refresh the local environment and rebuild Docker
+	rm -rf node_modules package-lock.json
+	docker-compose down --rmi all --volumes --remove-orphans
+	docker-compose build --no-cache
+	npm install
+	docker-compose up
+
+# Help target to dynamically generate the help output based on descriptions
+help:  ## Display this help message
+	@echo "Available commands:"
+	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-15s\033[0m %s\n", $$1, $$2}'

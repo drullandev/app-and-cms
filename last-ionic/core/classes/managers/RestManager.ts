@@ -48,6 +48,7 @@ export interface IRestManager {
   post<T>(url: string, data: any, config?: AxiosRequestConfig): Promise<T>;
   put<T>(url: string, data: any, config?: AxiosRequestConfig): Promise<T>;
   delete<T>(url: string, config?: AxiosRequestConfig): Promise<T>;
+  updateHeaders(newHeaders: AxiosRequestConfig['headers']): void
 }
 
 /**
@@ -92,23 +93,20 @@ class RestManager implements IRestManager {
    */
   public async makeRequest<T>(options: RequestOptions): Promise<T> {
     try {
-      this.logger.info('Making request:', options);
-      
       const response = await axios({
         method: options.method,
-        url: `${this.baseURL}${options.url}`,  // Concatenate baseURL with request-specific URL
+        url: `${this.baseURL}${options.url}`,
         data: options.data,
         headers: {
-          ...this.defaultHeaders,  // Include default headers (e.g., Authorization)
-          ...(options.config?.headers || {})  // Allow request-specific headers to override default
+          ...this.defaultHeaders,
+          ...(options.config?.headers || {}),
         },
         ...options.config,
       });
-
-      this.logger.info('Request successful:', response);
-      return response.data as T;  // Cast response data to expected type
+      this.logger.info('The request was done');
+      return response.data as T; // Retorna el tipo genérico T
     } catch (error: any) {
-      this.logger.error('Request failed:', error);
+      this.logger.error('The request was error');
       throw new RestError(error.message, error.response?.status, error.response?.data);
     }
   }
@@ -164,6 +162,7 @@ class RestManager implements IRestManager {
    */
   public updateHeaders(newHeaders: AxiosRequestConfig['headers']): void {
     this.defaultHeaders = { ...this.defaultHeaders, ...newHeaders };
+    this.logger.info('The request updateHeaders was done', this.defaultHeaders);
   }
 }
 

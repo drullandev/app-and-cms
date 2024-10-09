@@ -1,22 +1,27 @@
 import { useEffect } from 'react';
 import RestManager, { IRestManager } from '../classes/managers/RestManager';
 import { apiUrl } from '../app/config/env';
-import useUserStore from '../integrations/stores/user.store';
+import useUserStore, { IUserStore } from '../integrations/stores/user.store';
 
-const restManagerInstance = RestManager.getInstance(apiUrl);
+// Instancia singleton de RestManager
+const restManagerInstance: IRestManager = RestManager.getInstance(apiUrl);
 
-const useAppRest = (): IRestManager => { // Retornamos RestManager
-  const jwt = useUserStore((state) => state.jwt);
+// Hook para manejar el RestManager y actualizar los headers cuando el JWT cambie
+const useAppRest = (): IRestManager => {
+  const jwt = null;//useUserStore((state: IUserStore) => state.jwt);  // Obtenemos el JWT del store
 
-  useEffect(() => {
+  // Usamos useEffect para actualizar los headers cuando el JWT cambie
+
     if (jwt) {
       restManagerInstance.updateHeaders({ Authorization: `Bearer ${jwt}` });
     } else {
       restManagerInstance.updateHeaders({ Authorization: '' });
     }
-  }, [jwt]);
 
+
+  // Retornamos la instancia del RestManager
   return restManagerInstance;
 };
 
-export default useAppRest;
+export default useAppRest();
+

@@ -39,8 +39,8 @@ const AppComponent: React.FC = () => {
         slot={'bottom'}
         routes={AppRoutes}
       ></TabItem>*/}
-      {import.meta.env.VITE_SHOW_COOKIES_CONSENT && <CookieConsent />}
-      {import.meta.env.VITE_SHOW_PWA_INSTALLER && <PWA/>}
+      {import.meta.env.VITE_SHOW_ENABLE_COOKIES_CONSENT && <CookieConsent />}
+      {import.meta.env.VITE_ENABLE_SHOW_PWA_INSTALLER && <PWA/>}
     </IonApp>
   );
 };

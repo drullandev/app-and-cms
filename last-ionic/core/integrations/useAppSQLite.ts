@@ -1,5 +1,5 @@
 import SQLiteManager, { ISQLiteManager } from "../classes/managers/SQLiteManager";
-import { storageKey } from '../app/config/env'
+import { sqlitePath } from '../app/config/env'
 
 /**
  * Creates and exports an instance of SQLiteManager configured with the specified database path.
@@ -10,6 +10,6 @@ import { storageKey } from '../app/config/env'
  * @date September 1, 2024
  */
 
-const useAppSQLite: ISQLiteManager = SQLiteManager.getInstance(import.meta.env.VITE_APP_SQLITE_PATH);
+const useAppSQLite: ISQLiteManager = SQLiteManager.getInstance(sqlitePath);
 
 export default useAppSQLite;

@@ -1,124 +1,169 @@
 import i18n, { TFunction } from 'i18next';
 import { shareSocialOutline, addCircleOutline, closeCircleOutline } from 'ionicons/icons';
 
-// https://ionicframework.com/docs/react/config#global-config
+// =============================
+// Application Setup
+// =============================
 export const appSetup = {
   rippleEffect: true,
   animated: true
-}
+};
 
-export const appIcon = 'assets/img/ica-slidebox-img-1.png'
-
-// Environment variables
-export const all = import.meta.env;
-
-// Node environment setting (default to 'development')
-export const nodeEnv = import.meta.env.VITE_NODE_ENV ?? 'development';
-
-// Application-specific variables
-export const appName = import.meta.env.VITE_APP_NAME ?? 'Festivore';
-export const appDomain = import.meta.env.VITE_APP_DOMAIN ?? 'localhost';
-export const appProtocol = import.meta.env.VITE_APP_PROTOCOL ?? 'http';
-export const appPort = import.meta.env.VITE_APP_PORT ?? '3000';
-export const appUrl = import.meta.env.VITE_APP_HOST_URL ?? `${appProtocol}://${appDomain}:${appPort}`;
-
-// Debug mode based on the environment
-export const debug = import.meta.env.VITE_TESTING;
-
-// Default language setting
-export const defaultLanguage = import.meta.env.VITE_DEFAULT_LANG ?? 'en';
-
-// Supported languages setting
-export const supportedLanguages = import.meta.env.VITE_SUPPORTED_LANGS 
-  ? import.meta.env.VITE_SUPPORTED_LANGS.split(',')
-  : ['en', 'es'];
-
-// CAPTCHA configuration
-export const enableCaptcha = import.meta.env.VITE_ENABLE_CAPTCHA;
-export const captchaExpiryTime = import.meta.env.VITE_CAPTCHA_EXPIRY_TIME ?? 300000;
-export const captchaCleanupInterval = import.meta.env.VITE_CAPTCHA_CLEANUP_INTERVAL ?? 60000;
-
-// Backend configuration
-export const apiProtocol = import.meta.env.VITE_API_PROTOCOL ?? 'http';
-export const apiPort = import.meta.env.VITE_API_PORT ?? '1337';
-export const apiUrl = import.meta.env.VITE_API_URL ?? `${apiProtocol}://localhost:${apiPort}/api`;
-export const apiUploads = apiUrl + '/uploads/';
-
-// Authentication and login path
-export const authLoginPath = import.meta.env.VITE_AUTH_LOGIN ?? '/auth/login';
-
-// Storage configuration
-export const storageKey = import.meta.env.VITE_APP_STORAGE_KEY ?? 'app';
-
-// PWA settings
-export const showPwaInstaller = import.meta.env.VITE_SHOW_PWA_INSTALLER;
-export const showCookiesConsent = import.meta.env.VITE_SHOW_COOKIES_CONSENT;
-
-// Paths and URLs
-export const homePath = import.meta.env.VITE_HOME_PATH ?? '/login';
-
-// Third-party integrations
-export const ga4TrackingId = import.meta.env.VITE_GA4_TRACKING_ID ?? 'YOUR_GA4_TRACKING_ID';
-export const sentryDns = import.meta.env.VITE_SENTRY_DNS ?? false;
-export const sentryEnv = import.meta.env.VITE_SENTRY_ENV ?? false;
-export const sentryToken = import.meta.env.VITE_SENTRY_TOKEN ?? false;
-export const mapboxKey = import.meta.env.VITE_MAPBOX_KEY ?? 'YOUR_MAPBOX_KEY';
-
-// SQLite configuration
-export const sqlitePath = import.meta.env.VITE_SQLITE_PATH ?? './default-database.db';
-
-// CRM API configuration
-export const crmApiUrl = import.meta.env.VITE_CRM_API_URL ?? `${apiProtocol}://localhost:${apiPort}`;
-
-// Docker configuration
-export const containerName = import.meta.env.VITE_CONTAINER ?? 'app';
-export const nodeVersion = import.meta.env.VITE_NVM_NODE_VERSION ?? '20.3.0';
-export const dockerNodeVersion = import.meta.env.REACT_VITE_DOCKER_NODE_VERSION ?? '20.3.0-alpine';
-export const installMode = import.meta.env.VITE_INSTALL_MODE ?? '--legacy-peer-deps';
-
-
-
-
-
-// FOR STRAPI INTEGRATION
-
-// Strapi image sizes names
-// TODO: Move to a interface or model related with this images kind!!
-export const imgSizes = ['thumbnail', 'small', 'medium', 'large'];
-
-export const appAssets = import.meta.env + '/assets/'
-
-export const loadingTime = 400
-
+export const appIcon = 'assets/img/ica-slidebox-img-1.png';
+export const loadingTime = 400;
 export const splashScreen = {
   showDuration: 4000,
   autoHide: true
-}
+};
+export const fadeVelocity = 300;
 
-export const fadeVelocity = 300
+// =============================
+// Environment Variables
+// =============================
+export const all = import.meta.env;
 
-export const LOGIN_PATH = '/login'
-export const SIGNUP_PATH = '/signup'
+// Node environment setting (default to 'development')
+export const nodeEnv = all.VITE_APP_NODE_ENV ?? 'development';
 
+// =============================
+// Application-Specific Variables
+// =============================
+export const appName = all.VITE_APP_NAME ?? 'Festivore';
+export const appDomain = all.VITE_APP_DOMAIN ?? 'localhost';
+export const appProtocol = all.VITE_APP_PROTOCOL ?? 'http';
+export const appPort = all.VITE_APP_PORT ?? '3000';
+export const appUrl = all.VITE_APP_HOST_URL ?? `${appProtocol}://${appDomain}:${appPort}`;
+
+// Debug mode based on environment
+export const debug = all.VITE_TESTING === 'true';
+
+// =============================
+// Internationalization (i18n)
+// =============================
+export const defaultLanguage = all.VITE_DEFAULT_LANG ?? 'en';
+export const supportedLanguages = all.VITE_SUPPORTED_LANGS 
+  ? all.VITE_SUPPORTED_LANGS.split(',')
+  : ['en', 'es'];
+
+// =============================
+// CAPTCHA Configuration
+// =============================
+export const enableCaptcha = all.VITE_ENABLE_CAPTCHA === 'true';
+export const captchaExpiryTime = Number(all.VITE_CAPTCHA_EXPIRY_TIME) ?? 300000;
+export const captchaCleanupInterval = Number(all.VITE_CAPTCHA_CLEANUP_INTERVAL) ?? 60000;
+
+// =============================
+// Backend API Configuration
+// =============================
+export const apiProtocol = all.VITE_API_PROTOCOL ?? 'http';
+export const apiPort = all.VITE_API_PORT ?? '1337';
+export const apiUrl = all.VITE_API_URL ?? `${apiProtocol}://localhost:${apiPort}/api`;
+export const apiUploads = `${apiUrl}/uploads/`;
+
+// =============================
+// Authentication and Login Path
+// =============================
+export const authLoginPath = all.VITE_AUTH_LOGIN ?? '/auth/login';
+export const homePath = all.VITE_HOME_PATH ?? '/login';
+
+// =============================
+// Storage Configuration
+// =============================
+export const storageKey = all.VITE_APP_STORAGE_KEY ?? 'app';
+
+// =============================
+// PWA and Consent Settings
+// =============================
+export const showPwaInstaller = all.VITE_ENABLE_SHOW_PWA_INSTALLER === 'true';
+export const showCookiesConsent = all.VITE_SHOW_ENABLE_COOKIES_CONSENT === 'true';
+export const cookiePath = all.VITE_APP_COOKIE_PATH ?? '/';
+// =============================
+// Third-Party Integrations
+// =============================
+export const ga4TrackingId = all.VITE_GA4_TRACKING_ID ?? 'YOUR_GA4_TRACKING_ID';
+
+// Sentry configuration
+export const sentryDns = all.VITE_SENTRY_DNS ?? '';
+export const sentryEnv = all.VITE_SENTRY_ENV ?? '';
+export const sentryToken = all.VITE_SENTRY_TOKEN ?? '';
+
+// Mapbox configuration
+export const mapboxKey = all.VITE_MAPBOX_KEY ?? 'YOUR_MAPBOX_KEY';
+
+// =============================
+// SQLite Configuration
+// =============================
+export const sqlitePath = all.VITE_SQLITE_PATH ?? './default-database.db';
+
+// =============================
+// CRM API Configuration
+// =============================
+export const crmApiUrl = all.VITE_CRM_API_URL ?? `${apiProtocol}://localhost:${apiPort}`;
+
+// =============================
+// Docker and Node Configuration
+// =============================
+export const containerName = all.VITE_CONTAINER ?? 'app';
+export const nodeVersion = all.VITE_NVM_NODE_VERSION ?? '20.3.0';
+export const dockerNodeVersion = all.REACT_VITE_DOCKER_NODE_VERSION ?? '20.3.0-alpine';
+export const installMode = all.VITE_INSTALL_MODE ?? '--legacy-peer-deps';
+
+// =============================
+// Strapi Integration
+// =============================
+export const imgSizes = ['thumbnail', 'small', 'medium', 'large']; // Image sizes in Strapi
+
+export const appAssets = `${import.meta.env}/assets/`;
+
+// =============================
+// Paths and Routes
+// =============================
+export const LOGIN_PATH = '/login';
+export const SIGNUP_PATH = '/signup';
+
+// =============================
+// Timeout Configuration
+// =============================
 export const timeout = {
-  buttonSpinner : 123,
-  loadingPopup : 123,
-  redirect : 123,
-  refresh : 1000,
-  readToast : 3000,
+  buttonSpinner: 123,
+  loadingPopup: 123,
+  redirect: 123,
+  refresh: 1000,
+  readToast: 3000,
   doneMargin: 300,
-}
+};
 
+// =============================
+// Pagination Configuration
+// =============================
 export const paginator = {
-  'size' : 8
-}
+  size: 8,
+};
+
+// =============================
+// Add to Home Screen Configuration
+// =============================
+export const addToHomeScreenImages = [
+  {
+    src: shareSocialOutline,
+    alt: i18n.t('Tap the Share Icon'),
+  },
+  {
+    src: addCircleOutline,
+    alt: i18n.t('We are adding to homescreen...'),
+  },
+  {
+    src: closeCircleOutline,
+    alt: i18n.t("Select 'Add to home screen' entry!"),
+  },
+];
 
 /**
- * Configura los mensajes de validación de Yup.
- * Devuelve el objeto de configuración para Yup con las traducciones.
- *
- * @param t - La función de traducción de i18next.
- * @returns Objeto de configuración para Yup.
+ * Configures Yup validation messages.
+ * Returns the configuration object for Yup with translations.
+ * 
+ * @param t - The i18next translation function.
+ * @returns Configuration object for Yup.
  */
 export function getYupLocaleConfig(t: TFunction) {
   return {
@@ -127,28 +172,13 @@ export function getYupLocaleConfig(t: TFunction) {
       required: t('mixed.required.key', { defaultValue: t('Required') }),
     },
     number: {
-      min: ({ min }: { min: number }) => t('number.min.key', { min, defaultValue: t('Minimal')+`: ${min}` }),
-      max: ({ max }: { max: number }) => t('number.max.key', { max, defaultValue: t('Maximal')+`: ${max}` }),
+      min: ({ min }: { min: number }) => t('number.min.key', { min, defaultValue: `${t('Minimal')}: ${min}` }),
+      max: ({ max }: { max: number }) => t('number.max.key', { max, defaultValue: `${t('Maximal')}: ${max}` }),
     },
     string: {
       email: t('string.email.key', { defaultValue: 'Must be an email' }),
-      min: ({ min }: { min: number }) => t('string.min.key', { min, defaultValue: t('Minimum length')+`: ${min}` }),
-      max: ({ max }: { max: number }) => t('string.max.key', { max, defaultValue: t('Maximum length')+`: ${max}` }),
+      min: ({ min }: { min: number }) => t('string.min.key', { min, defaultValue: `${t('Minimum length')}: ${min}` }),
+      max: ({ max }: { max: number }) => t('string.max.key', { max, defaultValue: `${t('Maximum length')}: ${max}` }),
     },
   };
 }
-
-export const addToHomeScreenImages = [
-  {
-    src: shareSocialOutline, // Debes asegurarte de que 'icon.shareIcon' está definido en alguna parte.
-    alt: i18n.t('Tap the Share Icon'),
-  },
-  {
-    src: addCircleOutline, // Asegúrate de definir esto correctamente.
-    alt: i18n.t('We are adding to homescreen...'),
-  },
-  {
-    src: closeCircleOutline, // Asegúrate de que exista esta referencia.
-    alt: i18n.t("Select 'Add to home screen' entry!"),
-  },
-]

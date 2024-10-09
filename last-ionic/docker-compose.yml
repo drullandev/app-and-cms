@@ -3,11 +3,11 @@ services:
   app:
     build: .
     ports:
-      - "${VITE_APP_PORT}:${VITE_APP_PORT}"  # Usa la variable de entorno para los puertos
+      - "${VITE_APP_DOCKER_PORT}:${VITE_APP_PORT}"  # Usa la variable de entorno para los puertos
     volumes:
       - .:/app
     stdin_open: true
-    environment:
-      - NODE_ENV=${VITE_APP_NODE_ENV}  # Usa la variable de entorno para el entorno
     env_file:  # Indica el archivo que contiene las variables de entorno
       - .env  # Ruta al archivo .env que contiene las variables
+    environment:
+      - NODE_ENV=${VITE_APP_NODE_ENV}  # Usa la variable de entorno para el entorno

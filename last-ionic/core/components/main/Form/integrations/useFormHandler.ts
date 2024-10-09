@@ -1,8 +1,7 @@
 // useFormHandler.ts
-
 import { useIonToast } from '@ionic/react';
 import { useHistory } from 'react-router-dom';
-import { AxiosResponse, AxiosError, Method } from 'axios';
+import { AxiosError, AxiosResponse, Method } from 'axios';
 import { useTranslation } from 'react-i18next';
 
 import LoggerUtils from '../../../../classes/utils/LoggerUtils';
@@ -22,51 +21,33 @@ const useFormHandler = (formData: IFormData) => {
   const setLoading = useAppStore((state) => state.setLoading);
 
   const url = formData.url;
-  const method: Method = formData.method ?? 'POST'; // Predeterminado a POST si no se especifica
+  const method: Method = formData.method ?? 'POST'; // Default to POST if not specified
 
   const handleSubmit = async (submitData: ISubmitForm) => {
-
     const { data, onSuccess, onError, settings } = submitData;
-
+  
     try {
-
-      const config= {};
-
-      setLoading(true); // Iniciar estado de carga
-
-      // Realizamos la llamada a la API utilizando makeRequest
-      const response = useAppRest.makeRequest({
+      const response: AxiosResponse = await useAppRest.makeRequest<AxiosResponse>({
         url,
         method,
-        config,
-        data
+        data,
       });
-
-      // Mostramos un toast de éxito si 'show' es true en customSuccessMessage
-      if (settings?.customSuccessMessage?.show) {
-        const output = RestOutput.success({
-          header: settings?.customSuccessMessage?.header || t('¡Éxito!'),
-          message: settings?.customSuccessMessage?.message || t('Formulario enviado con éxito'),
-        });
-        presentToast(output);
-      }
-
+  
+      // Puedes acceder a response.data, response.status, etc.
       if (onSuccess) {
         onSuccess(response);
       }
-
-    } catch (err: any) {
-
+  
+    } catch (err) {
       const error = err as AxiosError;
 
-      // Invocamos el callback de error si está definido
+      // Call onError callback if defined
       if (onError) {
         onError(error);
       }
 
-      // Mostramos un toast de error si 'show' es true en customErrorMessage
+      // Show error toast if 'show' is true in customErrorMessage
       if (settings?.customErrorMessage?.show) {
-
         const output = RestOutput.danger({
           header: settings?.customErrorMessage?.header || t('¡Error!'),
           message: settings?.customErrorMessage?.message || t('Error al enviar el formulario'),
@@ -75,11 +56,9 @@ const useFormHandler = (formData: IFormData) => {
         logger.error(error);
 
         presentToast(output);
-
       }
 
     } finally {
-
       setLoading(false);
     }
   };

@@ -16,8 +16,8 @@ import Looper from '../../utils/Looper';
 import { IField, IFormComponent, IFormData, ISubmitForm } from './types';
 import './style.css';
 import DOMPurify from 'dompurify';
-import FormHandler from './classes/useFormHandler'; // Importamos la clase para manejar el envío del formulario
-import useFormHandler from './classes/useFormHandler';
+import FormHandler from './integrations/useFormHandler'; // Importamos la clase para manejar el envío del formulario
+import useFormHandler from './integrations/useFormHandler';
 
 const Form: React.FC<IFormComponent> = (formProps: IFormComponent): JSX.Element | null => {
   

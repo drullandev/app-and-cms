@@ -1,7 +1,7 @@
 import IRestManager from './RestManager';
 import { AxiosRequestConfig } from 'axios';
 import StringUtil from '../utils/StringUtil';
-import DebugUtils from '../utils/DebugUtils';
+import RestManager from './RestManager';
 
 export interface WhereProps {
   type: string;
@@ -66,7 +66,7 @@ export class GraphQLManager {
    * @param restManager - An instance of a class implementing IRestManager.
    * @returns {GraphQLManager} The singleton instance.
    */
-  public static getInstance(restManager: IRestManager): GraphQLManager {
+  public static getInstance(restManager: RestManager): GraphQLManager {
     if (!this.instance) {
       this.instance = new this(restManager);
     }
