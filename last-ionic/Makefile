@@ -6,9 +6,7 @@
 env := development
 
 up:  ## Start the project in development mode
-	@echo "Starting the project..."
-	npm i
-	make start
+	make docker-up
 
 start:  ## Install dependencies and start the project
 	npm run dev
@@ -17,7 +15,8 @@ config:  ## Check if your environment is properly configured
 	@docker-compose config
 
 docker:  ## Start Docker with the specified environment configuration
-	@docker-compose build --no-cache
+	make clean-docker
+	docker-compose build --no-cache
 	make docker-up
 
 docker-up:  ## Start Docker with production environment configuration
@@ -105,9 +104,9 @@ zip:  ## Compress the app excluding node_modules
 
 refresh-all:  ## Refresh the local environment and rebuild Docker
 	rm -rf node_modules package-lock.json
-	docker-compose down --rmi all --volumes --remove-orphans
 	docker-compose build --no-cache
 	npm install
+	make clean-docker
 	docker-compose up
 
 # Help target to dynamically generate the help output based on descriptions
