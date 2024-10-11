@@ -15,10 +15,6 @@ const useFormHandler = (formData: IFormData) => {
   const debug = false;
   const logger = LoggerUtils.getInstance('FormHandler', debug);
 
-  const { t } = useTranslation();
-  const history = useHistory();
-  const [presentToast] = useIonToast();
-  const setLoading = useAppStore((state) => state.setLoading);
 
   const url = formData.url;
   const method: Method = formData.method ?? 'POST'; // Default to POST if not specified
@@ -55,11 +51,10 @@ const useFormHandler = (formData: IFormData) => {
 
         logger.error(error);
 
-        presentToast(output);
       }
 
     } finally {
-      setLoading(false);
+
     }
   };
 

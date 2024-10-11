@@ -1,31 +1,11 @@
-# Makefile for Ionic React with TypeScript
+# Makefile for Ionic React with TypeScript and Docker
 
 # Phony targets: Declare non-file targets
 .PHONY: all install dev build preview test lint clean help
 
 env := development
 
-up:  ## Start the project in development mode
-	@echo "Starting the project..."
-	npm i
-	make start
-
-start:  ## Install dependencies and start the project
-	npm run dev
-
-config:  ## Check if your environment is properly configured
-	@docker-compose config
-
-docker:  ## Start Docker with the specified environment configuration
-	@docker-compose build --no-cache
-	make docker-up
-
-docker-up:  ## Start Docker with production environment configuration
-	@docker-compose up
-
-down:  ## Shut down Docker, removing images, volumes, and orphan containers
-	@docker-compose down --rmi all --volumes --remove-orphans
-
+# Node related commands
 install:  ## Install project dependencies using npm
 	@echo "Installing dependencies..."
 	npm install
@@ -37,22 +17,20 @@ outdated:  ## Check for outdated dependencies
 dev:  ## Run development server with Vite
 	@echo "Starting development server..."
 	nvm use 22
+	make install
 	vite
 
 build-ts:  ## Compile TypeScript files
 	@echo "Building TypeScript files..."
-	npx tsc	
+	npx tsc
 
 build:  ## Build the project: Compile TypeScript and build with Vite
 	@echo "Building the project..."
-	make build-files
-	npm run build-ts && npx vite build
+	make build-ts
+	npx vite build
 
 ionic-build:  ## Build the project with Ionic
 	npm run ionic:build
-
-build2:  ## Build the project using Webpack
-	npm run build2
 
 electron:  ## Build the project for Electron
 	npm run electron
@@ -87,12 +65,32 @@ prepare:  ## Prepare Husky hooks for Git
 
 # Clean up build artifacts
 clean:  ## Clean up build artifacts (dist, cache, coverage)
-	@echo "Cleaning up..."
-	rm -rf dist
-	rm -rf .cache
-	rm -rf coverage
+	@echo "Cleaning up node_modules and other build artifacts..."
+	sudo rm -rf node_modules package-lock.json
+	sudo rm -rf dist
+	sudo rm -rf .cache
+	sudo rm -rf coverage
+	npm cache clean --force
+
+zip:  ## Compress the app excluding node_modules
+	@zip -r ../app.zip . -x "node_modules/*"
+
+# Docker related commands
+config:  ## Check if your environment is properly configured
+	@docker-compose config
+
+docker:  ## Start Docker with the specified environment configuration
+	@docker-compose build --no-cache
+	make docker-up
+
+docker-up:  ## Start Docker with production environment configuration
+	@docker-compose up
+
+down:  ## Shut down Docker, removing images, volumes, and orphan containers
+	@docker-compose down --rmi all --volumes --remove-orphans
 
 clean-docker:  ## Clean up Docker artifacts
+	@echo "Cleaning up Docker containers, images, volumes, and networks..."
 	@docker stop $(docker ps -q) || true
 	@docker rm $(docker ps -a -q) || true
 	@docker rmi $(docker images -q) || true
@@ -100,15 +98,11 @@ clean-docker:  ## Clean up Docker artifacts
 	@docker network rm $(docker network ls -q) || true
 	@docker system prune --all --volumes -f || true
 
-zip:  ## Compress the app excluding node_modules
-	@zip -r ../app.zip . -x "node_modules/*"	
-
 refresh-all:  ## Refresh the local environment and rebuild Docker
-	rm -rf node_modules package-lock.json
-	docker-compose down --rmi all --volumes --remove-orphans
-	docker-compose build --no-cache
-	npm install
-	docker-compose up
+	make down
+	make clean
+	make docker
+	make install
 
 # Help target to dynamically generate the help output based on descriptions
 help:  ## Display this help message

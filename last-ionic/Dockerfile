@@ -1,6 +1,8 @@
 # Etapa 1: Construcción con Node.js y Vite
 FROM node:22-alpine as build
 
+RUN apk add --no-cache python3 py3-pip make g++ 
+
 WORKDIR /app
 
 COPY package*.json ./
