@@ -1,20 +1,17 @@
 // useFormHandler.ts
 import { useIonToast } from '@ionic/react';
-import { useHistory } from 'react-router-dom';
 import { AxiosError, AxiosResponse, Method } from 'axios';
-import { useTranslation } from 'react-i18next';
 
 import LoggerUtils from '../../../../classes/utils/LoggerUtils';
 import RestOutput from '../../../../classes/utils/RestOutput';
 import { IFormData, ISubmitForm } from '../types';
 import useAppRest from '../../../../integrations/useAppRest';
-import useAppStore from '../../../../integrations/stores/app.store';
+import i18n from '../../i18n';
 
 const useFormHandler = (formData: IFormData) => {
 
   const debug = false;
   const logger = LoggerUtils.getInstance('FormHandler', debug);
-
 
   const url = formData.url;
   const method: Method = formData.method ?? 'POST'; // Default to POST if not specified
@@ -45,12 +42,11 @@ const useFormHandler = (formData: IFormData) => {
       // Show error toast if 'show' is true in customErrorMessage
       if (settings?.customErrorMessage?.show) {
         const output = RestOutput.danger({
-          header: settings?.customErrorMessage?.header || t('¡Error!'),
-          message: settings?.customErrorMessage?.message || t('Error al enviar el formulario'),
+          header: settings?.customErrorMessage?.header || i18n.t('¡Error!'),
+          message: settings?.customErrorMessage?.message || i18n.t('Error al enviar el formulario'),
         });
 
         logger.error(error);
-
       }
 
     } finally {

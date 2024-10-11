@@ -2,7 +2,7 @@ import { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
   appId: 'io.ionic.starter',
-  appName: 'last-ionic',
+  appName: 'happycode-sheet',
   webDir: 'dist',
   server: {
     androidScheme: 'https'
