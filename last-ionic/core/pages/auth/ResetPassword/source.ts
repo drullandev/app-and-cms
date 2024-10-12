@@ -9,7 +9,7 @@ import * as icon from 'ionicons/icons';
 
 // Used classes
 import DebugUtils from '../../../classes/utils/DebugUtils';
-import RestManager from '../../../classes/managers/RestManager';
+import { IRestManager } from '../../../classes/managers/RestManager';
 
 // Local dependencies
 import { IFormComponent, IFormData, ISubmitForm } from '../../../components/main/Form/types';

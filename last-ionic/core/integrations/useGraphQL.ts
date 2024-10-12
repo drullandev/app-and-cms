@@ -1,5 +1,5 @@
 import GraphQLManager from "../classes/managers/GraphQLManager";
-import RestManager from '../classes/managers/RestManager';
+import { RestManager } from '../classes/managers/RestManager';
 import { apiUrl } from '../app/config/env';
 
 /**

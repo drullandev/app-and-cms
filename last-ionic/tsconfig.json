@@ -8,21 +8,21 @@
     "allowSyntheticDefaultImports": true,
     "skipLibCheck": true,
     "resolveJsonModule": true,
-    "typeRoots": ["./node_modules/@types", "./types", "globals.d.ts"],
+    "typeRoots": ["./node_modules/@types", "./types"],
     "useDefineForClassFields": true,
     "allowJs": true,
     "rootDir": "./",
     "outDir": "./dist",
     "forceConsistentCasingInFileNames": true,
-    "moduleResolution": "Node",
+    "moduleResolution": "node",
     "isolatedModules": true,
     "noEmit": false,
     "jsx": "react-jsx",
     "baseUrl": "./",
     "paths": {
-      "../../../components/*": ["core/components/*", "src/components/*"]
+      "components/*": ["core/components/*", "src/components/*"]
     }
   },
-  "include": ["core/**/*.ts", "src/**/*.ts", "core/**/*.tsx", "src/**/*.tsx", "core/components/design/Footer.tsx"],
+  "include": ["core/**/*.ts", "src/**/*.ts", "core/**/*.tsx", "src/**/*.tsx", "types/globals.d.ts"],
   "exclude": ["node_modules"]
 }

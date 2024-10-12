@@ -1,5 +1,5 @@
 import { ServiceManager } from "../classes/managers/ServiceManager";
-import RestManager from "../classes/managers/RestManager";
+import { RestManager } from "../classes/managers/RestManager";
 import { sentryDns, sentryEnv, sentryToken } from '../app/config/env'; // Asegúrate de que `apiToken` sea el correcto para el Bearer
 import { useLogger } from '../integrations/useLogger'
 

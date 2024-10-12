@@ -1,6 +1,6 @@
 import SentryManager from "./SentryManager";
 import PushNotificationManager, { PushNotificationConfig } from "./PushNotificationManager";
-import RestManager from "./RestManager";
+import { RestManager } from "./RestManager";
 
 /**
  * Interface defining the configuration structure for SentryManager.

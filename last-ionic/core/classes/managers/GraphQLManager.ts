@@ -1,7 +1,6 @@
-import IRestManager from './RestManager';
+import { RestManager, IRestManager } from './RestManager';
 import { AxiosRequestConfig } from 'axios';
 import StringUtil from '../utils/StringUtil';
-import RestManager from './RestManager';
 
 export interface WhereProps {
   type: string;

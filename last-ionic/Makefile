@@ -5,30 +5,7 @@
 
 env := development
 
-<<<<<<< HEAD
 # Node related commands
-=======
-up:  ## Start the project in development mode
-	make docker-up
-
-start:  ## Install dependencies and start the project
-	npm run dev
-
-config:  ## Check if your environment is properly configured
-	@docker-compose config
-
-docker:  ## Start Docker with the specified environment configuration
-	make clean-docker
-	docker-compose build --no-cache
-	make docker-up
-
-docker-up:  ## Start Docker with production environment configuration
-	@docker-compose up
-
-down:  ## Shut down Docker, removing images, volumes, and orphan containers
-	@docker-compose down --rmi all --volumes --remove-orphans
-
->>>>>>> 937d507a1fe7843b493b3c1805c3b6f647c546fc
 install:  ## Install project dependencies using npm
 	@echo "Installing dependencies..."
 	npm install
@@ -122,18 +99,10 @@ clean-docker:  ## Clean up Docker artifacts
 	@docker system prune --all --volumes -f || true
 
 refresh-all:  ## Refresh the local environment and rebuild Docker
-<<<<<<< HEAD
 	make down
 	make clean
 	make docker
 	make install
-=======
-	rm -rf node_modules package-lock.json
-	docker-compose build --no-cache
-	npm install
-	make clean-docker
-	docker-compose up
->>>>>>> 937d507a1fe7843b493b3c1805c3b6f647c546fc
 
 # Help target to dynamically generate the help output based on descriptions
 help:  ## Display this help message

@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import RestManager, { IRestManager } from '../classes/managers/RestManager';
+import { RestManager, IRestManager } from '../classes/managers/RestManager';
 import { apiUrl } from '../app/config/env';
 import useUserStore, { IUserStore } from '../integrations/stores/user.store';
 

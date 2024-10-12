@@ -1,6 +1,7 @@
-import axios, { AxiosRequestConfig, Method } from "axios";
+import axiosInstance from "../services/axiosInstance";
 import LoggerUtils from "../utils/LoggerUtils";
 import DebugUtils from "../utils/DebugUtils";
+import { AxiosRequestConfig, Method } from "axios";
 
 /**
  * Class representing a custom error for REST requests.
@@ -8,10 +9,10 @@ import DebugUtils from "../utils/DebugUtils";
  * such as the HTTP status code and response data.
  * 
  * @class RestError
- * @author David Rullán - https://github.com/drullandev
+ * @author David Rullán
  * @date October 4, 2024
  */
-export class RestError extends Error {
+class RestError extends Error {
   public statusCode: number;
   public data: any;
 
@@ -30,7 +31,7 @@ export class RestError extends Error {
 /**
  * Interface for defining the structure of a request configuration object.
  */
-export interface RequestOptions {
+interface RequestOptions {
   method: Method;
   url: string;
   data?: any;
@@ -42,7 +43,7 @@ export interface RequestOptions {
  * This interface ensures that the RestManager can perform both synchronous 
  * and asynchronous REST API calls, along with the standard REST operations.
  */
-export interface IRestManager {
+interface IRestManager {
   makeRequest<T>(options: RequestOptions): Promise<T>;
   get<T>(url: string, config?: AxiosRequestConfig): Promise<T>;
   post<T>(url: string, data: any, config?: AxiosRequestConfig): Promise<T>;
@@ -57,6 +58,7 @@ export interface IRestManager {
  * automatically manages logging, debugging, and error handling.
  * 
  * @class RestManager
+ * @implements {IRestManager}
  * @author David Rullán
  * @date October 2024
  */
@@ -70,6 +72,10 @@ class RestManager implements IRestManager {
   /**
    * Public constructor for singleton pattern. Initializes logging, debugging,
    * and sets the base URL and default headers for requests.
+   * 
+   * @param {string} baseURL - The base URL for the API.
+   * @param {AxiosRequestConfig['headers']} [defaultHeaders] - Default headers for API requests.
+   * @param {boolean} [debug=false] - Flag to enable or disable debug mode.
    */
   public constructor(baseURL: string, defaultHeaders?: AxiosRequestConfig['headers'], debug: boolean = false) {
     this.baseURL = baseURL;
@@ -80,6 +86,11 @@ class RestManager implements IRestManager {
 
   /**
    * Returns the singleton instance of RestManager.
+   * 
+   * @param {string} baseURL - The base URL for the API.
+   * @param {AxiosRequestConfig['headers']} [defaultHeaders] - Default headers for API requests.
+   * @param {boolean} [debug=false] - Flag to enable or disable debug mode.
+   * @returns {RestManager} - The singleton instance of RestManager.
    */
   public static getInstance(baseURL: string, defaultHeaders?: AxiosRequestConfig['headers'], debug: boolean = false): RestManager {
     if (!RestManager.instance) {
@@ -89,11 +100,17 @@ class RestManager implements IRestManager {
   }
 
   /**
-   * Makes an HTTP request using Axios. Handles logging, debugging, and custom error handling.
+   * Makes an HTTP request using the configured Axios instance. Handles logging, debugging,
+   * and custom error handling through RestError.
+   * 
+   * @template T
+   * @param {RequestOptions} options - The options for the HTTP request.
+   * @returns {Promise<T>} - The response data typed as T.
+   * @throws {RestError} - Throws custom RestError on request failure.
    */
   public async makeRequest<T>(options: RequestOptions): Promise<T> {
     try {
-      const response = await axios({
+      const response = await axiosInstance({
         method: options.method,
         url: `${this.baseURL}${options.url}`,
         data: options.data,
@@ -103,16 +120,21 @@ class RestManager implements IRestManager {
         },
         ...options.config,
       });
-      this.logger.info('The request was done');
+      this.logger.info('The request was successful');
       return response.data as T; // Retorna el tipo genérico T
     } catch (error: any) {
-      this.logger.error('The request was error');
+      this.logger.error('The request failed');
       throw new RestError(error.message, error.response?.status, error.response?.data);
     }
   }
 
   /**
    * Simplified GET request.
+   * 
+   * @template T
+   * @param {string} url - The URL endpoint for the GET request.
+   * @param {AxiosRequestConfig} [config] - Optional Axios configuration.
+   * @returns {Promise<T>} - The response data typed as T.
    */
   public async get<T>(url: string, config?: AxiosRequestConfig): Promise<T> {
     return this.makeRequest<T>({
@@ -124,6 +146,12 @@ class RestManager implements IRestManager {
 
   /**
    * Simplified POST request.
+   * 
+   * @template T
+   * @param {string} url - The URL endpoint for the POST request.
+   * @param {any} data - The data to send in the POST request body.
+   * @param {AxiosRequestConfig} [config] - Optional Axios configuration.
+   * @returns {Promise<T>} - The response data typed as T.
    */
   public async post<T>(url: string, data: any, config?: AxiosRequestConfig): Promise<T> {
     return this.makeRequest<T>({
@@ -136,6 +164,12 @@ class RestManager implements IRestManager {
 
   /**
    * Simplified PUT request.
+   * 
+   * @template T
+   * @param {string} url - The URL endpoint for the PUT request.
+   * @param {any} data - The data to send in the PUT request body.
+   * @param {AxiosRequestConfig} [config] - Optional Axios configuration.
+   * @returns {Promise<T>} - The response data typed as T.
    */
   public async put<T>(url: string, data: any, config?: AxiosRequestConfig): Promise<T> {
     return this.makeRequest<T>({
@@ -148,6 +182,11 @@ class RestManager implements IRestManager {
 
   /**
    * Simplified DELETE request.
+   * 
+   * @template T
+   * @param {string} url - The URL endpoint for the DELETE request.
+   * @param {AxiosRequestConfig} [config] - Optional Axios configuration.
+   * @returns {Promise<T>} - The response data typed as T.
    */
   public async delete<T>(url: string, config?: AxiosRequestConfig): Promise<T> {
     return this.makeRequest<T>({
@@ -159,11 +198,15 @@ class RestManager implements IRestManager {
 
   /**
    * Updates the default headers for future requests.
+   * 
+   * @param {AxiosRequestConfig['headers']} newHeaders - New headers to merge with existing default headers.
    */
   public updateHeaders(newHeaders: AxiosRequestConfig['headers']): void {
     this.defaultHeaders = { ...this.defaultHeaders, ...newHeaders };
-    this.logger.info('The request updateHeaders was done', this.defaultHeaders);
+    this.logger.info('The request updateHeaders was successful', this.defaultHeaders);
   }
 }
 
-export default RestManager;
+export type { IRestManager };
+
+export { RestManager, RestError };

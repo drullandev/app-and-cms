@@ -1,6 +1,5 @@
-import RestManager from '../classes/managers/RestManager';
+import { RestManager } from '../classes/managers/RestManager';
 import { apiUrl } from '../app/config/env';
-import useUserStore from '../integrations/stores/user.store';
 
 /**
  * Creates a singleton instance of RestManager configured for GraphQL operations.

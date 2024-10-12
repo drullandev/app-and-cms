@@ -5,7 +5,7 @@ import DebugUtils from '../../classes/utils/DebugUtils';
 import { AppState } from './app.store';
 import { AuthResponse } from '../../classes/strapi/models/AuthResponse';
 import { User } from '../../classes/strapi/models/User';
-import RestManager from '../../classes/managers/RestManager';
+import { RestManager } from '../../classes/managers/RestManager';
 
 // Propiedades del usuario
 export const ID = 'id';
