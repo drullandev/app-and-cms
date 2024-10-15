@@ -1,12 +1,13 @@
-import * as yup from 'yup';
 import { useTranslation } from 'react-i18next';
 import { useIonToast } from '@ionic/react';
 
 import LoggerUtils from '../../../../classes/utils/LoggerUtils';
 import { ILogin } from '../../../../classes/strapi/models/User';
 import RestOutput from '../../../../classes/utils/RestOutput';
-import { IFormComponent, IFormData, ISubmitForm } from '../../../../components/main/Form/types';
+import { IFormComponent, ISubmitForm } from '../../../../components/main/Form/types';
 import useUserStore, { setIUserState } from '../../../../integrations/stores/user.store';
+import { identifierValidation } from '../../../../classes/strapi/validations/Identifier';
+import { passwordValidation } from '../../../../classes/strapi/validations/Password';
 
 export const loginFormData = (): IFormComponent => {
 
@@ -37,20 +38,7 @@ export const loginFormData = (): IFormComponent => {
         type: 'text',
         defaultValue: '',
         className: 'col-span-12',
-        validationSchema: yup.string()
-          .required(t('The email or username is required'))
-          .test(
-            'email-or-username',
-            t('Enter a valid email or username (3-30 chars)'),
-            function (value) {
-              const { path, createError } = this;
-              const isValidEmail = yup.string().email().isValidSync(value);
-              const isValidUsername = yup.string()
-                .matches(/^[a-zA-Z0-9_.-]{3,30}$/)
-                .isValidSync(value);
-              return isValidEmail || isValidUsername || createError({ path, message: t('Enter a valid email or username (3-30 chars)') });
-            }
-          ),
+        validationSchema: identifierValidation(),
       },
       {
         name: 'password',
@@ -59,10 +47,7 @@ export const loginFormData = (): IFormComponent => {
         defaultValue: '',
         className: 'col-span-12',
         secret: true,
-        validationSchema: yup.string()
-          .required(t('Password is required'))
-          .min(8, t('Password must be at least 8 characters'))
-          .max(16, t('Password must be at max 16 characters')),
+        validationSchema: passwordValidation()
       }
     ],
     onSuccess: (data: ILogin) :  ISubmitForm => {
@@ -124,10 +109,13 @@ export const loginFormData = (): IFormComponent => {
       }
 
       return successAcctions;
+      
     },
 
     onError: (err: any) => {
+
       logger.error(err);
+
     },
 
   };

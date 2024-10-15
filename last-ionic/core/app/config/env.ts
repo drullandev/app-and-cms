@@ -58,6 +58,7 @@ export const captchaCleanupInterval = Number(all.VITE_CAPTCHA_CLEANUP_INTERVAL) 
 export const apiProtocol = all.VITE_API_PROTOCOL ?? 'http';
 export const apiPort = all.VITE_API_PORT ?? '1337';
 export const apiUrl = all.VITE_API_URL ?? `${apiProtocol}://localhost:${apiPort}/api`;
+export const graphqlUrl = `${apiProtocol}://localhost:${apiPort}/api/graphql`;
 export const apiUploads = `${apiUrl}/uploads/`;
 
 // =============================

@@ -1,8 +1,6 @@
-import axiosInstance from "../services/axiosInstance";
+import axios, { AxiosHeaderValue, AxiosInstance, AxiosRequestConfig, Method } from 'axios';
 import LoggerUtils from "../utils/LoggerUtils";
 import DebugUtils from "../utils/DebugUtils";
-import { AxiosRequestConfig, Method } from "axios";
-
 /**
  * Class representing a custom error for REST requests.
  * Extends the base Error class and includes additional information
@@ -49,7 +47,7 @@ interface IRestManager {
   post<T>(url: string, data: any, config?: AxiosRequestConfig): Promise<T>;
   put<T>(url: string, data: any, config?: AxiosRequestConfig): Promise<T>;
   delete<T>(url: string, config?: AxiosRequestConfig): Promise<T>;
-  updateHeaders(newHeaders: AxiosRequestConfig['headers']): void
+  updateHeaders(newHeaders: { [key: string]: AxiosHeaderValue }): void;
 }
 
 /**
@@ -62,66 +60,57 @@ interface IRestManager {
  * @author David Rullán
  * @date October 2024
  */
+
 class RestManager implements IRestManager {
-  private static instance: RestManager | null = null; // Singleton instance
+  private static instances: Map<string, RestManager> = new Map(); // Mapa para instancias por URL
+  private axiosInstance: AxiosInstance;
   private logger: LoggerUtils;
   private debug: boolean;
-  private baseURL: string;
-  private defaultHeaders: AxiosRequestConfig['headers'];
 
   /**
-   * Public constructor for singleton pattern. Initializes logging, debugging,
-   * and sets the base URL and default headers for requests.
-   * 
-   * @param {string} baseURL - The base URL for the API.
-   * @param {AxiosRequestConfig['headers']} [defaultHeaders] - Default headers for API requests.
-   * @param {boolean} [debug=false] - Flag to enable or disable debug mode.
+   * Constructor privado para forzar el patrón Singleton basado en la URL de Axios.
    */
-  public constructor(baseURL: string, defaultHeaders?: AxiosRequestConfig['headers'], debug: boolean = false) {
-    this.baseURL = baseURL;
-    this.defaultHeaders = defaultHeaders || {};
+  private constructor(axiosInstance: AxiosInstance, debug: boolean = false) {
+    this.axiosInstance = axiosInstance;
     this.debug = DebugUtils.setDebug(debug);
     this.logger = LoggerUtils.getInstance(this.constructor.name, this.debug);
   }
 
   /**
-   * Returns the singleton instance of RestManager.
+   * Devuelve una instancia singleton de RestManager basada en la URL de la instancia de Axios.
    * 
-   * @param {string} baseURL - The base URL for the API.
-   * @param {AxiosRequestConfig['headers']} [defaultHeaders] - Default headers for API requests.
-   * @param {boolean} [debug=false] - Flag to enable or disable debug mode.
-   * @returns {RestManager} - The singleton instance of RestManager.
+   * @param {AxiosInstance} axiosInstance - Instancia de Axios.
+   * @param {boolean} [debug=false] - Bandera para habilitar o deshabilitar el modo debug.
+   * @returns {RestManager} - La instancia singleton de RestManager para la URL dada.
    */
-  public static getInstance(baseURL: string, defaultHeaders?: AxiosRequestConfig['headers'], debug: boolean = false): RestManager {
-    if (!RestManager.instance) {
-      RestManager.instance = new RestManager(baseURL, defaultHeaders, debug);
+  public static getInstance(axiosInstance: AxiosInstance, debug: boolean = false): RestManager {
+    const baseURL = axiosInstance.defaults.baseURL || ''; // Obtener la URL base de Axios
+
+    // Si no existe una instancia para esa URL, crear una nueva
+    if (!RestManager.instances.has(baseURL)) {
+      const instance = new RestManager(axiosInstance, debug);
+      RestManager.instances.set(baseURL, instance);
     }
-    return RestManager.instance;
+
+    return RestManager.instances.get(baseURL)!; // Retornar la instancia existente
   }
 
   /**
-   * Makes an HTTP request using the configured Axios instance. Handles logging, debugging,
-   * and custom error handling through RestError.
-   * 
-   * @template T
-   * @param {RequestOptions} options - The options for the HTTP request.
-   * @returns {Promise<T>} - The response data typed as T.
-   * @throws {RestError} - Throws custom RestError on request failure.
+   * Realiza una petición HTTP utilizando la instancia de Axios configurada.
    */
   public async makeRequest<T>(options: RequestOptions): Promise<T> {
     try {
-      const response = await axiosInstance({
+      const response = await this.axiosInstance({
         method: options.method,
-        url: `${this.baseURL}${options.url}`,
+        url: options.url,
         data: options.data,
         headers: {
-          ...this.defaultHeaders,
           ...(options.config?.headers || {}),
         },
         ...options.config,
       });
       this.logger.info('The request was successful');
-      return response.data as T; // Retorna el tipo genérico T
+      return response.data as T; // Retorna los datos de respuesta tipados como T
     } catch (error: any) {
       this.logger.error('The request failed');
       throw new RestError(error.message, error.response?.status, error.response?.data);
@@ -129,84 +118,52 @@ class RestManager implements IRestManager {
   }
 
   /**
-   * Simplified GET request.
-   * 
-   * @template T
-   * @param {string} url - The URL endpoint for the GET request.
-   * @param {AxiosRequestConfig} [config] - Optional Axios configuration.
-   * @returns {Promise<T>} - The response data typed as T.
+   * Simplificación del método GET.
    */
   public async get<T>(url: string, config?: AxiosRequestConfig): Promise<T> {
-    return this.makeRequest<T>({
-      method: 'GET',
-      url,
-      config
-    });
+    return this.makeRequest<T>({ method: 'GET', url, config });
   }
 
   /**
-   * Simplified POST request.
-   * 
-   * @template T
-   * @param {string} url - The URL endpoint for the POST request.
-   * @param {any} data - The data to send in the POST request body.
-   * @param {AxiosRequestConfig} [config] - Optional Axios configuration.
-   * @returns {Promise<T>} - The response data typed as T.
+   * Simplificación del método POST.
    */
   public async post<T>(url: string, data: any, config?: AxiosRequestConfig): Promise<T> {
-    return this.makeRequest<T>({
-      method: 'POST',
-      url,
-      data,
-      config
-    });
+    return this.makeRequest<T>({ method: 'POST', url, data, config });
   }
 
   /**
-   * Simplified PUT request.
-   * 
-   * @template T
-   * @param {string} url - The URL endpoint for the PUT request.
-   * @param {any} data - The data to send in the PUT request body.
-   * @param {AxiosRequestConfig} [config] - Optional Axios configuration.
-   * @returns {Promise<T>} - The response data typed as T.
+   * Simplificación del método PUT.
    */
   public async put<T>(url: string, data: any, config?: AxiosRequestConfig): Promise<T> {
-    return this.makeRequest<T>({
-      method: 'PUT',
-      url,
-      data,
-      config
-    });
+    return this.makeRequest<T>({ method: 'PUT', url, data, config });
   }
 
   /**
-   * Simplified DELETE request.
-   * 
-   * @template T
-   * @param {string} url - The URL endpoint for the DELETE request.
-   * @param {AxiosRequestConfig} [config] - Optional Axios configuration.
-   * @returns {Promise<T>} - The response data typed as T.
+   * Simplificación del método DELETE.
    */
   public async delete<T>(url: string, config?: AxiosRequestConfig): Promise<T> {
-    return this.makeRequest<T>({
-      method: 'DELETE',
-      url,
-      config
-    });
+    return this.makeRequest<T>({ method: 'DELETE', url, config });
   }
 
   /**
-   * Updates the default headers for future requests.
+   * Actualiza los headers predeterminados de la instancia de Axios.
    * 
-   * @param {AxiosRequestConfig['headers']} newHeaders - New headers to merge with existing default headers.
+   * @param {AxiosRequestConfig['headers']} newHeaders - Nuevos headers que se aplicarán a la instancia.
    */
   public updateHeaders(newHeaders: AxiosRequestConfig['headers']): void {
-    this.defaultHeaders = { ...this.defaultHeaders, ...newHeaders };
-    this.logger.info('The request updateHeaders was successful', this.defaultHeaders);
+    // Iterar sobre las claves de newHeaders y actualizarlas en la instancia de axios
+    if (newHeaders) {
+      Object.keys(newHeaders).forEach((key) => {
+        if (newHeaders[key] !== undefined) {
+          // Actualiza solo los headers que estén definidos
+          this.axiosInstance.defaults.headers.common[key] = newHeaders[key];
+        }
+      });
+      this.logger.info('Headers updated successfully', this.axiosInstance.defaults.headers.common);
+    }
   }
+  
 }
 
 export type { IRestManager };
-
 export { RestManager, RestError };

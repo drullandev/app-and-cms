@@ -1,6 +1,7 @@
 import GraphQLManager from "../classes/managers/GraphQLManager";
 import { RestManager } from '../classes/managers/RestManager';
-import { apiUrl } from '../app/config/env';
+import { graphqlUrl } from '../app/config/env';
+import axios from "axios";
 
 /**
  * Creates a singleton instance of RestManager configured for GraphQL operations.
@@ -11,19 +12,14 @@ import { apiUrl } from '../app/config/env';
  * @returns A singleton instance of RestManager for GraphQL operations.
  */
 export const useGraphQLRest = (): RestManager => {
-  
-  const jwt = null;//useUserStore((state) => state.jwt);  // Obtén el JWT del store
-
-  const graphQLRestInstance = RestManager.getInstance(`${apiUrl}/graphql`);  // Instancia para GraphQL
-
-    if (jwt) {
-      graphQLRestInstance.updateHeaders({ Authorization: `Bearer ${jwt}` });  // Actualiza el header con el token
-    } else {
-      graphQLRestInstance.updateHeaders({ Authorization: '' });  // Limpia el header si no hay token
-    }
-
-
-  return graphQLRestInstance;
+  const graphQlIntance = axios.create({
+    baseURL: graphqlUrl,
+    timeout: 10000,
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+  return RestManager.getInstance(graphQlIntance);
 };
 
 /**
@@ -35,4 +31,4 @@ export const useGraphQL = (): GraphQLManager => {
   return GraphQLManager.getInstance(useGraphQLRest());
 };
 
-export default useGraphQL;
+export default useGraphQL();

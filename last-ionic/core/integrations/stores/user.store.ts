@@ -6,6 +6,7 @@ import { AppState } from './app.store';
 import { AuthResponse } from '../../classes/strapi/models/AuthResponse';
 import { User } from '../../classes/strapi/models/User';
 import { RestManager } from '../../classes/managers/RestManager';
+import { useGraphQLRest } from '../useGraphQL';
 
 // Propiedades del usuario
 export const ID = 'id';
@@ -83,8 +84,10 @@ const useUserStore = create<IUserStore>((set, get) => ({
       // Actualizar los headers de RestManager
       if (jwt) {
         useAppRest.updateHeaders({ Authorization: `Bearer ${jwt}` });
+        //useGraphQLRest.updateHeaders({ Authorization: `Bearer ${jwt}` });
       } else {
         useAppRest.updateHeaders({}); // Remover el header de autorización
+        //useGraphQLRest.updateHeaders({});
       }
     }
   },

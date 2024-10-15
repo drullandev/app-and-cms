@@ -3,21 +3,23 @@ import { useForm, FieldValues } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
+import DOMPurify from 'dompurify';
+import * as icon from 'ionicons/icons';
+
 import Overlay from '../Overlay';
 import Field from './components/Field';
-import LoggerUtils from '../../../classes/utils/LoggerUtils';
-import Security from '../../../classes/utils/SecurityUtils';
+
 import DebugUtils from '../../../classes/utils/DebugUtils';
-import useAppStore from '../../../integrations/stores/app.store';
+import Security from '../../../classes/utils/SecurityUtils';
+import LoggerUtils from '../../../classes/utils/LoggerUtils';
 import ValidationUtils from '../../../classes/managers/ValidationsUtils';
-import Captcha from '../../../integrations/useCaptcha';
-import * as icon from 'ionicons/icons';
 import Looper from '../../utils/Looper';
 import { IField, IFormComponent, IFormData, ISubmitForm } from './types';
-import './style.css';
-import DOMPurify from 'dompurify';
-import FormHandler from './integrations/useFormHandler'; // Importamos la clase para manejar el envío del formulario
+
+import useAppStore from '../../../integrations/stores/app.store';
+import Captcha from '../../../integrations/useCaptcha';
 import useFormHandler from './integrations/useFormHandler';
+import './style.css';
 
 const Form: React.FC<IFormComponent> = (formProps: IFormComponent): JSX.Element | null => {
   
@@ -78,12 +80,10 @@ const Form: React.FC<IFormComponent> = (formProps: IFormComponent): JSX.Element 
 
       setIsSubmitting(true);
 
-      // Inicializamos useFormHandler con formData
       const { handleSubmit: handleFormSubmit } = useFormHandler(formData || { url: '', method: 'POST' });
 
       try {
 
-        // Removing buttons
         const filteredData = Object.keys(data).reduce((acc, key) => {
           if (!key.startsWith('button')) {
             acc[key] = data[key];
@@ -91,13 +91,12 @@ const Form: React.FC<IFormComponent> = (formProps: IFormComponent): JSX.Element 
           return acc;
         }, {} as any);
     
-        // Accepting the CSRF
         const validData = sessionId && Security.approveFormData(filteredData, sessionId, formProps);
     
         if (!validData) {
           
-          // Error with the CSRF validation
           logger.error('Invalid CSRF token');
+
           if (formData.onError) {
             formData.onError({
               message: 'Invalid CSRF token'
@@ -110,8 +109,9 @@ const Form: React.FC<IFormComponent> = (formProps: IFormComponent): JSX.Element 
 
           if (captchaRequired) {
 
-            // The form will reload with a captcha jiji
+            //XXX: The form will reload with a captcha jiji
             setShowCaptcha(true);
+            
             logger.info('Showing CAPTCHA due to verification requirement');
 
             for (const key in validData) {
