@@ -13,4 +13,3 @@ export const apiRestInstance = axios.create({
 const useAppRest: IRestManager = RestManager.getInstance(apiRestInstance);
 
 export default useAppRest;
-
