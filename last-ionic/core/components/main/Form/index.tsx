@@ -83,15 +83,8 @@ const Form: React.FC<IFormComponent> = (formProps: IFormComponent): JSX.Element 
       const { handleSubmit: handleFormSubmit } = useFormHandler(formData || { url: '', method: 'POST' });
 
       try {
-
-        const filteredData = Object.keys(data).reduce((acc, key) => {
-          if (!key.startsWith('button')) {
-            acc[key] = data[key];
-          }
-          return acc;
-        }, {} as any);
-    
-        const validData = sessionId && Security.approveFormData(filteredData, sessionId, formProps);
+   
+        const validData = sessionId && Security.approveFormData(data, sessionId, formProps);
     
         if (!validData) {
           
@@ -125,16 +118,6 @@ const Form: React.FC<IFormComponent> = (formProps: IFormComponent): JSX.Element 
 
           }
 
-        }
-
-        // For now removing privacy and publicity stuff and sanitize!!
-        for (const key in validData) {
-          if (
-            Object.prototype.hasOwnProperty.call(validData, key) &&
-            ! ["privacy", "publicity"].includes(key)
-          ) {
-            validData[key] = DOMPurify.sanitize(data[key]);
-          }
         }
 
         const IForm: ISubmitForm = {

@@ -55,7 +55,7 @@ export interface ISubmitForm {
 
 
 export interface IFormComponent extends IFormData {
-  onError: (errors: DeepMap<Record<string, any>, FieldError>) => void;
+  onError?: (errors: DeepMap<Record<string, any>, FieldError>) => void;
 }
 
 export interface LabelProps {

@@ -4,6 +4,7 @@ import { createRoot } from 'react-dom/client';
 import { ServiceWorker } from '../classes/workers/ServiceWorker';
 import i18n from '../components/main/i18n';
 import AppContainer from './index';
+import ToastManager from '../classes/managers/ToastManager';
 
 const strictMode = false; // Set to `true` during development
 const registerSW = true; // Set to `false` if you don't want to register the service worker
@@ -33,15 +34,24 @@ const renderApp = () => {
     .then(() => {
 
       if (isProduction) {
-        root.render(<AppContainer />);
+        root.render(
+          <>
+            <AppContainer />
+            <ToastManager /> {/* Añadido el ToastManager aquí */}
+          </>
+        );
         sw.register();
       } else {
         root.render(
-          strictMode
-            ? <StrictMode>
-                <AppContainer />
-              </StrictMode>
-            : <AppContainer />
+          <>
+            {strictMode
+              ? <StrictMode>
+                  <AppContainer />
+                </StrictMode>
+              : <AppContainer />
+            }
+            <ToastManager /> {/* Añadido el ToastManager aquí */}
+          </>
         );
 
         if (registerSW) {

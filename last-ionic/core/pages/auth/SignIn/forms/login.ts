@@ -11,7 +11,7 @@ import { passwordValidation } from '../../../../classes/strapi/validations/Passw
 
 export const loginFormData = (): IFormComponent => {
 
-  const debug = false;
+  const debug = true;
   const logger = LoggerUtils.getInstance('loginFomData', debug);
   const { t } = useTranslation();
   const [presentToast] = useIonToast();
@@ -50,9 +50,9 @@ export const loginFormData = (): IFormComponent => {
         validationSchema: passwordValidation()
       }
     ],
-    onSuccess: (data: ILogin) :  ISubmitForm => {
+    onSuccess: (data: ILogin) : ISubmitForm => {
 
-      const successAcctions : ISubmitForm  = {
+      const submitActions : ISubmitForm  = {
         data: data,
         settings: {
           customSuccessMessage: {
@@ -63,7 +63,7 @@ export const loginFormData = (): IFormComponent => {
           customErrorMessage: {
             header: t('Login error!'),
             message: t('There was an error logging in'),
-            show: false,
+            show: true,
           },
         },
 
@@ -75,17 +75,17 @@ export const loginFormData = (): IFormComponent => {
 
           if (!resUser.confirmed) {
 
-            presentToast(RestOutput.warning({
+            return RestOutput.warning({
               header: t('Not confirmed jet!'),
               message: t('This user is not confirmed')
-            }));
+            });
 
           } else if (resUser.blocked) {
 
-            presentToast(RestOutput.danger({
+            return RestOutput.danger({
               header: t('Blocked user!!'),
               message: t('This user is blocked')
-            }));
+            });
 
           } else {
 
@@ -102,21 +102,18 @@ export const loginFormData = (): IFormComponent => {
 
         onError: (err: any) => {
 
-          logger.error('You not have connected!', err );
+          return RestOutput.danger({
+            header: t('Some error!!'),
+            message: t('You find some error')
+          });
 
         }
         
       }
 
-      return successAcctions;
+      return submitActions;
       
-    },
-
-    onError: (err: any) => {
-
-      logger.error(err);
-
-    },
+    }
 
   };
 

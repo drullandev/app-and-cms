@@ -1,12 +1,19 @@
-import { ServiceManager } from "../classes/managers/ServiceManager";
-import { RestManager } from "../classes/managers/RestManager";
-import { sentryDns, sentryEnv, sentryToken } from '../app/config/env'; // Asegúrate de que `apiToken` sea el correcto para el Bearer
+import axios from 'axios';
 import { useLogger } from '../integrations/useLogger'
+import { RestManager } from "../classes/managers/RestManager";
+import { ServiceManager } from "../classes/managers/ServiceManager";
+import { sentryDns, sentryEnv, sentryToken } from '../app/config/env';
 
-// Instancia de RestManager con el Bearer Token adecuado
-const sentryRestManager = RestManager.getInstance(sentryDns, {
-    Authorization: `Bearer ${sentryToken}` // Usa el token de API correcto
+export const sentryInstance = axios.create({
+  baseURL: sentryDns,
+  timeout: 10000,
+  headers: {
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${sentryToken}`
+  },
 });
+
+export const sentryApiRest = RestManager.getInstance(sentryInstance)
 
 const logger = useLogger('useSentry');
 
@@ -22,8 +29,7 @@ const onError = (err: any) =>{
   logger.log('Notification error!', err);
 }
 
-// Instancia de ServiceManager, inyectando RestManager y las configuraciones necesarias
-const useSentry = ServiceManager.getInstance(sentryRestManager, {
+const useSentry = ServiceManager.getInstance(sentryApiRest, {
   SentryManagerConfig: { 
     dsn: sentryDns,
     environment: sentryEnv
@@ -36,4 +42,3 @@ const useSentry = ServiceManager.getInstance(sentryRestManager, {
 });
 
 export default (!sentryDns || !sentryEnv) ? useSentry : null;
-
