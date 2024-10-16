@@ -27,3 +27,5 @@ export const identifierValidation = () => {
     .required(i18n.t('An email or username is required')) // Mensaje de requerido
     .test(test.key, test.message, test.onValidation); // Validación personalizada
 };
+
+export default identifierValidation;

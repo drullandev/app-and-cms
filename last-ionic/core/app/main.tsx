@@ -37,7 +37,7 @@ const renderApp = () => {
         root.render(
           <>
             <AppContainer />
-            <ToastManager /> {/* Añadido el ToastManager aquí */}
+            <ToastManager />
           </>
         );
         sw.register();
@@ -50,7 +50,7 @@ const renderApp = () => {
                 </StrictMode>
               : <AppContainer />
             }
-            <ToastManager /> {/* Añadido el ToastManager aquí */}
+            <ToastManager />
           </>
         );
 

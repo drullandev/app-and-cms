@@ -56,14 +56,16 @@ export const recoverFormData = (): IFormComponent => {
         onError: ()=>{
           logger.log('error')
         },
-        settings:{
-          customSuccessMessage: {
+        messages:{
+          onSuccess: {
             header: t('Your recovery is working!'),
             message: t('Wait for the recovery email'),
+            show: true,
           },
-          customErrorMessage: {
+          onError: {
             header: t('Recover error'),
             message: t('There was an error recovering the account'),
+            show: true,
           }
         }
       }

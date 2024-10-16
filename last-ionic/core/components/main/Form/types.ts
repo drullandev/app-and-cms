@@ -34,28 +34,27 @@ export interface IFormData {
   onError?: (err: any) => void;
 }
 
-export interface IFormCustomMessage {
-  header?: string;
-  message?: string;
-  type?: 'toast' | 'modal';
-  show?: boolean;
-}
-
-export interface ISubmitFormSettings {
-  customSuccessMessage?: IFormCustomMessage;
-  customErrorMessage?: IFormCustomMessage;
+export interface IFormComponent extends IFormData {
+  onError?: (errors: DeepMap<Record<string, any>, FieldError>) => void;
 }
 
 export interface ISubmitForm {
   data: any;
   onSubmit?: (res: AxiosResponse) => void;
   onError?: (err: AxiosError) => void;
-  settings?: ISubmitFormSettings;
+  messages?: ISubmitFormSettings;
 }
 
+export interface ISubmitFormSettings {
+  onSuccess?: IFormCustomMessage;
+  onError?: IFormCustomMessage;
+}
 
-export interface IFormComponent extends IFormData {
-  onError?: (errors: DeepMap<Record<string, any>, FieldError>) => void;
+export interface IFormCustomMessage {
+  header?: string;
+  message?: string;
+  type?: 'toast' | 'modal';
+  show?: boolean;
 }
 
 export interface LabelProps {

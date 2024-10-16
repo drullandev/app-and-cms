@@ -18,6 +18,7 @@ import { IFormComponent, IFormData, ISubmitForm } from '../../../components/main
 import useUserStore from '../../../integrations/stores/user.store';
 import useAppRest from '../../../integrations/useAppRest';
 import LoggerUtils from 'core/classes/utils/LoggerUtils';
+import { passwordValidation, repeatPasswordValidation } from '../../../classes/strapi/validations/all.validations';
 
 export interface IResetPassword {
   code: string;
@@ -69,10 +70,7 @@ export const resetFormData = (): IFormComponent => {
         label: t('Password'),
         type: 'password',
         defaultValue: '', 
-        validationSchema: yup.string()
-          .required(t('Password is required'))
-          .min(8, t('Password must be at least 8 characters'))
-          .max(16, t('Password must be at max 16 characters')),
+        validationSchema: passwordValidation(),
         className: 'col-span-12',
         secret: true,
         options: []
@@ -82,11 +80,7 @@ export const resetFormData = (): IFormComponent => {
         label: t('Repeat the password'),
         type: 'password',
         defaultValue: '', 
-        validationSchema: yup.string()
-          .required(t('Password is required'))
-          .oneOf([yup.ref('password'), ''], 'Passwords must match with previoous one')
-          .min(8, t('Password must be at least 8 characters'))
-          .max(16, t('Password must be at max 16 characters')),
+        validationSchema: repeatPasswordValidation(),
         className: 'col-span-12',
         secret: true,
         options: []
@@ -101,12 +95,12 @@ export const resetFormData = (): IFormComponent => {
         onError: (err)=>{
           logger.log('error', err)
         },
-        settings:{
-          customSuccessMessage: {
+        messages:{
+          onSuccess: {
             header: t('PasswordReseted!'),
             message: t('Your password was reseted'),
           },
-          customErrorMessage: {
+          onError: {
             header: t('Recover error'),
             message: t('There was an error reseting the password'),
           }

@@ -1,4 +1,3 @@
-import * as yup from 'yup';
 import * as icon from 'ionicons/icons';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router';
@@ -9,12 +8,11 @@ import RestOutput from '../../../classes/utils/RestOutput';
 
 import useUserStore, { setIUserState } from '../../../integrations/stores/user.store';
 import LoggerUtils from '../../../classes/utils/LoggerUtils';
-import { IFormComponent, IFormData, ISubmitForm } from '../../../components/main/Form/types';
-import useAppRest from '../../../integrations/useAppRest';
+import { IFormComponent, ISubmitForm } from '../../../components/main/Form/types';
 import { IRegister } from '../../../classes/strapi/models/User';
-import { AuthResponse } from '../../../classes/strapi/models/AuthResponse';
-import { AxiosResponse, AxiosError } from 'axios';
 import useAppStore from '../../../integrations/stores/app.store';
+
+import { emailValidation, passwordValidation, repeatPasswordValidation, usernameValidation } from '../../../classes/strapi/validations/all.validations';
 
 export const signupForm = (): IFormComponent => {
   const debug = DebugUtils.setDebug(false);
@@ -49,10 +47,8 @@ export const signupForm = (): IFormComponent => {
         type: 'text',
         defaultValue: '',
         className: 'col-span-12',
-        validationSchema: yup.string()
-          .required(t('Username is required'))
-          .min(7, t('Username must be at least 7 characters')),
-          options: []
+        validationSchema: usernameValidation(),
+        options: []
       },
       {
         name: 'email',
@@ -60,10 +56,8 @@ export const signupForm = (): IFormComponent => {
         type: 'email',
         defaultValue: '',
         className: 'col-span-12',
-        validationSchema: yup.string()
-          .required(t('Email is required'))
-          .email(t('This email is invalid')),
-          options: []
+        validationSchema: emailValidation(),
+        options: []
       },
       { 
         name: 'password',
@@ -72,26 +66,17 @@ export const signupForm = (): IFormComponent => {
         defaultValue: '', 
         className: 'col-span-12',
         secret: true,
-        validationSchema: yup.string()
-          .required(t('Password is required'))
-          .min(8, t('Password must be at least 8 characters'))
-          .max(16, t('Password must be at max 16 characters')),
-          options: []
+        validationSchema: passwordValidation()
       },
-      /*{ 
+      { 
         name: 'repeat-password',
         label: t('Please, repeat the password'),
         type: 'password',
         defaultValue: '', 
         className: 'col-span-12',
         secret: true,
-        validationSchema: yup.string()
-          .required(t('Password is required'))
-          .min(8, t('Password must be at least 8 characters'))
-          .max(16, t('Password must be at max 16 characters'))
-          .oneOf([yup.ref('password')], 'Passwords must match with previoous one!'),
-          options: []
-      }*/
+        validationSchema: repeatPasswordValidation()
+      }
     ],
     buttons:[
       { 
@@ -107,13 +92,13 @@ export const signupForm = (): IFormComponent => {
     onSubmit: (data: IRegister) => {
       const successAcctions : ISubmitForm  = {
         data: data,
-        settings: {
-          customSuccessMessage: {
+        messages: {
+          onSuccess: {
             header: t('Welcome to the app!'),
             message: t('You logged successfully'),
             show: true,
           },
-          customErrorMessage: {
+          onError: {
             header: t('Login error!'),
             message: t('There was an error logging in'),
             show: false,

@@ -1,10 +1,11 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { useForm, FieldValues } from 'react-hook-form';
-import { useTranslation } from 'react-i18next';
-import { yupResolver } from '@hookform/resolvers/yup';
-import * as yup from 'yup';
-import DOMPurify from 'dompurify';
 import * as icon from 'ionicons/icons';
+import * as yup from 'yup';
+
+import { useForm, FieldValues } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import DOMPurify from 'dompurify';
+import { useTranslation } from 'react-i18next';
 
 import Overlay from '../Overlay';
 import Field from './components/Field';
@@ -14,11 +15,12 @@ import Security from '../../../classes/utils/SecurityUtils';
 import LoggerUtils from '../../../classes/utils/LoggerUtils';
 import ValidationUtils from '../../../classes/managers/ValidationsUtils';
 import Looper from '../../utils/Looper';
-import { IField, IFormComponent, IFormData, ISubmitForm } from './types';
 
 import useAppStore from '../../../integrations/stores/app.store';
 import Captcha from '../../../integrations/useCaptcha';
 import useFormHandler from './integrations/useFormHandler';
+
+import { IField, IFormComponent, IFormData, ISubmitForm } from './types';
 import './style.css';
 
 const Form: React.FC<IFormComponent> = (formProps: IFormComponent): JSX.Element | null => {

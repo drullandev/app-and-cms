@@ -2,7 +2,7 @@ import { useTranslation } from 'react-i18next';
 import { ILogin } from '../../../../classes/strapi/models/User';
 import { IFormComponent, ISubmitForm } from '../../../../components/main/Form/types';
 import { identifierValidation } from '../../../../classes/strapi/validations/Identifier';
-import { passwordValidation } from '../../../../classes/strapi/validations/Password';
+import { passwordValidation } from '../../../../classes/strapi/validations/all.validations';
 
 export const loginFormData = (): IFormComponent => {
   const { t } = useTranslation();
@@ -43,13 +43,13 @@ export const loginFormData = (): IFormComponent => {
 
       return {
         data: data,
-        settings: {
-          customSuccessMessage: {
+        messages: {
+          onSuccess: {
             header: t('Welcome to the app!'),
             message: t('You logged successfully'),
             show: true,
           },
-          customErrorMessage: {
+          onError: {
             header: t('Login error!'),
             message: t('There was an error logging in'),
             show: true,

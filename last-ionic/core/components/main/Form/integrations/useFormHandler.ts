@@ -17,7 +17,7 @@ const useFormHandler = (formData: IFormData) => {
 
   const handleSubmit = async (submitData: ISubmitForm) => {
 
-    const { data, onSubmit, onError, settings } = submitData;
+    const { data, onSubmit, onError, messages } = submitData;
 
     const filteredData = Object.keys(data.data).reduce((acc, key) => {
       if (!key.startsWith('button') && !avoided.includes(key)) {
@@ -33,7 +33,7 @@ const useFormHandler = (formData: IFormData) => {
       return acc;
     }, {} as any);
 
-    console.log('sanitizedData', sanitizedData)
+    logger.log('sanitizedData', sanitizedData)
 
     try {
 
@@ -43,10 +43,10 @@ const useFormHandler = (formData: IFormData) => {
         data: sanitizedData,
       }).then((res)=>{
 
-        if (settings?.customSuccessMessage?.show) {
+        if (messages?.onSuccess?.show) {
           addToast(
-            settings.customSuccessMessage?.header || i18n.t('Success!'),
-            settings.customSuccessMessage?.message || i18n.t('Successfully sent the form'),
+            messages.onSuccess?.header || i18n.t('Success!'),
+            messages.onSuccess?.message || i18n.t('Successfully sent the form'),
             'success'
           );
         }
@@ -60,8 +60,8 @@ const useFormHandler = (formData: IFormData) => {
       const error = err as AxiosError;
       logger.error('Error during request:', error);
 
-      let errorMessage = settings?.customErrorMessage?.message || i18n.t('Error sending the form');
-      let errorHeader = settings?.customErrorMessage?.header || i18n.t('Login error!');
+      let errorMessage = messages?.onError?.message || i18n.t('Error sending the form');
+      let errorHeader = messages?.onError?.header || i18n.t('Login error!');
 
       if (error.response) {
         switch (error.response.status) {
@@ -79,7 +79,7 @@ const useFormHandler = (formData: IFormData) => {
       }
 
       // Mostrar el toast de error
-      if (settings?.customErrorMessage?.show) {
+      if (messages?.onError?.show) {
         addToast(
           errorHeader,
           errorMessage,
@@ -89,12 +89,15 @@ const useFormHandler = (formData: IFormData) => {
 
       // Llamar a la función de manejo de errores
       onError?.(error);
+
     }
+
   };
 
   return {
     handleSubmit,
   };
+  
 };
 
 export default useFormHandler;

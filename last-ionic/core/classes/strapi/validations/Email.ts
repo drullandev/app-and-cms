@@ -1,7 +1,7 @@
 import * as yup from 'yup';
 import i18n from '../../../components/main/i18n';
 
-export const identifierValidation = () => {
+export const emailValidation = () => {
 
   const test = {
     key: 'email',
@@ -23,3 +23,5 @@ export const identifierValidation = () => {
     .required(i18n.t('An email is required'))
     .test(test.key, test.message, test.onValidation); // Validación personalizada
 };
+
+export default emailValidation;

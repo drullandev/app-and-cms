@@ -54,13 +54,13 @@ export const loginFormData = (): IFormComponent => {
 
       const submitActions : ISubmitForm  = {
         data: data,
-        settings: {
-          customSuccessMessage: {
+        messages: {
+          onSuccess: {
             header: t('Welcome to the app!'),
             message: t('You logged successfully'),
             show: true,
           },
-          customErrorMessage: {
+          onError: {
             header: t('Login error!'),
             message: t('There was an error logging in'),
             show: true,
