@@ -30,7 +30,7 @@ export interface IFormData {
   privacy?: false | boolean;
   ga4?: GA4Options;
   defaultOutput?: false | boolean;
-  onSuccess: (data: any) => ISubmitForm;
+  onSubmit: (data: any) => ISubmitForm;
   onError?: (err: any) => void;
 }
 
@@ -48,7 +48,7 @@ export interface ISubmitFormSettings {
 
 export interface ISubmitForm {
   data: any;
-  onSuccess?: (res: AxiosResponse) => void;
+  onSubmit?: (res: AxiosResponse) => void;
   onError?: (err: AxiosError) => void;
   settings?: ISubmitFormSettings;
 }

@@ -45,12 +45,12 @@ export const recoverFormData = (): IFormComponent => {
         className: 'col-span-12',
       }
     ],
-    onSuccess: (data: IRecover) : ISubmitForm => {
+    onSubmit: (data: IRecover) : ISubmitForm => {
 
       // Handle form submission with custom success and error handling
       return {
         data,
-        onSuccess: ()=>{
+        onSubmit: ()=>{
           logger.log('success')
         },
         onError: ()=>{

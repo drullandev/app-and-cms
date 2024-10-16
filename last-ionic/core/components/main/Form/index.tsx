@@ -122,7 +122,7 @@ const Form: React.FC<IFormComponent> = (formProps: IFormComponent): JSX.Element 
 
         const IForm: ISubmitForm = {
           data: validData,
-          onSuccess: formData.onSuccess,
+          onSubmit: formData.onSubmit,
           onError: formData.onError,
         }
 

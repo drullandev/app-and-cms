@@ -46,12 +46,10 @@ class GA4Manager {
    * Initializes GA4 by loading the GA4 script and configuring the global `gtag` function.
    */
   private initializeGA4(): void {
-    
     const script = document.createElement("script");
     script.src = `${this.src}${this.trackingId}`;
     script.async = true;
     script.onload = () => {
-      // Ensure that gtag is properly set up
       (window as any).dataLayer = (window as any).dataLayer || [];
       (window as any).gtag = function () {
         (window as any).dataLayer.push(arguments);
@@ -65,7 +63,6 @@ class GA4Manager {
       this.logger.error("Failed to load GA4 script.");
     };
     document.head.appendChild(script);
-    if (this.trackingId ) ReactGA.initialize(this.trackingId); 
   }
 
   /**

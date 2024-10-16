@@ -1,12 +1,23 @@
 import { useTranslation } from 'react-i18next';
+import { useIonToast } from '@ionic/react';
+
+import LoggerUtils from '../../../../classes/utils/LoggerUtils';
 import { ILogin } from '../../../../classes/strapi/models/User';
+import RestOutput from '../../../../classes/utils/RestOutput';
 import { IFormComponent, ISubmitForm } from '../../../../components/main/Form/types';
+import useUserStore, { setIUserState } from '../../../../integrations/stores/user.store';
 import { identifierValidation } from '../../../../classes/strapi/validations/Identifier';
 import { passwordValidation } from '../../../../classes/strapi/validations/Password';
 
 export const loginFormData = (): IFormComponent => {
+
+  const debug = true;
+  const logger = LoggerUtils.getInstance('loginFomData', debug);
   const { t } = useTranslation();
-  return {
+  const [presentToast] = useIonToast();
+  const { setUserStore } = useUserStore();
+
+  const formData: IFormComponent = {
     id: 'login-page',
     captcha: false,
     url: '/auth/local',
@@ -41,7 +52,7 @@ export const loginFormData = (): IFormComponent => {
     ],
     onSubmit: (data: ILogin) : ISubmitForm => {
 
-      return {
+      const submitActions : ISubmitForm  = {
         data: data,
         settings: {
           customSuccessMessage: {
@@ -56,10 +67,58 @@ export const loginFormData = (): IFormComponent => {
           },
         },
 
+        /*
+        onSuccess: (res: any) => {
+
+          const resUser = res.data.user;
+
+          let logged = false;
+
+          if (!resUser.confirmed) {
+
+            return RestOutput.warning({
+              header: t('Not confirmed jet!'),
+              message: t('This user is not confirmed')
+            });
+
+          } else if (resUser.blocked) {
+
+            return RestOutput.danger({
+              header: t('Blocked user!!'),
+              message: t('This user is blocked')
+            });
+
+          } else {
+
+            logged = true;
+          }
+
+          const userState = setIUserState(res.data, resUser, logged);
+
+          setUserStore(userState);
+
+          logger.info('You have connected!', userState);
+
+        },
+
+        onError: (err: any) => {
+
+          return RestOutput.danger({
+            header: t('Some error!!'),
+            message: t('You find some error')
+          });
+
+        }
+        */
+        
       }
+
+      return submitActions;
       
     }
 
   };
+
+  return formData;
 
 };

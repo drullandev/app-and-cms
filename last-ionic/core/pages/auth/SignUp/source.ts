@@ -104,7 +104,7 @@ export const signupForm = (): IFormComponent => {
       }
     ],
 
-    onSuccess: (data: IRegister) => {
+    onSubmit: (data: IRegister) => {
       const successAcctions : ISubmitForm  = {
         data: data,
         settings: {
@@ -120,7 +120,7 @@ export const signupForm = (): IFormComponent => {
           },
         },
 
-        onSuccess: (res: any) => {
+        onSubmit: (res: any) => {
 
           const resUser = res.data.user;
 

@@ -92,10 +92,10 @@ export const resetFormData = (): IFormComponent => {
         options: []
       },
     ],
-    onSuccess: (data: IResetPassword): ISubmitForm => {
+    onSubmit: (data: IResetPassword): ISubmitForm => {
       return {
         data,
-        onSuccess: (res)=>{
+        onSubmit: (res)=>{
           logger.log('success', res)
         },
         onError: (err)=>{
