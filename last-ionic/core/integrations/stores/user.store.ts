@@ -7,6 +7,7 @@ import { AuthResponse } from '../../classes/strapi/models/AuthResponse';
 import { User } from '../../classes/strapi/models/User';
 import { RestManager } from '../../classes/managers/RestManager';
 import { useGraphQLRest } from '../useGraphQL';
+import RestOutput from '../../classes/utils/RestOutput';
 
 // Propiedades del usuario
 export const ID = 'id';
@@ -80,8 +81,6 @@ const useUserStore = create<IUserStore>((set, get) => ({
     const currentJwt = get().jwt;
     if (currentJwt !== jwt) {
       set({ jwt: jwt || '' });
-      
-      // Actualizar los headers de RestManager
       if (jwt) {
         useAppRest.updateHeaders({ Authorization: `Bearer ${jwt}` });
         //useGraphQLRest.updateHeaders({ Authorization: `Bearer ${jwt}` });
@@ -188,7 +187,8 @@ const useUserStore = create<IUserStore>((set, get) => ({
     if (get().logged !== logged) {
       set({ logged });
     }
-  },
+  }
+
 }));
 
 export default useUserStore;

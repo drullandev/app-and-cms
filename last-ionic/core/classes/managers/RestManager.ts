@@ -1,6 +1,7 @@
 import axios, { AxiosHeaderValue, AxiosInstance, AxiosRequestConfig, Method } from 'axios';
 import LoggerUtils from "../utils/LoggerUtils";
 import DebugUtils from "../utils/DebugUtils";
+import RestOutput from '../utils/RestOutput'; // Importamos RestOutput para manejar las salidas
 
 class RestError extends Error {
   public statusCode: number;
@@ -25,7 +26,7 @@ interface RequestOptions {
   config?: AxiosRequestConfig;
 }
 
-interface IRestManager {
+export interface IRestManager {
   makeRequest<T>(options: RequestOptions): Promise<T>;
   get<T>(url: string, config?: AxiosRequestConfig): Promise<T>;
   post<T>(url: string, data: any, config?: AxiosRequestConfig): Promise<T>;
@@ -80,9 +81,11 @@ class RestManager implements IRestManager {
     return curl;
   }
 
+  /**
+   * Realiza una solicitud utilizando Axios y delega a RestOutput para manejar las respuestas y errores.
+   */
   public async makeRequest<T>(options: RequestOptions): Promise<T> {
     try {
-      // Generar la solicitud con Axios
       const response = await this.axiosInstance({
         method: options.method,
         url: options.url,
@@ -109,7 +112,13 @@ class RestManager implements IRestManager {
       return response.data as T;
 
     } catch (error: any) {
-      this.logger.error('The request failed');
+      // Manejo del error con RestOutput
+      const errorMessage = RestOutput.danger({
+        message: error.response?.data?.message || error.message,
+        header: 'Error in request',
+      });
+      this.logger.error('The request failed', errorMessage);
+
       throw new RestError(error.message, error.response?.status, error.response?.data);
     }
   }
@@ -142,5 +151,4 @@ class RestManager implements IRestManager {
   }
 }
 
-export type { IRestManager };
 export { RestManager, RestError };

@@ -10,6 +10,25 @@ import i18n from 'i18next';
 import LoggerUtils from './LoggerUtils';
 import DebugUtils from './DebugUtils';
 
+
+/**
+ * IRestOutput define la estructura de las respuestas que pueden ser manejadas
+ * por toasts o modales en la aplicación.
+ */
+export interface IRestOutput {
+  info(options?: Partial<ToastOptions>): ToastOptions;
+  success(options?: Partial<ToastOptions>): ToastOptions;
+  warning(options?: Partial<ToastOptions>): ToastOptions;
+  danger(options?: Partial<ToastOptions>): ToastOptions;
+  formError(component: any, options?: Partial<ModalOptions>): ModalOptions;
+  showOutput(
+    type: 'info' | 'success' | 'warning' | 'danger' | 'formError',
+    options?: Partial<ToastOptions | ModalOptions>,
+    outputType?: 'toast' | 'modal',
+    component?: any
+  ): ToastOptions | ModalOptions;
+}
+
 /**
  * Enumeration for Toast positions.
  */
@@ -79,32 +98,32 @@ class RestOutput {
   private getDefaultMessages() {
     return {
       info: {
-        icon: informationCircleOutline, // Information icon
-        color: ToastColor.Success, // Success color
+        icon: informationCircleOutline,
+        color: ToastColor.Success,
         header: i18n.t('Info'),
         message: i18n.t('Information'),
       },
       success: {
-        icon: checkboxOutline, // Success icon
-        color: ToastColor.Success, // Success color
+        icon: checkboxOutline,
+        color: ToastColor.Success,
         header: i18n.t('Success'),
         message: i18n.t('The operation was successful!'),
       },
       warning: {
-        icon: warningOutline, // Warning icon
-        color: ToastColor.Warning, // Warning color
+        icon: warningOutline,
+        color: ToastColor.Warning,
         header: i18n.t('Warning'),
         message: i18n.t('The operation encountered a conflict!'),
       },
       danger: {
-        icon: skullOutline, // Danger icon
-        color: ToastColor.Danger, // Danger color
+        icon: skullOutline,
+        color: ToastColor.Danger,
         header: i18n.t('Error'),
         message: i18n.t('The operation resulted in an error!'),
       },
       formError: {
-        icon: warningOutline, // Warning icon
-        color: ToastColor.Warning, // Warning color
+        icon: warningOutline,
+        color: ToastColor.Warning,
         header: i18n.t('Form Error'),
         message: i18n.t('There was an issue submitting the form!'),
       },
@@ -117,13 +136,14 @@ class RestOutput {
    * @param type - The type of message ('info', 'success', 'warning', 'danger', 'formError').
    * @param options - Optional custom properties for the toast or modal.
    * @param outputType - The output type ('toast' | 'modal'). Defaults to 'toast'.
+   * @param component - Optional component for modal output.
    * @returns ToastOptions | ModalOptions formatted for the respective controllers.
    */
   public showOutput(
     type: keyof ReturnType<typeof this.getDefaultMessages>,
     options: Partial<ToastOptions | ModalOptions> = {},
     outputType: 'toast' | 'modal' = 'toast',
-    component?: any // Required only for modal
+    component?: any
   ): ToastOptions | ModalOptions {
     const defaultMessage = this.getDefaultMessages()[type];
 

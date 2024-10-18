@@ -51,7 +51,7 @@ export interface IFormCustom {
   message?: string;
   type?: 'toast' | 'modal';
   show?: boolean;
-  actions?: (params: any) => ToastOptions;
+  actions?: (params: any) => void;
 }
 
 

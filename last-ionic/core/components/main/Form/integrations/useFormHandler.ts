@@ -35,47 +35,30 @@ const useFormHandler = (formData: IFormData) => {
 
     logger.log('sanitizedData', sanitizedData);
 
-    console.info('data', sanitizedData)
     try {
+      const res: AxiosResponse = await useAppRest.makeRequest<AxiosResponse>({
+        url,
+        method,
+        data: sanitizedData,
+      });
 
-      await useAppRest
-        .makeRequest<AxiosResponse>({
-          url,
-          method,
-          data: sanitizedData,
-        })
-        .then((res)=>{
+      // Ejecutar las acciones de éxito si están definidas
+      if (onSuccess?.actions) {
+        onSuccess.actions(res); // Invocamos las acciones
+      }
 
-          if (onSuccess?.actions) {
-            const result = onSuccess.actions(res);
-            if (result){
+      // Mostrar el toast de éxito si está configurado
+      if (onSuccess?.show) {
+        addToast(
+          onSuccess.header || i18n.t('Success!'),
+          onSuccess.message || i18n.t('Successfully sent the form'),
+          'success'
+        );
+      }
 
-            }
-          }
-
-          if (onSuccess?.show) {
-            addToast(
-              onSuccess.header || i18n.t('Success!'),
-              onSuccess.message || i18n.t('Successfully sent the form'),
-              'success'
-            );
-          }
-
-
-
-        })
-        .catch(()=>{
-          addToast(
-            onError?.header || i18n.t('Error!'),
-            onError?.message || i18n.t('You have a form error'),
-            'error'
-          );
-        });
-
-    } catch (error) {
-
+    } catch (error: any) {
       const err = error as AxiosError;
-      logger.error('Error during request:', error);
+      logger.error('Error during request:', err);
 
       let errorMessage = onError?.message || i18n.t('Error sending the form');
       let errorHeader = onError?.header || i18n.t('Login error!');
@@ -95,7 +78,7 @@ const useFormHandler = (formData: IFormData) => {
         }
       }
 
-      // Mostrar el toast de error
+      // Mostrar el toast de error si está configurado
       if (onError?.show) {
         addToast(
           errorHeader,
@@ -104,11 +87,10 @@ const useFormHandler = (formData: IFormData) => {
         );
       }
 
-      // Ejecutar la acción onError si existe
+      // Ejecutar las acciones de error si están definidas
       if (onError?.actions) {
-        onError.actions(error);
+        onError.actions(err); // Invocamos las acciones
       }
-
     }
   };
 

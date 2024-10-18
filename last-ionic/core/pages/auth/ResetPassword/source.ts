@@ -13,8 +13,9 @@ import DebugUtils from '../../../classes/utils/DebugUtils';
 import { IFormComponent, IFormData, ISubmitForm } from '../../../components/main/Form/types';
 
 // Reducer dependencies
-import LoggerUtils from 'core/classes/utils/LoggerUtils';
+import LoggerUtils from '../../../classes/utils/LoggerUtils';
 import { passwordValidation, repeatPasswordValidation } from '../../../classes/strapi/validations/all.validations';
+import RestOutput from '../../../classes/utils/RestOutput';
 
 export interface IResetPassword {
   code: string;
@@ -28,11 +29,12 @@ export interface IResetPassword {
  */
 export const resetFormData = (): IFormComponent => {
 
+  const debug = DebugUtils.setDebug(false);
+  const logger = LoggerUtils.getInstance('resetFormData', debug);
+
   const { t } = useTranslation();
   const history = useHistory();
   const [presentToast] = useIonToast();
-  const debug = DebugUtils.setDebug(false);
-  const logger = LoggerUtils.getInstance('resetFormData', debug);
   
   const resetForm: IFormComponent = {
     id: 'reset-password-page',
@@ -82,28 +84,53 @@ export const resetFormData = (): IFormComponent => {
         options: []
       },
     ],
-    onSubmit: (data: IResetPassword): ISubmitForm => {
+    onSubmit: (data: IResetPassword) : ISubmitForm => {
       return {
-        data,
-        onSubmit: (res)=>{
-          logger.log('success', res)
-        },
-        onError: (err)=>{
-          logger.log('error', err)
-        },
-        messages:{
-          onSuccess: {
-            header: t('PasswordReseted!'),
-            message: t('Your password was reseted'),
-          },
-          onError: {
-            header: t('Recover error'),
-            message: t('There was an error reseting the password'),
+        data: data,
+        onSuccess: {
+          header: t('Welcome to the app!'),
+          message: t('You logged successfully'),
+          show: true,
+          actions: (res: any) => {
+
+            const resUser = res.data.user;
+  
+            let logged = false;
+  
+            if (!resUser.confirmed) {
+  
+              presentToast(RestOutput.warning({
+                header: t('Not confirmed jet!'),
+                message: t('This user is not confirmed')
+              }));
+  
+            } else if (resUser.blocked) {
+  
+              presentToast(RestOutput.danger({
+                header: t('Blocked user!!'),
+                message: t('This user is blocked')
+              }));
+  
+            } else {
+  
+              logged = true;
+            }
+  
+            //const userState = setIUserState(res.data, resUser, logged);
+  
+            //setUserStore(userState);
+  
+            //logger.info('You have connected!', userState);
+  
           }
+        },
+        onError: {
+          header: t('Login error!'),
+          message: t('There was an error logging in'),
+          show: false,
         }
       }
     },
-
     onError: (err: any) =>{
       logger.log('error', err)
     }

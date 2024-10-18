@@ -46,30 +46,19 @@ export const recoverFormData = (): IFormComponent => {
       }
     ],
     onSubmit: (data: IRecover) : ISubmitForm => {
-
-      // Handle form submission with custom success and error handling
       return {
         data,
-        onSubmit: ()=>{
-          logger.log('success')
-        },
-        onError: ()=>{
-          logger.log('error')
-        },
-        messages:{
-          onSuccess: {
-            header: t('Your recovery is working!'),
-            message: t('Wait for the recovery email'),
-            show: true,
-          },
-          onError: {
-            header: t('Recover error'),
-            message: t('There was an error recovering the account'),
-            show: true,
+        onSuccess: {
+          actions: ()=>{
+            logger.log('success')
           }
-        }
+        },
+        onError: {
+          actions: ()=>{
+            logger.error('error')
+          }
+        },
       }
-      
     },
     onError: (err: any) => {
       logger.error(err);

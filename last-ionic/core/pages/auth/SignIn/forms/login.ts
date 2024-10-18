@@ -52,7 +52,7 @@ const loginFormData = (): IFormComponent => {
         onSuccess: {
           header: t('Welcome to the app!'),
           message: t('You logged successfully'),
-          actions: (res: any): ToastOptions => {
+          actions: (res: any): any => {
 
             const resUser = res.data.user;
   
