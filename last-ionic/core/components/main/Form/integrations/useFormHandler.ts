@@ -33,37 +33,40 @@ const useFormHandler = (formData: IFormData) => {
       return acc;
     }, {} as any);
 
-    logger.log('sanitizedData', sanitizedData);
-
     try {
-      const res: AxiosResponse = await useAppRest.makeRequest<AxiosResponse>({
-        url,
-        method,
-        data: sanitizedData,
-      });
 
-      // Ejecutar las acciones de éxito si están definidas
-      if (onSuccess?.actions) {
-        onSuccess.actions(res); // Invocamos las acciones
+      const request = {
+        url: url,
+        method: method,
+        data: sanitizedData,
       }
 
-      // Mostrar el toast de éxito si está configurado
-      if (onSuccess?.show) {
-        addToast(
-          onSuccess.header || i18n.t('Success!'),
-          onSuccess.message || i18n.t('Successfully sent the form'),
-          'success'
-        );
+      const res: AxiosResponse = await useAppRest.makeRequest<AxiosResponse>(request);
+
+      logger.info('Submited request:', request);
+
+      if (onSuccess?.actions) {
+        onSuccess.actions(res);
+      }
+
+      if (onSuccess?.header || onSuccess?.message || onError?.show ) {
+
+        addToast({
+          color: 'success',
+          header: onSuccess?.header || i18n.t('Success!'),
+          message: onSuccess?.message || i18n.t('Successfully sent the form'),
+        });
+
       }
 
     } catch (error: any) {
+
       const err = error as AxiosError;
       logger.error('Error during request:', err);
 
       let errorMessage = onError?.message || i18n.t('Error sending the form');
       let errorHeader = onError?.header || i18n.t('Login error!');
 
-      // Manejo de errores según el estado HTTP
       if (err.response) {
         switch (err.response.status) {
           case 400:
@@ -78,18 +81,18 @@ const useFormHandler = (formData: IFormData) => {
         }
       }
 
-      // Mostrar el toast de error si está configurado
       if (onError?.show) {
-        addToast(
-          errorHeader,
-          errorMessage,
-          'error'
-        );
+
+        addToast({
+          color: 'error',
+          header: errorHeader,
+          message: errorMessage,
+        });
+        
       }
 
-      // Ejecutar las acciones de error si están definidas
       if (onError?.actions) {
-        onError.actions(err); // Invocamos las acciones
+        onError.actions(err);
       }
     }
   };

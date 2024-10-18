@@ -6,8 +6,7 @@ import { passwordValidation } from '../../../../classes/strapi/validations/all.v
 import RestOutput from '../../../../classes/utils/RestOutput';
 import useUserStore, { setIUserState } from '../../../../integrations/stores/user.store';
 import LoggerUtils from '../../../../classes/utils/LoggerUtils';
-import { ToastOptions } from '@ionic/core/components';
-import { useHistory } from 'react-router';
+import { addToast } from '../../../../integrations/stores/toast.store';
 
 const loginFormData = (): IFormComponent => {
   const debug = true
@@ -59,15 +58,17 @@ const loginFormData = (): IFormComponent => {
             let logged = false;
   
             if (!resUser.confirmed) {
-  
-              const res = RestOutput.warning({
+
+              addToast({
+                color: 'warning',
                 header: t('Not confirmed jet!'),
                 message: t('This user is not confirmed')
               });
   
             } else if (resUser.blocked) {
-  
-              const res = RestOutput.danger({
+
+              addToast({
+                color: 'danger',
                 header: t('Blocked user!!'),
                 message: t('This user is blocked')
               });
@@ -81,14 +82,10 @@ const loginFormData = (): IFormComponent => {
             const { setUserStore } = useUserStore();
             setUserStore(userState);
   
-            logger.info('You have connected!', userState);
-
-            res = RestOutput.success({
-              header: formData.onSuccess.header,
-              message: formData.onSuccess.message
-            });
+            logged ? logger.info('You have connected!', userState) : logger.error('You have NOT connected!', userState);
   
           },
+          
         },
         onError: {
           header: t('Login error!'),
@@ -96,7 +93,6 @@ const loginFormData = (): IFormComponent => {
         },
       }
       return formData;
-      
     }
 
   };

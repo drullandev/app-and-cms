@@ -1,4 +1,4 @@
-import { IonToast } from '@ionic/react';
+import { IonToast, IonicSafeString } from '@ionic/react';
 import useToastStore from '../../integrations/stores/toast.store';
 import { useEffect, useState } from 'react';
 
@@ -10,7 +10,14 @@ const ToastManager: React.FC = () => {
   useEffect(() => {
     if (toasts.length > 0) {
       const [nextToast] = toasts;
-      setCurrentToast(nextToast);
+
+      // Asegúrate de que `nextToast` contiene `type` y otros valores
+      setCurrentToast({
+        header: nextToast.header ?? '', // Valor predeterminado para header
+        message: (nextToast.message as IonicSafeString).toString() ?? '',
+        type: (nextToast as any).type ?? 'success', // Define un valor predeterminado para type
+      });
+      
       setVisible(true);
     } else {
       setVisible(false);
