@@ -14,7 +14,7 @@ import useAppStore from '../../../integrations/stores/app.store';
 
 import { emailValidation, passwordValidation, repeatPasswordValidation, usernameValidation } from '../../../classes/strapi/validations/all.validations';
 
-export const signupForm = (): IFormComponent => {
+export const signupForm = () : IFormComponent => {
   const debug = DebugUtils.setDebug(false);
   const logger = LoggerUtils.getInstance('loginFomData');
 
@@ -22,9 +22,9 @@ export const signupForm = (): IFormComponent => {
   const history = useHistory();
   const [presentToast] = useIonToast();
   const { setUserStore } = useUserStore();
-  const { setLoading } = useAppStore();
+
   
-  const formData: IFormComponent = {
+  return {
     id: 'signup-page',
     url: '/auth/local/register',
     captcha: false,
@@ -89,70 +89,57 @@ export const signupForm = (): IFormComponent => {
       }
     ],
 
-    onSubmit: (data: IRegister) => {
-      const successAcctions : ISubmitForm  = {
+    onSubmit: (data: IRegister) : ISubmitForm => {
+      return {
         data: data,
-        messages: {
-          onSuccess: {
-            header: t('Welcome to the app!'),
-            message: t('You logged successfully'),
-            show: true,
-          },
-          onError: {
-            header: t('Login error!'),
-            message: t('There was an error logging in'),
-            show: false,
-          },
-        },
+        onSuccess: {
+          header: t('Welcome to the app!'),
+          message: t('You logged successfully'),
+          show: true,
+          actions: (res: any) => {
 
-        onSubmit: (res: any) => {
-
-          const resUser = res.data.user;
-
-          let logged = false;
-
-          if (!resUser.confirmed) {
-
-            presentToast(RestOutput.warning({
-              header: t('Not confirmed jet!'),
-              message: t('This user is not confirmed')
-            }));
-
-          } else if (resUser.blocked) {
-
-            presentToast(RestOutput.danger({
-              header: t('Blocked user!!'),
-              message: t('This user is blocked')
-            }));
-
-          } else {
-
-            logged = true;
+            const resUser = res.data.user;
+  
+            let logged = false;
+  
+            if (!resUser.confirmed) {
+  
+              presentToast(RestOutput.warning({
+                header: t('Not confirmed jet!'),
+                message: t('This user is not confirmed')
+              }));
+  
+            } else if (resUser.blocked) {
+  
+              presentToast(RestOutput.danger({
+                header: t('Blocked user!!'),
+                message: t('This user is blocked')
+              }));
+  
+            } else {
+  
+              logged = true;
+            }
+  
+            const userState = setIUserState(res.data, resUser, logged);
+  
+            setUserStore(userState);
+  
+            logger.info('You have connected!', userState);
+  
           }
-
-          const userState = setIUserState(res.data, resUser, logged);
-
-          setUserStore(userState);
-
-          logger.info('You have connected!', userState);
-
         },
-
-        onError: (err: any) => {
-          logger.error('You not have connected!', err );
+        onError: {
+          header: t('Login error!'),
+          message: t('There was an error logging in'),
+          show: false,
         }
-        
       }
-
-      return successAcctions;
-
     },
     onError: (err: any) => {
       logger.error(err);
     },
 
   };
-
-  return formData;
 
 };

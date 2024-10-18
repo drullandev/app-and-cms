@@ -5,18 +5,14 @@ import { useIonToast } from '@ionic/react'
 
 // Fully imported dependencies
 import * as yup from 'yup';
-import * as icon from 'ionicons/icons';
 
 // Used classes
 import DebugUtils from '../../../classes/utils/DebugUtils';
-import { IRestManager } from '../../../classes/managers/RestManager';
 
 // Local dependencies
 import { IFormComponent, IFormData, ISubmitForm } from '../../../components/main/Form/types';
 
 // Reducer dependencies
-import useUserStore from '../../../integrations/stores/user.store';
-import useAppRest from '../../../integrations/useAppRest';
 import LoggerUtils from 'core/classes/utils/LoggerUtils';
 import { passwordValidation, repeatPasswordValidation } from '../../../classes/strapi/validations/all.validations';
 

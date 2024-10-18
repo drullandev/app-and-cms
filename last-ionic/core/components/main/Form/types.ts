@@ -1,3 +1,4 @@
+import { ToastOptions } from '@ionic/core/components';
 import { AxiosError, AxiosResponse, Method } from 'axios';
 import { ControllerProps, DeepMap, FieldError } from 'react-hook-form';
 import { Schema } from 'yup';
@@ -41,21 +42,18 @@ export interface IFormComponent extends IFormData {
 export interface ISubmitForm {
   data: any;
   onSubmit?: (res: AxiosResponse) => void;
-  onError?: (err: AxiosError) => void;
-  messages?: ISubmitFormSettings;
+  onSuccess?: IFormCustom;
+  onError?: IFormCustom;
 }
 
-export interface ISubmitFormSettings {
-  onSuccess?: IFormCustomMessage;
-  onError?: IFormCustomMessage;
-}
-
-export interface IFormCustomMessage {
+export interface IFormCustom {
   header?: string;
   message?: string;
   type?: 'toast' | 'modal';
   show?: boolean;
+  actions?: (params: any) => ToastOptions;
 }
+
 
 export interface LabelProps {
   name?: string;

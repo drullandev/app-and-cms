@@ -35,6 +35,7 @@ interface IRestManager {
 }
 
 class RestManager implements IRestManager {
+  
   private static instances: Map<string, RestManager> = new Map();
   private axiosInstance: AxiosInstance;
   private logger: LoggerUtils;

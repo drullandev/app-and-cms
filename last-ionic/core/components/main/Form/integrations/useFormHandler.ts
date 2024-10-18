@@ -17,11 +17,11 @@ const useFormHandler = (formData: IFormData) => {
 
   const handleSubmit = async (submitData: ISubmitForm) => {
 
-    const { data, onSubmit, onError, messages } = submitData;
+    const { data, onSuccess, onError } = submitData;
 
-    const filteredData = Object.keys(data.data).reduce((acc, key) => {
+    const filteredData = Object.keys(data).reduce((acc, key) => {
       if (!key.startsWith('button') && !avoided.includes(key)) {
-        acc[key] = data.data[key];
+        acc[key] = data[key];
       }
       return acc;
     }, {} as any);
@@ -33,38 +33,56 @@ const useFormHandler = (formData: IFormData) => {
       return acc;
     }, {} as any);
 
-    logger.log('sanitizedData', sanitizedData)
+    logger.log('sanitizedData', sanitizedData);
 
+    console.info('data', sanitizedData)
     try {
 
-      await useAppRest.makeRequest<AxiosResponse>({
-        url,
-        method,
-        data: sanitizedData,
-      }).then((res)=>{
+      await useAppRest
+        .makeRequest<AxiosResponse>({
+          url,
+          method,
+          data: sanitizedData,
+        })
+        .then((res)=>{
 
-        if (messages?.onSuccess?.show) {
+          if (onSuccess?.actions) {
+            const result = onSuccess.actions(res);
+            if (result){
+
+            }
+          }
+
+          if (onSuccess?.show) {
+            addToast(
+              onSuccess.header || i18n.t('Success!'),
+              onSuccess.message || i18n.t('Successfully sent the form'),
+              'success'
+            );
+          }
+
+
+
+        })
+        .catch(()=>{
           addToast(
-            messages.onSuccess?.header || i18n.t('Success!'),
-            messages.onSuccess?.message || i18n.t('Successfully sent the form'),
-            'success'
+            onError?.header || i18n.t('Error!'),
+            onError?.message || i18n.t('You have a form error'),
+            'error'
           );
-        }
-  
-        onSubmit?.(res);
-  
-      });
+        });
 
-    } catch (err) {
+    } catch (error) {
 
-      const error = err as AxiosError;
+      const err = error as AxiosError;
       logger.error('Error during request:', error);
 
-      let errorMessage = messages?.onError?.message || i18n.t('Error sending the form');
-      let errorHeader = messages?.onError?.header || i18n.t('Login error!');
+      let errorMessage = onError?.message || i18n.t('Error sending the form');
+      let errorHeader = onError?.header || i18n.t('Login error!');
 
-      if (error.response) {
-        switch (error.response.status) {
+      // Manejo de errores según el estado HTTP
+      if (err.response) {
+        switch (err.response.status) {
           case 400:
             errorMessage = i18n.t('Invalid credentials. Please try again.');
             break;
@@ -72,14 +90,13 @@ const useFormHandler = (formData: IFormData) => {
             errorMessage = i18n.t('Server error. Please try again later.');
             break;
           default:
-            // Verificamos si `message` existe dentro de `error.response.data`
-            errorMessage = (error.response.data as { message?: string })?.message || errorMessage;
+            errorMessage = (err.response.data as { message?: string })?.message || errorMessage;
             break;
         }
       }
 
       // Mostrar el toast de error
-      if (messages?.onError?.show) {
+      if (onError?.show) {
         addToast(
           errorHeader,
           errorMessage,
@@ -87,17 +104,17 @@ const useFormHandler = (formData: IFormData) => {
         );
       }
 
-      // Llamar a la función de manejo de errores
-      onError?.(error);
+      // Ejecutar la acción onError si existe
+      if (onError?.actions) {
+        onError.actions(error);
+      }
 
     }
-
   };
 
   return {
     handleSubmit,
   };
-  
 };
 
 export default useFormHandler;

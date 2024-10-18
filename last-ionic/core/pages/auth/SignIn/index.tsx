@@ -7,7 +7,7 @@ import Header from '../../../components/main/Header';
 import Form from '../../../components/main/Form/index';
 import Page, { PagePropsData } from '../../../components/main/Page';
 
-import { loginFormData } from './forms/login';
+import loginFormData from './forms/login';
 import { recoverFormData } from './forms/recover';
 
 import './styles.scss';
