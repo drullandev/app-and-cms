@@ -1,4 +1,4 @@
-import RestOutput from "../../../classes/utils/RestOutput";
+import RestOutput from "@utils/RestOutput";
 
   /**
    * Handle user state validation and state updates.

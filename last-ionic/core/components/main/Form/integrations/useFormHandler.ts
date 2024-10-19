@@ -42,21 +42,11 @@ const useFormHandler = (formData: IFormData) => {
       }
 
       const res: AxiosResponse = await useAppRest.makeRequest<AxiosResponse>(request);
-
       logger.info('Submited request:', request);
 
-      if (onSuccess?.actions) {
-        onSuccess.actions(res);
-      }
-
-      if (onSuccess?.header || onSuccess?.message || onError?.show ) {
-
-        addToast({
-          color: 'success',
-          header: onSuccess?.header || i18n.t('Success!'),
-          message: onSuccess?.message || i18n.t('Successfully sent the form'),
-        });
-
+      // 1. Ejecutamos las acciones de éxito antes del toast para asegurar secuencia
+      if (onSuccess) {
+        await onSuccess(res); // Asegúrate de que `actions` retorne una promesa si es necesario.
       }
 
     } catch (error: any) {
@@ -64,8 +54,8 @@ const useFormHandler = (formData: IFormData) => {
       const err = error as AxiosError;
       logger.error('Error during request:', err);
 
-      let errorMessage = onError?.message || i18n.t('Error sending the form');
-      let errorHeader = onError?.header || i18n.t('Login error!');
+      let errorMessage = i18n.t('Error sending the form');
+      let errorHeader = i18n.t('Login error!');
 
       if (err.response) {
         switch (err.response.status) {
@@ -81,20 +71,18 @@ const useFormHandler = (formData: IFormData) => {
         }
       }
 
-      if (onError?.show) {
+      addToast({
+        color: 'error',
+        header: errorHeader,
+        message: errorMessage,
+      });
 
-        addToast({
-          color: 'error',
-          header: errorHeader,
-          message: errorMessage,
-        });
-        
+      if (onError) {
+        await onError(err); // Asegúrate de que `actions` retorne una promesa si es necesario.
       }
 
-      if (onError?.actions) {
-        onError.actions(err);
-      }
     }
+
   };
 
   return {

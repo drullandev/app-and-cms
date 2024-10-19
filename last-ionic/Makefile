@@ -16,7 +16,6 @@ outdated:  ## Check for outdated dependencies
 
 dev:  ## Run development server with Vite
 	@echo "Starting development server..."
-	nvm use 22
 	make install
 	vite
 

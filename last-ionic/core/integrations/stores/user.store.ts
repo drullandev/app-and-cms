@@ -1,13 +1,10 @@
 import { create } from 'zustand';
 import { Preferences } from '@capacitor/preferences';
-import Logger from '../../classes/utils/LoggerUtils';
 import DebugUtils from '../../classes/utils/DebugUtils';
 import { AppState } from './app.store';
-import { AuthResponse } from '../../classes/strapi/models/AuthResponse';
-import { User } from '../../classes/strapi/models/User';
+import { User } from '@models/User';
 import { RestManager } from '../../classes/managers/RestManager';
-import { useGraphQLRest } from '../useGraphQL';
-import RestOutput from '../../classes/utils/RestOutput';
+import { AuthResponseStrapi } from '@models/index';
 
 // Propiedades del usuario
 export const ID = 'id';
@@ -193,7 +190,7 @@ const useUserStore = create<IUserStore>((set, get) => ({
 
 export default useUserStore;
 
-export const setIUserState = (resAxios: AuthResponse, resUser: User, logged: boolean): Partial<IUserState> => {
+export const setIUserState = (resAxios: AuthResponseStrapi, resUser: User, logged: boolean): Partial<IUserState> => {
   return {
     id: resUser.id,
     username: resUser.username,

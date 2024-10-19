@@ -1,9 +1,9 @@
 import { defineConfig, loadEnv } from 'vite';
 import react from '@vitejs/plugin-react';
 import visualizer from 'rollup-plugin-visualizer';
+import path from 'path';
 
 export default defineConfig(({ mode }) => {
-  // Cargamos las variables de entorno según el modo (desarrollo o producción)
   const env = loadEnv(mode, process.cwd(), '');
 
   return {
@@ -12,6 +12,16 @@ export default defineConfig(({ mode }) => {
       react(),
       visualizer({ open: true })
     ],
+    resolve: {
+      alias: {
+        '@components': path.resolve(__dirname, './core/components'),
+        '@models': path.resolve(__dirname, './core/classes/strapi/models'),
+        '@my-utils': path.resolve(__dirname, './core/classes/utils'),
+        '@form': path.resolve(__dirname, './core/components/main/Form'),
+        '@stores': path.resolve(__dirname, './core/integrations/stores'),
+        '@validations': path.resolve(__dirname, './core/classes/strapi/validations')
+      }
+    },
     server: {
       port: parseInt(env.VITE_APP_PORT, 10) || 3000,
       hmr: {
@@ -19,31 +29,31 @@ export default defineConfig(({ mode }) => {
       },
     },
     optimizeDeps: {
-      exclude: ['stuff/*'], // Excluir la carpeta 'stuff' de la optimización de dependencias
+      exclude: [],
       include: ['lodash', 'axios'],
     },
     rollupInputOptions: {
-      // Opciones de Rollup (opcional)
       input: {
         include: ['src/**', 'core/**'],
-        exclude: ['stuff/**'], // Excluir la carpeta 'stuff' de la entrada de Rollup
+        exclude: [],
       },
       output: {
-        manualChunks: true, // 2000 kB (2 MB)
+        manualChunks: true,
       },
     },
     build: {
       chunkSizeWarningLimit: 1536,
+      rollupOptions: external,
     },
     css: {
       preprocessorOptions: {
         css: {
-          additionalData: `@import "core/theme/variables.css";`, // Importa variables globales si es necesario
+          additionalData: `@import "core/theme/variables.css";`,
         },
       },
     },
     define: {
-      'process.env': env, // Definir las variables de entorno cargadas
+      'process.env': env,
     },
   };
 });

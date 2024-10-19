@@ -42,18 +42,9 @@ export interface IFormComponent extends IFormData {
 export interface ISubmitForm {
   data: any;
   onSubmit?: (res: AxiosResponse) => void;
-  onSuccess?: IFormCustom;
-  onError?: IFormCustom;
+  onSuccess?: (params: any) => void;
+  onError?:  (params: any) => void;
 }
-
-export interface IFormCustom {
-  header?: string;
-  message?: string;
-  type?: 'toast' | 'modal';
-  show?: boolean;
-  actions?: (params: any) => void;
-}
-
 
 export interface LabelProps {
   name?: string;

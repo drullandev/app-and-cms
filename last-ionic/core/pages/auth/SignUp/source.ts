@@ -10,20 +10,17 @@ import useUserStore, { setIUserState } from '../../../integrations/stores/user.s
 import LoggerUtils from '../../../classes/utils/LoggerUtils';
 import { IFormComponent, ISubmitForm } from '../../../components/main/Form/types';
 import { IRegister } from '../../../classes/strapi/models/User';
-import useAppStore from '../../../integrations/stores/app.store';
 
-import { emailValidation, passwordValidation, repeatPasswordValidation, usernameValidation } from '../../../classes/strapi/validations/all.validations';
+import { emailValidation, passwordValidation, repeatPasswordValidation, usernameValidation } from '../../../classes/strapi/validations';
+import { addToast } from '../../../integrations/stores/index';
 
 export const signupForm = () : IFormComponent => {
+
   const debug = DebugUtils.setDebug(false);
   const logger = LoggerUtils.getInstance('loginFomData');
-
   const { t } = useTranslation();
-  const history = useHistory();
-  const [presentToast] = useIonToast();
   const { setUserStore } = useUserStore();
 
-  
   return {
     id: 'signup-page',
     url: '/auth/local/register',
@@ -92,26 +89,31 @@ export const signupForm = () : IFormComponent => {
     onSubmit: (data: IRegister) : ISubmitForm => {
       return {
         data: data,
-        onSuccess: {
-          header: t('Welcome to the app!'),
-          message: t('You logged successfully'),
-          show: true,
-          actions: (res: any) => {
+        onSuccess: (res: any) => {
 
-            const resUser = res.data.user;
-  
+          const resUser = res?.data?.user;
+
+          if (!resUser) {
+
+            addToast(RestOutput.danger({
+              header: t('Error!'),
+              message: t('Unexpected server response')
+            }));
+
+          } else {
+
             let logged = false;
-  
+
             if (!resUser.confirmed) {
   
-              presentToast(RestOutput.warning({
+              addToast(RestOutput.warning({
                 header: t('Not confirmed jet!'),
                 message: t('This user is not confirmed')
               }));
   
             } else if (resUser.blocked) {
   
-              presentToast(RestOutput.danger({
+              addToast(RestOutput.danger({
                 header: t('Blocked user!!'),
                 message: t('This user is blocked')
               }));
@@ -119,20 +121,28 @@ export const signupForm = () : IFormComponent => {
             } else {
   
               logged = true;
+  
+              addToast(RestOutput.success({
+                header: t('Welcome to the app!'),
+                message: t('You logged successfully'),
+              }));
+  
             }
   
-            const userState = setIUserState(res.data, resUser, logged);
-  
+            const userState = setIUserState(res.data.user, resUser, logged);
+
             setUserStore(userState);
   
-            logger.info('You have connected!', userState);
-  
+            logged ? logger.info('You have connected!', userState) : logger.error('You have NOT connected!', userState);
+
           }
+          
         },
-        onError: {
-          header: t('Login error!'),
-          message: t('There was an error logging in'),
-          show: false,
+        onError: () => {
+          addToast(RestOutput.danger({
+            header: t('Login error!'),
+            message: t('There was an error logging in'),
+          }));
         }
       }
     },

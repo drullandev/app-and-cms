@@ -152,3 +152,4 @@ class RestManager implements IRestManager {
 }
 
 export { RestManager, RestError };
+export default RestManager;

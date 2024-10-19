@@ -20,9 +20,14 @@
     "jsx": "react-jsx",
     "baseUrl": "./",
     "paths": {
-      "components/*": ["core/components/*", "src/components/*"]
+      "@components/*": ["core/components/*", "src/components/*"],
+      "@models/*": ["core/classes/strapi/models/*"],
+      "@utils/*": ["core/classes/utils/*"],
+      "@form/*": ["core/components/main/Form/*"],
+      "@stores/*": ["core/integrations/stores/*"],
+      "@validations/*": ["core/classes/strapi/validations/*"]
     }
   },
-  "include": ["core/**/*.ts", "src/**/*.ts", "core/**/*.tsx", "src/**/*.tsx", "types/globals.d.ts"],
+  "include": ["src/**/*.ts", "core/**/*.ts", "src/**/*.tsx", "core/**/*.tsx", "types/globals.d.ts"],
   "exclude": ["node_modules"]
 }

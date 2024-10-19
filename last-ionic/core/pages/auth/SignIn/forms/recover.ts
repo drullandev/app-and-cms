@@ -48,17 +48,13 @@ export const recoverFormData = (): IFormComponent => {
     onSubmit: (data: IRecover) : ISubmitForm => {
       return {
         data,
-        onSuccess: {
-          actions: ()=>{
-            logger.log('success')
-          }
+        onSuccess: (res:any)=>{
+          logger.log('success')
         },
-        onError: {
-          actions: ()=>{
-            logger.error('error')
-          }
+        onError: ()=>{
+          logger.error('error')
         },
-      }
+      };
     },
     onError: (err: any) => {
       logger.error(err);

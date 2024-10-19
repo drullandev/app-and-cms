@@ -14,8 +14,10 @@ import { IFormComponent, IFormData, ISubmitForm } from '../../../components/main
 
 // Reducer dependencies
 import LoggerUtils from '../../../classes/utils/LoggerUtils';
-import { passwordValidation, repeatPasswordValidation } from '../../../classes/strapi/validations/all.validations';
+import { passwordValidation, repeatPasswordValidation } from '../../../classes/strapi/validations';
 import RestOutput from '../../../classes/utils/RestOutput';
+import { addToast } from '../../../integrations/stores';
+import useUserStore, { setIUserState } from '@stores/user.store';
 
 export interface IResetPassword {
   code: string;
@@ -87,47 +89,43 @@ export const resetFormData = (): IFormComponent => {
     onSubmit: (data: IResetPassword) : ISubmitForm => {
       return {
         data: data,
-        onSuccess: {
-          header: t('Welcome to the app!'),
-          message: t('You logged successfully'),
-          show: true,
-          actions: (res: any) => {
+        onSuccess: (res: any) => {
 
-            const resUser = res.data.user;
-  
-            let logged = false;
-  
-            if (!resUser.confirmed) {
-  
-              presentToast(RestOutput.warning({
-                header: t('Not confirmed jet!'),
-                message: t('This user is not confirmed')
-              }));
-  
-            } else if (resUser.blocked) {
-  
-              presentToast(RestOutput.danger({
-                header: t('Blocked user!!'),
-                message: t('This user is blocked')
-              }));
-  
-            } else {
-  
-              logged = true;
-            }
-  
-            //const userState = setIUserState(res.data, resUser, logged);
-  
-            //setUserStore(userState);
-  
-            //logger.info('You have connected!', userState);
-  
+          const resUser = res.data.user;
+
+          let logged = false;
+
+          if (!resUser.confirmed) {
+
+            addToast(RestOutput.warning({
+              header: t('Not confirmed jet!'),
+              message: t('This user is not confirmed')
+            }));
+
+          } else if (resUser.blocked) {
+
+            addToast(RestOutput.danger({
+              header: t('Blocked user!!'),
+              message: t('This user is blocked')
+            }));
+
+          } else {
+
+            logged = true;
           }
+
+          const userState = setIUserState(res.data, resUser, logged);
+          const { setUserStore } = useUserStore();
+          setUserStore(userState);
+
+          logger.info('You have connected!', userState);
+
         },
-        onError: {
-          header: t('Login error!'),
-          message: t('There was an error logging in'),
-          show: false,
+        onError: ()=> {
+          addToast(RestOutput.danger({
+            header: t('Blocked user!!'),
+            message: t('This user is blocked')
+          }));
         }
       }
     },

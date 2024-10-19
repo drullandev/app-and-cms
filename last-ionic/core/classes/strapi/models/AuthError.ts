@@ -1,6 +1,8 @@
 import { User } from "./User";
 
-export interface AuthResponse {
+interface AuthError {
   jwt: string;
   user: User;
 }
+
+export type { AuthError };

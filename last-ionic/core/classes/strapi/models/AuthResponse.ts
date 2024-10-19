@@ -1,6 +1,11 @@
 import { User } from "./User";
 
-export interface AuthResponse {
-  jwt: string;
-  user: User;
+interface AuthResponse {
+  jwt: string | undefined;
+  data: {
+    jwt: string;
+    user: User;
+  }
 }
+
+export type { AuthResponse };
