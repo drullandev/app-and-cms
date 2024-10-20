@@ -21,6 +21,7 @@ import Captcha from '../../../integrations/useCaptcha';
 import useFormHandler from './integrations/useFormHandler';
 
 import { IField, IFormComponent, IFormData, ISubmitForm } from './types';
+import { defaultFormSettings } from '../../../components/main/Form/types'
 import './style.css';
 
 const Form: React.FC<IFormComponent> = (formProps: IFormComponent): JSX.Element | null => {
@@ -198,7 +199,7 @@ const Form: React.FC<IFormComponent> = (formProps: IFormComponent): JSX.Element 
       const newData = {
         ...formProps,
         fields,
-        settings: formProps?.settings || {},
+        settings: { ...defaultFormSettings, ...formProps.settings }, // Aplicamos la configuración por defecto
       };
 
       return newData;
@@ -265,7 +266,7 @@ const Form: React.FC<IFormComponent> = (formProps: IFormComponent): JSX.Element 
       <form
         key={formData.id}
         onSubmit={handleSubmit(onSubmit, formData.onError)}
-        style={formData.settings.style}
+        style={formData.settings?.style}
       >
         <Looper items={formData.fields} renderItem={renderField} />
         <Looper items={formData.buttons} renderItem={renderButton} />

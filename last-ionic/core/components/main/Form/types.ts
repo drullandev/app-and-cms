@@ -19,10 +19,31 @@ export interface FormEventsProps {
   error: GA4Event;
 }
 
+export interface IFormAnimations {
+  initial: {
+    opacity: number;
+    y: number;
+  };
+  animate: {
+    opacity: number;
+    y: number;
+  };
+  transition: {
+    duration: number;
+  };
+}
+
+export interface IFormSettings {
+  autoSendIfValid?: boolean;  // Indica si el formulario se envía automáticamente si es válido
+  animations?: IFormAnimations;  // Define las animaciones del formulario
+  afterLoad?: () => void;  // Función que se ejecuta después de que el formulario carga
+  style?: React.CSSProperties;  // Propiedades CSS para el estilo del formulario
+}
+
 export interface IFormData {
   id: string;
   url: string;
-  settings: any;
+  settings?: IFormSettings;
   fields: IField[];
   buttons?: IField[];
   method?: Method;
@@ -115,3 +136,14 @@ export interface ContentCheckProps {
   label: string
   slug: string
 }
+
+export const defaultFormSettings = {
+  autoSendIfValid: false,
+  animations: {
+    initial: { opacity: 0, y: -20 },
+    animate: { opacity: 1, y: 0 },
+    transition: { duration: 0.5 },
+  },
+  afterLoad: () => {},
+  style: { borderRadius: '0%' },
+};
