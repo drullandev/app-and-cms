@@ -52,7 +52,7 @@ export interface IFormData {
   privacy?: false | boolean;
   ga4?: GA4Options;
   defaultOutput?: false | boolean;
-  onSubmit: (data: any) => ISubmitForm;
+  onSuccess: (data: any) => void;
   onError?: (err: any) => void;
 }
 
@@ -61,10 +61,9 @@ export interface IFormComponent extends IFormData {
 }
 
 export interface ISubmitForm {
-  data: any;
-  onSubmit?: (res: AxiosResponse) => void;
-  onSuccess?: (params: any) => void;
-  onError?:  (params: any) => void;
+  data: any; // O el tipo que corresponda según tu estructura de datos.
+  onSuccess?: (response: any) => void; // Callback de éxito opcional
+  onError?: (error: any) => void; // Callback de error opcional
 }
 
 export interface LabelProps {

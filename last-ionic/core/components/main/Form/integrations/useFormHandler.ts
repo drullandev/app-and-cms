@@ -44,9 +44,9 @@ const useFormHandler = (formData: IFormData) => {
       const res: AxiosResponse = await useAppRest.makeRequest<AxiosResponse>(request);
       logger.info('Submited request:', request);
 
-      // 1. Ejecutamos las acciones de éxito antes del toast para asegurar secuencia
+
       if (onSuccess) {
-        await onSuccess(res); // Asegúrate de que `actions` retorne una promesa si es necesario.
+        await onSuccess(res);
       }
 
     } catch (error: any) {
@@ -78,7 +78,7 @@ const useFormHandler = (formData: IFormData) => {
       });
 
       if (onError) {
-        await onError(err); // Asegúrate de que `actions` retorne una promesa si es necesario.
+        await onError(err);
       }
 
     }

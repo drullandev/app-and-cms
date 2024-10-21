@@ -87,7 +87,7 @@ class RestOutput {
   private logger: LoggerUtils;
 
   // Default messages for different types of responses
-  private defaultMessages = {
+  private DefaultMessages = {
     success: {
       icon: checkboxOutline,
       color: 'success',
@@ -143,7 +143,7 @@ class RestOutput {
   public catchSuccess(response: AxiosResponse, props?: MyExtraOutputOptions, debug?: boolean): MyExtraOutputOptions {
     const output = this.setOutputMessage(
       response,
-      this.setOutput(props, this.defaultMessages.success as MyExtraOutputOptions),
+      this.setOutput(props, this.DefaultMessages.success as MyExtraOutputOptions),
       props
     );
     if (this.debug || debug) this.logger.info('CatchSuccess::response::output', { response, output });
@@ -162,7 +162,7 @@ class RestOutput {
   public catchWarning(error: AxiosError, props?: MyExtraOutputOptions, debug?: boolean): MyExtraOutputOptions {
     const output = this.setOutputMessage(
       error,
-      this.setOutput(props, this.defaultMessages.warning as MyExtraOutputOptions),
+      this.setOutput(props, this.DefaultMessages.warning as MyExtraOutputOptions),
       props
     );
     if (this.debug || debug) this.logger.warn('CatchWarning::error::output', { error, output });
@@ -181,7 +181,7 @@ class RestOutput {
   public catchDanger(error: AxiosError, props?: MyExtraOutputOptions, debug?: boolean): MyExtraOutputOptions {
     const output = this.setOutputMessage(
       error,
-      this.setOutput(props, this.defaultMessages.danger as MyExtraOutputOptions),
+      this.setOutput(props, this.DefaultMessages.danger as MyExtraOutputOptions),
       props
     );
     if (this.debug || debug) this.logger.error('CatchDanger::error::output', { error, output });
@@ -198,8 +198,8 @@ class RestOutput {
    * @returns Formatted output options with form-specific error messages.
    */
   public catchFormError(errors: any, props?: MyExtraOutputOptions, debug?: boolean): MyExtraOutputOptions {
-    let error = this.catchDanger(errors, this.defaultMessages.formDanger as MyExtraOutputOptions);
-    error.header = props?.header || this.defaultMessages.formDanger.header;
+    let error = this.catchDanger(errors, this.DefaultMessages.formDanger as MyExtraOutputOptions);
+    error.header = props?.header || this.DefaultMessages.formDanger.header;
     error = this.setMessage(errors, error, props);
     if (this.debug || debug) this.logger.error('CatchFormError::error::output', { errors, error });
     return error;
@@ -226,7 +226,7 @@ class RestOutput {
         }
       });
     } else {
-      error.message = this.defaultMessages.formDanger.message;
+      error.message = this.DefaultMessages.formDanger.message;
     }
     return error;
   }

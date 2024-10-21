@@ -34,56 +34,59 @@ const loginFormData = (): IFormComponent => {
         validationSchema: passwordValidation(),
       },
     ],
-    onSubmit: (data: UserLoginStrapi): ISubmitForm => {
-      return {
-        data: data,
-        onSuccess: (res: AuthResponseStrapi) => {
-          const resUser = res?.data?.user;
 
-          if (!resUser || typeof resUser !== 'object') {
-            return addToast(RestOutput.danger({
-              header: t('Error!'),
-              message: t('Invalid user data received from the server'),
-            }));
-          }
+    onSuccess: async (res: any) => {
 
-          if (!resUser.confirmed) {
-            return addToast(RestOutput.warning({
-              header: t('Not confirmed yet!'),
-              message: t('This user is not confirmed')
-            }));
-          }
+      const resUser = res.user;
 
-          if (resUser.blocked) {
-            return addToast(RestOutput.danger({
-              header: t('Blocked user!'),
-              message: t('This user is blocked')
-            }));
-          }
+      if (!resUser || typeof resUser !== 'object') {
+        return addToast(RestOutput.danger({
+          header: t('Error!'),
+          message: t('Invalid user data received from the server'),
+        }));
+      }
+      console.log('res', res)
+      if (!resUser.confirmed) {
+        return addToast(RestOutput.warning({
+          header: t('Not confirmed yet!'),
+          message: t('This user is not confirmed'),
+        }));
+      }
+    
+      if (resUser.blocked) {
+        return addToast(RestOutput.danger({
+          header: t('Blocked user!'),
+          message: t('This user is blocked'),
+        }));
+      }
+    
+      const logged = true;
+    
+      const userState = setIUserState(res, resUser, logged);
+      const { setUserStore } = useUserStore();
+      setUserStore(userState);
+    
+      if (logged && resUser && !resUser.blocked && resUser.confirmed) {
+        logger.info('User connected!', userState);
+        
+        await addModal(RestOutput.success({
+          header: t('Welcome to the app!'),
+          message: t('You logged in successfully'),
+        }));
+    
+        // Redireccionar después de un breve retraso
+        setTimeout(() => {
+          history.push('/home');
+        }, 2000); // Espera de 2 segundos antes del redireccionamiento
+      }
 
-          const logged = true;
-          addModal(RestOutput.success({
-            header: t('Welcome to the app!'),
-            message: t('You logged in successfully'),
-          }));
-
-          const userState = setIUserState(res, resUser, logged);
-          const { setUserStore } = useUserStore();
-          setUserStore(userState);
-
-          logger.info('User connected!', userState);
-          if (logged && resUser && !resUser.blocked && resUser.confirmed) {
-            history.push('/home');
-          }
-        },
-        onError: (err: any) => {
-          logger.error('Login error', err);
-          addToast(RestOutput.danger({
-            header: t('Login error!'),
-            message: t('There was an error logging in'),
-          }));
-        },
-      };
+    },
+    onError: (err: any) => {
+      logger.error('Login error', err);
+      addToast(RestOutput.danger({
+        header: t('Login error!'),
+        message: t('There was an error logging in'),
+      }));
     },
   };
 };

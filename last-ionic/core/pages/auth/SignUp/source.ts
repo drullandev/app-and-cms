@@ -73,7 +73,7 @@ export const signupForm = (): IFormComponent => {
       },
     ],
 
-    onSubmit: (data: IRegister): ISubmitForm => {
+    onSuccess: (data: IRegister): ISubmitForm => {
       return {
         data: data,
         onSuccess: (res: any) => {

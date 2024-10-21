@@ -15,7 +15,7 @@ const ToastManager: React.FC = () => {
       setCurrentToast({
         header: nextToast.header ?? '', // Valor predeterminado para header
         message: (nextToast.message as IonicSafeString).toString() ?? '',
-        type: (nextToast as any).type ?? 'success', // Define un valor predeterminado para type
+        type: (nextToast as any).color ?? 'success', // Define un valor predeterminado para type
       });
       
       setVisible(true);
