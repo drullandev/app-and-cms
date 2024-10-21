@@ -9,6 +9,7 @@ import DebugUtils from '../../../classes/utils/DebugUtils'
 import './styles.css'
 import { GA4Options } from './types'
 import useGA4Tracker from '../../../integrations/useGA4Tracker'
+import TabItem from '../Menu/TabItem';
 
 export interface IonPageProps {
   id: string;
@@ -47,7 +48,7 @@ export interface PagePropsData {
  * @param pageProps PagePropsData
  * @returns JSX.IonPage
  */
-const Page: React.FC<PagePropsData> = (pageProps) => {
+const Page: React.FC<PagePropsData> = (pageProps, appRoutes) => {
 
   const debug = DebugUtils.setDebug(false);
   const logger = LoggerUtils.getInstance('Page', debug);
@@ -69,11 +70,10 @@ const Page: React.FC<PagePropsData> = (pageProps) => {
         {pageProps.content(pageProps)}
       </IonContent>
       {pageProps.footer !== undefined && pageProps.footer(pageProps)}
-      {/*<TabItem
-        id={'main-tabs'}
-        slot={'button'}
-        routes={AppRoutes}
-      />*/} 
+              <TabItem id="main-tabs"
+          routes={appRoutes}
+          slot="bottom"
+        />
     </IonPage>
   );
 };

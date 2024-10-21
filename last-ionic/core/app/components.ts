@@ -2,6 +2,8 @@
 export { default as NotFound } from '../pages/main/NotFound';
 export { default as SignIn } from '../pages/auth/SignIn';
 export { default as SignUp } from '../pages/auth/SignUp';
+export { default as ResetPassword } from '../pages/auth/ResetPassword';
+export { default as ForgotPassword } from '../pages/auth/ForgotPassword';
 export { default as Account } from '../pages/auth/Account';
 export { default as Support } from '../pages/main/Support';
 export { default as About } from '../pages/main/About';

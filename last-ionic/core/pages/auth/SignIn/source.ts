@@ -1,14 +1,17 @@
 import { useTranslation } from 'react-i18next';
-import { AuthResponseStrapi, UserLoginStrapi } from '../../../../classes/strapi/models';
-import { RestOutput, LoggerUtils } from '../../../../classes/utils/index';
-import { IFormComponent, ISubmitForm } from '../../../../components/main/Form/types';
-import { useUserStore, addToast, setIUserState } from '../../../../integrations/stores';
-import { identifierValidation, passwordValidation } from '../../../../classes/strapi/validations';
+import { useHistory } from 'react-router';
+
+import { AuthResponseStrapi, UserLoginStrapi } from '../../../classes/strapi/models';
+import { RestOutput, LoggerUtils } from '../../../classes/utils/index';
+import { IFormComponent, ISubmitForm } from '../../../components/main/Form/types';
+import { useUserStore, addToast, setIUserState, addModal } from '../../../integrations/stores';
+import { identifierValidation, passwordValidation } from '../../../classes/strapi/validations';
 
 const loginFormData = (): IFormComponent => {
   const debug = false;
   const logger = LoggerUtils.getInstance('loginFormData', debug);
   const { t } = useTranslation();
+  const history = useHistory();
 
   return {
     id: 'login-page',
@@ -37,10 +40,10 @@ const loginFormData = (): IFormComponent => {
         onSuccess: (res: AuthResponseStrapi) => {
           const resUser = res?.data?.user;
 
-          if (!resUser) {
+          if (!resUser || typeof resUser !== 'object') {
             return addToast(RestOutput.danger({
               header: t('Error!'),
-              message: t('Unexpected server response')
+              message: t('Invalid user data received from the server'),
             }));
           }
 
@@ -59,7 +62,7 @@ const loginFormData = (): IFormComponent => {
           }
 
           const logged = true;
-          addToast(RestOutput.success({
+          addModal(RestOutput.success({
             header: t('Welcome to the app!'),
             message: t('You logged in successfully'),
           }));
@@ -69,6 +72,9 @@ const loginFormData = (): IFormComponent => {
           setUserStore(userState);
 
           logger.info('User connected!', userState);
+          if (logged && resUser && !resUser.blocked && resUser.confirmed) {
+            history.push('/home');
+          }
         },
         onError: (err: any) => {
           logger.error('Login error', err);

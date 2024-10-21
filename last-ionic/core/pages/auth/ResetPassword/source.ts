@@ -1,141 +1,72 @@
-// General dependencies
+import * as icon from 'ionicons/icons';
 import { useTranslation } from 'react-i18next';
-import { useHistory } from 'react-router';
-import { useIonToast } from '@ionic/react'
+import { useHistory } from 'react-router-dom';
 
-// Fully imported dependencies
-import * as yup from 'yup';
-
-// Used classes
 import DebugUtils from '../../../classes/utils/DebugUtils';
-
-// Local dependencies
-import { IFormComponent, IFormData, ISubmitForm } from '../../../components/main/Form/types';
-
-// Reducer dependencies
-import LoggerUtils from '../../../classes/utils/LoggerUtils';
-import { passwordValidation, repeatPasswordValidation } from '../../../classes/strapi/validations';
 import RestOutput from '../../../classes/utils/RestOutput';
-import { addToast } from '../../../integrations/stores';
-import useUserStore, { setIUserState } from '@stores/user.store';
+import LoggerUtils from '../../../classes/utils/LoggerUtils';
+import { IFormComponent, ISubmitForm } from '../../../components/main/Form/types';
+import { IResetPassword } from '../../../classes/strapi/models/User';
+import { passwordValidation, repeatPasswordValidation } from '../../../classes/strapi/validations';
+import { addToast } from '../../../integrations/stores/index';
 
-export interface IResetPassword {
-  code: string;
-  password: string;
-  passwordConfirmation: string;
-}
-
-/**
- * This is the information for the reset page main form
- * @returns {IFormData}
- */
-export const resetFormData = (): IFormComponent => {
-
+export const resetPasswordForm = (resetToken: string): IFormComponent => {
   const debug = DebugUtils.setDebug(false);
-  const logger = LoggerUtils.getInstance('resetFormData', debug);
-
+  const logger = LoggerUtils.getInstance('resetPasswordForm');
   const { t } = useTranslation();
   const history = useHistory();
-  const [presentToast] = useIonToast();
-  
-  const resetForm: IFormComponent = {
+
+  return {
     id: 'reset-password-page',
-    url: '/auth/reset-password',
-    settings: {
-      autoSendIfValid: false,
-      animations: {
-        initial: { opacity: 0, y: -20 },
-        animate: { opacity: 1, y: 0 },
-        transition: { duration: 0.5 },
-      },
-      afterLoad: () => {},
-      style: {
-        borderRadius: '0%'
-      }
-    },
+    url: '/auth/reset-password',  // Endpoint de Strapi para el restablecimiento de contraseña
     captcha: false,
     fields: [
-      {
-        name: 'email',
-        label: t('Email'),
-        type: 'email',
-        validationSchema: yup.string()
-          .required(t('Email is required'))
-          .email(t('This email is invalid...')),
-        className: 'col-span-12',
-        options: []
-      },
       { 
         name: 'password',
-        label: t('Password'),
+        label: t('New Password'),
         type: 'password',
         defaultValue: '', 
-        validationSchema: passwordValidation(),
         className: 'col-span-12',
         secret: true,
-        options: []
+        validationSchema: passwordValidation(),
       },
       { 
         name: 'repeat-password',
-        label: t('Repeat the password'),
+        label: t('Confirm Password'),
         type: 'password',
         defaultValue: '', 
-        validationSchema: repeatPasswordValidation(),
         className: 'col-span-12',
         secret: true,
-        options: []
-      },
-    ],
-    onSubmit: (data: IResetPassword) : ISubmitForm => {
-      return {
-        data: data,
-        onSuccess: (res: any) => {
-
-          const resUser = res.data.user;
-
-          let logged = false;
-
-          if (!resUser.confirmed) {
-
-            addToast(RestOutput.warning({
-              header: t('Not confirmed jet!'),
-              message: t('This user is not confirmed')
-            }));
-
-          } else if (resUser.blocked) {
-
-            addToast(RestOutput.danger({
-              header: t('Blocked user!!'),
-              message: t('This user is blocked')
-            }));
-
-          } else {
-
-            logged = true;
-          }
-
-          const userState = setIUserState(res.data, resUser, logged);
-          const { setUserStore } = useUserStore();
-          setUserStore(userState);
-
-          logger.info('You have connected!', userState);
-
-        },
-        onError: ()=> {
-          addToast(RestOutput.danger({
-            header: t('Blocked user!!'),
-            message: t('This user is blocked')
-          }));
-        }
+        validationSchema: repeatPasswordValidation(),
       }
+    ],
+
+    onSubmit: (data: IResetPassword): ISubmitForm => {
+      return {
+        data: { ...data, token: resetToken },
+        onSuccess: (res: any) => {
+          addToast(RestOutput.success({
+            header: t('Success!'),
+            message: t('Your password has been reset successfully.'),
+          }));
+          logger.info('Password reset successfully.');
+
+          // Redirect to login after password reset
+          history.push('/login');
+        },
+        onError: (err: any) => {
+          logger.error('Error resetting password', err);
+          addToast(RestOutput.danger({
+            header: t('Error!'),
+            message: t('Failed to reset the password. Please try again.'),
+          }));
+        },
+      };
     },
-    onError: (err: any) =>{
-      logger.log('error', err)
-    }
+    onError: (err: any) => {
+      logger.error(err);
+    },
   };
-
-  return resetForm;
-
 };
 
-export default resetFormData;
+export default resetPasswordForm;

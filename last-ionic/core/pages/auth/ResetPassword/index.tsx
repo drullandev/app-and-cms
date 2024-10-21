@@ -37,7 +37,7 @@ const ResetPage: React.FC<any> = (pageProps) => {
       return <>
         <IonItem>{t('Please include here you account mail to recover your account')}</IonItem>
         <IonItem>{t('After that check your email box')}</IonItem>
-        <Form {...resetFormData()} />
+        <Form {...resetFormData('resetToken')} />
       </>
     },
     footer: () => {

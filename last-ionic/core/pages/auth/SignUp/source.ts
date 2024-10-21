@@ -1,7 +1,6 @@
 import * as icon from 'ionicons/icons';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router';
-import { useIonToast } from '@ionic/react'
 
 import DebugUtils from '../../../classes/utils/DebugUtils';
 import RestOutput from '../../../classes/utils/RestOutput';
@@ -14,7 +13,7 @@ import { IRegister } from '../../../classes/strapi/models/User';
 import { emailValidation, passwordValidation, repeatPasswordValidation, usernameValidation } from '../../../classes/strapi/validations';
 import { addToast } from '../../../integrations/stores/index';
 
-export const signupForm = () : IFormComponent => {
+export const signupForm = (): IFormComponent => {
 
   const debug = DebugUtils.setDebug(false);
   const logger = LoggerUtils.getInstance('loginFomData');
@@ -34,8 +33,8 @@ export const signupForm = () : IFormComponent => {
       },
       afterLoad: () => {},
       style: {
-        borderRadius: '0%'
-      }
+        borderRadius: '0%',
+      },
     },
     fields: [
       {   
@@ -45,7 +44,6 @@ export const signupForm = () : IFormComponent => {
         defaultValue: '',
         className: 'col-span-12',
         validationSchema: usernameValidation(),
-        options: []
       },
       {
         name: 'email',
@@ -54,7 +52,6 @@ export const signupForm = () : IFormComponent => {
         defaultValue: '',
         className: 'col-span-12',
         validationSchema: emailValidation(),
-        options: []
       },
       { 
         name: 'password',
@@ -63,7 +60,7 @@ export const signupForm = () : IFormComponent => {
         defaultValue: '', 
         className: 'col-span-12',
         secret: true,
-        validationSchema: passwordValidation()
+        validationSchema: passwordValidation(),
       },
       { 
         name: 'repeat-password',
@@ -72,84 +69,58 @@ export const signupForm = () : IFormComponent => {
         defaultValue: '', 
         className: 'col-span-12',
         secret: true,
-        validationSchema: repeatPasswordValidation()
-      }
-    ],
-    buttons:[
-      { 
-        name: 'submit',
-        label: t('Submit'),
-        type: 'submit',
-        style: { borderRadius: '20px', float: 'left', width: '100%', margin: '2%' },
-        icon: icon.starOutline,
-        options: []
-      }
+        validationSchema: repeatPasswordValidation(),
+      },
     ],
 
-    onSubmit: (data: IRegister) : ISubmitForm => {
+    onSubmit: (data: IRegister): ISubmitForm => {
       return {
         data: data,
         onSuccess: (res: any) => {
-
           const resUser = res?.data?.user;
 
           if (!resUser) {
-
             addToast(RestOutput.danger({
               header: t('Error!'),
-              message: t('Unexpected server response')
+              message: t('Unexpected server response'),
             }));
-
           } else {
-
             let logged = false;
 
             if (!resUser.confirmed) {
-  
               addToast(RestOutput.warning({
-                header: t('Not confirmed jet!'),
-                message: t('This user is not confirmed')
+                header: t('Not confirmed yet!'),
+                message: t('This user is not confirmed'),
               }));
-  
             } else if (resUser.blocked) {
-  
               addToast(RestOutput.danger({
                 header: t('Blocked user!!'),
-                message: t('This user is blocked')
+                message: t('This user is blocked'),
               }));
-  
             } else {
-  
               logged = true;
-  
               addToast(RestOutput.success({
                 header: t('Welcome to the app!'),
                 message: t('You logged successfully'),
               }));
-  
             }
-  
+
             const userState = setIUserState(res.data.user, resUser, logged);
-
             setUserStore(userState);
-  
-            logged ? logger.info('You have connected!', userState) : logger.error('You have NOT connected!', userState);
 
+            logged ? logger.info('You have connected!', userState) : logger.error('You have NOT connected!', userState);
           }
-          
         },
         onError: () => {
           addToast(RestOutput.danger({
-            header: t('Login error!'),
-            message: t('There was an error logging in'),
+            header: t('Signup error!'),
+            message: t('There was an error during registration'),
           }));
-        }
-      }
+        },
+      };
     },
     onError: (err: any) => {
       logger.error(err);
     },
-
   };
-
 };

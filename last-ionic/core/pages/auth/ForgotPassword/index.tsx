@@ -7,98 +7,90 @@ import Header from '../../../components/main/Header';
 import Form from '../../../components/main/Form/index';
 import Page, { PagePropsData } from '../../../components/main/Page';
 
-import loginFormData from './source';
+import { forgotPasswordForm } from './source';
 
-import './styles.scss';
-import './style.css';
 import Footer from '../../../components/design/Footer';
 
-const SignIn: React.FC<any> = (pageProps) => {
+const ForgotPassword: React.FC<any> = (pageProps) => {
   const { t } = useTranslation();
-  const pageSettings : PagePropsData = { 
+
+  const pageSettings: PagePropsData = {
     settings: {
-      id: 'login-page',
-      title: 'Login page',
-      description:'',
+      id: 'forgot-password-page',
+      title: t('Forgot Password'),
+      description: '',
       role: 'main',
-      //skeleton: false,
-      //animated: false,
     },
     ga4: {
       load: {
         category: 'auth',
         action: 'page-load',
-        label: 'login-landing',
-      }
+        label: 'forgot-password-landing',
+      },
     },
     header: () => {
       const headerProps = {
-        title: t('Login'),
+        title: t('Forgot Password'),
         showMenuButton: true,
         slot: 'start',
         loading: pageProps.loading || false,
-      }
-      return <Header {...headerProps} />
+      };
+      return <Header {...headerProps} />;
     },
     content: () => {
-      
       return (
-
-        <IonContent ariaLabel={t('Wellcome and login page!')} className="login-content">
+        <IonContent ariaLabel={t('Forgot password page')} className="forgot-password-content">
 
           {/* Welcome Item */}
           <IonItem ariaLabel="Welcome item" lines="none" className="welcome-item" role="region" ariaLabelledby="welcome-heading welcome-text">
-            
             <IonIcon
               icon={checkmarkCircleOutline}
               color="success"
               className="welcome-icon"
             />
-
             <IonText id="welcome-text">
-              <h2 id="welcome-heading">{t('Welcome to Festivore!')}</h2>
+              <h2 id="welcome-heading">{t('Welcome back to Festivore!')}</h2>
               <p>
-                {t('Join the community and enjoy the best culinary experiences. Login to your account to continue.')}
+                {t('If you forgot your password, don’t worry. Enter your account email below and we’ll help you reset it.')}
               </p>
             </IonText>
-
           </IonItem>
 
           <IonItem
-            ariaLabel={t("Login item")}
+            ariaLabel={t("Reset Password item")}
             lines="none"
-            className="login-item"
+            className="forgot-password-item"
             role="region"
-            ariaLabelledby="login-heading login-text"
+            ariaLabelledby="reset-password-heading reset-password-text"
           >
-            
-            <IonText id="login-text">
-              <h3 id="login-heading">{t('Login to your account')}</h3>
+            <IonText id="reset-password-text">
+              <h3 id="reset-password-heading">{t('Recover your account')}</h3>
               <p>
-                {t('Enter your credentials to access your account and start exploring the world of Festivore.')}
+                {t('Please enter your email address and check your inbox for instructions on how to reset your password.')}
               </p>
             </IonText>
-
           </IonItem>
 
-          {/* Login Form */}
-          <Form {...loginFormData()} />
-          
+          <hr />
+          <IonItem>{t('Enter your email address')}</IonItem>
+          <IonItem>{t('We’ll send you instructions to reset your password')}</IonItem>
+
+          {/* Form for recovering password */}
+          <Form {...forgotPasswordForm()} />
+
         </IonContent>
       );
-
     },
     footer: () => {
       return (
-        <IonFooter className="login-footer">
-          <Footer/>
+        <IonFooter className="forgot-password-footer">
+          <Footer />
         </IonFooter>
       );
-    }
+    },
   };
 
-  return <Page {...pageSettings} />
-
+  return <Page {...pageSettings} />;
 };
 
-export default SignIn;
+export default ForgotPassword;

@@ -3,4 +3,5 @@ export { default as useUserStore, setIUserState } from './user.store';
 export { default as useSearcherStore } from './searcher.store';
 export { default as useModalStore } from './modal.store';
 export { addToast } from './toast.store';
+export { addModal } from './modal.store';
 export { setModalDefaultOptions } from './modal.store';

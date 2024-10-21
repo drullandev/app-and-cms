@@ -5,7 +5,7 @@ import { IonRouterOutlet } from '@ionic/react';
 import DebugUtils from '../../../classes/utils/DebugUtils';
 import Looper from '../../utils/Looper';
 
-import { AppRoutes } from '../../../app/config/routes'
+import { appRoutes } from '../../../app/config/routes'
 import { IAppRoute } from '../../../components/main/AppRouter';
 /** 
  * Componente principal de la aplicación que carga rutas desde la configuración
@@ -28,7 +28,7 @@ const Routing: React.FC = () => {
   return (
     <IonRouterOutlet id="main">
       <Switch>
-        <Looper items={AppRoutes} renderItem={MenuRouteRow}/>
+        <Looper items={appRoutes} renderItem={MenuRouteRow}/>
       </Switch>
     </IonRouterOutlet>
   );

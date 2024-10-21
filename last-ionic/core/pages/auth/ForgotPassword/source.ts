@@ -1,20 +1,20 @@
+import { useIonToast } from '@ionic/react';
 import * as yup from 'yup';
 import { useHistory } from 'react-router';
-import { useIonToast } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 
-import LoggerUtils from '../../../../classes/utils/LoggerUtils';
+import LoggerUtils from '../../../classes/utils/LoggerUtils';
 
-import useAppStore from '../../../../integrations/stores/app.store';
+import useAppStore from '../../../integrations/stores/app.store';
 
-import { IRecover } from '../../../../classes/strapi/models/User';
-import useUserStore from '../../../../integrations/stores/user.store';
-import { IFormComponent, ISubmitForm } from '../../../../components/main/Form/types';
+import { IForgot } from '../../../classes/strapi/models/User';
+import useUserStore from '../../../integrations/stores/user.store';
+import { IFormComponent, ISubmitForm } from '../../../components/main/Form/types';
 
-export const recoverFormData = (): IFormComponent => {
+export const forgotPasswordForm = (): IFormComponent => {
 
   const debug = false;
-  const logger = LoggerUtils.getInstance('recoverFormData', debug);
+  const logger = LoggerUtils.getInstance('forgotForm', debug);
 
   const { t } = useTranslation();
   const history = useHistory();
@@ -45,7 +45,7 @@ export const recoverFormData = (): IFormComponent => {
         className: 'col-span-12',
       }
     ],
-    onSubmit: (data: IRecover) : ISubmitForm => {
+    onSubmit: (data: IForgot) : ISubmitForm => {
       return {
         data,
         onSuccess: (res:any)=>{
@@ -64,3 +64,5 @@ export const recoverFormData = (): IFormComponent => {
   return formData;
 
 };
+
+export default forgotPasswordForm;

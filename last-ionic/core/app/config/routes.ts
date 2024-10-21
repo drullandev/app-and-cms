@@ -8,17 +8,19 @@ import {
   Support,
   SignUp,
   TabItem,
-  About
-} from '../components';
-import i18n from 'i18next'
+  About,
+  ForgotPassword,
+  ResetPassword
+} from '../components';  // Asegúrate de tener estos componentes definidos y exportados correctamente.
+import i18n from 'i18next';
 import { IAppRoute } from '../../components/main/AppRouter';
 
 /**
  * Routes settings
  */
-export const AppRoutes: IAppRoute[] = [
+export const appRoutes: IAppRoute[] = [
   {
-    title: i18n.t('Tabs'),//TODO: Move?
+    title: i18n.t('Tabs'), // TODO: Move?
     path: '/tabs',
     component: TabItem,
     exact: true,
@@ -28,7 +30,7 @@ export const AppRoutes: IAppRoute[] = [
     tab: false,
   },
   {
-    title: i18n.t('Tabs'),//TODO: Move?
+    title: i18n.t('Tabs'), // TODO: Move?
     path: '/tabs/home/:id',
     component: TabItem,
     exact: true,
@@ -38,7 +40,7 @@ export const AppRoutes: IAppRoute[] = [
     tab: false,
   },
   {
-    title: i18n.t('Tabs'),//TODO: Move?
+    title: i18n.t('Tabs'), // TODO: Move?
     path: '/tabs/:slug',
     component: TabItem,
     exact: true,
@@ -89,11 +91,31 @@ export const AppRoutes: IAppRoute[] = [
     tab: false,
   },
   {
-    title: i18n.t(''),
+    title: i18n.t('Forgot Password'), // Añadido: Ruta para la página de recuperación de contraseña
+    path: '/forgot-password',
+    component: ForgotPassword,
+    exact: true,
+    icon: icon.mailOutline,
+    menu: true,
+    logged: false,
+    tab: false,
+  },
+  {
+    title: i18n.t('Reset Password'), // Añadido: Ruta para la página de restablecimiento de contraseña
+    path: '/reset-password/:token', // Ruta con el token de restablecimiento
+    component: ResetPassword,
+    exact: true,
+    icon: icon.lockClosedOutline,
+    menu: true,
+    logged: false,
+    tab: false,
+  },
+  {
+    title: i18n.t('Sign out'),
     path: '/logout',
     component: SignOut,
     exact: true,
-    icon: icon.person,
+    icon: icon.logOutOutline,
     menu: true,
     logged: true,
     tab: false,
@@ -113,30 +135,20 @@ export const AppRoutes: IAppRoute[] = [
     path: '/about',
     component: About,
     exact: true,
-    icon: icon.person,
-    menu: true,
-    logged: false,
-    tab: true,
-  },
-  {
-    title: i18n.t('Not found'),
-    path: '/not-found',
-    component: NotFound,
-    exact: true,
-    icon: icon.person,
+    icon: icon.informationCircleOutline,
     menu: false,
     logged: false,
-    tab: false,
+    tab: true,
   },
   {
     title: i18n.t('Not found'),
     redirect: true,
     from: '*',
     to: '/not-found',
-    icon: icon.person,
+    icon: icon.warningOutline,
     menu: false,
     logged: false,
-    tab: false,
+    tab: true,
   },
   {
     title: i18n.t('Tabs Home'),
@@ -146,9 +158,8 @@ export const AppRoutes: IAppRoute[] = [
     icon: icon.person,
     menu: false,
     logged: false,
-    tab: false,
+    tab: true,
   },
-
 ];
 
 /**

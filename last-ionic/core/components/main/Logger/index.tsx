@@ -6,6 +6,7 @@ interface LoggerProps {
   children: React.ReactNode; // Content to render inside the Logger
 }
 
+
 const Logger: React.FC<LoggerProps> = ({ children }) => {
   const [logs, setLogs] = useState<string[]>([]);
 

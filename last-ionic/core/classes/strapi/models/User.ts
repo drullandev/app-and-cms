@@ -16,7 +16,7 @@ export interface ILogin {
   password: string;
 }
 
-export interface IRecover {
+export interface IForgot {
   email: string;
 }
 
@@ -24,4 +24,10 @@ export interface IRegister {
   username: string;
   password: string;
   email: string;
+}
+
+export interface IResetPassword {
+  password: string;
+  repeatPassword: string;
+  token: string; // Token que recibes del enlace de recuperación
 }
