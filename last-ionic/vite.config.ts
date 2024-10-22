@@ -8,19 +8,20 @@ export default defineConfig(({ mode }) => {
 
   return {
     publicDir: 'public',
+    root: 'src',
     plugins: [
       react(),
       visualizer({ open: true })
     ],
     resolve: {
-      alias: {
-        '@components': path.resolve(__dirname, './core/components'),
-        '@models': path.resolve(__dirname, './core/classes/strapi/models'),
-        '@my-utils': path.resolve(__dirname, './core/classes/utils'),
-        '@form': path.resolve(__dirname, './core/components/main/Form'),
-        '@stores': path.resolve(__dirname, './core/integrations/stores'),
-        '@validations': path.resolve(__dirname, './core/classes/strapi/validations')
-      }
+      // alias: {
+      //   '@components': path.resolve(__dirname, './core/components'),
+      //   '@models': path.resolve(__dirname, './core/classes/strapi/models'),
+      //   '@my-utils': path.resolve(__dirname, './core/classes/utils'),
+      //   '@form': path.resolve(__dirname, './core/components/main/Form'),
+      //   '@stores': path.resolve(__dirname, './core/integrations/stores'),
+      //   '@validations': path.resolve(__dirname, './core/classes/strapi/validations')
+      // }
     },
     server: {
       port: parseInt(env.VITE_APP_PORT, 10) || 3000,
@@ -34,7 +35,7 @@ export default defineConfig(({ mode }) => {
     },
     rollupInputOptions: {
       input: {
-        include: ['src/**', 'core/**'],
+        include: ['src/**'],
         exclude: [],
       },
       output: {
@@ -48,7 +49,7 @@ export default defineConfig(({ mode }) => {
     css: {
       preprocessorOptions: {
         css: {
-          additionalData: `@import "core/theme/variables.css";`,
+          additionalData: `@import "src/theme/variables.css";`,
         },
       },
     },

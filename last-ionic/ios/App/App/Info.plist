@@ -45,5 +45,7 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<true/>
+	<key>NSPrivacyAccessedAPICategoryFileTimestamp</key>
+	<string>This app needs access to device files to store user data securely.</string>
 </dict>
 </plist>

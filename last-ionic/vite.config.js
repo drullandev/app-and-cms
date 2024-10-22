@@ -13,7 +13,7 @@ export default defineConfig({
     rollupInputOptions: {
         // Opciones de Rollup (opcional)
         input: {
-            include: ['core/**', 'src/**'],
+            include: ['src/**'],
             exclude: ['stuff/**'] // Excluir la carpeta 'stuff' de la entrada de Rollup
         },
         output: {
