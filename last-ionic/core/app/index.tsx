@@ -23,9 +23,9 @@ const AppComponent: React.FC = () => {
   // Setting the initial theme
   useEffect(() => {
     setTheme(darkMode ? 'dark-theme' : '');
-    const filteredTabRoutes = getTabRoutes();
-    setTabRoutes(filteredTabRoutes);
   }, [darkMode]);
+
+
 
   // Rendering the app main routes
   return (
@@ -38,7 +38,7 @@ const AppComponent: React.FC = () => {
         />
         {showCookiesConsent && <CookieConsent />}
         {showPwaInstaller && <PWA />}
-        {tabRoutes.length > 0 && <TabItem id="main-tabs" routes={tabRoutes} />}
+
       </IonReactRouter>
     </IonApp>
   );
