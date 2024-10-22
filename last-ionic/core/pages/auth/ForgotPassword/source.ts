@@ -22,7 +22,7 @@ export const forgotPasswordForm = (): IFormComponent => {
   const { setLoading } = useAppStore();
   const { setUserStore } = useUserStore();
 
-  const formData: IFormComponent = {
+  return {
     captcha: false,
     id: 'recover-page',
     url: '/auth/forgot-password',
@@ -45,24 +45,13 @@ export const forgotPasswordForm = (): IFormComponent => {
         className: 'col-span-12',
       }
     ],
-    onSubmit: (data: IForgot) : ISubmitForm => {
-      return {
-        data,
-        onSuccess: (res:any)=>{
-          logger.log('success')
-        },
-        onError: ()=>{
-          logger.error('error')
-        },
-      };
+    onSuccess: (res:any)=>{
+      logger.log('success')
     },
-    onError: (err: any) => {
-      logger.error(err);
-    },
+    onError: ()=>{
+      logger.error('error')
+    }
   };
-
-  return formData;
-
 };
 
 export default forgotPasswordForm;

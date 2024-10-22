@@ -1,5 +1,5 @@
 export interface OverlayProps {
-    show: boolean;
+    show?: boolean;
     duration: number;
 }
   

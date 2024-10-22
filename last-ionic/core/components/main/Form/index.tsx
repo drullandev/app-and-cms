@@ -262,7 +262,7 @@ const Form: React.FC<IFormComponent> = (formProps: IFormComponent): JSX.Element 
 
   return (
     <>
-      <Overlay show={isSubmitting} duration={600} />
+
       <form
         key={formData.id}
         onSubmit={handleSubmit(onSubmit, formData.onError)}

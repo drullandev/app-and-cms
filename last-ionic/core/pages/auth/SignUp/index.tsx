@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import './styles.scss';
 import { signupForm } from './source';
 
-import { PagePropsData } from '../../../components/main/Page';
+import { IPage } from '../../../components/main/Page';
 import Page from '../../../components/main/Page';
 import Header from '../../../components/main/Header';
 import Form from '../../../components/main/Form/index';
@@ -15,7 +15,7 @@ const SignUp: React.FC<any> = () => {
 
   const { t } = useTranslation();
 
-  const pageSettings : PagePropsData = {
+  const pageSettings : IPage = {
     settings: {
       id: 'signup-page',
       title: t('Sign up a new account!'),

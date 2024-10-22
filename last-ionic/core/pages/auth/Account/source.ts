@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { IFormComponent, ISubmitForm } from '../../../components/main/Form/types';
+import { IFormComponent } from '../../../components/main/Form/types';
 import { useUserStore, addToast } from '../../../integrations/stores';
 import { usernameValidation, emailValidation } from '../../../classes/strapi/validations';
 import { RestOutput, LoggerUtils } from '../../../classes/utils';
@@ -24,37 +24,30 @@ const generateFormData = (fieldName: string, label: string, validationSchema: an
         validationSchema: validationSchema,
       },
     ],
-    onSubmit: (data: any): ISubmitForm => {
-      return {
-        data: data,
-        onSuccess: (res: any) => {
-          const updatedUser = res?.data;
+    onSuccess: (res: any) => {
+      const updatedUser = res?.data;
+      if (!updatedUser) {
+        return addToast(RestOutput.danger({
+          header: t('Error!'),
+          message: t('Unexpected server response')
+        }));
+      }
 
-          if (!updatedUser) {
-            return addToast(RestOutput.danger({
-              header: t('Error!'),
-              message: t('Unexpected server response')
-            }));
-          }
+      setUserStore({ [fieldName]: updatedUser[fieldName] });
 
-          setUserStore({ [fieldName]: updatedUser[fieldName] });
+      addToast(RestOutput.success({
+        header: t('Success'),
+        message: t(`${label} updated successfully`),
+      }));
 
-          addToast(RestOutput.success({
-            header: t('Success'),
-            message: t(`${label} updated successfully`),
-          }));
-
-          logger.info(`${label} updated successfully!`, updatedUser);
-        },
-        onError: (err: any) => {
-          logger.error(`Error updating ${label}`, err);
-
-          addToast(RestOutput.danger({
-            header: t('Update error'),
-            message: t(`There was an error updating your ${label.toLowerCase()}`),
-          }));
-        },
-      };
+      logger.info(`${label} updated successfully!`, updatedUser);
+    },
+    onError: (err: any) => {
+      logger.error(`Error updating ${label}`, err);
+      addToast(RestOutput.danger({
+        header: t('Update error'),
+        message: t(`There was an error updating your ${label.toLowerCase()}`),
+      }));
     },
   };
 };

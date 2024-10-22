@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { IonItem } from '@ionic/react'
 
 // Used Components
-import { PagePropsData } from '../../../components/main/Page';
+import { IPage } from '../../../components/main/Page';
 import Form from '../../../components/main/Form/index'
 import Page from '../../../components/main/Page'
 import Header from '../../../components/main/Header'
@@ -17,7 +17,7 @@ const ResetPage: React.FC<any> = (pageProps) => {
 
   const { t } = useTranslation();
  
-  const resetPageData: PagePropsData = {
+  const resetPageData: IPage = {
     settings:{
       title: t('Reset your password'),
       id: 'reset-page',

@@ -5,7 +5,7 @@ import { IonIcon, IonItem, IonText, IonFooter, IonContent } from '../../../app/c
 
 import Header from '../../../components/main/Header';
 import Form from '../../../components/main/Form/index';
-import Page, { PagePropsData } from '../../../components/main/Page';
+import Page, { IPage } from '../../../components/main/Page';
 
 import { forgotPasswordForm } from './source';
 
@@ -14,7 +14,7 @@ import Footer from '../../../components/design/Footer';
 const ForgotPassword: React.FC<any> = (pageProps) => {
   const { t } = useTranslation();
 
-  const pageSettings: PagePropsData = {
+  const pageSettings: IPage = {
     settings: {
       id: 'forgot-password-page',
       title: t('Forgot Password'),

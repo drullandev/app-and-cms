@@ -1,9 +1,11 @@
 import React from 'react';
+import { Route } from 'react-router';
 import { 
   IonTabs, 
   IonTabBar,
   IonTabButton,
-  IonLabel
+  IonLabel,
+  IonRouterOutlet
 } from '@ionic/react';
 
 import Icon from '../../extra/Icon';
@@ -13,7 +15,7 @@ import Looper from '../../utils/Looper';
 interface ITabItem {
   id: string;
   slot?: 'top' | 'bottom'; // Define the slot position as top or bottom, with bottom as default
-  routes?: IAppRoute[]; // Opcional porque a veces puede que no lleguen aún las rutas
+  routes: IAppRoute[]; // Asegura que siempre reciba un array de rutas
 }
 
 export interface ITabButton {
@@ -26,10 +28,10 @@ export interface ITabButton {
 /**
  * TabItem component to render tabs and manage the routes within IonTabs.
  */
-const TabItem: React.FC<ITabItem> = ({ id, slot = 'bottom', routes = [] }) => {
+const TabItem: React.FC<ITabItem> = ({ id, slot = 'bottom', routes }) => {
 
-  // Asegurarse de que `routes` sea siempre un array, aunque no lleguen valores
-  const tabRoutes = Array.isArray(routes) ? routes.filter(route => route.tab === true) : [];
+  // Filtrar rutas que tienen `tab: true`
+  const tabRoutes = routes.filter(route => route.tab === true);
 
   // Si no hay rutas con tab: true, no renderizamos nada o mostramos un mensaje
   if (tabRoutes.length === 0) {
@@ -40,16 +42,29 @@ const TabItem: React.FC<ITabItem> = ({ id, slot = 'bottom', routes = [] }) => {
   const renderTabButton = (route: IAppRoute, index: number) => (
     <IonTabButton
       key={index}
-      tab={`tab-${index}`} // Identificador más simple
-      href={route.path} // Mantiene el path correcto
+      tab={route.path} // `tab` debe ser un identificador único para cada pestaña
+      href={route.path} // Enlace de navegación a la ruta de la pestaña
     >
-      <Icon name={route.icon ?? ''} />
+      <Icon name={route.icon ?? ''} /> {/* Icono opcional para la pestaña */}
       <IonLabel>{route.title}</IonLabel>
     </IonTabButton>
   );
 
+  // Render the routes in IonRouterOutlet for each tab
+  const renderRoute = (route: IAppRoute, index: number) => (
+    <Route
+      key={index}
+      path={route.path}
+      component={route.component}
+      exact={route.exact ?? true}
+    />
+  );
+
   return (
     <IonTabs>
+      <IonRouterOutlet id={id}>
+        <Looper items={tabRoutes} renderItem={renderRoute} />
+      </IonRouterOutlet>
       <IonTabBar slot={slot}>
         <Looper items={tabRoutes} renderItem={renderTabButton} />
       </IonTabBar>

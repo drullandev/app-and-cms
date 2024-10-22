@@ -7,10 +7,11 @@ import useSearchStore from '../../../integrations/stores/searcher.store'; // Imp
 import Looper from '../../../components/utils/Looper';
 
 const MainList: React.FC = () => {
+
   const { searchString, searchOrder, orderField, filter, setSearchString, setSearchOrder, setOrderField, setFilter } = useSearchStore();
 
-  // List params!!! TODO: Move to params jeje!!
   const slug = 'user-contents';
+
   const [page, setPage] = useState(0);
   const [maxPage, setMaxPage] = useState(1);
   const ionRefresherRef = useRef<HTMLIonRefresherElement>(null);
@@ -25,7 +26,7 @@ const MainList: React.FC = () => {
       model: slug,
       slug: slug,
       paginator: {
-        limit: AppConst.paginator.size,
+        limit: 8,
         start: 0,
       },
       direction: searchOrder,

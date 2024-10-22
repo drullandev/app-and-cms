@@ -14,33 +14,33 @@ import {
 } from '../components';  // Asegúrate de tener estos componentes definidos y exportados correctamente.
 import i18n from 'i18next';
 import { IAppRoute } from '../../components/main/AppRouter';
+import { IMenu } from '../../components/main/Menu';
 
 /**
  * Routes settings
  */
 export const appRoutes: IAppRoute[] = [
-  {
-    title: i18n.t('Tabs'), // TODO: Move?
+  { title: i18n.t('Tabs'),
     path: '/tabs',
     component: TabItem,
     exact: true,
     icon: icon.person,
     logged: true,
-    menu: true,
+    menu: false,
     tab: false,
   },
   {
-    title: i18n.t('Tabs'), // TODO: Move?
+    title: i18n.t('Tabs'),
     path: '/tabs/home/:id',
     component: TabItem,
     exact: true,
     icon: icon.person,
     logged: true,
-    menu: true,
+    menu: false,
     tab: false,
   },
   {
-    title: i18n.t('Tabs'), // TODO: Move?
+    title: i18n.t('Tabs'),
     path: '/tabs/:slug',
     component: TabItem,
     exact: true,
@@ -57,10 +57,10 @@ export const appRoutes: IAppRoute[] = [
     icon: icon.person,
     menu: true,
     logged: true,
-    tab: false,
+    tab: true,
   },
   {
-    title: i18n.t('Home'),
+    title: i18n.t('Feed'),
     path: '/home',
     component: Home,
     exact: true,
@@ -91,7 +91,7 @@ export const appRoutes: IAppRoute[] = [
     tab: false,
   },
   {
-    title: i18n.t('Forgot Password'), // Añadido: Ruta para la página de recuperación de contraseña
+    title: i18n.t('Forgot Password'), 
     path: '/forgot-password',
     component: ForgotPassword,
     exact: true,
@@ -101,8 +101,8 @@ export const appRoutes: IAppRoute[] = [
     tab: false,
   },
   {
-    title: i18n.t('Reset Password'), // Añadido: Ruta para la página de restablecimiento de contraseña
-    path: '/reset-password/:token', // Ruta con el token de restablecimiento
+    title: i18n.t('Reset Password'), 
+    path: '/reset-password/:token',
     component: ResetPassword,
     exact: true,
     icon: icon.lockClosedOutline,
@@ -138,7 +138,7 @@ export const appRoutes: IAppRoute[] = [
     icon: icon.informationCircleOutline,
     menu: false,
     logged: false,
-    tab: true,
+    tab: false,
   },
   {
     title: i18n.t('Not found'),
@@ -148,7 +148,7 @@ export const appRoutes: IAppRoute[] = [
     icon: icon.warningOutline,
     menu: false,
     logged: false,
-    tab: true,
+    tab: false,
   },
   {
     title: i18n.t('Tabs Home'),
@@ -158,7 +158,7 @@ export const appRoutes: IAppRoute[] = [
     icon: icon.person,
     menu: false,
     logged: false,
-    tab: true,
+    tab: false,
   },
 ];
 
@@ -171,3 +171,24 @@ export const appRoutes: IAppRoute[] = [
 export const getHomeRoute = (routes: IAppRoute[]): IAppRoute | undefined => {
   return routes.find(route => route.isHome === true);
 };
+
+/**
+ * Finds and returns the route with `isHome` set to true.
+ *
+ * @param routes - The array of app routes to search in.
+ * @returns The route object with `isHome: true` or `undefined` if not found.
+ */
+export const getTabRoutes = (routes: IAppRoute[]): IAppRoute | undefined => {
+  return routes.find(route => route.tab === true);
+};
+
+/**
+ * Finds and returns the route with `isHome` set to true.
+ *
+ * @param routes - The array of app routes to search in.
+ * @returns The route object with `isHome: true` or `undefined` if not found.
+ */
+export const getMenuRoutes = (routes: IAppRoute[]): IAppRoute | undefined => {
+  return routes.find(route => route.menu === true);
+};
+

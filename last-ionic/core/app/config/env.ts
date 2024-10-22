@@ -135,13 +135,6 @@ export const timeout = {
 };
 
 // =============================
-// Pagination Configuration
-// =============================
-export const paginator = {
-  size: 8,
-};
-
-// =============================
 // Add to Home Screen Configuration
 // =============================
 export const addToHomeScreenImages = [

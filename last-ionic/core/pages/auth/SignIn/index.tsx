@@ -5,7 +5,7 @@ import { IonIcon, IonItem, IonText, IonFooter, IonContent } from '../../../app/c
 
 import Header from '../../../components/main/Header';
 import Form from '../../../components/main/Form/index';
-import Page, { PagePropsData } from '../../../components/main/Page';
+import Page, { IPage } from '../../../components/main/Page';
 
 import loginFormData from './source';
 
@@ -15,7 +15,7 @@ import Footer from '../../../components/design/Footer';
 
 const SignIn: React.FC<any> = (pageProps) => {
   const { t } = useTranslation();
-  const pageSettings : PagePropsData = { 
+  const pageSettings : IPage = { 
     settings: {
       id: 'login-page',
       title: 'Login page',

@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
 import { IonApp } from '@ionic/react';
+import React, { useEffect, useState } from 'react';
 
 import useUserStore from '../integrations/stores/user.store';
 
@@ -14,6 +14,8 @@ import { appRoutes } from './config/routes';
 import './config/config';
 import './styles';
 import './types';
+import { showCookiesConsent, showPwaInstaller } from './config/env';
+import Overlay from '../components/main/Overlay';
 
 const AppComponent: React.FC = () => {
 
@@ -33,9 +35,9 @@ const AppComponent: React.FC = () => {
         appRoutes={appRoutes}
         component={MainListItem}
       />
-      {import.meta.env.VITE_SHOW_ENABLE_COOKIES_CONSENT && <CookieConsent />}
-      {import.meta.env.VITE_ENABLE_SHOW_PWA_INSTALLER && <PWA/>}
-    </IonApp>
+      {showCookiesConsent && <CookieConsent />}
+      {showPwaInstaller && <PWA/>}
+                                </IonApp>
   );
 };
 

@@ -29,6 +29,7 @@ const useToastStore = create<ToastState>((set) => ({
 
 export const addToast = (options: Partial<ToastOptions>) => {
   useToastStore.getState().addToast(options);
+  return
   console.log('Toast añadido:', options);
 };
 

@@ -10,6 +10,7 @@ import './styles.css'
 import { GA4Options } from './types'
 import useGA4Tracker from '../../../integrations/useGA4Tracker'
 import TabItem from '../Menu/TabItem';
+import { appRoutes } from '../../../app/config/routes';
 
 export interface IonPageProps {
   id: string;
@@ -30,7 +31,7 @@ export interface IonPageProps {
   componentDidUnload?: () => void;
 }
 
-export interface PagePropsData {
+export interface IPage {
   settings: IonPageProps;
   content: Function;
   methods?: any[];
@@ -45,12 +46,12 @@ export interface PagePropsData {
  * This component is helpfull to generate a Ionic Page
  * David Rullán Díaz
  * - Also integrated with GA4
- * @param pageProps PagePropsData
+ * @param pageProps IPage
  * @returns JSX.IonPage
  */
-const Page: React.FC<PagePropsData> = (pageProps, appRoutes) => {
+const Page: React.FC<IPage> = (pageProps) => {
 
-  const debug = DebugUtils.setDebug(false);
+  const debug = false;
   const logger = LoggerUtils.getInstance('Page', debug);
 
   useEffect(()=> {
@@ -70,10 +71,6 @@ const Page: React.FC<PagePropsData> = (pageProps, appRoutes) => {
         {pageProps.content(pageProps)}
       </IonContent>
       {pageProps.footer !== undefined && pageProps.footer(pageProps)}
-              <TabItem id="main-tabs"
-          routes={appRoutes}
-          slot="bottom"
-        />
     </IonPage>
   );
 };

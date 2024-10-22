@@ -15,56 +15,44 @@ export const resetPasswordForm = (resetToken: string): IFormComponent => {
   const logger = LoggerUtils.getInstance('resetPasswordForm');
   const { t } = useTranslation();
   const history = useHistory();
-
   return {
     id: 'reset-password-page',
     url: '/auth/reset-password',  // Endpoint de Strapi para el restablecimiento de contraseña
     captcha: false,
     fields: [
-      { 
+      {
         name: 'password',
         label: t('New Password'),
         type: 'password',
-        defaultValue: '', 
+        defaultValue: '',
         className: 'col-span-12',
         secret: true,
         validationSchema: passwordValidation(),
       },
-      { 
+      {
         name: 'repeat-password',
         label: t('Confirm Password'),
         type: 'password',
-        defaultValue: '', 
+        defaultValue: '',
         className: 'col-span-12',
         secret: true,
         validationSchema: repeatPasswordValidation(),
       }
     ],
-
-    onSubmit: (data: IResetPassword): ISubmitForm => {
-      return {
-        data: { ...data, token: resetToken },
-        onSuccess: (res: any) => {
-          addToast(RestOutput.success({
-            header: t('Success!'),
-            message: t('Your password has been reset successfully.'),
-          }));
-          logger.info('Password reset successfully.');
-
-          // Redirect to login after password reset
-          history.push('/login');
-        },
-        onError: (err: any) => {
-          logger.error('Error resetting password', err);
-          addToast(RestOutput.danger({
-            header: t('Error!'),
-            message: t('Failed to reset the password. Please try again.'),
-          }));
-        },
-      };
+    onSuccess: (res: any) => {
+      addToast(RestOutput.success({
+        header: t('Success!'),
+        message: t('Your password has been reset successfully.'),
+      }));
+      logger.info('Password reset successfully.');
+      history.push('/login');
     },
     onError: (err: any) => {
-      logger.error(err);
+      logger.error('Error resetting password', err);
+      addToast(RestOutput.danger({
+        header: t('Error!'),
+        message: t('Failed to reset the password. Please try again.'),
+      }));
     },
   };
 };

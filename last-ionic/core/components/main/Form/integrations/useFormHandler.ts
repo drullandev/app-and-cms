@@ -5,6 +5,7 @@ import LoggerUtils from '../../../../classes/utils/LoggerUtils';
 import useAppRest from '../../../../integrations/useAppRest';
 import { addToast } from '../../../../integrations/stores/toast.store';
 import { IFormData, ISubmitForm } from '../types';
+import RestOutput from '../../../../classes/utils/RestOutput';
 
 const useFormHandler = (formData: IFormData) => {
 
@@ -54,8 +55,8 @@ const useFormHandler = (formData: IFormData) => {
       const err = error as AxiosError;
       logger.error('Error during request:', err);
 
+      let errorHeader = i18n.t('Form error!');
       let errorMessage = i18n.t('Error sending the form');
-      let errorHeader = i18n.t('Login error!');
 
       if (err.response) {
         switch (err.response.status) {
@@ -71,11 +72,10 @@ const useFormHandler = (formData: IFormData) => {
         }
       }
 
-      addToast({
-        color: 'error',
+      addToast(RestOutput.danger({
         header: errorHeader,
         message: errorMessage,
-      });
+      }));
 
       if (onError) {
         await onError(err);
