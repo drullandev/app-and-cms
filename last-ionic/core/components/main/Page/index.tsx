@@ -1,16 +1,14 @@
-import React, { useEffect } from 'react'
-import { IonPage, IonContent } from '@ionic/react'
+import React, { useEffect, useState } from 'react';
+import { IonPage, IonContent } from '@ionic/react';
 import { Helmet } from 'react-helmet';
 
-import LoggerUtils from '../../../classes/utils/LoggerUtils'
-//import GA4Tracker  from '../../../../src/integrations/GA4Integration'
-import DebugUtils from '../../../classes/utils/DebugUtils'
-
-import './styles.css'
-import { GA4Options } from './types'
-import useGA4Tracker from '../../../integrations/useGA4Tracker'
-import TabItem from '../Menu/TabItem';
-import { appRoutes } from '../../../app/config/routes';
+import LoggerUtils from '../../../classes/utils/LoggerUtils';
+import './styles.css';
+import { GA4Options } from './types';
+import useGA4Tracker from '../../../integrations/useGA4Tracker';
+import TabItem from '../Menu/TabItem';  
+import { appRoutes, getTabRoutes } from '../../../app/config/routes'; 
+import { IAppRoute } from '../AppRouter';
 
 export interface IonPageProps {
   id: string;
@@ -18,7 +16,7 @@ export interface IonPageProps {
   style?: React.CSSProperties;
   color?: string;
   animated?: boolean;
-  routerDirection?: 'forward' | 'back' | 'root' | string; // Ajusta según las opciones reales de Ionic
+  routerDirection?: 'forward' | 'back' | 'root' | string; 
   skeleton?: boolean | false;
   title: string;
   role: string;
@@ -42,34 +40,34 @@ export interface IPage {
   sidenavs?: Function[];
 }
 
-/**
- * This component is helpfull to generate a Ionic Page
- * David Rullán Díaz
- * - Also integrated with GA4
- * @param pageProps IPage
- * @returns JSX.IonPage
- */
 const Page: React.FC<IPage> = (pageProps) => {
 
   const debug = false;
   const logger = LoggerUtils.getInstance('Page', debug);
+  const [tabRoutes, setTabRoutes] = useState<IAppRoute[]>([]);  // Mantenemos las rutas en el estado local
 
-  useEffect(()=> {
+  useEffect(() => {
     logger.info(' • Loading page!');
-    // A GA4 test to track a load, as a "test"...
     useGA4Tracker.sendEvent('load', pageProps.ga4);
-  },[ pageProps ])
+
+    // Filtrar y establecer las rutas de pestañas
+    const filteredTabRoutes = getTabRoutes();
+    setTabRoutes(filteredTabRoutes);
+  }, [pageProps]);
 
   return (
     <IonPage {...pageProps.settings}>
       <Helmet>
-        <title>{import.meta.env.VITE_APP_NAME+' - '+pageProps.settings.title}</title>
+        <title>{import.meta.env.VITE_APP_NAME + ' - ' + pageProps.settings.title}</title>
         <meta name="description" content="This is a brief description of the page content." />
       </Helmet>
+
       {pageProps.header !== undefined && pageProps.header(pageProps)}
+
       <IonContent>
         {pageProps.content(pageProps)}
       </IonContent>
+
       {pageProps.footer !== undefined && pageProps.footer(pageProps)}
     </IonPage>
   );

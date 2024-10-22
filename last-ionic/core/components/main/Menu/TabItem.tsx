@@ -11,6 +11,7 @@ import {
 import Icon from '../../extra/Icon';
 import { IAppRoute } from '../AppRouter';
 import Looper from '../../utils/Looper';
+import { getTabRoutes } from '../../../app/config/routes';
 
 interface ITabItem {
   id: string;
@@ -31,7 +32,7 @@ export interface ITabButton {
 const TabItem: React.FC<ITabItem> = ({ id, slot = 'bottom', routes }) => {
 
   // Filtrar rutas que tienen `tab: true`
-  const tabRoutes = routes.filter(route => route.tab === true);
+  const tabRoutes = getTabRoutes()
 
   // Si no hay rutas con tab: true, no renderizamos nada o mostramos un mensaje
   if (tabRoutes.length === 0) {

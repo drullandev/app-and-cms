@@ -20,35 +20,37 @@ import { IMenu } from '../../components/main/Menu';
  * Routes settings
  */
 export const appRoutes: IAppRoute[] = [
-  { title: i18n.t('Tabs'),
-    path: '/tabs',
-    component: TabItem,
-    exact: true,
-    icon: icon.person,
-    logged: true,
-    menu: false,
-    tab: false,
-  },
   {
     title: i18n.t('Tabs'),
-    path: '/tabs/home/:id',
-    component: TabItem,
+    path: '/tabs/home',
+    component: Home,
     exact: true,
     icon: icon.person,
     logged: true,
     menu: false,
-    tab: false,
+    tab: true,
   },
-  {
+  /*{
     title: i18n.t('Tabs'),
     path: '/tabs/:slug',
-    component: TabItem,
+    component: Home,
     exact: true,
     icon: icon.person,
     logged: true,
-    menu: true,
-    tab: false,
+    menu: false,
+    tab: true,
   },
+  {
+    title: i18n.t('Tabs Home'),
+    component: Home,
+    redirect: true,
+    from: '/tabs',
+    to: '/tabs/schedule',
+    icon: icon.person,
+    menu: false,
+    logged: false,
+    tab: true,
+  },*/
   {
     title: i18n.t('Account'),
     path: '/account',
@@ -57,7 +59,7 @@ export const appRoutes: IAppRoute[] = [
     icon: icon.person,
     menu: true,
     logged: true,
-    tab: true,
+    tab: false,
   },
   {
     title: i18n.t('Feed'),
@@ -150,16 +152,6 @@ export const appRoutes: IAppRoute[] = [
     logged: false,
     tab: false,
   },
-  {
-    title: i18n.t('Tabs Home'),
-    redirect: true,
-    from: '/tabs',
-    to: '/tabs/schedule',
-    icon: icon.person,
-    menu: false,
-    logged: false,
-    tab: false,
-  },
 ];
 
 /**
@@ -173,22 +165,23 @@ export const getHomeRoute = (routes: IAppRoute[]): IAppRoute | undefined => {
 };
 
 /**
- * Finds and returns the route with `isHome` set to true.
+ * Finds and returns all routes with `tab: true`.
  *
  * @param routes - The array of app routes to search in.
- * @returns The route object with `isHome: true` or `undefined` if not found.
+ * @returns The routes that have `tab: true`.
  */
-export const getTabRoutes = (routes: IAppRoute[]): IAppRoute | undefined => {
-  return routes.find(route => route.tab === true);
+export const getTabRoutes = (): IAppRoute[] => {
+  return appRoutes.filter(route => route.tab === true);
 };
 
 /**
- * Finds and returns the route with `isHome` set to true.
+ * Finds and returns all routes with `menu: true`.
  *
  * @param routes - The array of app routes to search in.
- * @returns The route object with `isHome: true` or `undefined` if not found.
+ * @returns The routes that have `menu: true` or an empty array if none are found.
  */
-export const getMenuRoutes = (routes: IAppRoute[]): IAppRoute | undefined => {
-  return routes.find(route => route.menu === true);
+export const getMenuRoutes = (): IAppRoute[] => {
+  return appRoutes.filter(route => route.menu === true) || [];
 };
+
 
