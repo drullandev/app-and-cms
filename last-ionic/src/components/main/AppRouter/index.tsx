@@ -62,11 +62,6 @@ const AppRouter: React.FC<IAppRouter> = ({ id, appRoutes, component }) => {
           />
         )}
 
-        {/* Render the tab navigation at the bottom if tab routes are available */}
-        {tabRoutes.length > 0 &&
-          <TabItem id="main-tabs" routes={tabRoutes} />
-        }
-
       </IonSplitPane>
     </IonReactRouter>
   );

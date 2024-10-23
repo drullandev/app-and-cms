@@ -26,18 +26,20 @@ const Menu: React.FC<IMenu> = ({ id, routes, component: Component }) => {
    * @param list - Array of route objects that need to be displayed in the menu.
    * @returns JSX elements for each menu item.
    */
-  const renderSidenavItems = (list: IAppRoute[]) => {
-    return list
-      .filter((route) => route.menu) // Only display routes that are marked to be shown in the menu
-      .filter((route) => route.logged === logged || !route.logged) // Display routes based on the user's logged-in status
-      .map((route) => <Component key={route.title} route={route} />); // Render each route as a menu item using the provided component
+  const renderSidenavItems = (list: IAppRoute[] = []): JSX.Element[] => {
+    return (
+      list
+        .filter((route) => route.menu !== undefined) // Verifica que `menu` esté definido
+        .filter((route) => route.logged === logged || route.logged === undefined) // Verifica `logged`
+        .map((route) => <Component key={route.title} route={route} />) ?? []
+    );
   };
 
   return (
     <IonMenu type="overlay" disabled={false} menuId={id} contentId={id}>
       <IonContent forceOverscroll={false}>
         <IonList role="list" lines="none">
-          {renderSidenavItems(routes)} {/* Render the list of menu items */}
+          {renderSidenavItems(routes)}
         </IonList>
       </IonContent>
     </IonMenu>

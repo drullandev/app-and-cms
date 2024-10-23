@@ -16,6 +16,7 @@ import i18n from 'i18next';
 
 import { IMenu } from '../../components/main/Menu';
 import { IAppRoute } from '../../components/main/AppRouter/types';
+import ErrorPage from '../../pages/Main/ErrorPage';
 
 /**
  * Routes settings
@@ -24,7 +25,7 @@ export const appRoutes: IAppRoute[] = [
   {
     title: i18n.t('Tabs'),
     path: '/tabs/home',
-    component: Home,
+    component: ErrorPage,
     exact: true,
     icon: icon.person,
     logged: true,

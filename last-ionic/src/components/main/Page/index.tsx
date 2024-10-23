@@ -8,6 +8,7 @@ import { GA4Options } from './types';
 import useGA4Tracker from '../../../integrations/useGA4Tracker';
 import { getTabRoutes } from '../../../app/config/routes'; 
 import { IAppRoute } from '../AppRouter/types';
+import TabItem from '../Menu/TabItem';
 
 export interface IonPageProps {
   id: string;
@@ -68,6 +69,12 @@ const Page: React.FC<IPage> = (pageProps) => {
       </IonContent>
 
       {pageProps.footer !== undefined && pageProps.footer(pageProps)}
+
+              {/* Render the tab navigation at the bottom if tab routes are available */}
+              {/*tabRoutes.length > 0 &&
+          <TabItem id="main-tabs" routes={tabRoutes} />
+  */}
+
     </IonPage>
   );
 };
