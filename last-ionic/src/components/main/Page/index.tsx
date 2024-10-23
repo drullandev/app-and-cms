@@ -57,6 +57,7 @@ const Page: React.FC<IPage> = (pageProps) => {
 
   return (
     <IonPage {...pageProps.settings}>
+      
       <Helmet>
         <title>{import.meta.env.VITE_APP_NAME + ' - ' + pageProps.settings.title}</title>
         <meta name="description" content="This is a brief description of the page content." />
@@ -70,10 +71,10 @@ const Page: React.FC<IPage> = (pageProps) => {
 
       {pageProps.footer !== undefined && pageProps.footer(pageProps)}
 
-              {/* Render the tab navigation at the bottom if tab routes are available */}
-              {/*tabRoutes.length > 0 &&
-          <TabItem id="main-tabs" routes={tabRoutes} />
-  */}
+      {/* Render the tab navigation at the bottom if tab routes are available */}
+      {/*tabRoutes.length > 0 &&
+        <TabItem id="main-tabs" routes={tabRoutes} />
+      */}
 
     </IonPage>
   );

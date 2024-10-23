@@ -31,8 +31,7 @@ const RouteRow = (route: IAppRoute, index: number) => {
 const RouterOutlet: React.FC<IRouterOutlet> = ({ id, routes }) => (
   <IonRouterOutlet id={id}>
     <Switch>
-<Looper items={routes} renderItem={RouteRow} />
-
+      <Looper items={routes} renderItem={RouteRow} />
     </Switch>
   </IonRouterOutlet>
 );

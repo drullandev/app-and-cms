@@ -5,7 +5,7 @@ import React, { useEffect, useState } from 'react';
 import useUserStore from '../integrations/stores/user.store';
 import AppRouter from '../components/main/AppRouter';
 import MainListItem from '../components/main/Menu/SidenavItem';
-import CookieConsent from '../pages/Main/CookieConsent';
+import CookieConsent from '../pages/main/CookieConsent';
 import PWA from '../components/main/PWA';
 import { appRoutes, getMenuRoutes, getTabRoutes } from './config/routes';
 import './config/config';

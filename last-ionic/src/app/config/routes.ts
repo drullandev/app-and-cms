@@ -16,7 +16,7 @@ import i18n from 'i18next';
 
 import { IMenu } from '../../components/main/Menu';
 import { IAppRoute } from '../../components/main/AppRouter/types';
-import ErrorPage from '../../pages/Main/ErrorPage';
+import ErrorPage from '../../pages/main/ErrorPage';
 
 /**
  * Routes settings
