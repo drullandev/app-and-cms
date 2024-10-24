@@ -261,26 +261,23 @@ const Form: React.FC<IFormComponent> = (formProps: IFormComponent): JSX.Element 
   );
 
   return (
-    <>
-
-      <form
-        key={formData.id}
-        onSubmit={handleSubmit(onSubmit, formData.onError)}
-        style={formData.settings?.style}
-      >
-        <Looper items={formData.fields} renderItem={renderField} />
-        <Looper items={formData.buttons} renderItem={renderButton} />
-        {!formData.buttons && renderButton({
-            name: 'submit',
-            class: 'ion-button-custom',
-            label: t('Submit'),
-            type: 'submit',
-            style: { borderRadius: '20px', float: 'left', width: '98%', margin: '2%' },
-            icon: icon.starOutline,
-            options: []
-          }, 0)}
-      </form>
-    </>
+    <form
+      key={formData.id}
+      onSubmit={handleSubmit(onSubmit, formData.onError)}
+      style={formData.settings?.style}
+    >
+      <Looper items={formData.fields} renderItem={renderField} />
+      <Looper items={formData.buttons} renderItem={renderButton} />
+      {(!formData.buttons || !formData.fields) && renderButton({
+          name: 'submit',
+          class: 'ion-button-custom',
+          label: t('Submit'),
+          type: 'submit',
+          style: { borderRadius: '20px', float: 'left', width: '98%', margin: '2%' },
+          icon: icon.starOutline,
+          options: []
+        }, 0)}
+    </form>
   );
 };
 

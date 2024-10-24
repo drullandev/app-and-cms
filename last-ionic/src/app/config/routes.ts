@@ -16,7 +16,7 @@ import i18n from 'i18next';
 
 import { IMenu } from '../../components/main/Menu';
 import { IAppRoute } from '../../components/main/AppRouter/types';
-import ErrorPage from '../../pages/main/ErrorPage';
+import ErrorPage from '../../pages/Main/ErrorPage';
 
 /**
  * Routes settings
@@ -86,7 +86,7 @@ export const appRoutes: IAppRoute[] = [
   },
   {
     title: i18n.t('Sign up'),
-    path: '/sign-up',
+    path: '/',
     component: SignUp,
     exact: true,
     icon: icon.accessibilityOutline,
@@ -173,7 +173,9 @@ export const getHomeRoute = (routes: IAppRoute[]): IAppRoute | undefined => {
  * @returns The routes that have `tab: true`.
  */
 export const getTabRoutes = (): IAppRoute[] => {
-  return appRoutes.filter(route => route.tab === true);
+  return appRoutes
+    .filter(route => route.tab === true)
+    .filter(route => route.menu !== true);
 };
 
 /**
@@ -183,7 +185,13 @@ export const getTabRoutes = (): IAppRoute[] => {
  * @returns The routes that have `menu: true` or an empty array if none are found.
  */
 export const getMenuRoutes = (): IAppRoute[] => {
-  return appRoutes.filter(route => route.menu === true) || [];
+  return appRoutes
+    .filter(route => route.menu === true)
+    .filter(route => route.tab !== true) || [];
 };
 
+export const hiddenRoutes = (): IAppRoute[] => {
+  return appRoutes
+    .filter(route => !route.menu && !route.tab) || [];
+}
 

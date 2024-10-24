@@ -1,3 +1,5 @@
+import { nodeEnv } from "../../app/config/env";
+
 /**
  * Utility class for debugging operations including logging and tracking.
  * Provides methods for setting debug mode, logging messages, and timing execution.
@@ -32,7 +34,7 @@ class DebugUtils {
    * @returns {boolean} True if the environment is production, false otherwise.
    */
   public isProduction(): boolean {
-    return import.meta.env.NODE_ENV === 'production';
+    return nodeEnv === 'production';
   }
 
   /**
@@ -41,7 +43,7 @@ class DebugUtils {
    * @returns {boolean} True if the environment is development, false otherwise.
    */
   public isDevelopment(): boolean {
-    return import.meta.env.NODE_ENV === 'development';
+    return nodeEnv === 'development';
   }
 
   /**

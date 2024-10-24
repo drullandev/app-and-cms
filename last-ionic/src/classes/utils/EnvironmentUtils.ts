@@ -1,3 +1,5 @@
+import { appVersion, nodeEnv } from "../../app/config/env";
+
 /**
  * Utility class for environment-related operations.
  * This class provides methods to check the current environment (production, development, test),
@@ -28,7 +30,7 @@ class EnvironmentUtils {
      * @returns {boolean} True if the environment is production, false otherwise.
      */
     public isProduction(): boolean {
-      return import.meta.env.NODE_ENV === 'production';
+      return nodeEnv === 'production';
     }
   
     /**
@@ -37,7 +39,7 @@ class EnvironmentUtils {
      * @returns {boolean} True if the environment is development, false otherwise.
      */
     public isDevelopment(): boolean {
-      return import.meta.env.NODE_ENV === 'development';
+      return nodeEnv === 'development';
     }
   
     /**
@@ -46,8 +48,18 @@ class EnvironmentUtils {
      * @returns {boolean} True if the environment is test, false otherwise.
      */
     public isTest(): boolean {
-      return import.meta.env.NODE_ENV === 'test';
+      return nodeEnv === 'test';
     }
+
+        /**
+     * Retrieves the value of a specific environment variable.
+     * 
+     * @param key The name of the environment variable to retrieve.
+     * @returns {string | undefined} The value of the environment variable, or undefined if not found.
+     */
+      public getEnvs(){
+        return import.meta.env;
+      }
   
     /**
      * Retrieves the value of a specific environment variable.
@@ -83,7 +95,7 @@ class EnvironmentUtils {
      * @returns {string | undefined} The app version, or undefined if not set.
      */
     public getAppVersion(): string | undefined {
-      return import.meta.env.VITE_APP_VERSION || import.meta.env.APP_VERSION;
+      return appVersion;
     }
   
     /**

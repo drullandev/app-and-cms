@@ -1,3 +1,4 @@
+import EnvironmentUtils from '../../classes/utils/EnvironmentUtils';
 import i18n, { TFunction } from 'i18next';
 import { shareSocialOutline, addCircleOutline, closeCircleOutline } from 'ionicons/icons';
 
@@ -20,7 +21,7 @@ export const fadeVelocity = 300;
 // =============================
 // Environment Variables
 // =============================
-export const all = import.meta.env;
+export const all = EnvironmentUtils.getEnvs();
 
 // Node environment setting (default to 'development')
 export const nodeEnv = all.VITE_APP_NODE_ENV ?? 'development';
@@ -29,6 +30,7 @@ export const nodeEnv = all.VITE_APP_NODE_ENV ?? 'development';
 // Application-Specific Variables
 // =============================
 export const appName = all.VITE_APP_NAME ?? 'Festivore';
+export const appVersion = all.VITE_APP_VERSION ?? 'none';
 export const appDomain = all.VITE_APP_DOMAIN ?? 'localhost';
 export const appProtocol = all.VITE_APP_PROTOCOL ?? 'http';
 export const appPort = all.VITE_APP_PORT ?? '3000';
@@ -114,7 +116,7 @@ export const installMode = all.VITE_INSTALL_MODE ?? '--legacy-peer-deps';
 // =============================
 export const imgSizes = ['thumbnail', 'small', 'medium', 'large']; // Image sizes in Strapi
 
-export const appAssets = `${import.meta.env}/assets/`;
+export const appAssets = '/assets';
 
 // =============================
 // Paths and Routes

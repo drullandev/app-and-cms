@@ -9,7 +9,7 @@ import {
   IonIcon
 } from '@ionic/react';
 
-import { getTabRoutes } from '../../../app/config/routes';
+import { getTabRoutes, hiddenRoutes } from '../../../app/config/routes';
 import { IAppRoute } from '../AppRouter/types';
 import { IonReactRouter } from '@ionic/react-router';
 
@@ -37,6 +37,14 @@ const TabItem: React.FC<ITabItem> = ({ id, slot = 'bottom' }) => {
     <IonReactRouter>
       <IonTabs>
         <IonRouterOutlet id={id}>
+          {hiddenRoutes.map((route, index) => (
+            <Route
+              key={index}
+              path={route.path}
+              component={route.component}
+              exact={route.exact ?? true}
+            />
+          ))}
           {tabRoutes.map((route, index) => (
             <Route
               key={index}

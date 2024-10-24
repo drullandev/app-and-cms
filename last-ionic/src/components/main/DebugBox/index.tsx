@@ -4,6 +4,7 @@ import { default as LoggerUtils } from '../../../classes/utils/LoggerUtils';
 import { IonAccordionGroup, IonItem } from '@ionic/react';
 import DebugUtils from '../../../classes/utils/DebugUtils';
 import Looper from '../../utils/Looper';
+import { nodeEnv } from '../../../app/config/env';
 
 interface DebugBoxProps {
   debugThis: boolean; // Flag to enable the DebugBox
@@ -15,8 +16,7 @@ const DebugBox: React.FC<DebugBoxProps> = ({ debugThis, children }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   // Check if we are in a development environment and if debug is enabled
-  if (import.meta.env.NODE_ENV !== 'development' || ! debugThis) {
-    //LoggerUtils.log('DebugBox is not visible due to environment or debug flag.');
+  if (nodeEnv !== 'development' || ! debugThis) {
     return null;
   }
 

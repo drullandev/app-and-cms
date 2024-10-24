@@ -1,5 +1,5 @@
 import CookieManager, { ICookieManager } from "../classes/managers/CookieManager";
-import {appUrl,  } from '../app/config/env'
+import {appUrl, cookiePath, homePath,  } from '../app/config/env'
 
 /**
  * Interface defining the contract for CookieManager operations.
@@ -13,9 +13,6 @@ import {appUrl,  } from '../app/config/env'
  *
  * @returns An instance of CookieManager configured with the domain and path settings.
  */
-export const useCookies : ICookieManager = CookieManager.getInstance(
-  import.meta.env.VITE_APP_HOST_URL,
-  import.meta.env.VITE_APP_COOKIE_PATH
-);
+export const useCookies : ICookieManager = CookieManager.getInstance(homePath, cookiePath);
 
 export default useCookies;

@@ -1,10 +1,11 @@
 import React from 'react'
 import { Redirect } from 'react-router'
+import { authLoginPath, homePath } from '../../app/config/env';
 
 const Home: React.FC<any> = ({ hasSeenTutorial }) => (
   hasSeenTutorial 
-    ? <Redirect to={import.meta.env.VITE_HOME_PATH} />
-    : <Redirect to={import.meta.env.VITE_AUTH_LOGIN} />
+    ? <Redirect to={homePath} />
+    : <Redirect to={authLoginPath} />
 )
 
 export default Home;

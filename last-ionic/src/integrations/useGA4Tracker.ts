@@ -1,5 +1,5 @@
 import GA4Manager from "../classes/managers/GA4Manager";
-import { storageKey } from '../app/config/env'
+import { ga4TrackingId, nodeEnv } from '../app/config/env'
 
 /**
  * Creates and exports an instance of GA4Manager configured with the specified tracking ID.
@@ -9,8 +9,8 @@ import { storageKey } from '../app/config/env'
  * @author David Rullán - https://github.com/drullandev
  * @date August 30, 2024
  */
-const useGA4Tracker = (import.meta.env.NODE_ENV === 'production' && import.meta.env.VITE_GA4_TRACKING_ID != '') 
-  ? new GA4Manager(import.meta.env.VITE_GA4_TRACKING_ID)
+const useGA4Tracker = (nodeEnv === 'production' && ga4TrackingId != '') 
+  ? new GA4Manager(ga4TrackingId)
   : new GA4Manager();
 
 export default useGA4Tracker;

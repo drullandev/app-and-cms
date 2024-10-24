@@ -22,7 +22,6 @@ import { IonReactRouter } from '@ionic/react-router';
 import Menu from '../Menu';
 import RouterOutlet from './components/RouterOutlet';
 import { getMenuRoutes, getTabRoutes } from '../../../app/config/routes';
-import TabItem from '../Menu/TabItem';
 import { IAppRoute, IAppRouter } from './types';
 
 const AppRouter: React.FC<IAppRouter> = ({ id, appRoutes, component }) => {
@@ -48,18 +47,11 @@ const AppRouter: React.FC<IAppRouter> = ({ id, appRoutes, component }) => {
       <IonSplitPane contentId={id}>
 
         {/* Render the main router outlet for the application */}
-        <RouterOutlet
-          id={id}
-          routes={appRoutes}
-        />
+        <RouterOutlet id={id} routes={appRoutes}/>
 
         {/* Render the side menu if appRoutes are available */}
         {menuRoutes.length > 0 && (
-          <Menu
-            id={id}
-            routes={menuRoutes}
-            component={component}
-          />
+          <Menu id={id} routes={menuRoutes} component={component}/>
         )}
 
       </IonSplitPane>

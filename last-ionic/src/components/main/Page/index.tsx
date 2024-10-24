@@ -9,6 +9,7 @@ import useGA4Tracker from '../../../integrations/useGA4Tracker';
 import { getTabRoutes } from '../../../app/config/routes'; 
 import { IAppRoute } from '../AppRouter/types';
 import TabItem from '../Menu/TabItem';
+import { appName } from '../../../app/config/env';
 
 export interface IonPageProps {
   id: string;
@@ -47,19 +48,21 @@ const Page: React.FC<IPage> = (pageProps) => {
   const [tabRoutes, setTabRoutes] = useState<IAppRoute[]>([]);  // Mantenemos las rutas en el estado local
 
   useEffect(() => {
+
     logger.info(' • Loading page!');
     useGA4Tracker.sendEvent('load', pageProps.ga4);
 
     // Filtrar y establecer las rutas de pestañas
     const filteredTabRoutes = getTabRoutes();
     setTabRoutes(filteredTabRoutes);
+
   }, [pageProps]);
 
   return (
     <IonPage {...pageProps.settings}>
       
       <Helmet>
-        <title>{import.meta.env.VITE_APP_NAME + ' - ' + pageProps.settings.title}</title>
+        <title>{appName + ' - ' + pageProps.settings.title}</title>
         <meta name="description" content="This is a brief description of the page content." />
       </Helmet>
 
@@ -73,7 +76,7 @@ const Page: React.FC<IPage> = (pageProps) => {
 
       {/* Render the tab navigation at the bottom if tab routes are available */}
       {/*tabRoutes.length > 0 &&
-        <TabItem id="main-tabs" routes={tabRoutes} />
+         id="main-tabs" routes={tabRoutes} />
       */}
 
     </IonPage>

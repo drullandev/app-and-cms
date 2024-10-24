@@ -30,6 +30,7 @@ import Icon from '../../../../../app/components/Ionic/v8/Icon';
 import React from 'react';
 import Looper from '../../../../utils/Looper';
 import '../../style.css';
+import { nodeEnv } from '../../../../../app/config/env';
 /**
  * Field component that handles various types of form fields with validation, loading states, and error handling.
  * @param {object} props - The props for the Field component.
@@ -478,7 +479,7 @@ const Field = forwardRef<any, {
             <div className="captcha-container">
               <IonLabel ariaLabel={field.name+'-label'}>{field.label}</IonLabel>
             </div>
-            {import.meta.env.NODE_ENV === 'production' ? (
+            {nodeEnv === 'production' ? (
               <div>
                 <ReCAPTCHA 
                   {...recaptchaProps}

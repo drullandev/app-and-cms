@@ -1,3 +1,5 @@
+import { nodeEnv } from "../../app/config/env";
+
 interface LoggerInstances {
   [name: string]: LoggerUtils;
 }
@@ -49,7 +51,7 @@ class LoggerUtils implements ILoggerUtils {
     this.prefix = prefix;
     this.maxLogs = maxLogs || 100;
     this.logLevel = logLevel || 'debug';
-    this.shouldLog = shouldLog || (() => import.meta.env.NODE_ENV === "development");
+    this.shouldLog = shouldLog || (() => nodeEnv === "development");
 
     // If debug is false, we disable logging by default
     if (!this.debugLogger) {

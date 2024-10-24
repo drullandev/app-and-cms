@@ -1,5 +1,6 @@
 import LoggerUtils from '../utils/LoggerUtils';
 import DebugUtils from '../utils/DebugUtils';
+import { appUrl, nodeEnv } from '../../app/config/env';
 
 type Config = {
   onSuccess?: (registration: ServiceWorkerRegistration) => void;
@@ -48,7 +49,7 @@ type CacheOptions = {
  */
 export class ServiceWorker {
   private inNavigator: boolean = 'serviceWorker' in navigator;
-  private isProduction: boolean = import.meta.env.NODE_ENV === 'production';
+  private isProduction: boolean = nodeEnv === 'production';
   private swUrl: string;
   private isLocalhost: boolean = Boolean(
     window.location.hostname === 'localhost' ||
@@ -68,7 +69,7 @@ export class ServiceWorker {
   constructor(private config?: Config, swUrl?: string, debug?: boolean) {
     this.debug = DebugUtils.setDebug(debug ?? false);
     this.logger = LoggerUtils.getInstance(this.constructor.name, this.debug);
-    this.swUrl = swUrl || `${import.meta.env.PUBLIC_URL}/service-worker.js`;
+    this.swUrl = swUrl || `${appUrl}/service-worker.js`;
 
     {
       this.logger.info("ServiceWorker initialized", { config });

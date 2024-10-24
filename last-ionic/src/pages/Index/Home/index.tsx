@@ -7,7 +7,7 @@ import React, { useEffect } from 'react';
  */
 const Home: React.FC = () => {
   useEffect(() => {
-    console.log(import.meta.env);
+
   }, []);
   return <>Wellcome home</>
 };
