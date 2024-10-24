@@ -13,6 +13,7 @@ export interface IAppRoute {
     to?: string;
     tab?: boolean;
     isHome?: boolean;
+    groups: string[]
   }
   
   export interface IAppRouter {

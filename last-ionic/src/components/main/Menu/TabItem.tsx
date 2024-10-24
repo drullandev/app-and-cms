@@ -9,7 +9,7 @@ import {
   IonIcon
 } from '@ionic/react';
 
-import { getTabRoutes, hiddenRoutes } from '../../../app/config/routes';
+import { getTabRoutes, hiddenRoutes } from '../../../app/config/routers';
 import { IAppRoute } from '../AppRouter/types';
 import { IonReactRouter } from '@ionic/react-router';
 

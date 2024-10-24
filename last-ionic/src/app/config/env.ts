@@ -1,6 +1,7 @@
 import EnvironmentUtils from '../../classes/utils/EnvironmentUtils';
 import i18n, { TFunction } from 'i18next';
 import { shareSocialOutline, addCircleOutline, closeCircleOutline } from 'ionicons/icons';
+import { getHomeRoute } from './routers';
 
 // =============================
 // Application Setup
@@ -67,7 +68,7 @@ export const apiUploads = `${apiUrl}/uploads/`;
 // Authentication and Login Path
 // =============================
 export const authLoginPath = all.VITE_AUTH_LOGIN ?? '/auth/login';
-export const homePath = all.VITE_HOME_PATH ?? '/login';
+export const homePath = getHomeRoute();
 
 // =============================
 // Storage Configuration

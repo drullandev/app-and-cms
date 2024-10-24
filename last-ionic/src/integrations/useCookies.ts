@@ -13,6 +13,6 @@ import {appUrl, cookiePath, homePath,  } from '../app/config/env'
  *
  * @returns An instance of CookieManager configured with the domain and path settings.
  */
-export const useCookies : ICookieManager = CookieManager.getInstance(homePath, cookiePath);
+export const useCookies : ICookieManager = CookieManager.getInstance(homePath?.path, cookiePath);
 
 export default useCookies;

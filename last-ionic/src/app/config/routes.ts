@@ -1,68 +1,27 @@
-import * as icon from 'ionicons/icons';
 import {
   NotFound,
+  TabItem,
   SignIn,
   Account,
   Home,
   SignOut,
   Support,
   SignUp,
-  TabItem,
   About,
   ForgotPassword,
   ResetPassword
-} from '../components';  // Asegúrate de tener estos componentes definidos y exportados correctamente.
+} from '../components';
 import i18n from 'i18next';
+import * as icon from 'ionicons/icons';
 
-import { IMenu } from '../../components/main/Menu';
 import { IAppRoute } from '../../components/main/AppRouter/types';
-import ErrorPage from '../../pages/Main/ErrorPage';
+import ErrorPage from '../../pages/main/ErrorPage';
 
 /**
- * Routes settings
+ * App routes - Single list with multiple groups using `groups` array field
  */
 export const appRoutes: IAppRoute[] = [
-  {
-    title: i18n.t('Tabs'),
-    path: '/tabs/home',
-    component: ErrorPage,
-    exact: true,
-    icon: icon.person,
-    logged: true,
-    menu: false,
-    tab: true,
-  },
-  /*{
-    title: i18n.t('Tabs'),
-    path: '/tabs/:slug',
-    component: Home,
-    exact: true,
-    icon: icon.person,
-    logged: true,
-    menu: false,
-    tab: true,
-  },
-  {
-    title: i18n.t('Tabs Home'),
-    component: Home,
-    redirect: true,
-    from: '/tabs',
-    to: '/tabs/schedule',
-    icon: icon.person,
-    menu: false,
-    logged: false,
-    tab: true,
-  },*/
-  {
-    title: i18n.t('Account'),
-    path: '/account',
-    component: Account,
-    exact: true,
-    icon: icon.person,
-    menu: true,
-    logged: true,
-    tab: false,
-  },
+  // Rutas principales (Home)
   {
     title: i18n.t('Feed'),
     path: '/home',
@@ -72,8 +31,9 @@ export const appRoutes: IAppRoute[] = [
     menu: true,
     logged: false,
     tab: false,
-    isHome: true,
+    groups: ['main', 'public', 'menu'],
   },
+  // Rutas de autenticación
   {
     title: i18n.t('Sign in'),
     path: '/login',
@@ -83,6 +43,7 @@ export const appRoutes: IAppRoute[] = [
     menu: true,
     logged: false,
     tab: false,
+    groups: ['auth', 'public', 'menu'],
   },
   {
     title: i18n.t('Sign up'),
@@ -93,9 +54,10 @@ export const appRoutes: IAppRoute[] = [
     menu: true,
     logged: false,
     tab: false,
+    groups: ['auth', 'public', 'menu'],
   },
   {
-    title: i18n.t('Forgot Password'), 
+    title: i18n.t('Forgot Password'),
     path: '/forgot-password',
     component: ForgotPassword,
     exact: true,
@@ -103,9 +65,10 @@ export const appRoutes: IAppRoute[] = [
     menu: true,
     logged: false,
     tab: false,
+    groups: ['auth', 'public', 'menu'],
   },
   {
-    title: i18n.t('Reset Password'), 
+    title: i18n.t('Reset Password'),
     path: '/reset-password/:token',
     component: ResetPassword,
     exact: true,
@@ -113,6 +76,7 @@ export const appRoutes: IAppRoute[] = [
     menu: true,
     logged: false,
     tab: false,
+    groups: ['auth', 'public', 'menu'],
   },
   {
     title: i18n.t('Sign out'),
@@ -123,27 +87,33 @@ export const appRoutes: IAppRoute[] = [
     menu: true,
     logged: true,
     tab: false,
+    groups: ['auth', 'protected', 'menu'],
   },
+  // Rutas protegidas
   {
-    title: i18n.t('Help'),
-    path: '/support',
-    component: Support,
+    title: i18n.t('Account'),
+    path: '/account',
+    component: Account,
     exact: true,
-    icon: icon.help,
+    icon: icon.person,
     menu: true,
-    logged: false,
+    logged: true,
     tab: false,
+    groups: ['protected', 'menu'],
   },
+  // Rutas de Tabs
   {
-    title: i18n.t('About'),
-    path: '/about',
-    component: About,
+    title: i18n.t('Tabs'),
+    path: '/tabs/home',
+    component: ErrorPage,
     exact: true,
-    icon: icon.informationCircleOutline,
+    icon: icon.person,
+    logged: true,
     menu: false,
-    logged: false,
-    tab: false,
+    tab: true,
+    groups: ['tabs', 'main'],
   },
+  // Rutas de error
   {
     title: i18n.t('Not found'),
     redirect: true,
@@ -153,45 +123,6 @@ export const appRoutes: IAppRoute[] = [
     menu: false,
     logged: false,
     tab: false,
+    groups: ['error'],
   },
 ];
-
-/**
- * Finds and returns the route with `isHome` set to true.
- *
- * @param routes - The array of app routes to search in.
- * @returns The route object with `isHome: true` or `undefined` if not found.
- */
-export const getHomeRoute = (routes: IAppRoute[]): IAppRoute | undefined => {
-  return routes.find(route => route.isHome === true);
-};
-
-/**
- * Finds and returns all routes with `tab: true`.
- *
- * @param routes - The array of app routes to search in.
- * @returns The routes that have `tab: true`.
- */
-export const getTabRoutes = (): IAppRoute[] => {
-  return appRoutes
-    .filter(route => route.tab === true)
-    .filter(route => route.menu !== true);
-};
-
-/**
- * Finds and returns all routes with `menu: true`.
- *
- * @param routes - The array of app routes to search in.
- * @returns The routes that have `menu: true` or an empty array if none are found.
- */
-export const getMenuRoutes = (): IAppRoute[] => {
-  return appRoutes
-    .filter(route => route.menu === true)
-    .filter(route => route.tab !== true) || [];
-};
-
-export const hiddenRoutes = (): IAppRoute[] => {
-  return appRoutes
-    .filter(route => !route.menu && !route.tab) || [];
-}
-

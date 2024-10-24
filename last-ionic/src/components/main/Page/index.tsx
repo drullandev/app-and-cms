@@ -6,7 +6,7 @@ import LoggerUtils from '../../../classes/utils/LoggerUtils';
 import './styles.css';
 import { GA4Options } from './types';
 import useGA4Tracker from '../../../integrations/useGA4Tracker';
-import { getTabRoutes } from '../../../app/config/routes'; 
+import { getTabRoutes } from '../../../app/config/routers'; 
 import { IAppRoute } from '../AppRouter/types';
 import TabItem from '../Menu/TabItem';
 import { appName } from '../../../app/config/env';

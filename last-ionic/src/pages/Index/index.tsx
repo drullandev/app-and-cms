@@ -4,7 +4,7 @@ import { authLoginPath, homePath } from '../../app/config/env';
 
 const Home: React.FC<any> = ({ hasSeenTutorial }) => (
   hasSeenTutorial 
-    ? <Redirect to={homePath} />
+    ? <Redirect to={homePath?.path??'/home'} />
     : <Redirect to={authLoginPath} />
 )
 

@@ -21,7 +21,7 @@ import { IonSplitPane } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import Menu from '../Menu';
 import RouterOutlet from './components/RouterOutlet';
-import { getMenuRoutes, getTabRoutes } from '../../../app/config/routes';
+import { getMenuRoutes, getTabRoutes } from '../../../app/config/routers';
 import { IAppRoute, IAppRouter } from './types';
 
 const AppRouter: React.FC<IAppRouter> = ({ id, appRoutes, component }) => {
